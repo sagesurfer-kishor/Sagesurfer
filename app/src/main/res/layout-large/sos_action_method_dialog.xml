@@ -1,0 +1,273 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sos_action_dialog_fragment_layout"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:minWidth="250dp"
+    app:cardCornerRadius="5dp"
+    app:cardPreventCornerOverlap="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/white">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/sos_action_dialog_close"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:background="@color/transparent"
+                android:padding="12dp"
+                app:srcCompat="@drawable/vi_cancel_gray" />
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/sos_action_dialog_close"
+                android:gravity="center_vertical|start"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="0dp"
+                android:text="@string/select_method"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_18" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:background="@android:color/white"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/sos_action_dialog_call_circle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/sos_grey_circle" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/sos_action_dialog_call"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/vi_sos_call" />
+                </RelativeLayout>
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/call"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/sos_action_dialog_meet_circle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/sos_grey_circle" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/sos_action_dialog_meet"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:padding="7dp"
+                        app:srcCompat="@drawable/vi_sos_meet" />
+                </RelativeLayout>
+
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/meet"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/sos_action_dialog_chat_circle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/sos_grey_circle" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/sos_action_dialog_chat"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/vi_sos_chat" />
+                </RelativeLayout>
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/chat"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/sos_action_dialog_other_circle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/sos_grey_circle" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/sos_action_dialog_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:padding="11dp"
+                        app:srcCompat="@drawable/vi_sos_other" />
+                </RelativeLayout>
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/other"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sos_action_dialog_method"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_16" />
+
+            <EditText
+                android:id="@+id/sos_action_dialog_other_box"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:background="@drawable/edit_text_primary"
+                android:gravity="start|center_vertical"
+                android:hint="@string/type_here"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="50"
+                android:maxLines="2"
+                android:padding="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_color_primary"
+                android:textColorHint="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_16"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/sos_action_dialog_ok"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:minHeight="@dimen/actionBarSize"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:text="@string/ok"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wall_post_footer_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/wall_post_menu_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2.5dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:targetApi="lollipop">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/list_selector" />
+
+        <TextView
+            android:id="@+id/create_wall_footer_text"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:lines="1"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:text="@string/select_team_friends_attachment"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_20" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wall_post_menu_list_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2.5dp"
+        android:orientation="vertical"
+        tools:targetApi="lollipop">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/list_selector" />
+
+        <LinearLayout
+            android:id="@+id/wall_post_menu_add_file"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="15dp"
+                app:srcCompat="@drawable/vi_select_file_pink" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:gravity="start|center_vertical"
+                android:text="@string/select_attachment"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_20" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@color/list_selector" />
+
+        <LinearLayout
+            android:id="@+id/wall_post_menu_add_user"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="15dp"
+                app:srcCompat="@drawable/vi_select_friends_blue" />
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:gravity="start|center_vertical"
+                android:text="@string/select_friends"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_20" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@color/list_selector" />
+
+        <LinearLayout
+            android:id="@+id/wall_post_menu_add_team"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="13dp"
+                app:srcCompat="@drawable/vi_select_team_green" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:gravity="start|center_vertical"
+                android:text="@string/select_teams"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_20" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

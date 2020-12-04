@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:gravity="center">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:layout_weight="0.9"
+                android:background="@drawable/white_rounded_rectangle_gray_border"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_search"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/imagebutton_search"
+                    android:background="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/action_search"
+                    android:imeOptions="actionSearch"
+                    android:maxLength="30"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/vi_search_gray" />
+            </RelativeLayout>
+
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/notification_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginRight="0.5dp"
+                android:background="@drawable/blue_rounded_border"
+                android:padding="12dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/filter_img" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cardview_actions"
+        android:layout_marginTop="5dp"
+        android:background="@color/screen_background"
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/recycler_view"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
+        app:fab_size="normal"
+        app:srcCompat="@drawable/ic_add_white"
+        tools:ignore="RelativeOverlap" />
+
+    <LinearLayout
+        android:id="@+id/linealayout_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cardview_actions"
+        android:layout_alignParentStart="true"
+        android:background="@color/screen_background"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_error_icon"
+            android:layout_width="200dp"
+            android:layout_height="240dp"
+            app:srcCompat="@drawable/vi_data_not_fount_error" />
+
+        <TextView
+            android:id="@+id/textview_error_message"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_record_found"
+            android:textColor="@color/text_color_tertiary"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/listview_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/linealayout_error"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_add_white" />
+
+    <FrameLayout
+        android:id="@+id/framelayout_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/recycler_view"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|right"
+        android:visibility="gone">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sos_update_float"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:src="@android:color/transparent"
+            android:visibility="visible"
+            app:backgroundTint="@color/sos_fab"
+            app:fab_size="normal"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="16dp"
+            android:text="@string/sos"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_14" />
+    </FrameLayout>
+</RelativeLayout>

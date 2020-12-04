@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/screen_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/create_team_rounded_border"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_rounded_rectangle"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:text="Behavioral Tracking Survey"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_tab_pressed"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:singleLine="true"
+                    android:text="Sr."
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="35dp"
+                    android:layout_toRightOf="@+id/reply_comment"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:singleLine="true"
+                    android:text="Questions"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_size_14" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="1."
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="Were you disruptive ?"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="30dp"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/ques1_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <RadioButton
+                            android:id="@+id/ques1_yes"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Yes"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+
+                        <RadioButton
+                            android:id="@+id/ques1_no"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="No"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <RadioButton
+                            android:id="@+id/ques1_na"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:text="N/A"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/text_color_primary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="2."
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="Did you get sent out of class ?"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="30dp"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/ques2_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <RadioButton
+                            android:id="@+id/ques2_yes"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Yes"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+
+                        <RadioButton
+                            android:id="@+id/ques2_no"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="No"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <RadioButton
+                            android:id="@+id/ques2_na"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:text="N/A"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/text_color_primary" />
+
+            <LinearLayout
+                android:id="@+id/optional_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/blue_circle"
+                        android:gravity="center" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="Did you use coping skills ?"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="30dp"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/ques3_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <RadioButton
+                            android:id="@+id/ques3_yes"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Yes"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+
+                        <RadioButton
+                            android:id="@+id/ques3_no"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="No"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <RadioButton
+                            android:id="@+id/ques3_na"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:text="N/A"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="invisible" />
+
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/button_submit"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16" />
+
+                <Button
+                    android:id="@+id/button_cancel"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/text_cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

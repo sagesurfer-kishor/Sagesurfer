@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:orientation="vertical">
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/txt1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:gravity="center|center_vertical"
+                    android:text="One on One"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/heading_text_size" />
+
+                <View
+                    android:id="@+id/chat_one_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorPrimaryDark" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/txt2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:gravity="center|center_vertical"
+                    android:text="Chatroom"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/heading_text_size" />
+
+                <View
+                    android:id="@+id/chat_two_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorPrimaryDark" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="0dp"
+            android:layout_height="0dp">
+
+            <TextView
+                android:id="@+id/fakeTabContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="#fff" />
+        </FrameLayout>
+    </RelativeLayout>
+</TabHost>

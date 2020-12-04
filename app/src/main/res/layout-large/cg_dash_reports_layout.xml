@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="7dp"
+        android:layout_weight="1"
+        android:background="@drawable/cg_dash_white_rounded_rect"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/cg_dash_box_one_button_layout"
+                android:text="Clinical Assessments"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_18" />
+
+            <LinearLayout
+                android:id="@+id/cg_dash_box_one_button_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cg_dash_report_msq"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/primary_rounded_rectangle"
+                    android:gravity="center"
+                    android:text="MSQ"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+
+                <Button
+                    android:id="@+id/cg_dash_report_psq"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/white_rounded_rectangle"
+                    android:gravity="center"
+                    android:text="PHQ"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/web_view_one_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <WebView
+                android:id="@+id/cg_dashboard_clinical_assessment_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_weight="1"
+        android:background="@drawable/cg_dash_white_rounded_rect"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Medication Adherence"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_18" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/web_view_two_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:orientation="vertical">
+
+            <WebView
+                android:id="@+id/cg_dashboard_medical_adherence_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,1178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_toolbar_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/screen_background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/create_team_rounded_border"
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_rounded_rectangle"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:text="Basic Information"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="Team Type"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_teamtype_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/white_rounded_rectangle_gray_border"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/margin_6"
+                        android:paddingBottom="@dimen/margin_6"
+                        android:visibility="visible">
+
+                        <Spinner
+                            android:id="@+id/spinner_team_type"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:hint="@string/select"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/team_label"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="8dp"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="Team Name"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/team_label"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/team_name_limit"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="(Max. 50 characters)"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/team_name_txt"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/edit_text_primary"
+                        android:imeOptions="actionNext"
+                        android:maxLength="50"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/url_label"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="8dp"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="Team URL Name"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/url_label"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/team_url_name_limit"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="(Max. 40 characters)"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/team_url_txt"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/edit_text_primary"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName"
+                        android:maxLength="40"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/url_available_or_not"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:text="Team URL must contain Letters, Numbers and Dashes"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_11"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/main_lineary_layout_fac"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txt_client"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                                android:layout_marginTop="8dp"
+                                android:paddingStart="3dp"
+                                android:paddingEnd="5dp"
+                                android:text="Client"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/txt_client"
+                                android:gravity="start"
+                                android:text="*"
+                                android:textColor="@color/self_goal_red"
+                                android:textSize="@dimen/text_size_20"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/client_name_txt"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:layout_marginBottom="@dimen/activity_vertical_margin"
+                            android:background="@drawable/ic_bottom_line_down_arrow"
+                            android:hint="Select Client"
+                            android:imeOptions="actionNext"
+                            android:maxLength="50"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            android:paddingBottom="7dp"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txt_category"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                                android:layout_marginTop="8dp"
+                                android:paddingStart="3dp"
+                                android:paddingEnd="5dp"
+                                android:text="Category"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/txt_category"
+                                android:gravity="start"
+                                android:text="*"
+                                android:textColor="@color/self_goal_red"
+                                android:textSize="@dimen/text_size_20"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/category_name_txt"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:layout_marginBottom="@dimen/activity_vertical_margin"
+                            android:background="@drawable/ic_bottom_line_down_arrow"
+                            android:hint="Select Category"
+                            android:imeOptions="actionNext"
+                            android:maxLength="50"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            android:paddingBottom="7dp"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txt_sub_category"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                                android:layout_marginTop="8dp"
+                                android:paddingStart="3dp"
+                                android:paddingEnd="5dp"
+                                android:text="Sub Category"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/txt_sub_category"
+                                android:gravity="start"
+                                android:text="*"
+                                android:textColor="@color/self_goal_red"
+                                android:textSize="@dimen/text_size_20"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/sub_category_name_txt"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:layout_marginBottom="@dimen/activity_vertical_margin"
+                            android:background="@drawable/ic_bottom_line_down_arrow"
+                            android:hint="Select Sub Category"
+                            android:imeOptions="actionNext"
+                            android:maxLength="50"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            android:paddingBottom="7dp"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/create_team_rounded_border"
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_rounded_rectangle"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:text="Team Access Policy "
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="Privacy"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_public"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <RadioGroup
+                            android:id="@+id/privacy_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+                            <RadioButton
+                                android:id="@+id/radiobutton_public"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:checked="true"
+                                android:text="Public"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <TextView
+                                android:id="@+id/txt_title_public"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="30dp"
+                                android:text="Available for all users"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                            <RadioButton
+                                android:id="@+id/radiobutton_private"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:text="Private"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+
+                            <TextView
+                                android:id="@+id/txt_title_private"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginLeft="30dp"
+                                android:paddingStart="5dp"
+                                android:text="Access Restricted"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_public_only"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <RadioGroup
+                            android:id="@+id/public_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+
+                            <RadioButton
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:text="Public"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginLeft="30dp"
+                                android:paddingStart="5dp"
+                                android:text="Available for all users"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_private"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <RadioGroup
+                            android:id="@+id/private_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+
+                            <RadioButton
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:text="Private"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginLeft="30dp"
+                                android:paddingStart="5dp"
+                                android:text="Access Restricted"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_premium_platform"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:orientation="vertical">
+
+                        <RadioGroup
+                            android:id="@+id/premium_platform_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+                            <RadioButton
+                                android:id="@+id/radiobutton_premium"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:checked="true"
+                                android:text="Premium"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <TextView
+                                android:id="@+id/txt_title_premium"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="30dp"
+                                android:text="Premium teams are by invitation only"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                            <RadioButton
+                                android:id="@+id/radiobutton_platform"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:layout_weight="1"
+                                android:text="Platform"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/txt_title_platform"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginLeft="30dp"
+                                android:paddingStart="5dp"
+                                android:text="Platform teams are only visible to users who have registered on the platform"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp"
+                        android:text="Available for all users"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:paddingStart="5dp"
+                        android:text="Access Restricted"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_access"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="Access"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/access_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+                            <RadioButton
+                                android:id="@+id/radiobutton_open"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:checked="true"
+                                android:text="Open"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="30dp"
+                                android:text="This will be allow anybody to join this Team depending on Team's privacy setting."
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+
+                            <RadioButton
+                                android:id="@+id/radiobutton_closed"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:layout_weight="1"
+                                android:text="Closed"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginLeft="30dp"
+                                android:paddingStart="0dp"
+                                android:text="Anybody can apply for membership but only Team administartors will be able to approve it."
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="20dp"
+                        android:text="This will be allow anybody to join this Team depending on Team's privacy setting."
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:paddingStart="5dp"
+                        android:text="Anybody can apply for membership but only Team administartors will be able to approve it."
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/create_team_rounded_border"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_rounded_rectangle"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:text="Team Banner"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@drawable/create_team_rounded_border"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/show_default_banner_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_margin="10dp">
+
+                        <ImageView
+                            android:id="@+id/set_default_upload_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/list_background"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/team_banner_werhope" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/defualt_close_img"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:background="#757575"
+                            android:padding="10dp"
+                            android:visibility="visible"
+                            app:srcCompat="@drawable/vi_cancel_white" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/hide_banner_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/screen_background"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/upload_image_label"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="Uplaod Banner Image For Team"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/vi_heart_img_one"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_below="@+id/upload_image_label"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/vi_add_task_list_p"
+                            tools:ignore="ContentDescription" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/show_banner_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_margin="10dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/set_upload_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/list_background"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/vi_add_gray" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/close_img"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:background="#757575"
+                            android:padding="10dp"
+                            android:visibility="visible"
+                            app:srcCompat="@drawable/vi_cancel_white" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/create_team_rounded_border"
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_rounded_rectangle"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:text="Story"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/describe_label"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="8dp"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="Describe your story"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/describe_label"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/describe_story__txt"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:background="@drawable/edit_text_primary"
+                            android:imeOptions="actionNext"
+                            android:maxLength="265"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            android:paddingBottom="7dp"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <TextView
+                            android:id="@+id/team_desc_limit"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/describe_story__txt"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="0/265"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/create_team_checkBox"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:buttonTint="@color/colorPrimary"
+                    android:gravity="start|center_vertical"
+                    android:text="I accept the Terms and Conditions"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

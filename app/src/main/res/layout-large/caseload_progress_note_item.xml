@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <!--<android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:elevation="12dp"
+        app:cardCornerRadius="14dp"
+        android:layout_centerHorizontal="true"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.9">-->
+
+    <LinearLayout
+        android:id="@+id/linearlayout_progress_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_rounded_shadow_list"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textview_progress_note_name"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="1"
+                android:text="@string/name_text"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_18" />
+
+            <TextView
+                android:id="@+id/textview_progress_note_date"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="start"
+                android:text="@string/date"
+                android:textAllCaps="true"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_16"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_progress_note_download"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_weight="0.1"
+            android:gravity="right|center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_progress_note_download"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/vi_download_black" />
+        </LinearLayout>
+    </LinearLayout>
+    <!--</android.support.v7.widget.CardView>-->
+</RelativeLayout>

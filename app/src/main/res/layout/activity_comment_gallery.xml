@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    tools:ignore="MissingDefaultResource">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/care_details_footer"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+
+            <include layout="@layout/activity_toolbar_layout" />
+
+            <RelativeLayout
+                android:id="@+id/care_details_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.60"
+                android:background="@color/screen_background">
+
+                <LinearLayout
+                    android:id="@+id/header_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#0095ff"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/comment_title"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:text="Hello"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/care_details_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/header_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    tools:ignore="ContentDescription" />
+
+
+            </RelativeLayout>
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.50"
+                android:background="@color/screen_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/login_user_name"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|top"
+                            android:text="hello"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/commet_rounded_border"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/album_name"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                android:paddingStart="0dp"
+                                android:paddingEnd="3dp"
+                                android:text="@string/category_dash"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_13"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/album_description"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:ellipsize="end"
+                                android:gravity="start"
+                                android:lines="1"
+                                android:text="@string/runtime_permissions_txt"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_13" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/comments_count_txt"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:paddingStart="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="Comments (0)"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/list_selector"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/comment_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/care_details_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/screen_background">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/list_background" />
+
+            <EditText
+                android:id="@+id/comment_message_box"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/care_details_footer_send"
+                android:background="@drawable/square_edittext_rounded_border"
+                android:gravity="start|center_vertical"
+                android:hint="@string/type_here"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="0dp"
+                android:singleLine="true"
+                android:textColor="@color/text_color_primary"
+                android:textColorHint="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_14" />
+
+            <Button
+                android:id="@+id/comment_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comment_message_box"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorPrimary"
+                android:text="Comment"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

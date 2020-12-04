@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_view_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/note_list_view_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/note_list_footer">
+
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/note_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/screen_background"
+            android:clipToPadding="false" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/note_list_error_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/screen_background"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/note_list_view_error_icon"
+            android:layout_width="200dp"
+            android:layout_height="240dp"
+            app:srcCompat="@drawable/vi_data_not_fount_error" />
+
+        <TextView
+            android:id="@+id/note_list_view_warning"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginRight="10dp"
+            android:background="@color/screen_background"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:minHeight="45dp"
+            android:padding="15dp"
+            android:text="@string/app_name"
+            android:textColor="@color/text_color_tertiary"
+            android:textSize="@dimen/heading_text_size" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/note_list_footer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/note_list_input_box"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toStartOf="@+id/note_list_add"
+            android:background="@color/white"
+            android:gravity="start|center_vertical"
+            android:hint="@string/type_here"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:scrollbars="vertical"
+            android:textColor="@color/text_color_primary"
+            android:textColorHint="@color/text_color_tertiary"
+            android:textSize="@dimen/text_size_14" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/note_list_add"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="@dimen/actionBarSize"
+            android:layout_alignParentEnd="true"
+            android:padding="15dp"
+            android:src="@drawable/ic_send_gray" />
+    </RelativeLayout>
+</RelativeLayout>

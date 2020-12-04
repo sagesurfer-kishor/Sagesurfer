@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/vi_sign_up_check_box_deselect" android:state_checked="true" android:state_pressed="true" />
+    <item android:drawable="@drawable/vi_sign_up_check_box_select" android:state_pressed="true" />
+    <item android:drawable="@drawable/vi_sign_up_check_box_select" android:state_checked="true" />
+    <item android:drawable="@drawable/vi_sign_up_check_box_deselect" />
+</selector>
+

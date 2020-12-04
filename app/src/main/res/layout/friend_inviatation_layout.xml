@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/invite_btn"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorLightGrey"
+            android:text="INVITE"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_14" />
+
+        <Button
+            android:id="@+id/pending_btn"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/self_goal_active"
+            android:text="Pending"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_14" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/invite_member_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/screen_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/create_team_rounded_border"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_rounded_rectangle"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:text="Invite Friend"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0.5dp"
+                android:background="@color/mood_cry_light"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="User"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/invite_member_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <RadioButton
+                            android:id="@+id/wrhope_radio_btn"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:checked="true"
+                            android:text="Registered Platform User"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+
+                        <RadioButton
+                            android:id="@+id/new_user_radio_btn"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="0.5"
+                            android:text="New User"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="gone" />
+
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/user_label"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="8dp"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:text="User Name"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/user_label"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/user_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:maxLength="50"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="7dp"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/name_email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/team_label"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="8dp"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="Name"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/team_label"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/team_name_txt"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/edit_text_primary"
+                        android:imeOptions="actionNext"
+                        android:maxLength="50"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="7dp"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/email_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/team_name_label"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="8dp"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="Email"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/team_name_label"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/team_email_id_txt"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/edit_text_primary"
+                        android:maxLength="50"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="7dp"
+                        android:singleLine="true"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/user_name_label"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="8dp"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:text="Username"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/user_name_label"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/user_name_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:imeOptions="actionNext"
+                    android:maxLength="50"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/cancel_btn"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_rounded"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14" />
+
+                <Button
+                    android:id="@+id/invite_user_btn"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_rounded"
+                    android:text="Invite User"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

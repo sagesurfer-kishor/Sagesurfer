@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/help_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/help_bg"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/user_name"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:text="Help"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:layout_marginTop="10dp"
+            android:background="#000" />
+
+        <RelativeLayout
+            android:id="@+id/dashboard_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/dashboard_blue"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="start"
+                android:singleLine="true"
+                android:text="Dashboard self goal"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/dashboard_option_seprator"
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:background="#000" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/input_pending_box"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="start"
+                android:singleLine="true"
+                android:text="Input pending"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:background="#000" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/input_provide_box"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="start"
+                android:singleLine="true"
+                android:text="Input provided"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:background="#000" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/log_book_icon"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="start"
+                android:singleLine="true"
+                android:text="View goal log"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_okay"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/help_btn_bg"
+            android:text="Okay"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>

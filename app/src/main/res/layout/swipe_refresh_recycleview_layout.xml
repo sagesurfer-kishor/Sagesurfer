@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screen_background">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_swiperefresh_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/screen_background"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_swiperefresh_error"
+                android:layout_width="200dp"
+                android:layout_height="240dp"
+                app:srcCompat="@drawable/vi_data_not_fount_error" />
+
+            <TextView
+                android:id="@+id/textview_swiperefresh_error_message"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_record_found"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
+
+        <!--<android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_swiperefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+            android:background="@color/transparent"
+            android:src="@color/transparent"/>-->
+    </RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

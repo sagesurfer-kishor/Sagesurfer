@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_selfcarefragment_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/white"
+        android:elevation="@dimen/margin_8"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="0dp">
+
+        <TextView
+            android:id="@+id/textview_selfcarefragment_section"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/imageview_selfcarefragment_sort"
+            android:gravity="center_vertical|start"
+            android:text="@string/action_confirmation"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_14" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_selfcarefragment_sort"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="@dimen/actionBarSize"
+            android:layout_toStartOf="@+id/imageview_selfcarefragment_filter"
+            android:padding="@dimen/text_size_14"
+            app:srcCompat="@drawable/vi_sort_gray" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_selfcarefragment_filter"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="@dimen/actionBarSize"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="7dp"
+            android:padding="@dimen/text_size_14"
+            app:srcCompat="@drawable/vi_filter_gray" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_selector" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout_selfcarefragment_filter"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent">
+
+            <TextView
+                android:id="@+id/textview_selfcarefragment_contenttypetag"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="start|center_vertical"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="0dp"
+                android:text="@string/content_type"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                android:id="@+id/textview_selfcarefragment_contenttype"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/imageview_selfcarefragment_cancel"
+                android:layout_toEndOf="@+id/textview_selfcarefragment_contenttypetag"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:lines="1"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_selfcarefragment_cancel"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:padding="7dp"
+                app:srcCompat="@drawable/vi_cancel_gray" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="@color/list_selector" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/framelayout_selfcarefragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/screen_background" />
+</LinearLayout>

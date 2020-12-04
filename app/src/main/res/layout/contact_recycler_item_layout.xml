@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_4">
+
+    <LinearLayout
+        android:id="@+id/linearlayout_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <!--<ImageView
+            android:id="@+id/fms_user_list_item_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_user" />-->
+        <RelativeLayout
+            android:id="@+id/relativelayout_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/member_list_item_photo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_user_male" />
+
+            <ImageView
+                android:id="@+id/member_list_item_status_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/white_circle"
+                android:contentDescription="TODO"
+                android:padding="1dp"
+                android:src="@drawable/offline_circle" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textview_username"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:id="@+id/textview_role"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16" />
+    </LinearLayout>
+</LinearLayout>

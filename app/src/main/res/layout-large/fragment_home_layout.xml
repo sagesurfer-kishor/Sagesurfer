@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/home_new_bg"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/linearlayout_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_home1"
+            android:layout_width="fill_parent"
+            android:layout_height="180dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linearlayout_home_one"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_weight="1"
+                android:background="@drawable/background_home_menu_one"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/button_home_one"
+                    android:layout_width="18dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="6dp"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/pink_circle"
+                    android:gravity="center"
+                    android:visibility="invisible" />
+                <!--android:textSize="8dp"
+                    android:textColor="@color/black"
+                    style="@style/CustomFontStylePrimary"-->
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5" />-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_home_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.3"
+                    android:src="@drawable/vi_home_self_goal" />
+
+                <TextView
+                    android:id="@+id/textview_home_one"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:text="@string/platform_usage_report"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_home_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_weight="1"
+                android:background="@drawable/background_home_menu_two"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/button_home_two"
+                    android:layout_width="18dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="6dp"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/pink_circle"
+                    android:gravity="center"
+                    android:visibility="invisible" />
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5" />-->
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_home_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.3"
+                    android:src="@drawable/vi_home_self_goal" />
+
+                <TextView
+                    android:id="@+id/textview_home_two"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:text="@string/platform_usage_report"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_home2"
+            android:layout_width="fill_parent"
+            android:layout_height="180dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linearlayout_home_three"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_weight="1"
+                android:background="@drawable/background_home_menu_three"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/button_home_three"
+                    android:layout_width="18dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="6dp"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/pink_circle"
+                    android:gravity="center"
+                    android:visibility="invisible" />
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5" />-->
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_home_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.3"
+                    android:src="@drawable/vi_home_self_goal" />
+
+                <TextView
+                    android:id="@+id/textview_home_three"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_home_four"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_weight="1"
+                android:background="@drawable/background_home_menu_four"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/button_home_four"
+                    android:layout_width="18dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="6dp"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/pink_circle"
+                    android:gravity="center"
+                    android:visibility="invisible" />
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5" />-->
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_home_four"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.3"
+                    android:src="@drawable/vi_home_self_goal" />
+
+                <TextView
+                    android:id="@+id/textview_home_four"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2" />
+            </LinearLayout>
+            <!--<ImageButton
+                android:id="@+id/imagebutton_home_three"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_sage_logo_500" />
+
+            <ImageButton
+                android:id="@+id/imagebutton_home_four"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_sage_logo_500" />-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_home3"
+            android:layout_width="fill_parent"
+            android:layout_height="180dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linearlayout_home_five"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_weight="1"
+                android:background="@drawable/background_home_menu_five"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/button_home_five"
+                    android:layout_width="18dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="6dp"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/pink_circle"
+                    android:gravity="center"
+                    android:visibility="invisible" />
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5" />-->
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_home_five"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.3"
+                    android:src="@drawable/vi_home_self_goal" />
+
+                <TextView
+                    android:id="@+id/textview_home_five"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_home_six"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_weight="1"
+                android:background="@drawable/background_home_menu_six"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/button_home_six"
+                    android:layout_width="18dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="6dp"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/pink_circle"
+                    android:gravity="center"
+                    android:visibility="invisible" />
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5" />-->
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_home_six"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.3"
+                    android:src="@drawable/vi_home_self_goal" />
+
+                <TextView
+                    android:id="@+id/textview_home_six"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2" />
+            </LinearLayout>
+            <!--<ImageButton
+                android:id="@+id/imagebutton_home_five"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_sage_logo_500" />
+
+            <ImageButton
+                android:id="@+id/imagebutton_home_six"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_sage_logo_500" />-->
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        layout="@layout/home_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/present_attendance"
+            android:title="Present" />
+        <item
+            android:id="@+id/absent_attendance"
+            android:title="Absent" />
+        <item
+            android:id="@+id/declined_attendance"
+            android:title="Declined Session" />
+    </group>
+</menu>

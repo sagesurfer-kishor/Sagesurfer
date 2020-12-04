@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <RelativeLayout
+        android:id="@+id/cg_dash_select_consumer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/cg_dash_select_consumer_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:gravity="start|center_vertical"
+            android:hint="@string/select_consumer"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/subheading_text_size" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="@dimen/actionBarSize"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/activity_vertical_margin"
+            fab:srcCompat="@drawable/vi_down_arrow_white" />
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:id="@+id/cg_dashboard_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cg_dash_select_consumer" />
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/care_giver_dashboard_float_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:paddingBottom="@dimen/actionBarSize"
+        android:visibility="visible"
+        fab:menu_animationDelayPerItem="0"
+        fab:menu_colorNormal="@color/colorPrimary"
+        fab:menu_colorPressed="@color/text_color_primary"
+        fab:menu_colorRipple="@color/text_color_primary"
+        fab:menu_fab_size="normal"
+        fab:menu_icon="@drawable/cg_dash_fab_icon"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_maxLines="2"
+        tools:ignore="RtlHardcoded">
+
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/care_giver_dashboard_float_message"
+            style="@style/MenuButtonsSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cg_message_fab_icon"
+            fab:fab_label="@string/message"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/care_giver_dashboard_float_note"
+            style="@style/MenuButtonsSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cg_note_fab_icon"
+            fab:fab_label="@string/make_a_note"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/care_giver_dashboard_float_report"
+            style="@style/MenuButtonsSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cg_reports_fab_icon"
+            fab:fab_label="@string/reports"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/care_giver_dashboard_float_dashboard"
+            style="@style/MenuButtonsSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cg_dash_fab_icon"
+            fab:fab_label="@string/dashboard"
+            fab:fab_size="mini" />
+    </com.github.clans.fab.FloatingActionMenu>
+
+
+</RelativeLayout>

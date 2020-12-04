@@ -1,0 +1,60 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
+    <dimen name="margin_50">50dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="nav_width">280dp</dimen>
+    <dimen name="home_width">300dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="actionBarSize">56dp</dimen>
+    <dimen name="profile_size">40dp</dimen>
+
+    <dimen name="thumbnail_size">90dp</dimen>
+
+    <dimen name="list_divider">1dp</dimen>
+
+    <dimen name="blog_font">16sp</dimen>
+    <dimen name="heading_text_size">20sp</dimen>
+    <dimen name="subheading_text_size">18sp</dimen>
+    <dimen name="title_text_size">16sp</dimen>
+    <dimen name="subtitle_text_size">14sp</dimen>
+    <dimen name="text_size_28">28sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_8">8sp</dimen>
+    <dimen name="text_size_6">6sp</dimen>
+    <dimen name="text_size">12sp</dimen>
+
+    <dimen name="care_details_image_height">250dp</dimen>
+
+    <dimen name="chip_padding">2dp</dimen>
+    <dimen name="chip_side_padding">6dp</dimen>
+    <dimen name="chip_spacing">4dp</dimen>
+    <dimen name="chip_line_spacing">4dp</dimen>
+    <dimen name="chip_corner_radius">16dp</dimen>
+
+    <dimen name="defaultTagsTextSize">16sp</dimen>
+    <dimen name="defaultTagsCloseImagePadding">10dp</dimen>
+    <dimen name="defaultTagsPadding">0dp</dimen>
+
+    <dimen name="ms__item_height">48dp</dimen>
+    <dimen name="ms__padding_left">24dp</dimen>
+    <dimen name="ms__padding_top">12dp</dimen>
+    <dimen name="ms__popup_padding_left">24dp</dimen>
+    <dimen name="ms__popup_padding_top">12dp</dimen>
+
+</resources>

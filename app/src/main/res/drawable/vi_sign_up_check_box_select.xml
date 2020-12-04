@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#fff"
+        android:name="Rounded Rectangle 1"
+        android:pathData="m3.36 2.976h17.28c0.212 0 0.384 0.172 0.384 0.384v17.28c0 0.212 -0.172 0.384 -0.384 0.384h-17.28c-0.212 0 -0.384 -0.172 -0.384 -0.384v-17.28c0 -0.212 0.172 -0.384 0.384 -0.384z" />
+    <path
+        android:fillColor="#1c7ad4"
+        android:name="Forma 1"
+        android:pathData="m10.202 14.296 -2.892 -2.906 -0.964 0.969 3.855 3.874 8.261 -8.301 -0.964 -0.969 -7.297 7.333z" />
+</vector>

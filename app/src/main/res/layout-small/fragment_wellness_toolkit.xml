@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLightGrey"
+    android:fitsSystemWindows="true"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/wellness_toolkit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/white_rounded_rectangle_gray_border"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:text="Toolkit Item List"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_rounded_border"
+                android:orientation="vertical">
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_refresh_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.baoyz.swipemenulistview.SwipeMenuListView
+                        android:id="@+id/swipe_menu_listview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorLightGrey"
+                        android:clipToPadding="true"
+                        android:divider="@color/transparent"
+                        android:dividerHeight="@dimen/activity_vertical_margin"
+                        android:scrollbarStyle="outsideOverlay" />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/framelayout_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/toolkit_float_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:src="@android:color/transparent"
+            android:visibility="visible"
+            app:backgroundTint="@color/colorAccent"
+            app:fab_size="normal"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="16dp"
+            android:text="+"
+            android:textColor="@android:color/white"
+            android:textSize="35dp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linealayout_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_error_icon"
+            android:layout_width="200dp"
+            android:layout_height="240dp"
+            app:srcCompat="@drawable/vi_data_not_fount_error" />
+
+        <TextView
+            android:id="@+id/textview_error_message"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_record_found"
+            android:textColor="@color/text_color_tertiary"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D8DFE2"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/cardview_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="@dimen/margin_10"
+        android:visibility="gone"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/message_rounded_border"
+        android:padding="5dp">
+
+        <EditText
+            android:id="@+id/ed_search_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawablePadding="10dp"
+            android:gravity="start|center_vertical"
+            android:hint="search"
+            android:imeOptions="actionSearch"
+            android:maxLength="30"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/grey" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friend_conversion_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/friend_conversion_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/no_conversation_available"
+            android:textColor="@color/primaryTextColor"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

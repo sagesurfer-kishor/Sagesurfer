@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:drawableTop="@drawable/ic_inbox_blue"
+    android:gravity="center"
+    android:text="12"
+    android:textColor="@drawable/postcard_tab_text_color"
+    android:textSize="@dimen/text_size_14"
+    style="@style/CustomFontStylePrimary"
+    tools:ignore="SmallSp" />

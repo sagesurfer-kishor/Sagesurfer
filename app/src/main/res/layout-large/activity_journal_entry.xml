@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_toolbar_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_vertical_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/journal_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/title"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/create_journal_title_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/journal_sub_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/subject"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/create_journal_subject_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/journal_desc_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/description"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/create_journal_desc_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:maxLength="500"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/margin_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="Character Limit"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/text_counter"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:text="0/360"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/journal_tag_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="Tag"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/create_journal_tag_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/journal_link_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="Link"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/create_journal_link_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:hint="Please enter Link"
+                    android:inputType="textPersonName"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/journal_list_item_attachment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="Attachments"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/wall_post_attachment_one"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/wall_post_image_one_cancel"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:background="#80000000"
+                            android:padding="10dp"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/vi_cancel_white" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/wall_post_attachment_two"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:scaleType="fitXY" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/wall_post_image_two_cancel"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:background="#80000000"
+                            android:padding="10dp"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/vi_cancel_white" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/wall_post_attachment_three"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY" />
+
+                        <TextView
+                            android:id="@+id/wall_post_attachment_count"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent_40"
+                            android:gravity="center"
+                            android:text="+12"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_16"
+                            android:visibility="gone" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/wall_post_image_three_cancel"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:background="#80000000"
+                            android:padding="10dp"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/vi_cancel_white" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/functional_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="20dp"
+                android:background="#676767"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:weightSum="14">
+
+                <ImageView
+                    android:id="@+id/journal_tag_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_tag_gray"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/journal_tag_img_one"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_tag_blue"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/journal_location_img"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_location_gray"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/journal_location_img_one"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_location_blue"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+
+                <ImageView
+                    android:id="@+id/journal_link_img"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_link_gray"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/journal_link_img_one"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_link_blue"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/journal_attachment_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_attachment_gray"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/journal_attachment_img_one"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_attachment_blue"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+
+                <ImageView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_attachment_white"
+                    android:visibility="invisible"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_attachment_white"
+                    android:visibility="invisible"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/vi_heart_img"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_heart_gray"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/vi_heart_img_one"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="2"
+                    android:src="@drawable/vi_heart_red"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

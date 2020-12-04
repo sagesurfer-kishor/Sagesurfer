@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.sagesurfer.collaborativecares">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <application
+        android:name=".Application"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:icon="@drawable/icon_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/icon_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppThemechat"
+        tools:replace="android:allowBackup,icon,theme,label,name"
+        tools:targetApi="q">
+
+        <!-- android:hardwareAccelerated="false" -->
+        <activity
+            android:name="com.modules.support.NewFaqActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.appointment.activity.ClientNameListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.notification.FriendInvitation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.notification.TeamInvitation"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Firebase Notifications -->
+        <activity
+            android:name="com.modules.team.TeamPeerSupervisorListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.modules.team.TeamPeerStaffListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.modules.selfgoal.LogBookActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+            <service
+            android:name="services.CCSubscribeService"
+            android:enabled="true"
+            android:exported="true"/>
+        -->
+        <activity
+            android:name="com.modules.wall.FriendsTeamActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+            <service
+            android:name="com.twilio.client.TwilioClientService"
+            android:exported="false"
+            android:stopWithTask="true" />
+        -->
+        <activity
+            android:name="com.modules.team.gallery.activity.CreateAlbumActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="ndesign.sagesurfer.com"
+                    android:scheme="https" />
+                <data
+                    android:host="design.sagesurfer.com"
+                    android:scheme="https" />
+                <data
+                    android:host="qa.sagesurfer.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.wall.AttachmentListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.wall.WallPostActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.sos.CreateSosActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.sos.ForwardSosActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.sos.SosReceivedMeetActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.sos.SosSettingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.postcard.MailDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.postcard.CreateMailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+            <activity
+            android:name="com.modules.home.gment"
+            android:theme="@style/AppTheme.NoActionBar" />
+        -->
+        <!-- Wall -->
+        <activity
+            android:name="com.modules.team.TeamDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.team.gallery.activity.SelectedImageListActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- SOS -->
+        <activity
+            android:name="com.modules.team.CreatePollActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.announcement.PostAnnouncementActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.announcement.AnnouncementDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.teamtalk.activity.CreateTeamTalkActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Postcard -->
+        <activity
+            android:name="com.modules.teamtalk.activity.TalkDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.task.CreateTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Teams -->
+        <activity
+            android:name="com.modules.task.TaskDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.task.TeamTaskListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.supervisor.MessageDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Announcement -->
+        <activity
+            android:name="com.modules.fms.FileFolderListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.fms.UploadFileActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Team Talk -->
+        <activity
+            android:name="com.modules.assessment.FormShowActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.calendar.InviteListActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Task List -->
+        <activity
+            android:name="com.modules.calendar.EventDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.calendar.CreateEventActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.planner.PlannerEventLocationActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Supervisor -->
+        <activity
+            android:name="com.modules.selfcare.SelfCareDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- File Sharing -->
+        <activity
+            android:name="com.modules.selfcare.UploadCareDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.selfcare.CareUploadActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Assessment -->
+        <activity
+            android:name="com.modules.selfcare.SelfCareFilterActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Calendar -->
+        <activity
+            android:name="com.modules.support.AboutUsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.support.FeedbackActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.support.FaqActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Daily Planner -->
+        <activity
+            android:name="com.modules.admin.SendMessageActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Self Care -->
+        <activity
+            android:name="com.modules.crisis.CrisisRiskListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.crisis.SupportContactListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.crisis.InterventionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.consent.ConsentDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Support -->
+        <activity
+            android:name="com.modules.blog.BlogDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.mood.MoodAddActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.mood.MoodActivityAddActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" /> <!-- Admin Activity -->
+        <activity
+            android:name="com.modules.selfgoal.AddGoalActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Crisis -->
+        <activity
+            android:name="com.modules.selfgoal.SelfGoalDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.modules.selfgoal.SenjamSelfGoalDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.modules.selfgoal.SageSelfGoalDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Consent -->
+        <!-- Blog -->
+        <!-- Mood -->
+        <!--
+            <activity
+            android:nacom.modules.mood.HalfPieChartFragmentvity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        -->
+        <activity
+            android:name="com.modules.settings.ChangePasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Goal -->
+        <activity
+            android:name="com.modules.settings.EditProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.settings.TermsAndConditionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.calendar.CalenderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.crisis.CrisisActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.CaseloadSummaryActivity"
+            android:label="@string/title_activity_caseload_summary"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.CaseloadContactActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.CaseloadStatusGraphActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+        <activity
+            android:name="com.modules.chat.SingleChatVedioActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name="com.modules.chat.ChatroomChatActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name="com.modules.chat.IncomingCallActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.modules.chat.OutgoingCallActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.modules.chat.AVChatActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.modules.chat.ClientActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        -->
+        <!-- Settings -->
+        <activity
+            android:name="com.modules.caseload.CaseloadSettingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.CaseloadProgressNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.ProgressNoteDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Caseload -->
+        <activity
+            android:name="com.modules.caseload.PeerNoteDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.PeerAddNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.ProgressAddNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.CaseloadStatusPeerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.PeerNoteDetailsAmendmentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.PeerNoteDetailsCommentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.PeerNoteDetailsViewLogActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.messageboard.MessageBoardDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.messageboard.CreateMessageBoardActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.mood.CCMoodActivity"
+            android:label="@string/mood"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.landing_question_form.activity.LandingQuestionFormActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.team.gallery.activity.UploadImageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.team.gallery.activity.CommentGalleryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.activity.PeerNoteAllDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WeRHopeSplashAcivity"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Message board -->
+        <activity
+            android:name="com.modules.journaling.activity.JournalAddActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.motivation.activity.AddToolkitItemAcivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.motivation.activity.WellnessSelectedItemsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.motivation.activity.MotivationDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.motivation.activity.CreateMotivationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.journaling.activity.JournalDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.journaling.activity.MapDialogActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.team.TeamCreateActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.modules.team.team_invitation_werhope.activity.TeamInviteMemberActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.team.team_invitation_werhope.activity.InvitationStatusActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.assignment.werhope.activity.AssignmentCreateActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.werhope.activity.ProgressNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.werhope.activity.UpdateCountActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.mhaw.activity.MhawProgressNoteActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.senjam.activity.SenjamDoctorsNoteActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.senjam.activity.SenjamDoctorsNoteDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.senjam.activity.AddDoctorsNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.sows.activity.SenjamSowsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.sows.activity.AddSowsNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.sows.activity.SenjamSowsNoteDetailsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.sows.activity.SenjamSowsDetailsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.onetime_dailysurvey.activity.OnTimeSurveyListActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.onetime_dailysurvey.activity.OnTimeSurveyDetailsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.onetime_dailysurvey.activity.DailySurveyDetailsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.dailydosing.activity.SenjamDailyDosingActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.dailydosing.dashboard.DailyDosingPatientSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.modules.caseload.werhope.activity.ProgressNoteDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.reports.appointment_reports.activity.AppointmentReportSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.modules.team.TeamClentCategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.modules.caseload.mhaw.activity.MhawProgressNoteDetailsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.mhaw.activity.MhawAmendmentListActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.mhaw.activity.MhawAddAmendmentActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.werhope.activity.AddProgressNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.caseload.mhaw.activity.MhawAddProgressNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.assessment_screener.AssessmentListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.assessment_screener.AssessmentFormShowActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.journaling.activity.JournalAttachmentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.leave_management.activity.LeaveApplicationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.re_assignment.activity.CreateReAssignmentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.re_assignment.activity.ReAssignmentDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.friend_invitation.FriendInvitationStatusList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.selfgoal.werhope_self_goal.activity.GoalLogBookActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.selfgoal.werhope_self_goal.activity.HourlyDailyLogBookActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.appointment.activity.CreateAppointmentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.modules.appointment.activity.AppointmentDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAgnV1r-MXbLuNbrc1WmomXqnzM8hVmsrE" />
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            tools:node="remove" />
+
+        <service android:name="com.sagesurfer.services.CounterService" />
+
+        <service
+            android:name="com.sagesurfer.services.DownloadNotificationService"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+           <service
+               android:name="com.firebase.MessagingService"
+               android:enabled="true"
+               android:exported="false">
+               <intent-filter>
+                   <action android:name="com.google.firebase.MESSAGING_EVENT" />
+               </intent-filter>
+           </service>
+
+        <receiver android:name="com.firebase.CallNotificationAction" />
+
+        <service
+            android:name="com.firebase.IdService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.sagesurfer.collaborativecares.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path" />
+        </provider>
+
+        <activity
+            android:name="com.sagesurfer.collaborativecares.BlockedMembersActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name="com.firebase.SyncJCometchatService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!--<provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.sagesurfer.senjam.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path" />
+        </provider>-->
+
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_sage_icon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimaryDark" />
+
+
+    </application>
+
+</manifest>

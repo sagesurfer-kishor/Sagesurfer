@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/edit_goal_border"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageview_profile"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/margin_6"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/margin_6"
+        android:src="@drawable/ic_user_male" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/user_name"
+        style="@style/CustomFontStylePrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Ashish"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_size_14" />
+
+
+    <LinearLayout
+        android:id="@+id/details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:text="Goal Name"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_12" />
+
+
+            <TextView
+                android:id="@+id/goal_name"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="start"
+                android:padding="3dp"
+                android:text="Time outside the class"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_12" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="start"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:text="Start date"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+
+            <TextView
+                android:id="@+id/start_date"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_bottom_line_gray"
+                android:gravity="start"
+                android:padding="8dp"
+                android:text="2019-11-15"
+                android:textColor="@color/text_color_secondary"
+                android:textSize="@dimen/text_size_12" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="start"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:text="End date"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+
+            <TextView
+                android:id="@+id/end_date"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_bottom_line_gray"
+                android:gravity="start"
+                android:padding="8dp"
+                android:text="2019-11-15"
+                android:textColor="@color/text_color_secondary"
+                android:textSize="@dimen/text_size_12" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="1.5dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/button_cancel"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@color/colorLightGrey"
+            android:text="@string/text_cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16" />
+
+        <Button
+            android:id="@+id/button_assign"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@color/colorLightGrey"
+            android:text="Assign Goal"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_16" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="15dp"
+            android:text="Location"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_20"
+            android:visibility="visible" />
+
+
+        <ImageView
+            android:id="@+id/close_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/vi_cancel_gray" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/message_txt"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Are you sure,you want to share your location such like SOS module ?"
+        android:textAllCaps="false"
+        android:textColor="@color/colorSecondary"
+        android:textSize="@dimen/text_size_14"
+        android:visibility="visible" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <Button
+            android:id="@+id/yes_btn"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="20dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="YES"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/no_btn"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="NO"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>
+
+

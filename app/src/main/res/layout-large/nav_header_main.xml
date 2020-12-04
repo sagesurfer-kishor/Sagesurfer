@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_header_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@drawable/background_drawer"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="@dimen/nav_header_vertical_spacing">
+
+            <com.sagesurfer.views.Circle
+                android:id="@+id/nav_header_circle"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:id="@+id/nav_header_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_user_male" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/nav_header_name"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="start"
+            android:text="Girish Mane"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/nav_header_role"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Consumer Youth"
+            android:textSize="@dimen/text_size_14" />
+    </LinearLayout>
+</RelativeLayout>

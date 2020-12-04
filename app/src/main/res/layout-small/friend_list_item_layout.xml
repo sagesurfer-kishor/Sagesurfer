@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearlayout_friendlistitem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/message_rounded_border"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/team_list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <!--<TextView
+            android:id="@+id/memberCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textSize="16sp"/>-->
+        <RelativeLayout
+            android:id="@+id/relativelayout_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:padding="5dp">
+
+            <com.cometchat.pro.uikit.Avatar
+                android:id="@+id/friend_list_item_photo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_group" />
+
+            <ImageView
+                android:id="@+id/friend_list_item_status_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignStart="@+id/friend_list_item_photo"
+                android:layout_alignTop="@+id/friend_list_item_photo"
+                android:layout_marginEnd="5dp"
+                android:contentDescription="TODO"
+                android:padding="1dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_toEndOf="@+id/relativelayout_image"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingStart="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7">
+
+                    <TextView
+                        android:id="@+id/friend_list_item_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/app_name"
+                        android:textColor="@color/secondaryTextColor"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/friend_list_item_typing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="0dp"
+                        android:singleLine="true"
+                        android:text="@string/typing"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="10sp"
+                        android:textStyle="italic"
+                        android:visibility="gone"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
+
+                <com.github.curioustechizen.ago.RelativeTimeTextView
+                    android:id="@+id/friend_list_item_last"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:gravity="end"
+                    android:singleLine="true"
+                    android:text="11 Month Ago"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/memberCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:gravity="end"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/friend_list_item_status_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_toLeftOf="@+id/ic_counter"
+                    android:singleLine="true"
+                    android:text="@string/dummy_text"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/ic_counter"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:maxLength="2"
+                    android:padding="2dp"
+                    android:text="1222"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

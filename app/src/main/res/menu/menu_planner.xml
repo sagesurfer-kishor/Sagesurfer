@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_planner_events"
+        android:title="@string/events"
+        android:icon="@drawable/vi_caseload_events"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/menu_planner_tasks"
+        android:title="@string/tasks"
+        android:icon="@drawable/vi_home_task_list"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/menu_planner_goals"
+        android:title="@string/goals"
+        android:icon="@drawable/vi_home_self_goal"
+        app:showAsAction="ifRoom|withText" />
+</menu>

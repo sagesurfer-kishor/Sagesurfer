@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@drawable/white_rounded_rectangle">
+
+    <ImageView
+        android:id="@+id/imageview_fragmentselfgoal_timepickerdialog_cancel"
+        android:layout_width="@dimen/actionBarSize"
+        android:layout_height="@dimen/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:padding="15dp"
+        android:src="@drawable/vi_cancel_white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textview_fragmentselfgoal_timehourpickerdialog_hour"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/disable_color_rounded_rectangle"
+                android:gravity="center"
+                android:text="01"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textview_fragmentselfgoal_timehourpickerdialog_colon"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:layout_marginStart="15dp"
+                android:gravity="center"
+                android:text=":"
+                android:textColor="@color/disable_button_color"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/textview_fragmentselfgoal_timehourpickerdialog_minute"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/disable_color_rounded_rectangle"
+                android:gravity="center"
+                android:text="15"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textview_fragmentselfgoal_timehourpickerdialog_unit"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:layout_marginStart="15dp"
+                android:gravity="center"
+                android:text="AM"
+                android:textColor="@color/disable_button_color"
+                android:textSize="40sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_fragmentselfgoal_timehourpickerdialog_hour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/textview_fragmentselfgoal_timehourpickerdialog_hour_tag"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hour"
+                android:textColor="@color/cg_dashboard_box_four"
+                android:textSize="@dimen/text_size_16" />
+
+            <SeekBar
+                android:id="@+id/seekbar_fragmentselfgoal_timehourpickerdialog_hour"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:max="22"
+                android:progress="0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_fragmentselfgoal_timehourpickerdialog_minute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp">
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/minute"
+                android:textColor="@color/cg_dashboard_box_four"
+                android:textSize="@dimen/text_size_16" />
+
+            <SeekBar
+                android:id="@+id/seekbar_fragmentselfgoal_timehourpickerdialog_minute"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:max="58"
+                android:progress="0" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_fragmentselfgoal_timehourpickerdialog_done"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/primary_rounded_rectangle"
+            android:gravity="center"
+            android:text="@string/done"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_timepicker"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/button_timepicker_now"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="start"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/primary_rounded_rectangle"
+                android:gravity="center"
+                android:text="@string/now"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <Button
+                android:id="@+id/button_timepicker_done"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|right"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/primary_rounded_rectangle"
+                android:gravity="center"
+                android:text="@string/done"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="1.5dp"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:ignore="MissingDefaultResource"
+    tools:targetApi="lollipop">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_rounded_rectangle_gray_border"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_10">
+
+            <ImageView
+                android:id="@+id/feed_list_item_image"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/user_photo"
+                android:src="@drawable/ic_user_male" />
+
+            <TextView
+                android:id="@+id/feed_list_item_name"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/feed_list_item_date"
+                android:layout_toEndOf="@+id/feed_list_item_image"
+                android:gravity="start"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/feed_list_item_date"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="end"
+                android:singleLine="true"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_13" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/feed_list_item_feed"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:padding="@dimen/margin_10"
+            android:text="@string/runtime_permissions_txt"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_14" />
+
+        <LinearLayout
+            android:id="@+id/feed_list_item_attachment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_10"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/feed_list_item_attachment_one"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitXY" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/feed_list_item_attachment_two"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitXY" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/feed_list_item_attachment_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/feed_list_item_attachment_count"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent_40"
+                    android:gravity="center"
+                    android:text="+12"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_20"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/item_separator_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_10">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:gravity="center_vertical|start"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/feed_list_item_like"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:padding="2dp"
+                    app:srcCompat="@drawable/vi_like_grey" />
+
+                <TextView
+                    android:id="@+id/feed_list_item_like_count"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:text="123"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:gravity="center_vertical|start"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/feed_list_item_comment"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:padding="2dp"
+                    app:srcCompat="@drawable/vi_comment_gray" />
+
+                <TextView
+                    android:id="@+id/feed_list_item_comment_count"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:text="123"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:gravity="center_vertical|start"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/feed_list_item_share"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:padding="2dp"
+                    app:srcCompat="@drawable/share_gray" />
+
+                <TextView
+                    android:id="@+id/feed_list_item_share_count"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:text="123"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

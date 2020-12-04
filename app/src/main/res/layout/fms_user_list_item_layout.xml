@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical|start"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <RelativeLayout
+        android:id="@+id/fms_user_list_item_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/fms_user_list_item_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_user_male" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/fms_user_list_item_image"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="0dp">
+
+            <TextView
+                android:id="@+id/fms_user_list_item_name"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.34"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/username"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/fms_user_list_item_permission"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.36"
+                android:background="@drawable/ic_care_drop_down_gray"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:lines="1"
+                android:text="@string/forbidden"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_16"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center|start"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fms_user_list_item_view"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/permission_view"
+                    android:gravity="center"
+                    android:text="@string/permission_view"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/fms_user_list_item_read"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/permission_read"
+                    android:gravity="center"
+                    android:text="@string/permission_read"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/fms_user_list_item_modify"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/permission_modify"
+                    android:gravity="center"
+                    android:text="@string/permission_modify"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/fms_user_list_item_admin"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/permission_admin"
+                    android:gravity="center"
+                    android:text="@string/permission_admin"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/fms_user_list_item_warning"
+        style="@style/CustomFontStylePrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/screen_background"
+        android:drawableStart="@drawable/ic_sad_emoticon_gray"
+        android:gravity="start|center_vertical"
+        android:singleLine="true"
+        android:text="@string/no_result_found"
+        android:textColor="@color/text_color_tertiary"
+        android:textSize="@dimen/text_size_18"
+        android:visibility="gone" />
+</LinearLayout>

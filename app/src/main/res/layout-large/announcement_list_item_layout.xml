@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/screen_background"
+    android:gravity="top"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <RelativeLayout
+        android:id="@+id/announcement_list_item_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@drawable/white_rounded_rectangle_gray_border"
+        android:padding="@dimen/margin_10">
+
+        <ImageView
+            android:id="@+id/announcement_list_item_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/user_photo"
+            android:src="@drawable/ic_user_male" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/announcement_list_item_image"
+            android:background="@color/white"
+            android:gravity="start"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/activity_horizontal_margin">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/announcement_list_item_name"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="@string/runtime_permissions_txt"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    android:id="@+id/announcement_list_item_date"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/announcement_list_item_name"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="@string/action_settings"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/hl_txt"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/transparent_40" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/announcement_list_item_tag"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="3dp"
+                    android:singleLine="true"
+                    android:text="@string/posted_in"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    android:id="@+id/announcement_list_item_team"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:lines="1"
+                    android:text="@string/action_settings"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_18" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/announcement_list_item_description"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_16" />
+
+        </LinearLayout>
+    </RelativeLayout>
+    <!--</android.support.v7.widget.CardView>-->
+</LinearLayout>

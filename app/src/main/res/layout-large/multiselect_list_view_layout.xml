@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/multi_select_list_dialog_back"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:padding="14dp"
+            app:srcCompat="@drawable/vi_left_arrow_white" />
+
+        <TextView
+            android:id="@+id/multi_select_list_dialog_title"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/multi_select_list_dialog_back"
+            android:background="@color/transparent"
+            android:gravity="center_vertical|start"
+            android:text="@string/select_friends"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18" />
+
+        <TextView
+            android:id="@+id/multi_select_list_dialog_submit"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="@string/submit"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/colorPrimary" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/multi_select_list_dialog_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:choiceMode="multipleChoice"
+            android:divider="@color/item_separator_line"
+            android:dividerHeight="0.3dp" />
+
+        <!--<ExpandableListView
+            android:id="@+id/multi_select_list_dialog_expandable_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@color/white"
+            android:childDivider="@color/item_separator_line"
+            android:choiceMode="multipleChoice"
+            android:divider="@color/item_separator_line"
+            android:dividerHeight="0.3dp"
+            android:groupIndicator="@null"
+            android:paddingTop="5dp"
+            android:visibility="gone"/>-->
+
+        <FrameLayout
+            android:id="@+id/framelayout_location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <!--<android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />-->
+            <!--<ListView
+                android:id="@+id/listview_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:choiceMode="multipleChoice"
+                android:divider="@color/item_separator_line"
+                android:dividerHeight="0.3dp" />-->
+            <ExpandableListView
+                android:id="@+id/expandablelistview_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@color/white"
+                android:childDivider="@color/white"
+                android:choiceMode="multipleChoice"
+                android:divider="@color/item_separator_line"
+                android:dividerHeight="0.3dp"
+                android:groupIndicator="@null"
+                android:paddingTop="5dp" />
+
+            <!--android:childDivider="@color/item_separator_line"-->
+            <ProgressBar
+                android:id="@+id/list_progressbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/multi_select_list_dialog_warning"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/no_result_found"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_18"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

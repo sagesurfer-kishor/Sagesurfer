@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_toolbar_layout" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/consent_details_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/login_bg"
+                    android:visibility="visible" />
+
+                <WebView
+                    android:id="@+id/consent_details_web_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+                <ProgressBar
+                    android:id="@+id/consent_details_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="7dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/file_name"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/consent_details_file_name"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/file_name"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:gravity="start"
+                    android:text="@string/shared_by"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/consent_details_file_sender"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/file_name"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:gravity="start"
+                    android:text="@string/consumer_name"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/consent_details_file_consumer"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/consumer_name"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:gravity="start"
+                    android:text="@string/shared_date"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/consent_details_file_date"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/time"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:gravity="start"
+                    android:text="@string/file_size"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/consent_details_file_size"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/file_size"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

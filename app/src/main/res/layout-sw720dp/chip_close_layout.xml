@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <FrameLayout
+        android:id="@android:id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="7dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="7dp">
+
+            <TextView
+                android:id="@android:id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18" />
+
+            <ImageView
+                android:id="@android:id/closeButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="10dp"
+                android:contentDescription="TODO"
+                android:padding="4dp"
+                android:src="@drawable/vi_cancel_white" />
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

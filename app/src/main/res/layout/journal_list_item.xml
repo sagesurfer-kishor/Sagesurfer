@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/edittext_rounded_border"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/journal_list_item_attachment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/journal_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Journal Title"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:text="Last Updated"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_13" />
+
+
+            <TextView
+                android:id="@+id/last_updated_date"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="2dp"
+                android:text="26 Sep, 2019 | 4:35 PM"
+                android:textColor="@color/colorSecondary"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/subject_of_journal_txt"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:text="Subject of Journal"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/journal_desc_txt"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:text="Submitted Meeting"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_12" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/journal_functional_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/journal_fuctaions"
+        android:orientation="horizontal"
+        android:padding="7dp"
+        android:weightSum="14">
+
+        <ImageView
+            android:id="@+id/journal_tag_img"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:src="@drawable/vi_tag_gray"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/journal_location_img"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            android:src="@drawable/vi_location_gray"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/journal_picture_img"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            android:src="@drawable/vi_image_gray"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/journal_link_img"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            android:src="@drawable/vi_link_gray"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/journal_attachment_img"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:src="@drawable/vi_attachment_gray"
+            tools:ignore="ContentDescription" />
+
+
+        <ImageView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            android:src="@drawable/vi_attachment_white"
+            android:visibility="invisible"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            android:src="@drawable/vi_attachment_white"
+            android:visibility="invisible"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/vi_heart_img"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+</LinearLayout>

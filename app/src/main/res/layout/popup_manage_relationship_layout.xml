@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#90000000"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_rounded_rectangle"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Manage Relationship"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="Select Peer Supervisor (Direct Service Staff)"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="@dimen/text_size_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_txt_title_supervisor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_select_supervisor"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/ic_bottom_line_down_arrow"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="Select Peer Supervisor"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="Select Peer Staff (Direct Service Staff)"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="@dimen/text_size_14" />
+
+
+                <TextView
+                    android:id="@+id/txt_select_staff"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/ic_bottom_line_down_arrow"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="Select Peer Staff"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_already_added"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:padding="5dp"
+                    android:text="Already Added"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="@dimen/text_size_14" />
+
+
+                <TextView
+                    android:id="@+id/txt_added_by"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:padding="0dp"
+                    android:text=""
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:id="@+id/linear_btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btn_cancel"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/transparent_40"
+                        android:gravity="center"
+                        android:text="Cancel"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_btn_assignment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btn_assignment"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/colorPrimary"
+                        android:gravity="center"
+                        android:text="Assignment"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Sage code.iml" filepath="$PROJECT_DIR$/Sage code.iml" group="Sage code" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Sage code/app" />
+      <module fileurl="file://$PROJECT_DIR$/circlemenu/circlemenu.iml" filepath="$PROJECT_DIR$/circlemenu/circlemenu.iml" group="Sage code/circlemenu" />
+      <module fileurl="file://$PROJECT_DIR$/emoticonkeyboard/emoticonkeyboard.iml" filepath="$PROJECT_DIR$/emoticonkeyboard/emoticonkeyboard.iml" group="Sage code/emoticonkeyboard" />
+      <module fileurl="file://$PROJECT_DIR$/uikit/uikit.iml" filepath="$PROJECT_DIR$/uikit/uikit.iml" group="Sage code/uikit" />
+    </modules>
+  </component>
+</project>

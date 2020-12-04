@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical"
+    tools:context="com.modules.caseload.mhaw.activity.MhawAddAmendmentActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
+        android:elevation="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        tools:targetApi="lollipop">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textview_activitytoolbar_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/caseload_peer_note_layout"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:text="@string/note"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <LinearLayout
+                android:id="@+id/caseload_peer_note_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_delete"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/vi_delete_white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_edit"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/vi_self_goal_edit" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_download"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_download_white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_add_amendment"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_caseload_amendment" />
+
+                <TextView
+                    android:id="@+id/textview_amendment_count"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingTop="4dp"
+                    android:paddingRight="15dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_comment"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_drawer_chat" />
+
+                <TextView
+                    android:id="@+id/textview_comment_count"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingTop="4dp"
+                    android:paddingRight="15dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_10">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/screen_background"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/create_team_rounded_border"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/amendment_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:gravity="top"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/amendment_title_txt"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_toRightOf="@+id/amendment_title"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="Amendment"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/appointment_desc_edt"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="0dp"
+                        android:background="@drawable/edit_text_primary"
+                        android:cursorVisible="true"
+                        android:editable="true"
+                        android:hint="Appointment Description"
+                        android:imeOptions="actionNext"
+                        android:maxLength="500"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="100dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp">
+
+                        <TextView
+                            android:id="@+id/max_limit_txt"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:layout_marginBottom="5dp"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="Max. Characters limit 500"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_color_secondary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/cancel_btn"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:text="@string/text_cancel"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <Button
+                        android:id="@+id/submit_btn"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:text="@string/submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

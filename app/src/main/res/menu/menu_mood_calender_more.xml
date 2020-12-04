@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_calender"
+        android:icon="@drawable/vi_mood_calendar"
+        android:showAsAction="always"
+        android:title="@string/calendar"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_more"
+        android:icon="@drawable/vi_drawer_setting"
+        android:showAsAction="always"
+        android:title="@string/more"
+        app:showAsAction="always"/>
+</menu>

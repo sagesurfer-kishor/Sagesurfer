@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:id="@+id/drawer_list_child_title"
+        style="@style/CustomFontStylePrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="50dp"
+        android:layout_toStartOf="@+id/drawer_list_child_end_layout"
+        android:gravity="start|center_vertical"
+        android:paddingStart="0dp"
+        android:paddingEnd="5dp"
+        android:singleLine="true"
+        android:text="@string/app_name"
+        android:textColor="@color/text_color_primary"
+        android:textSize="@dimen/text_size_20" />
+
+    <RelativeLayout
+        android:id="@+id/drawer_list_child_end_layout"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@color/transparent"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/drawer_list_child_counter"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/counter_rounded_rectangle"
+            android:gravity="center"
+            android:padding="1dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_20"
+            android:visibility="visible" />
+    </RelativeLayout>
+</RelativeLayout>

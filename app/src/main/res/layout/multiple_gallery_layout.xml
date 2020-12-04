@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/file_upload_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_rounded_rectangle_gray_border">
+
+    <RelativeLayout
+        android:layout_width="140dp"
+        android:layout_height="140dp">
+
+        <ImageView
+            android:id="@+id/gallery_card_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/list_background"
+            app:srcCompat="@drawable/vi_add_gray" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_cancel"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="#757575"
+            android:padding="10dp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/vi_cancel_white" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/gallery_tick"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/gallery_tick_blank"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/gallery_tick_selected"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_toRightOf="@+id/gallery_tick"
+                android:src="@drawable/gallery_tick_selected"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+        </RelativeLayout>
+
+        <CheckBox
+            android:id="@+id/multi_select_check_box"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:button="@drawable/gallery_tick_blank"
+            android:checked="false"
+            android:clickable="false" />
+
+    </RelativeLayout>
+</RelativeLayout>

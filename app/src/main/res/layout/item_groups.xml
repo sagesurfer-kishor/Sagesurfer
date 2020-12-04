@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true">
+
+    <LinearLayout
+        android:id="@+id/groupMemberClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/message_rounded_border"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:id="@+id/groupInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:gravity="center_vertical">
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:gravity="center">
+
+                <com.cometchat.pro.uikit.Avatar
+                    android:id="@+id/friend_list_item_photo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/group_member_blue" />
+
+                <ImageView
+                    android:id="@+id/friend_list_item_status_icon"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_alignStart="@+id/friend_list_item_photo"
+                    android:layout_alignTop="@+id/friend_list_item_photo"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="TODO"
+                    android:padding="1dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/list_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="@string/app_name"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/groupPermission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="8">
+
+            <ImageView
+                android:id="@+id/selfInvite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:src="@drawable/addcallar_icon"
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/groupAccept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/menu_icon"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

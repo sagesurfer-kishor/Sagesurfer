@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/selfgoallistitem_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@drawable/white_rounded_rectangle_gray_border"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_10"
+        tools:targetApi="lollipop">
+
+        <TextView
+            android:id="@+id/selfgoallistitem_name"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:ellipsize="end"
+            android:gravity="center_vertical|start"
+            android:maxLines="2"
+            android:text="@string/runtime_permissions_txt"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_14" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/selfgoallistitem_date"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/start_date"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/input_label"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Today's Status : "
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/input_txt"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Input Needed"
+                android:textColor="@color/self_goal_missed"
+                android:textSize="@dimen/text_size_12" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            android:gravity="center_vertical">
+
+            <ProgressBar
+                android:id="@+id/selfgoallistitem_pb"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="7dp"
+                android:layout_toStartOf="@+id/selfgoallistitem_percent"
+                android:progressDrawable="@drawable/vote_progress_one" />
+
+            <TextView
+                android:id="@+id/selfgoallistitem_percent"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="end"
+                android:text="20%"
+                android:textColor="@color/poll_vote_1"
+                android:textSize="@dimen/text_size_14" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/selfgoallistitem_status"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="90dp"
+                android:layout_height="25dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/primary_rounded_rectangle"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_12" />
+
+            <ImageView
+                android:id="@+id/selfgoallistitem_missed"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/selfgoallistitem_status" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/selfgoallistitem_location"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end"
+                android:layout_marginStart="5dp"
+                app:srcCompat="@drawable/vi_pin_blue" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/selfgoallistitem_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="20dp"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/no_result_found"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+    <!--</android.support.v7.widget.CardView>-->
+</LinearLayout>

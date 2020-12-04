@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <!--<android.support.v7.widget.CardView
+        android:id="@+id/team_list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/white"
+        android:elevation="12dp"
+        app:cardCornerRadius="14dp"
+        android:layout_centerHorizontal="true"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.9"
+        tools:targetApi="lollipop">-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_rounded_shadow_list"
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="start"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/team_talk_list_item_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.70"
+                        android:gravity="start"
+                        android:singleLine="true"
+                        android:text="@string/runtime_permissions_txt"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_18"
+                        style="@style/CustomFontStylePrimary" />
+
+                    <TextView
+                        android:id="@+id/team_talk_list_item_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.30"
+                        android:gravity="end"
+                        android:singleLine="true"
+                        android:text="@string/action_settings"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        style="@style/CustomFontStyleSecondary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/team_talk_list_item_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:maxWidth="120dp"
+                        android:paddingEnd="3dp"
+                        android:paddingStart="0dp"
+                        android:singleLine="true"
+                        android:text="@string/app_name"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        style="@style/CustomFontStylePrimary" />
+
+                    <TextView
+                        android:id="@+id/team_talk_list_item_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:paddingEnd="3dp"
+                        android:paddingStart="0dp"
+                        android:singleLine="true"
+                        android:text="@string/posted_in"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        style="@style/CustomFontStyleSecondary" />
+
+                    <TextView
+                        android:id="@+id/team_talk_list_item_team"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:lines="1"
+                        android:text="@string/action_settings"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        style="@style/CustomFontStylePrimary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/team_talk_list_item_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="1"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_16"
+                style="@style/CustomFontStylePrimary" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical|start"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/team_talk_list_item_comment_icon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/vi_comment_gray" />
+
+                <TextView
+                    android:id="@+id/team_talk_list_item_comment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingStart="5dp"
+                    android:text="123"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16"
+                    style="@style/CustomFontStylePrimary"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+    <!--</android.support.v7.widget.CardView>-->
+</LinearLayout>

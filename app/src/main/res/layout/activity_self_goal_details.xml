@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--<include layout="@layout/activity_toolbar_layout" />-->
+    <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
+        android:elevation="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        tools:context="com.sagesurfer.collaborativecares.MainActivity"
+        tools:targetApi="lollipop">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/textview_activitytoolbar_post"
+                android:gravity="center_vertical|start"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_activitytoolbar_title"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="@string/app_name"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_toolbar_self_goal_details"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_log_book"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/log_book_white_icon" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_toolbar_submit"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:background="@null"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/vi_check_white" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_toolbar_edit"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_self_goal_edit" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_toolbar_delete"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:background="@null"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/vi_delete_white" />
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/activity_toolbar_layout"
+        android:background="@color/screen_background"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.35"
+            android:background="@color/screen_background">
+
+            <ImageView
+                android:id="@+id/imageview_selfgoaldetailsactivity_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_goal_placeholder" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.65">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textview_selfgoaldetailsactivity_sentence"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:paddingBottom="@dimen/ms__popup_padding_top"
+                        android:text="@string/text_articles"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <TextView
+                        android:id="@+id/textview_selfgoaldetailsactivity_name"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/text_articles"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textview_selfgoaldetailsactivity_start_end_date"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="@string/date"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textview_selfgoaldetailsactivity_description"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/text_articles"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_selfgoaldetailsactivity_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.4"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/measurement_frequency"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <TextView
+                                android:id="@+id/textview_selfgoaldetailsactivity_frequency"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="bottom"
+                                android:text="@string/measurement_frequency"
+                                android:textColor="@color/episode_crisis"
+                                android:textSize="@dimen/text_size_14" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/count_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_weight="0.2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/count"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <TextView
+                                android:id="@+id/textview_selfgoaldetailsactivity_count"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="bottom"
+                                android:text="@string/count"
+                                android:textColor="@color/episode_crisis"
+                                android:textSize="@dimen/text_size_14" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_weight="0.4"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/occurrences"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <TextView
+                                android:id="@+id/textview_selfgoaldetailsactivity_occurrences"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="bottom"
+                                android:text="@string/count"
+                                android:textColor="@color/episode_crisis"
+                                android:textSize="@dimen/text_size_14" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/impact_of_goal"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <TextView
+                            android:id="@+id/textview_selfgoaldetailsactivity_impact"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/count"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/relativelaypout_selfgoaldetailsactivity_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="@dimen/ms__popup_padding_top"
+                        android:gravity="bottom"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <EditText
+                            android:id="@+id/edittext_selfgoaldetailsactivity_count_text"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentStart="true"
+                            android:hint="@string/count"
+                            android:inputType="numberDecimal"
+                            android:maxLength="2"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="7dp"
+                            android:layout_toStartOf="@+id/imageview_selfgoaldetailsactivity_count_add"
+                            android:layout_toEndOf="@+id/edittext_selfgoaldetailsactivity_count_text"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textview_selfgoaldetailsactivity_count_time"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="start|bottom"
+                                android:hint="@string/time"
+                                android:padding="4dp"
+                                android:textColor="@color/text_color_primary"
+                                android:textColorHint="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:id="@+id/textview_selfgoaldetailsactivity_count_date"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="start|bottom"
+                                android:hint="@string/date"
+                                android:padding="4dp"
+                                android:textColor="@color/text_color_primary"
+                                android:textColorHint="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imageview_selfgoaldetailsactivity_count_add"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:gravity="center"
+                            app:srcCompat="@drawable/vi_square_add_blue" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/goal_assignment_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/light_yello"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:id="@+id/linear_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="5dp"
+                                android:gravity="start"
+                                android:singleLine="true"
+                                android:text="Question"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/set_question"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="3dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingBottom="2dp"
+                                    android:text="Did you do yoga and exercise in daily ?"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/text_size_14"
+                                    android:visibility="visible" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/linear_radio_yes_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:orientation="horizontal">
+
+                                <RadioGroup
+                                    android:id="@+id/yes_no_radio_group"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <RadioButton
+                                        android:id="@+id/yes_radio"
+                                        style="@style/CustomFontStyleSecondary"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:checked="true"
+                                        android:tag="1"
+                                        android:text="Yes"
+                                        android:textColor="@color/text_color_primary"
+                                        android:textSize="@dimen/text_size_14" />
+
+
+                                    <RadioButton
+                                        android:id="@+id/no_radio"
+                                        style="@style/CustomFontStyleSecondary"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:tag="0"
+                                        android:text="No"
+                                        android:textColor="@color/text_color_primary"
+                                        android:textSize="@dimen/text_size_14" />
+
+                                </RadioGroup>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linear_radio_am_pm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="50dp"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <RadioGroup
+                                    android:id="@+id/am_pm_radio_group"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <RadioButton
+                                        android:id="@+id/am_radio"
+                                        style="@style/CustomFontStyleSecondary"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:checked="true"
+                                        android:tag="1"
+                                        android:text="AM"
+                                        android:textColor="@color/text_color_primary"
+                                        android:textSize="@dimen/text_size_14" />
+
+
+                                    <RadioButton
+                                        android:id="@+id/pm_radio"
+                                        style="@style/CustomFontStyleSecondary"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:tag="0"
+                                        android:text="PM"
+                                        android:textColor="@color/text_color_primary"
+                                        android:textSize="@dimen/text_size_14" />
+
+                                </RadioGroup>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linear_choose_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="5dp"
+                                android:gravity="start"
+                                android:text="Choose Date"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14" />
+
+
+                            <RelativeLayout
+                                android:id="@+id/date_selection"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/date_selection_txt"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_toLeftOf="@+id/date_icon"
+                                    android:background="@drawable/edit_text_primary"
+                                    android:paddingStart="5dp"
+                                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                                    android:paddingBottom="7dp"
+                                    android:textColor="@color/text_color_primary"
+                                    android:textSize="@dimen/text_size_14" />
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/date_icon"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="10dp"
+                                    app:srcCompat="@drawable/vi_calendar" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/submit_btn_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <Button
+                            android:id="@+id/button_submit"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorPrimary"
+                            android:text="@string/submit"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_selfgoaldetailsactivity_create_goal_count_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_msg_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="#FF83A8"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_msg_title"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/your_goal_is_not_started_yet_to_provide_input"
+                        android:textColor="@color/white1"
+                        android:textSize="@dimen/text_size_16" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_selfgoaldetailsactivity_milestone_footer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@color/screen_background">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/list_divider" />
+
+        <TextView
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start|center_vertical"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="@string/milestone"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:id="@+id/textview_selfgoaldetailsactivity_milestone_count"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/imageview_selfgoaldetailsactivity_milestone_next"
+            android:text="20"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_16" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_selfgoaldetailsactivity_milestone_next"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="@dimen/actionBarSize"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="TODO"
+            android:paddingStart="0dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp"
+            app:srcCompat="@drawable/vi_right_arrow_gray" />
+    </RelativeLayout>
+</RelativeLayout>

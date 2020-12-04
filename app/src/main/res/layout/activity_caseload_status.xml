@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical"
+    tools:context="com.modules.caseload.CaseloadSummaryActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/caseload_progress_note_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
+        android:elevation="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        tools:targetApi="lollipop">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/caseload_status_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/textview_post"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:text="@string/status"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/textview_post"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:padding="@dimen/margin_10"
+                android:text="@string/submit"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@drawable/layout_rounded_shadow_list"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radiogroup_status"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radiobutton_inprocess"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/in_process"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_16" />
+
+            <RadioButton
+                android:id="@+id/radiobutton_emerging"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/emerging"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_16" />
+
+            <RadioButton
+                android:id="@+id/radiobutton_supportneeded"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/support_needed"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_16" />
+        </RadioGroup>
+
+        <!--<TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:gravity="center"
+            android:text="@string/are_you_sure_you_want_to_change_status_for_this_peer"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_16"
+            style="@style/CustomFontStylePrimary" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:gravity="center"
+            android:text="@string/please_specify_reason_for_status"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_16"
+            style="@style/CustomFontStylePrimary" />
+
+        <EditText
+            android:id="@+id/edittext_status_message"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:gravity="start|center_vertical"
+            android:hint="@string/reason_to_change_status_of_peer"
+            android:padding="@dimen/margin_10"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_14"
+            style="@style/CustomFontStyleSecondary" />-->
+
+    </LinearLayout>
+    <!--</android.support.v7.widget.CardView>-->
+</LinearLayout>

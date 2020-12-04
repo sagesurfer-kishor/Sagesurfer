@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screen_background"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/team_details_banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_group_default" />
+
+            <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/team_details_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:background="#35000000"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                android:contentInsetEnd="0dp"
+                android:contentInsetRight="0dp"
+                android:elevation="0dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                tools:context=".MainActivity"
+                tools:targetApi="lollipop">
+
+                <TextView
+                    android:id="@+id/team_details_title"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+            </androidx.appcompat.widget.Toolbar>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:background="@color/screen_background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="2.5dp"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:targetApi="lollipop">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/team_details_members_count"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="10"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/members"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/team_details_success_count"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="10"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/success"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/team_details_crisis_count"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="10"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/crisis"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/team_details_support_count"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="10"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/support"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/team_details_time_count"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="10"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/time_spent"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:background="@color/list_divider" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/team_details_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="3dp"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabTextColor="@color/text_color_tertiary"
+                tools:targetApi="lollipop" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@color/white">
+
+                <!--   <FrameLayout
+                       android:id="@+id/team_details_container"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_marginBottom="0.7dp" />-->
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/team_details_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

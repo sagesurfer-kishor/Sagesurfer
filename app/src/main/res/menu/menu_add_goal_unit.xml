@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuitem_add_goal_unit_select"
+        android:title="@string/select_unit"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/menuitem_add_goal_unit_hour"
+        android:title="@string/hour"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/menuitem_add_goal_unit_day"
+        android:title="@string/daily"
+        app:showAsAction="ifRoom|withText" />
+    <!--//Nirmal Bug report 10_11July_2018, removed weekly, like on web platform
+    <item
+        android:id="@+id/menuitem_add_goal_unit_week"
+        android:title="@string/week"
+        app:showAsAction="ifRoom|withText" />-->
+    <item
+        android:id="@+id/menuitem_add_goal_unit_other"
+        android:title="@string/other"
+        app:showAsAction="ifRoom|withText" />
+</menu>

@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_motivation"
+        android:icon="@drawable/vi_motivation"
+        android:showAsAction="always"
+        android:title="@string/motivation"
+        app:showAsAction="always"
+        tools:ignore="AppCompatResource" />
+
+    <item
+        android:id="@+id/menu_motivation_library"
+        android:icon="@drawable/vi_motivation_library"
+        android:showAsAction="always"
+        android:title="@string/motivation_library"
+        app:showAsAction="always"
+        tools:ignore="AppCompatResource" />
+
+    <item
+        android:id="@+id/menu_wellness_toolkit"
+        android:icon="@drawable/vi_motivation_willness_toolkit"
+        android:showAsAction="always"
+        android:title="@string/wellness_toolkit"
+        app:showAsAction="always"
+        tools:ignore="AppCompatResource" />
+</menu>

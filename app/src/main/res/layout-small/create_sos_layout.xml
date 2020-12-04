@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_toolbar_layout" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:text="@string/create_sos_instruction"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/blue_rounded_rectangle"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:text="@string/description"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_select_message"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/select_message"
+                                android:textAllCaps="true"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="5dp"
+                                app:srcCompat="@drawable/mail" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+                        <EditText
+                            android:id="@+id/create_sos_message_box"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_text_primary"
+                            android:drawablePadding="@dimen/activity_vertical_margin"
+                            android:gravity="start|top"
+                            android:hint="@string/write_your_own_message"
+                            android:imeOptions="actionDone"
+                            android:maxHeight="200dp"
+                            android:maxLines="5"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:paddingBottom="5dp"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <!--<android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/create_sos_message_button"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignBottom="@+id/create_sos_message_box"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="5dp"
+                            app:srcCompat="@drawable/vi_message_black" />-->
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_rounded_rectangle"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:text="Details"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/select_team"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/create_sos_team_select"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/ic_bottom_line_down_arrow"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_consumername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/textview_consumername_label"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/consumer_name"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/textview_consumername"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/edit_text_primary"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/select_priority"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinner_priority"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/ic_bottom_line_down_arrow"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:text="@string/create_sos_warning1"
+                android:textAllCaps="true"
+                android:textColor="@color/warning_text_color"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:text="@string/create_sos_warning2"
+                android:textColor="@color/warning_text_color"
+                android:textSize="@dimen/text_size_16" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

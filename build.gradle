@@ -1,0 +1,43 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+  repositories {
+    mavenCentral()
+    google()
+    jcenter()
+    maven {
+      url 'https://maven.fabric.io/public'
+    }
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:3.6.4'
+    classpath 'com.google.gms:google-services:4.3.4'
+
+    // Add the Crashlytics Gradle plugin.
+    //classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta03'
+    classpath 'io.fabric.tools:gradle:1.31.2'
+
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+  }
+}
+
+allprojects {
+  repositories {
+    google()
+    maven {
+      url "https://dl.bintray.com/cometchat/pro"
+    }
+
+    jcenter()
+  }
+}
+
+//CometChat SDK 7.4.0 project
+subprojects {
+  tasks.withType(Javadoc).all { enabled = false }
+}
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}

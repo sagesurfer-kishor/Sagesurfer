@@ -1,0 +1,10 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item android:drawable="@drawable/vi_check_white" android:state_checked="true" android:state_pressed="true" />
+    <item android:drawable="@drawable/vi_check_blue" android:state_pressed="true" />
+    <item android:drawable="@drawable/vi_check_blue" android:state_checked="true" />
+    <item android:drawable="@drawable/vi_check_white" />-->
+
+    <item android:drawable="@drawable/vi_check_blue" android:state_checked="true"/>
+    <item android:drawable="@drawable/vi_check_white" android:state_checked="false"/>
+<!--    <item android:drawable="@drawable/custom_invite_checkbox_focused" android:state_activated="true"/>-->
+</selector>

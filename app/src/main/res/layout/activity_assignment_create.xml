@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_toolbar_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/white_rounded_rectangle_gray_border"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/district_label"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="District Name"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/district_label"
+                    android:gravity="start"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="*"
+                    android:textColor="@color/self_goal_red"
+                    android:textSize="@dimen/text_size_20"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/district_dropdown"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_bottom_line_down_arrow"
+                android:gravity="start"
+                android:paddingStart="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="7dp"
+                android:text="--- Select District ---"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/school_label"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="School Name"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/school_label"
+                    android:gravity="start"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="*"
+                    android:textColor="@color/self_goal_red"
+                    android:textSize="@dimen/text_size_20"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/school_dropdown"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_bottom_line_down_arrow"
+                android:gravity="start"
+                android:paddingStart="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="7dp"
+                android:text="--- Select School ---"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/student_label"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="Student Name"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/student_label"
+                    android:gravity="start"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="*"
+                    android:textColor="@color/self_goal_red"
+                    android:textSize="@dimen/text_size_20"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/student_dropdown"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_bottom_line_down_arrow"
+                android:gravity="start"
+                android:paddingStart="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="7dp"
+                android:text="--- Select Student ---"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/coach_label"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="Coach"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/coach_label"
+                    android:gravity="start"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="*"
+                    android:textColor="@color/self_goal_red"
+                    android:textSize="@dimen/text_size_20"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/coach_dropdown"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_bottom_line_down_arrow"
+                android:gravity="start"
+                android:paddingStart="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="7dp"
+                android:text="Select Coach"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/button_assign"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/assign"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16" />
+
+    </LinearLayout>
+
+</LinearLayout>

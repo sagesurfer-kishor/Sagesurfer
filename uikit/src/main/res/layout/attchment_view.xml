@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rlActionContainers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/ivAudio"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_library_music_24dp" />
+
+        <ImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/ivAudio"
+            android:src="@drawable/ic_camera" />
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/ivCamera"
+            android:src="@drawable/ic_photo" />
+
+        <ImageView
+            android:id="@+id/ivFile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/ivImage"
+            android:src="@drawable/ic_insert_drive_file_black_24dp"
+            android:tint="@color/colorPrimary" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/close_red_big" />
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_toolbar_layout" />
+
+    <LinearLayout
+        android:id="@+id/lineralayout_addgoalactivity_progress"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textview_addgoalactivity_bubble_one"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="@string/description"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_18" />
+
+            <TextView
+                android:id="@+id/textview_addgoalactivity_bubble_one"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/tertiary_gray_circle"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_20" />
+
+            <View
+                android:id="@+id/view_addgoalactivity_line_zero"
+                android:layout_width="70dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textview_addgoalactivity_bubble_one"
+                android:background="@color/text_color_tertiary" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textview_addgoalactivity_bubble_two"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="@string/definition"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_18" />
+
+            <View
+                android:id="@+id/view_addgoalactivity_line_one"
+                android:layout_width="50dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/textview_addgoalactivity_bubble_two"
+                android:background="@color/text_color_tertiary" />
+
+            <View
+                android:id="@+id/view_addgoalactivity_line_two"
+                android:layout_width="50dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textview_addgoalactivity_bubble_two"
+                android:background="@color/text_color_tertiary" />
+
+            <TextView
+                android:id="@+id/textview_addgoalactivity_bubble_two"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/tertiary_gray_circle"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_20" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textview_addgoalactivity_bubble_three"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="@string/milestone"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_18" />
+
+            <View
+                android:id="@+id/view_addgoalactivity_line_three"
+                android:layout_width="70dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/textview_addgoalactivity_bubble_three"
+                android:background="@color/text_color_tertiary" />
+
+
+            <TextView
+                android:id="@+id/textview_addgoalactivity_bubble_three"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/tertiary_gray_circle"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_20" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.sagesurfer.views.NonSwipeableViewPager
+        android:id="@+id/nonswipeableviewpager_addgoalactivity_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

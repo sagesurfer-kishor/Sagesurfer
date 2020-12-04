@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sage030">sage030</string>
+    <string name="sage031">sage031</string>
+
+    <string name="doctors_survery">One time/Daily Survey</string>
+    <string name="doctors_note">Dr. Notes</string>
+    <string name="sows_note">Sows/Notes</string>
+    <string name="daily_dosing">Daily Dosing</string>
+    <string name="view_doctor_note">View Dr. Note</string>
+    <string name="description">Description :</string>
+
+
+</resources>

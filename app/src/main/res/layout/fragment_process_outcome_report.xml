@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearlayout_processoutcomereport"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:background="@drawable/white_rounded_rectangle_gray_border"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_vertical_margin">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/activity"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_activity_webview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <WebView
+                            android:id="@+id/webview_activity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_user_statastics"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.33"
+                            android:orientation="vertical"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:id="@+id/textview_total_strength"
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.4"
+                                android:gravity="center"
+                                android:text="@string/user_activity"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.6"
+                                android:gravity="center"
+                                android:text="@string/total_strength"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.33"
+                            android:orientation="vertical"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:id="@+id/textview_avg_strength_per_team"
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.4"
+                                android:gravity="center"
+                                android:text="@string/daily_time_on_platform_min"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.6"
+                                android:gravity="center"
+                                android:text="@string/avg_strength_per_team"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.33"
+                            android:orientation="vertical"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:id="@+id/textview_avg_team_size"
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.4"
+                                android:gravity="center"
+                                android:text="@string/avg_time_spent_per_team_min"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.6"
+                                android:gravity="center"
+                                android:text="@string/avg_team_size"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_table"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <Spinner
+                            android:id="@+id/spinner_table"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="8dp"
+                            android:drawablePadding="10dp"
+                            android:gravity="start|center_vertical"
+                            android:hint="@string/select"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_10" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_total_number_of_strength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:background="@drawable/white_rounded_rectangle_gray_border"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_vertical_margin">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/total_number_of_strength"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_total_number_of_strength_webview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <WebView
+                            android:id="@+id/webview_total_number_of_strength"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:background="@drawable/white_rounded_rectangle_gray_border"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_vertical_margin"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/natural_support_engaged_per_team"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <WebView
+                            android:id="@+id/webview_natural_support_engaged_per_team"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:background="@drawable/white_rounded_rectangle_gray_border"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_vertical_margin">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/document_activity"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <Spinner
+                            android:id="@+id/spinner_document_activity"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="8dp"
+                            android:drawablePadding="10dp"
+                            android:gravity="start|center_vertical"
+                            android:hint="@string/select"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_document_activity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_10" />
+
+                        <TextView
+                            android:id="@+id/textview_document_activity"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:background="@color/no_data"
+                            android:gravity="center"
+                            android:padding="@dimen/activity_vertical_margin"
+                            android:text="@string/no_activity_added"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_16"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:background="@drawable/white_rounded_rectangle_gray_border"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_vertical_margin">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/no_of_users"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <Spinner
+                            android:id="@+id/spinner_team"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="8dp"
+                            android:drawablePadding="10dp"
+                            android:gravity="start|center_vertical"
+                            android:hint="@string/select"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:prompt="@string/select_team"
+                            android:spinnerMode="dropdown"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <WebView
+                            android:id="@+id/webview_no_of_users"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linealayout_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/screen_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_error_icon"
+                    android:layout_width="200dp"
+                    android:layout_height="240dp"
+                    app:srcCompat="@drawable/vi_data_not_fount_error" />
+
+                <TextView
+                    android:id="@+id/textview_error_message"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_record_found"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_18" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

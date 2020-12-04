@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_toolbar_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/screen_background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/screen_background"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_weight="0.10"
+                    android:text="Patient Name :"
+                    android:textAllCaps="false"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/text_size_18"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/patient_name_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_weight="0.90"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_18"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:orientation="vertical"
+                card_view:cardBackgroundColor="#fff"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="4dp"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/subject_title"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginTop="8dp"
+                                android:text="Subject"
+                                android:textAllCaps="false"
+                                android:textColor="@color/color_black"
+                                android:textSize="@dimen/text_size_18"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/subject_title"
+                                android:gravity="start"
+                                android:text="*"
+                                android:textColor="@color/self_goal_red"
+                                android:textSize="@dimen/text_size_20"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/edit_subject_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/all_rounded_border"
+                            android:padding="10dp"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/date_title"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="8dp"
+                                    android:text="Date"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/color_black"
+                                    android:textSize="@dimen/text_size_18"
+                                    android:visibility="visible" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/date_title"
+                                    android:gravity="start"
+                                    android:text="*"
+                                    android:textColor="@color/self_goal_red"
+                                    android:textSize="@dimen/text_size_20"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/select_date_txt"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:background="@drawable/all_rounded_border"
+                                android:gravity="start"
+                                android:padding="10dp"
+                                android:text="Select Date"
+                                android:textColor="@color/text_color_secondary"
+                                android:textSize="@dimen/text_size_12" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/time_title"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginTop="8dp"
+                                    android:text="Time"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/color_black"
+                                    android:textSize="@dimen/text_size_18"
+                                    android:visibility="visible" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/time_title"
+                                    android:gravity="start"
+                                    android:text="*"
+                                    android:textColor="@color/self_goal_red"
+                                    android:textSize="@dimen/text_size_20"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/select_time_txt"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:layout_marginRight="@dimen/activity_vertical_margin"
+                                android:background="@drawable/all_rounded_border"
+                                android:gravity="start"
+                                android:padding="10dp"
+                                android:text="Select Time"
+                                android:textColor="@color/text_color_secondary"
+                                android:textSize="@dimen/text_size_12" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/desc_title"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginTop="8dp"
+                                android:text="Description"
+                                android:textAllCaps="false"
+                                android:textColor="@color/color_black"
+                                android:textSize="@dimen/text_size_18"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/desc_title"
+                                android:gravity="start"
+                                android:text="*"
+                                android:textColor="@color/self_goal_red"
+                                android:textSize="@dimen/text_size_20"
+                                android:textStyle="bold" />
+
+
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/desc_edit_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/all_rounded_border"
+                            android:gravity="start"
+                            android:inputType="textMultiLine"
+                            android:maxLength="500"
+                            android:minLines="5"
+                            android:padding="10dp"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/notes_limit"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginRight="@dimen/activity_vertical_margin"
+                                android:paddingStart="3dp"
+                                android:paddingEnd="5dp"
+                                android:text="(Max. words Limit 500)"
+                                android:textAllCaps="false"
+                                android:textColor="@color/text_color_tertiary"
+                                android:textSize="@dimen/text_size_12"
+                                android:visibility="visible" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txt_count_entered"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="0"
+                                android:textAllCaps="false"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_12"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/notes_entered_limit"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_toRightOf="@+id/txt_count_entered"
+                                android:paddingStart="3dp"
+                                android:paddingEnd="5dp"
+                                android:text="/500 word(s) entered"
+                                android:textAllCaps="false"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_12"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/txt_dash"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_toEndOf="@id/notes_entered_limit"
+                                android:paddingStart="3dp"
+                                android:paddingEnd="5dp"
+                                android:text="|"
+                                android:textAllCaps="false"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_12"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/txt_count_remaining"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_toRightOf="@+id/txt_dash"
+                                android:text="500"
+                                android:textAllCaps="false"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_12"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/notes_remaning_limit"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_toEndOf="@id/txt_count_remaining"
+                                android:paddingStart="3dp"
+                                android:paddingEnd="5dp"
+                                android:text=" word(s) remaining"
+                                android:textAllCaps="false"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_12"
+                                android:visibility="visible" />
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/submit_btn"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_rounded_border"
+                            android:text="@string/submit"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_16" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,5 @@
+<vector android:height="24dp" android:viewportHeight="60"
+    android:viewportWidth="100" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#1cac1d" android:name="Rounded Rectangle 1" android:pathData="m28.71 6h40.59c13.09 0 23.71 10.52 23.71 23.5c0 12.98 -10.61 23.5 -23.71 23.5h-40.59c-13.09 0 -23.71 -10.52 -23.71 -23.5c0 -12.98 10.61 -23.5 23.71 -23.5z"/>
+    <path android:fillColor="#fff" android:name="handle" android:pathData="m29.29 8.27c11.83 0 21.41 9.5 21.41 21.23c0 11.72 -9.59 21.23 -21.41 21.23c-11.83 0 -21.41 -9.5 -21.41 -21.23c0 -11.72 9.59 -21.23 21.41 -21.23z"/>
+</vector>

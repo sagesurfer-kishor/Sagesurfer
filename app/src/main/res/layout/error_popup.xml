@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/edittext_rounded_border"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:text="Error"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_16"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/message_txt"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="No peer mentor assigned to you.Please contact to hope admin"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_14"
+        android:visibility="visible" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/transparent_40" />
+
+
+    <TextView
+        android:id="@+id/ok_btn"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="OK"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_size_16"
+        android:visibility="visible" />
+
+</LinearLayout>
+
+

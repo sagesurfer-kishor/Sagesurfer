@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical|start"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_horizontal_margin">
+
+    <ImageView
+        android:id="@+id/admin_user_list_item_photo"
+        android:layout_width="@dimen/profile_size"
+        android:layout_height="@dimen/profile_size"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_user_male" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_toStartOf="@+id/admin_user_list_item_status"
+        android:layout_toEndOf="@+id/admin_user_list_item_photo"
+        android:gravity="center_vertical|start"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/admin_user_list_item_name"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center_vertical|start"
+            android:lines="1"
+            android:text="@string/runtime_permissions_txt"
+            android:textAllCaps="false"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:id="@+id/admin_user_list_item_role"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center_vertical|start"
+            android:lines="1"
+            android:text="@string/runtime_permissions_txt"
+            android:textAllCaps="false"
+            android:textColor="@color/text_color_tertiary"
+            android:textSize="@dimen/text_size_14" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/admin_user_list_item_status"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="0dp"
+        android:text="@string/active"
+        android:textAllCaps="true"
+        android:textColor="@color/success_color"
+        android:textSize="@dimen/text_size_12"
+        android:textStyle="bold" />
+</RelativeLayout>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp">
+
+    <LinearLayout
+        android:id="@+id/appoint_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/planner_tasklist_rounded_rectangle"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textview_program_director"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
+                android:text="Program Director"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                android:id="@+id/textview_appointment_by"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
+                android:text="Appointment by-KK"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                android:id="@+id/textview_appointment_for_client"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
+                android:text="Appointment for-KK"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_14" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/date_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/vi_calendar" />
+
+            <TextView
+                android:id="@+id/textview_appoinment_date"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_10"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/time"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_13"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="16dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/cc_ic_time_watch" />
+
+            <TextView
+                android:id="@+id/textview_appointment_time"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_10"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/time"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_13"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="Appointment Status"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_13" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+
+                <TextView
+                    android:id="@+id/textview_appointment_status"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/margin_10"
+                    android:singleLine="true"
+                    android:text="Canceled"
+                    android:textColor="@color/self_goal_red"
+                    android:textSize="@dimen/text_size_13" />
+
+                <TextView
+                    android:id="@+id/txt_appointment_responsechange_status"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="Change-response"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_13"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

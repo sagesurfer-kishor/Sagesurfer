@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/edittext_rounded_border"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context="com.modules.caseload.werhope.activity.UpdateCountActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="Updated by "
+            android:textColor="@color/colorSecondary"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/txt_name"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="Updated on "
+            android:textColor="@color/colorSecondary"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/txt_name_date"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

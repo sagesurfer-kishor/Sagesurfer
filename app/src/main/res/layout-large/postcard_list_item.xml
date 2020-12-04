@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/postcard_warning_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:padding="@dimen/activity_vertical_margin"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_sad_emoticon_gray"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:lines="1"
+            android:text="@string/no_record_found"
+            android:textColor="@color/text_color_tertiary"
+            android:textSize="@dimen/text_size_18" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/postcard_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_rounded_shadow_list"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/icon_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:id="@+id/icon_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/primary_circle" />
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_inbox_gray" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/icon_front"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_profile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/icon_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="AB"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/message_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/from"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.6"
+                    android:ellipsize="end"
+                    android:gravity="bottom|start"
+                    android:maxLines="1"
+                    android:text="@string/runtime_permissions_txt"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+
+                <TextView
+                    android:id="@+id/timestamp"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:gravity="bottom|end"
+                    android:text="@string/action_settings"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_12" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_primary"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/app_name"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                android:id="@+id/txt_secondary"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/app_name"
+                android:textColor="@color/text_color_read"
+                android:textSize="@dimen/text_size_14" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/icon_star"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:tint="@color/colorPrimary" />
+
+    </LinearLayout>
+</LinearLayout>

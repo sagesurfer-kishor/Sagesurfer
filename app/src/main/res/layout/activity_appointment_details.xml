@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appointment_bachground"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/journal_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
+        android:elevation="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        tools:targetApi="lollipop">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/caseload_peer_note_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/caseload_peer_note_layout"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:text="@string/note"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14" />
+
+            <LinearLayout
+                android:id="@+id/caseload_peer_note_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_edit"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_self_goal_edit" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_delete"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_delete_white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_download"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_download_white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_add_amendment"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_caseload_amendment" />
+
+                <TextView
+                    android:id="@+id/textview_amendment_count"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingTop="4dp"
+                    android:paddingRight="15dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_comment"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_drawer_chat" />
+
+                <TextView
+                    android:id="@+id/textview_comment_count"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingTop="4dp"
+                    android:paddingRight="15dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearlayout_peer_note_details"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="Appointment For"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/client_name"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="start"
+                        android:text="richard"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="Description"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/description_txt"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="@string/type_of_contact"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="Email"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/email_txt"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="@string/type_of_contact"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="Phone"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/phone_no_txt"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="@string/type_of_contact"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="Date"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/date_txt"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="Feb 05,2020"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="Appointment Time"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:text="Start Time"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <TextView
+                            android:id="@+id/start_time"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:text="03:56 AM"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:text="End Time"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <TextView
+                            android:id="@+id/end_time"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:text="05:00 PM"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="Total Duration :"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/duration_txt"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="01:05 hrs."
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/view_more_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/drop_down_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:background="@color/colorAccent" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:gravity="start"
+                            android:text="Service(s)"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerview_swiperefresh"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:scrollbars="vertical" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:gravity="start"
+                            android:text="Staff Member(s) Name"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerview_swiperefresh_one"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:scrollbars="vertical" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/appoint_desc"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Appointment Status : "
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/appoint_status_txt"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Confirmed"
+                        android:textColor="@color/task_completed"
+                        android:textSize="@dimen/text_size_14" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/view_less_btn"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_rounded_border"
+                        android:text="View Less"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/view_more_btn"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_rounded_border"
+                        android:text="View More"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <LinearLayout
+                        android:id="@+id/btn_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/cancel_appointment_btn"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="0.5dp"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimary"
+                            android:text="Cancel Appointment"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible"
+                            android:textStyle="bold" />
+
+
+                        <Button
+                            android:id="@+id/reschedule_btn"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0.5dp"
+                            android:layout_weight="1"
+                            android:visibility="visible"
+                            android:background="@color/colorPrimary"
+                            android:text="Reschedule"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/reschedule_one_btn"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/colorPrimary"
+                        android:text="Reschedule"
+                        android:layout_margin="10dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_10"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/team_type_fac_txt"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:gravity="start"
+            android:padding="8dp"
+            android:text="Facilitated"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/team_type_non_fac_txt"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:gravity="start"
+            android:padding="8dp"
+            android:text="Non Facilitated"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="normal" />
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
