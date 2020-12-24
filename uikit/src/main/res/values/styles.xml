@@ -21,5 +21,8 @@
         <item name="android:background">@drawable/rounded_dialog</item>
     </style>
 
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">#ffffff</item>
+    </style>
 
 </resources>

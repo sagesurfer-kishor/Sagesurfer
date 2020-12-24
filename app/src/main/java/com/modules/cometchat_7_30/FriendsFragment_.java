@@ -22,8 +22,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.core.MessagesRequest;
 import com.cometchat.pro.core.UsersRequest;
 import com.cometchat.pro.exceptions.CometChatException;
+import com.cometchat.pro.models.BaseMessage;
+import com.cometchat.pro.models.MediaMessage;
+import com.cometchat.pro.models.TextMessage;
 import com.cometchat.pro.models.User;
 
 import com.sagesurfer.adapters.FriendListAdapter;
@@ -58,6 +62,7 @@ public class FriendsFragment_ extends Fragment {
 
     public List<User> filteredNameList = new ArrayList<>();
     public List<User> friendList = new ArrayList<>();
+    private List<String> unreadCount = new ArrayList<>();
 
     private ChatFragment_ parentActivity;
 
@@ -153,6 +158,26 @@ public class FriendsFragment_ extends Fragment {
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                     conversionList.setLayoutManager(mLayoutManager);
                     conversionList.setItemAnimator(new DefaultItemAnimator());
+
+                    for (User item : list) {
+
+                        CometChat.getUnreadMessageCountForUser(item.getUid(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
+                            @Override
+                            public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
+                                // handle success
+                                Log.e("unreadcount", String.valueOf(stringIntegerHashMap.get(item.getUid())));
+                            }
+
+                            @Override
+                            public void onError(CometChatException e) {
+                                // handle error
+                            }
+                        });
+
+                        Log.e("UserId", item.getUid());
+                    }
+
+
                     conversionList.setAdapter(adapter);
                     checkIntent();
                 } else {
@@ -168,30 +193,6 @@ public class FriendsFragment_ extends Fragment {
         });
     }
 
-    private void filterModuleWiseNotification() {
-
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put(General.ACTION, "my_friends");
-        requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
-
-        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
-        Log.e("urlurlurl", url);
-        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getActivity(), getActivity());
-        if (requestBody != null) {
-            Log.e("friendList", requestBody.toString());
-            try {
-                /*String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
-
-                if (response != null) {
-                    notificationList = FriendList.parseSpams(response, activity, TAG);
-
-                }*/
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 
     // friend search filter
     private void searchFriend(String search) {

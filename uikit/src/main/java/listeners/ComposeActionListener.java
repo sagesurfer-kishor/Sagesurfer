@@ -31,6 +31,8 @@ public abstract class ComposeActionListener {
     public void onStickerClicked() {
     }
 
+    public void onLocationActionClicked() {
+    }
 
     public void onVoiceNoteComplete(String string) {
     }

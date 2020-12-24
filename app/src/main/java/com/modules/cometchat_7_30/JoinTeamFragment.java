@@ -134,7 +134,7 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
     }
 
     // open chat window join team
-    private void openChatActivity(String username, String userId, int status) {
+    private void openChatActivity(String username, String userId, int status, String gid) {
         Log.e("userName", username);
         Intent intent = new Intent(getContext(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.NAME, username);
@@ -142,6 +142,8 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
         intent.putExtra(StringContract.IntentStrings.STATUS, status);
         intent.putExtra(StringContract.IntentStrings.TYPE, "user");
         intent.putExtra(StringContract.IntentStrings.TABS, "4");
+        intent.putExtra("teamId", gid);
+
         startActivity(intent);
     }
 
@@ -205,7 +207,7 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
         editor.putString("membersIds", memberId);
         editor.commit();
 
-        openChatActivity(username, contactId, status);
+        openChatActivity(username, contactId, status, String.valueOf(team_.getId()));
 
     }
 

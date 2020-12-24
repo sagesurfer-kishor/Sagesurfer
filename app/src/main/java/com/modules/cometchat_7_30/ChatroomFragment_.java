@@ -1,6 +1,5 @@
 package com.modules.cometchat_7_30;
 
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;

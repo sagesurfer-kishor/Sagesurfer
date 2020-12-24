@@ -18,6 +18,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
+import com.cometchat.pro.models.User;
 import com.cometchat.pro.uikit.Avatar;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.sagesurfer.collaborativecares.R;
@@ -30,6 +33,7 @@ import com.sagesurfer.views.CircleTransform;
 import com.storage.preferences.Preferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -45,9 +49,11 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
     public final JoinChatExpandableListAdapterListener teamsChatExpandableListAdapterListener;
     public final Activity activity;
     private int lastExpandedPosition = -1;
+    int number;
+
 
     public JoinChatExpandableListAdapter(Context context, ArrayList<Teams_> primaryList,
-                                          ArrayList<Teams_> searchList,
+                                         ArrayList<Teams_> searchList,
                                          JoinChatExpandableListAdapterListener teamsChatExpandableListAdapterListener, Activity activity) {
         this.context = context;
         this.primaryList = primaryList;
@@ -135,9 +141,12 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
 
         viewHolderTeam.userName.setText(item.getName());
 
-        int number = item.getMembers() - 1;
-
-        viewHolderTeam.memberCount.setText(String.valueOf(number));
+        if (item.getMembersArrayList().size() > 0) {
+            number = item.getMembers() - 1;
+            viewHolderTeam.memberCount.setText(String.valueOf(number));
+        } else {
+            viewHolderTeam.memberCount.setText("0");
+        }
 
         final ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
         mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -212,7 +221,7 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
             viewHolderMember.userStatus = (TextView) convertView.findViewById(R.id.friend_list_item_status_message);
             viewHolderMember.statusImage = (ImageView) convertView.findViewById(R.id.friend_list_item_status_icon);
             viewHolderMember.unreadCount = (TextView) convertView.findViewById(R.id.ic_counter);
-            viewHolderMember.unreadCount.setVisibility(View.GONE);
+
             viewHolderMember.timeText = (RelativeTimeTextView) convertView.findViewById(R.id.friend_list_item_last);
             viewHolderMember.typing = (TextView) convertView.findViewById(R.id.friend_list_item_typing);
             //viewHolderMember.memberCount = (TextView) convertView.findViewById(R.id.memberCount);
@@ -222,7 +231,7 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
             viewHolderMember.userName.setText(item.getMembersArrayList().get(childPosition).getUsername());
             long time = 0;
 
-            String timeStamp = String.valueOf(teamMemberList.get(childPosition).getLs());
+           /* String timeStamp = String.valueOf(teamMemberList.get(childPosition).getLs());
             if (timeStamp == null || timeStamp.length() <= 0 || timeStamp.equalsIgnoreCase("null")) {
                 viewHolderMember.timeText.setText("");
             } else {
@@ -234,20 +243,33 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
             if (time > 0) {
                 viewHolderMember.timeText.setReferenceTime(time);
             }
-            viewHolderMember.timeText.setText(timeStamp);
-
+            viewHolderMember.timeText.setText(timeStamp);*/
             viewHolderMember.userStatus.setText(teamMemberList.get(childPosition).getM());
 
-            Log.e("images", teamMemberList.toString());
-
             Glide.with(context)
-                    .load(teamMemberList.get(childPosition).getA())
+                    .load(item.getMembersArrayList().get(childPosition).getPhoto())
                     .thumbnail(0.5f)
                     .transition(withCrossFade())
                     .apply(new RequestOptions()
                             .placeholder(R.drawable.ic_account)
                             .transform(new CircleTransform(context)))
                     .into(viewHolderMember.avatar);
+
+
+            CometChat.getUnreadMessageCountForUser(item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
+                @Override
+                public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
+                    // handle success
+                    Log.e("unreadcount", String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id())));
+
+                    //viewHolderMember.unreadCount.setText(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
+                }
+
+                @Override
+                public void onError(CometChatException e) {
+                    // handle error
+                }
+            });
 
 
             viewHolderMember.linearLayoutFriendListItem.setOnClickListener(new View.OnClickListener() {

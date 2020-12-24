@@ -67,6 +67,8 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
                 bundle.putString(StringContract.IntentStrings.UID, getIntent().getStringExtra(StringContract.IntentStrings.UID));
                 bundle.putString(StringContract.IntentStrings.STATUS, getIntent().getStringExtra(StringContract.IntentStrings.STATUS));
                 bundle.putString(StringContract.IntentStrings.TABS, getIntent().getStringExtra(StringContract.IntentStrings.TABS));
+                bundle.putString("teamId", getIntent().getStringExtra("teamId"));
+
 
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("UserIds", getIntent().getStringExtra(StringContract.IntentStrings.UID));

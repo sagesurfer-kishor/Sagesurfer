@@ -104,7 +104,6 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
             holder.deleteUser.setVisibility(View.GONE);
         }
 
-        Log.e("-----", adminUid + "," + myUserId + "," + uId);
         // Block button
         holder.blockuser.setVisibility(View.GONE);
         if (myUserId.equals(adminUid) && !adminUid.equals(uId)) {
@@ -159,7 +158,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
 
         holder.deleteUser.setOnClickListener(view -> {
 
-            String memberIds = groupMemberArrayList.get(position).getUid();
+            String memberIds = groupMemberArrayList.get(position).getUid().split(Pattern.quote("_"))[0];
 
             String UID = Preferences.get(General.USER_ID);
             String GUID = Preferences.get("gId");
@@ -244,15 +243,13 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
         requestMap.put("member_id", memberIds);
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
 
-        Log.e("deletegroup", url + "--------" + requestMap);
-
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, mContext);
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, mContext);
                 Log.e("33333", response);
                 if (response != null) {
-                    Toast.makeText(mContext, "Remove member from group", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "group left successfully", Toast.LENGTH_LONG).show();
                     groupMemberArrayList.remove(position);
                     notifyDataSetChanged();
                 }

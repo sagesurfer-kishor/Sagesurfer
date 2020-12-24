@@ -105,12 +105,7 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
                                     String UserId = Preferences.get(General.USER_ID);
                                     String reciverId = teams_.getComet_chat_id();
                                     String rev = teams_.getUserId();
-
-                                    Log.e("No", "private");
                                     addMemberTogroup(UserId, groupid, action, reciverId, rev, position);
-
-                                    Log.e("cometId", reciverId);
-
                                     //invite(action, UserId, groupid, reciverId, position);
                                     dialog.cancel();
 
@@ -175,22 +170,6 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
             }
         });
 
-
-
-       /* // join group by self
-        CometChat.joinGroup(GUID, "public", "", new CometChat.CallbackListener<Group>() {
-            @Override
-            public void onSuccess(Group joinedGroup) {
-                Log.d(TAG, joinedGroup.toString());
-                // update self joined group in our db
-                invite(action, uid, GUID, reciveverId, position);
-            }
-
-            @Override
-            public void onError(CometChatException e) {
-                Log.d(TAG, "Group joining failed with exception: " + e.getMessage());
-            }
-        });*/
     }
 
     @Override

@@ -66,9 +66,9 @@
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:src="@drawable/trash_small"
+                android:src="@drawable/gro_sha"
                 android:textSize="12sp"
-                android:visibility="gone"/>
+                />
 
             <ImageView
                 android:id="@+id/blockedMember"

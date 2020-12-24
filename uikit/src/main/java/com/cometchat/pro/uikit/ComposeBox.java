@@ -403,6 +403,8 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
             ImageView ivAudio = dialog.findViewById(R.id.ivAudio);
             ImageView ivFile = dialog.findViewById(R.id.ivFile);
             ImageView close = dialog.findViewById(R.id.close);
+            ImageView ivLocation = dialog.findViewById(R.id.ivLocation);
+
 
             ivCamera.setOnClickListener(new OnClickListener() {
                 @Override
@@ -429,6 +431,14 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
                 @Override
                 public void onClick(View v) {
                     composeActionListener.onFileActionClicked(ivFile);
+                    dialog.dismiss();
+                }
+            });
+
+            ivLocation.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    composeActionListener.onLocationActionClicked();
                     dialog.dismiss();
                 }
             });

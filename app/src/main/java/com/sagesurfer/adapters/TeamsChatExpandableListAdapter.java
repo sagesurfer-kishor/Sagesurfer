@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.uikit.Avatar;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.modules.cometchat_7_30.JoinTeamFragment;
@@ -32,6 +34,7 @@ import com.sagesurfer.views.CircleTransform;
 import com.storage.preferences.Preferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -47,6 +50,7 @@ public class TeamsChatExpandableListAdapter extends BaseExpandableListAdapter im
     public final TeamsChatExpandableListAdapterListener teamsChatExpandableListAdapterListener;
     public final Activity activity;
     private int lastExpandedPosition = -1;
+    int number;
 
     public TeamsChatExpandableListAdapter(Context context, ArrayList<Teams_> primaryList,
                                           ArrayList<Teams_> searchList,
@@ -137,9 +141,12 @@ public class TeamsChatExpandableListAdapter extends BaseExpandableListAdapter im
 
         viewHolderTeam.userName.setText(item.getName());
 
-        int number = item.getMembers() - 1;
-
-        viewHolderTeam.memberCount.setText(String.valueOf(number));
+        if (item.getMembersArrayList().size() > 0) {
+            number = item.getMembers() - 1;
+            viewHolderTeam.memberCount.setText(String.valueOf(number));
+        } else {
+            viewHolderTeam.memberCount.setText("0");
+        }
 
         final ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
         mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -243,8 +250,23 @@ public class TeamsChatExpandableListAdapter extends BaseExpandableListAdapter im
 
             viewHolderMember.userStatus.setText(teamMemberList.get(childPosition).getM());
 
+            CometChat.getUnreadMessageCountForUser(item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
+                @Override
+                public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
+                    // handle success
+                    Log.e("unreadcount", String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id())));
+
+                   // viewHolderMember.unreadCount.setText(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
+                }
+
+                @Override
+                public void onError(CometChatException e) {
+                    // handle error
+                }
+            });
+
             Glide.with(context)
-                    .load(teamMemberList.get(childPosition).getA())
+                    .load(item.getMembersArrayList().get(childPosition).getPhoto())
                     .thumbnail(0.5f)
                     .transition(withCrossFade())
                     .apply(new RequestOptions()

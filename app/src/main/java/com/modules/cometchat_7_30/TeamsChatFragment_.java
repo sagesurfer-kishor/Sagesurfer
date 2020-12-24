@@ -145,8 +145,7 @@ public class TeamsChatFragment_ extends Fragment implements LoaderManager.Loader
         teamsListAdapter.getFilter().filter(search);
     }
 
-    private void openChatActivity(String username, String userId, int status) {
-        Log.e("userName", username);
+    private void openChatActivity(String username, String userId, int status, String teamId) {
         Intent intent = new Intent(getContext(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.NAME, username);
         intent.putExtra(StringContract.IntentStrings.UID, userId);
@@ -154,6 +153,8 @@ public class TeamsChatFragment_ extends Fragment implements LoaderManager.Loader
         intent.putExtra(StringContract.IntentStrings.TYPE, "user");
         intent.putExtra("GID", Preferences.get(General.GROUP_ID));
         intent.putExtra(StringContract.IntentStrings.TABS, "3");
+        intent.putExtra("teamId", teamId);
+
         startActivity(intent);
     }
 
@@ -235,7 +236,7 @@ public class TeamsChatFragment_ extends Fragment implements LoaderManager.Loader
         final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
         final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
 
-        openChatActivity(username, contactId, status);
+        openChatActivity(username, contactId, status, String.valueOf(team_.getId()));
     }
 
     private void showError(boolean isError, int status) {
@@ -307,11 +308,10 @@ public class TeamsChatFragment_ extends Fragment implements LoaderManager.Loader
                 if (team_logs_id != null && !team_logs_id.isEmpty()) {
                     if (team_logs_id.endsWith("4")) {
                         String ids[] = team_logs_id.split(Pattern.quote("_"));
-                        if (ids.length == 3) {
+                        if (ids.length == 4) {
                             for (int i = 0; i < primaryList.size(); i++) {
                                 Teams_ team = primaryList.get(i);
-                                if (team.getId() == Integer.parseInt(ids[1].substring(1))) ;
-                                {
+                                if (team.getId() == Integer.parseInt(ids[2].substring(1))) {
                                     for (int j = 0; j < team.getMembersArrayList().size(); j++) {
                                         if (team.getMembersArrayList().get(j).getUser_id() ==
                                                 Integer.parseInt(getActivity().getIntent().getStringExtra("sender").split(Pattern.quote("_"))[0])) {

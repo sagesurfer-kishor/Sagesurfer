@@ -62,6 +62,10 @@ public class CometChatTeamMembers_ implements Serializable {
     @SerializedName(General.ROLE)
     private String role;
 
+    @SerializedName(General.TOTAL_UNREAD_MESSAGES)
+    private String unread_message_count;
+
+
     public int getId() {
         return id;
     }

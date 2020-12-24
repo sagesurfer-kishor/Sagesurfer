@@ -174,110 +174,113 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                /* Resourse_Share CallUs = new Resourse_Share();
                 CallUs.show((AppCompatActivity)mContext.getFragmentManager(), "SOME_TAG");*/
 
-                GID = teams_.getGroupId();
-                String owner = teams_.getOwner_id();
-                String groupType = teams_.getType();
+                if (!isMember.equals("0")) {
+                    GID = teams_.getGroupId();
+                    String owner = teams_.getOwner_id();
+                    String groupType = teams_.getType();
 
-                Preferences.save("gId", GID);
-                Preferences.save("owner", owner);
+                    Preferences.save("gId", GID);
+                    Preferences.save("owner", owner);
 
-                final Dialog dialog1 = new Dialog(mContext);
-                dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog1.setCancelable(false);
-                dialog1.setContentView(R.layout.group_detail);
+                    final Dialog dialog1 = new Dialog(mContext);
+                    dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog1.setCancelable(false);
+                    dialog1.setContentView(R.layout.group_detail);
 
-                Button btnDialog = dialog1.findViewById(R.id.btnAddMember);
-                Button btnDeleteGroup = dialog1.findViewById(R.id.btnDeleteGroup);
+                    Button btnDialog = dialog1.findViewById(R.id.btnAddMember);
+                    Button btnDeleteGroup = dialog1.findViewById(R.id.btnDeleteGroup);
 
-                TextView txtmemberCount = dialog1.findViewById(R.id.txtmemberCount);
-                TextView txtcreatedDated = dialog1.findViewById(R.id.txtcreatedDated);
-                TextView txtowner = dialog1.findViewById(R.id.txtowner);
+                    TextView txtmemberCount = dialog1.findViewById(R.id.txtmemberCount);
+                    TextView txtcreatedDated = dialog1.findViewById(R.id.txtcreatedDated);
+                    TextView txtowner = dialog1.findViewById(R.id.txtowner);
 
-                txtowner.setText(teams_.getOwner());
-                txtmemberCount.setText(teams_.getMembers_count());
+                    txtowner.setText(teams_.getOwner());
+                    txtmemberCount.setText(teams_.getMembers_count());
 
               /*  SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 String dateString = formatter.format(new Date(Long.parseLong(teamList.get(position).getCreated())));  */
 
-                Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-                cal.setTimeInMillis(Long.parseLong(teams_.getCreated()) * 1000);
-                String date = DateFormat.format("dd-MM-yyyy", cal).toString();
-                txtcreatedDated.setText(date);
+                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                    cal.setTimeInMillis(Long.parseLong(teams_.getCreated()) * 1000);
+                    String date = DateFormat.format("dd-MM-yyyy", cal).toString();
+                    txtcreatedDated.setText(date);
 
-                ImageView btnClose = dialog1.findViewById(R.id.imgDismiss);
-                btnClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog1.dismiss();
+                    ImageView btnClose = dialog1.findViewById(R.id.imgDismiss);
+                    btnClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog1.dismiss();
+                        }
+                    });
+
+                    btnDialog.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            addMemberingroup(groupType);
+                            dialog1.dismiss();
+                        }
+                    });
+
+                    if (teams_.getOwner_id().equals(Preferences.get(General.USER_ID))) {
+                        btnDeleteGroup.setVisibility(View.VISIBLE);
+                    } else {
+                        btnDeleteGroup.setVisibility(View.GONE);
                     }
-                });
 
-                btnDialog.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        addMemberingroup(groupType);
-                        dialog1.dismiss();
-                    }
-                });
+                    //delete group call
+                    btnDeleteGroup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
 
-                if (teams_.getOwner_id().equals(Preferences.get(General.USER_ID))) {
-                    btnDeleteGroup.setVisibility(View.VISIBLE);
-                } else {
-                    btnDeleteGroup.setVisibility(View.GONE);
+                            GID = teams_.getGroupId();
+                            final String GUID = String.valueOf(GID);
+                            AlertDialog.Builder builder;
+                            builder = new AlertDialog.Builder(mContext);
+                            //Setting message manually and performing action on button click
+                            builder.setMessage("Do you want to delete this group?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+
+                                            // delete group from comet chat first
+                                            CometChat.deleteGroup(GUID, new CometChat.CallbackListener<String>() {
+                                                @Override
+                                                public void onSuccess(String successMessage) {
+                                                    Log.d(TAG, "Group deleted successfully: ");
+
+                                                    MessagingService.unsubscribeGroupNotification(GUID);
+
+                                                    // update deleted group in our db
+                                                    DeleteGroup("delete_group", GUID, position);
+                                                    // teamList.remove(position);
+                                                    dialog1.dismiss();
+                                                }
+
+                                                @Override
+                                                public void onError(CometChatException e) {
+                                                    Log.d(TAG, "Group delete failed with exception: " + e.getMessage());
+                                                }
+                                            });
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            //  Action for 'NO' Button
+                                            dialog1.cancel();
+                                        }
+                                    });
+                            //Creating dialog box
+                            AlertDialog alert = builder.create();
+                            //Setting the title manually
+                            alert.setTitle("Alert Notification");
+                            alert.show();
+
+                        }
+                    });
+
+                    dialog1.show();
                 }
 
-                //delete group call
-                btnDeleteGroup.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        GID = teams_.getGroupId();
-                        final String GUID = String.valueOf(GID);
-                        AlertDialog.Builder builder;
-                        builder = new AlertDialog.Builder(mContext);
-                        //Setting message manually and performing action on button click
-                        builder.setMessage("Do you want to delete this group?")
-                                .setCancelable(false)
-                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                        // delete group from comet chat first
-                                        CometChat.deleteGroup(GUID, new CometChat.CallbackListener<String>() {
-                                            @Override
-                                            public void onSuccess(String successMessage) {
-                                                Log.d(TAG, "Group deleted successfully: ");
-
-                                                MessagingService.unsubscribeGroupNotification(GUID);
-
-                                                // update deleted group in our db
-                                                DeleteGroup("delete_group", GUID, position);
-                                                // teamList.remove(position);
-                                                dialog1.dismiss();
-                                            }
-
-                                            @Override
-                                            public void onError(CometChatException e) {
-                                                Log.d(TAG, "Group delete failed with exception: " + e.getMessage());
-                                            }
-                                        });
-                                    }
-                                })
-                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        //  Action for 'NO' Button
-                                        dialog1.cancel();
-                                    }
-                                });
-                        //Creating dialog box
-                        AlertDialog alert = builder.create();
-                        //Setting the title manually
-                        alert.setTitle("Alert Notification");
-                        alert.show();
-
-                    }
-                });
-
-                dialog1.show();
             }
         });
 
@@ -368,7 +371,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                                 //if not then show this error
                                 AlertDialog.Builder builder;
                                 builder = new AlertDialog.Builder(mContext);
-                                builder.setMessage("You are not member of this group. please join this group")
+                                builder.setMessage("You are not member of this group. join this group")
                                         .setCancelable(false)
                                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
@@ -396,7 +399,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                             //if not then show this error
                             AlertDialog.Builder builder;
                             builder = new AlertDialog.Builder(mContext);
-                            builder.setMessage("You are not member of this group. please join this group")
+                            builder.setMessage("You are not member of this group. join this group")
                                     .setCancelable(false)
                                     .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
@@ -445,7 +448,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                                         }
 
                                     } else {
-                                        editText.setError("Please enter password");
+                                        editText.setError("Enter password");
                                     }
                                 }
                             });

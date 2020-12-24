@@ -54,6 +54,16 @@
                 android:layout_toEndOf="@id/ivImage"
                 android:src="@drawable/ic_insert_drive_file_black_24dp" />
 
+            <ImageView
+                android:id="@+id/ivLocation"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/ivImage"
+                android:src="@drawable/ic_insert_drive_file_black_24dp" />
+
+
         </RelativeLayout>
 
         <RelativeLayout

@@ -47,6 +47,18 @@
             android:tint="@color/colorPrimary" />
 
         <ImageView
+            android:id="@+id/ivLocation"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/ivImage"
+            android:padding="5dp"
+            android:src="@drawable/ic_near_me_24dp"
+            android:tint="@color/textColorWhite" />
+
+
+        <ImageView
             android:id="@+id/close"
             android:layout_width="30dp"
             android:layout_height="30dp"

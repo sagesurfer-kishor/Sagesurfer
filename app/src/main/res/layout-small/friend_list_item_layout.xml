@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="@drawable/message_rounded_border"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
 
     <RelativeLayout
         android:id="@+id/team_list_item_layout"
@@ -153,7 +154,7 @@
                     android:maxLength="2"
                     android:padding="2dp"
                     android:text="1222"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="11sp" />
             </RelativeLayout>
         </LinearLayout>

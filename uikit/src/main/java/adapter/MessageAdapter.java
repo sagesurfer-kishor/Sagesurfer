@@ -180,7 +180,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     /**
      * It is used to initialize the adapter wherever we needed. It has parameter like messageList
-     * which contains list of messages and it will be used in adapter and paramter type is a String
+     * which contains list of messages and it will be us
+     * <p>
+     * ed in adapter and paramter type is a String
      * whose values will be either CometChatConstants.RECEIVER_TYPE_USER
      * CometChatConstants.RECEIVER_TYPE_GROUP.
      *
@@ -1428,8 +1430,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         translatedText = s;
                     }
                 } catch (JSONException e) {
-                    int ss = baseMessage.getMetadata().getInt("whiteboard_URL_one");
-                    translatedText = String.valueOf(ss);
+                    try {
+                        String ss = baseMessage.getMetadata().getString("whiteboard_URL");
+                        if (!ss.isEmpty()) {
+                            translatedText = ss;
+                        }
+                    } catch (Exception ee) {
+                        String ss = baseMessage.getMetadata().getString("whiteboard_URL_group");
+                        if (!ss.isEmpty()) {
+                            translatedText = ss;
+                        }
+                    }
                 }
 
             } else {
@@ -1444,19 +1455,44 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 viewHolder.txtTime.setText(Utils.getHeaderDate(baseMessage.getReadAt() * 1000));
 
                 try {
-                    s = baseMessage.getMetadata().getString("whiteboard_URL_one");
-                    if (!s.isEmpty()) {
-                        translatedText = s;
+
+
+                    try {
+                        s = baseMessage.getMetadata().getString("whiteboard_URL_one");
+                        if (!s.isEmpty()) {
+                            translatedText = s;
+                        }
+                    } catch (Exception ee) {
+                        try {
+                            String ss = baseMessage.getMetadata().getString("whiteboard_URL");
+                            if (!ss.isEmpty()) {
+                                translatedText = ss;
+                            }
+                        } catch (Exception eee) {
+                            String ss = baseMessage.getMetadata().getString("whiteboard_URL_group");
+                            if (!ss.isEmpty()) {
+                                translatedText = ss;
+                            }
+                        }
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    int ss = baseMessage.getMetadata().getInt("whiteboard_URL_one");
-                    translatedText = String.valueOf(ss);
+                    try {
+                        String ss = baseMessage.getMetadata().getString("whiteboard_URL");
+                        if (!ss.isEmpty()) {
+                            translatedText = ss;
+                        }
+                    } catch (Exception ee) {
+                        String ss = baseMessage.getMetadata().getString("whiteboard_URL_group");
+                        if (!ss.isEmpty()) {
+                            translatedText = ss;
+                        }
+                    }
+
                 }
 
             }
-
-
 
           /*  JSONObject metadata = baseMessage.getMetadata();
                 try {
@@ -1477,7 +1513,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 } catch (Exception e) {
                     e.printStackTrace();
                 }*/
-
 
             viewHolder.txtMessage.setOnClickListener(new View.OnClickListener() {
                 @Override

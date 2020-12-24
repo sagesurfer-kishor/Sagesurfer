@@ -22,8 +22,19 @@ public class Members_ implements Serializable {
     @SerializedName(General.IMAGE)
     private String image;
 
+    @SerializedName(General.PHOTO)
+    private String photo;
+
     @SerializedName(General.TEAM_NAME)
     private String team_name;
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     @SerializedName(General.TEAM_ID)
     private int team_id;
