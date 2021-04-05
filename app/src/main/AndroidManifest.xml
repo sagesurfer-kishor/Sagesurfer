@@ -6,17 +6,21 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".Application"
@@ -56,6 +60,7 @@
         <activity
             android:name="com.modules.selfgoal.LogBookActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <!--
             <service
             android:name="services.CCSubscribeService"
@@ -72,7 +77,7 @@
             android:stopWithTask="true" />
         -->
         <activity
-            android:name="com.modules.team.gallery.activity.CreateAlbumActivity"
+            android:name="com.modules.team.gallery.activity.CreateGalleryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SplashActivity"
@@ -204,7 +209,7 @@
             android:theme="@style/AppTheme.NoActionBar" /> <!-- Supervisor -->
         <activity
             android:name="com.modules.selfcare.SelfCareDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar" /> <!-- File Sharing -->
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- File Sharing -->
         <activity
             android:name="com.modules.selfcare.UploadCareDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -219,7 +224,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.modules.support.FeedbackActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.modules.support.FaqActivity"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- Daily Planner -->
@@ -273,10 +278,10 @@
         -->
         <activity
             android:name="com.modules.settings.ChangePasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar" /> <!-- Goal -->
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- Goal -->
         <activity
             android:name="com.modules.settings.EditProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.modules.settings.TermsAndConditionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -370,7 +375,7 @@
             android:name="com.modules.landing_question_form.activity.LandingQuestionFormActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.modules.team.gallery.activity.UploadImageActivity"
+            android:name="com.modules.team.gallery.activity.AlbumImagesUplodeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.modules.team.gallery.activity.CommentGalleryActivity"
@@ -553,7 +558,7 @@
            <service
                android:name="com.firebase.MessagingService"
                android:enabled="true"
-               android:exported="false">
+               android:exported="true">
                <intent-filter>
                    <action android:name="com.google.firebase.MESSAGING_EVENT" />
                </intent-filter>

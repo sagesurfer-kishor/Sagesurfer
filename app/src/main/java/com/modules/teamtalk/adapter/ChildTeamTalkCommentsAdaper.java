@@ -74,7 +74,7 @@ public class ChildTeamTalkCommentsAdaper extends RecyclerView.Adapter<ChildTeamT
                         .transform(new CircleTransform(activity.getApplicationContext())))
                 .into(holder.icon);
 
-        if ((Long.parseLong(Preferences.get(General.USER_ID)) == (Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID))))) {
+        if (Preferences.get(General.USER_ID).equalsIgnoreCase(Preferences.get(General.GROUP_OWNER_ID))) {
             holder.deleteComment.setVisibility(View.VISIBLE);
         } else if (childComments.getUser_id() == Long.parseLong(Preferences.get(General.USER_ID))) {
             holder.deleteComment.setVisibility(View.VISIBLE);

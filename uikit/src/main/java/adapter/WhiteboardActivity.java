@@ -17,14 +17,14 @@ import com.cometchat.pro.uikit.R;
 
 import java.util.prefs.Preferences;
 
+import screen.messagelist.General;
+
 public class WhiteboardActivity extends AppCompatActivity {
     WebView webView;
     SharedPreferences sp;
-
     String Name;
-
+    private static final String TAG = "WhiteboardActivity";
     private Toolbar toolbar;
-
     private class WebClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -36,7 +36,6 @@ public class WhiteboardActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_whiteboard);
-
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
         toolbar = findViewById(R.id.toolbar);
@@ -52,14 +51,15 @@ public class WhiteboardActivity extends AppCompatActivity {
         });
 
         String sessionId = getIntent().getStringExtra("whiteBoardUrl");
+        Log.i(TAG, "onCreate: sessionId "+sessionId);
         String data = getIntent().getStringExtra("whiteBoardUrl");
-
+        Log.i(TAG, "onCreate: Data "+data);
         webView = findViewById(R.id.whitebord_web);
 
         Name = sp.getString("flname", Name);
 
         if (sessionId != null) {
-
+            webView.clearHistory();
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setLoadWithOverviewMode(true);
             webView.getSettings().setUseWideViewPort(true);
@@ -67,9 +67,7 @@ public class WhiteboardActivity extends AppCompatActivity {
             webView.setWebViewClient(new WebClient());
             webView.clearCache(true);
             webView.loadUrl(sessionId + "&username=" + Name);
-
             Log.e("whiteboard my url", sessionId + "&username=" + Name);
-
         }
 
     }
@@ -80,7 +78,6 @@ public class WhiteboardActivity extends AppCompatActivity {
             this.webView.goBack();
             return true;
         }
-
         return super.onKeyDown(keyCode, event);
     }
 }

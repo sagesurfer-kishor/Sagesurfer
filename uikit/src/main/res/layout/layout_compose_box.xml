@@ -10,10 +10,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rlActionContainers"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:animateLayoutChanges="true"
@@ -25,7 +24,11 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:src="@drawable/ic_library_music_24dp" />
+                android:src="@drawable/ic_library_music_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivCamera"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
                 android:id="@+id/ivCamera"
@@ -33,8 +36,12 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:layout_toEndOf="@+id/ivAudio"
-                android:src="@drawable/ic_camera" />
+
+                android:src="@drawable/ic_camera"
+                app:layout_constraintEnd_toStartOf="@+id/ivImage"
+                app:layout_constraintStart_toEndOf="@+id/ivAudio"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
                 android:id="@+id/ivImage"
@@ -42,8 +49,12 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/ivCamera"
-                android:src="@drawable/ic_photo" />
+
+                android:src="@drawable/ic_photo"
+                app:layout_constraintEnd_toStartOf="@+id/ivFile"
+                app:layout_constraintStart_toEndOf="@+id/ivCamera"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
                 android:id="@+id/ivFile"
@@ -51,8 +62,12 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/ivImage"
-                android:src="@drawable/ic_insert_drive_file_black_24dp" />
+
+                android:src="@drawable/ic_insert_drive_file_black_24dp"
+                app:layout_constraintEnd_toStartOf="@+id/ivLocation"
+                app:layout_constraintStart_toEndOf="@+id/ivCamera"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
                 android:id="@+id/ivLocation"
@@ -60,11 +75,14 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/ivImage"
-                android:src="@drawable/ic_insert_drive_file_black_24dp" />
+
+                android:src="@drawable/ic_insert_drive_file_black_24dp"
+                app:layout_constraintStart_toEndOf="@+id/ivFile"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
             android:id="@+id/flBox"

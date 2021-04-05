@@ -41,7 +41,7 @@
                         app:hintEnabled="true">
 
                         <EditText
-                            android:id="@+id/edittext_editprofile_firstname"
+                            android:id="@+id/et_firstname"
                             style="@style/CustomFontStyleSecondary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                         app:hintEnabled="true">
 
                         <EditText
-                            android:id="@+id/edittext_editprofile_lastname"
+                            android:id="@+id/et_lastname"
                             style="@style/CustomFontStyleSecondary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                     app:hintEnabled="true">
 
                     <EditText
-                        android:id="@+id/edittext_editprofile_username"
+                        android:id="@+id/et_username"
                         style="@style/CustomFontStyleSecondary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                     app:hintEnabled="true">
 
                     <EditText
-                        android:id="@+id/edittext_editprofile_email"
+                        android:id="@+id/et_email"
                         style="@style/CustomFontStyleSecondary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

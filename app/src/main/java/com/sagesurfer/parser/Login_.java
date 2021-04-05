@@ -171,6 +171,7 @@ public class Login_ {
         Type homeType = new TypeToken<List<HomeMenu_>>() {
         }.getType();
         List<HomeMenu_> homeMenuList = gson.fromJson(Preferences.get("home"), homeType);
+        Log.i(TAG, "homeMenuParser: "+Preferences.get("home"));
         if (homeMenuList.size() < 6) {
             for (int i = homeMenuList.size(); i < 6; i++) {
                 HomeMenu_ homeMenu_ = new HomeMenu_();

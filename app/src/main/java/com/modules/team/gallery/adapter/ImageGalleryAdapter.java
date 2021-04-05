@@ -3,6 +3,7 @@ package com.modules.team.gallery.adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.modules.team.gallery.activity.SelectedImageListActivity;
-import com.modules.team.gallery.fragment.GalleryListFragment;
+import com.modules.team.gallery.fragment.GalleryAlbumsListFragment;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.models.Gallery_;
@@ -30,9 +31,12 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
  * @author Kailash Karankal
  */
 
+/*this adapter class is used to show the all user galleries
+* {RM}*/
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.MyViewHolder> {
     private final Activity activity;
     private final List<Gallery_> galleryList;
+    private static final String TAG = "ImageGalleryAdapter";
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         final TextView title;
@@ -56,6 +60,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     public ImageGalleryAdapter(Activity activity, List<Gallery_> galleryList) {
         this.activity = activity;
         this.galleryList = galleryList;
+        Log.e(TAG, "galaryList "+galleryList.toString() );
     }
 
     @Override
@@ -96,14 +101,21 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
                 activity.overridePendingTransition(0, 0);
             }
         });
-
-        if (((Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID)) == gallery_.getAdded_by()) && (Integer.parseInt(Preferences.get(General.USER_ID)) == gallery_.getAdded_by())) || (Integer.parseInt(Preferences.get(General.USER_ID)) == (Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID))))) {
-            holder.galleryTick.setVisibility(View.VISIBLE);
-        } else if ((Integer.parseInt(Preferences.get(General.USER_ID)) == gallery_.getAdded_by()) || (gallery_.getIs_modarator() == 1 && gallery_.getAdded_by() != Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID)))) {
-            holder.galleryTick.setVisibility(View.VISIBLE);
-        } else {
-            holder.galleryTick.setVisibility(View.GONE);
+        try {
+            if (((Long.parseLong(Preferences.get(General.GROUP_OWNER_ID)) == gallery_.getAdded_by())
+                    && (Long.parseLong(Preferences.get(General.USER_ID)) == gallery_.getAdded_by()))
+                    || (Integer.parseInt(Preferences.get(General.USER_ID)) == (Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID))))) {
+                holder.galleryTick.setVisibility(View.VISIBLE);
+            } else if ((Long.parseLong(Preferences.get(General.USER_ID)) == gallery_.getAdded_by())
+                    || (gallery_.getIs_modarator() == 1 && gallery_.getAdded_by() != Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID)))) {
+                holder.galleryTick.setVisibility(View.VISIBLE);
+            } else {
+                holder.galleryTick.setVisibility(View.GONE);
+            }
+        }catch (NumberFormatException exception){
+            Log.e(TAG, "onBindViewHolder: "+exception.getMessage() );
         }
+
 
         holder.galleryTick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +123,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
                 gallery_.setSelectImgs(true);
                 holder.galleryTick.setVisibility(View.GONE);
                 holder.galleryTickSelected.setVisibility(View.VISIBLE);
-                GalleryListFragment.showDeleteButton();
+                GalleryAlbumsListFragment.showDeleteButton();
             }
         });
 
@@ -121,7 +133,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
                 gallery_.setSelectImgs(false);
                 holder.galleryTick.setVisibility(View.VISIBLE);
                 holder.galleryTickSelected.setVisibility(View.GONE);
-                GalleryListFragment.hideDeleteButton();
+                GalleryAlbumsListFragment.hideDeleteButton();
             }
         });
     }

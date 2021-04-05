@@ -30,7 +30,6 @@ import okhttp3.RequestBody;
 public class PerformGetCounterTask {
 
     private static final String TAG = PerformGetCounterTask.class.getSimpleName();
-
     public static Counters_ getCounters(Context _context) {
         Counters_ counters_ = null;
         Preferences.initialize(_context);

@@ -109,6 +109,19 @@
                     android:textColor="@color/secondaryTextColor"
                     android:textSize="12sp"
                     android:visibility="gone" />
+                <TextView
+                    android:id="@+id/ic_counter"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:maxLength="2"
+                    android:padding="2dp"
+                    android:text="12"
+                    android:visibility="gone"
+                    android:background="@drawable/primary_circle"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp" />
 
                 <TextView
                     android:id="@+id/memberCount"
@@ -138,14 +151,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginRight="15dp"
-                    android:layout_toLeftOf="@+id/ic_counter"
+
                     android:singleLine="true"
                     android:text="@string/dummy_text"
                     android:textColor="@color/secondaryTextColor"
                     android:textSize="14sp"
                     android:visibility="gone" />
 
-                <TextView
+               <!-- <TextView
                     android:id="@+id/ic_counter"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -155,7 +168,7 @@
                     android:padding="2dp"
                     android:text="1222"
                     android:textColor="@android:color/black"
-                    android:textSize="11sp" />
+                    android:textSize="11sp" />-->
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

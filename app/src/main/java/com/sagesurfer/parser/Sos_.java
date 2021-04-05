@@ -19,7 +19,6 @@ import java.util.List;
  */
 
 public class Sos_ {
-
     public static ArrayList<MySos_> parseMySos(String response, Context _context, String TAG) {
         ArrayList<MySos_> sosArrayList = new ArrayList<>();
         if (response == null) {

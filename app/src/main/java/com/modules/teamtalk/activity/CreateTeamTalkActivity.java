@@ -39,8 +39,8 @@ import okhttp3.RequestBody;
  */
 
 public class CreateTeamTalkActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView teamSelector;
-    private EditText titleBox, descriptionBox;
+    private TextView tv_selected_team_name;
+    private EditText et_title, et_description;
     private static final String TAG = CreateTeamTalkActivity.class.getSimpleName();
     private int group_id = 0;
     private String start_time = "0";
@@ -58,13 +58,11 @@ public class CreateTeamTalkActivity extends AppCompatActivity implements View.On
         window.setStatusBarColor(ContextCompat.getColor(this, GetColor.getHomeIconBackgroundColorColorParse(false)));
 
         setContentView(R.layout.team_talk_post_layout);
-
         showLoader = new ShowLoader();
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         toolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
         setSupportActionBar(toolbar);
+
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
@@ -78,7 +76,11 @@ public class CreateTeamTalkActivity extends AppCompatActivity implements View.On
         });
 
         TextView titleText = (TextView) findViewById(R.id.textview_activitytoolbar_title);
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))
+                ||Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024))
+        ) {
             titleText.setText(this.getResources().getString(R.string.post_team_discussion));
         } else {
             titleText.setText(this.getResources().getString(R.string.post_team_talk));
@@ -88,10 +90,10 @@ public class CreateTeamTalkActivity extends AppCompatActivity implements View.On
         postButton.setVisibility(View.VISIBLE);
         postButton.setOnClickListener(this);
 
-        titleBox = (EditText) findViewById(R.id.create_team_talk_title_box);
-        descriptionBox = (EditText) findViewById(R.id.create_team_talk_description_box);
+        et_title = (EditText) findViewById(R.id.et_title);
+        et_description = (EditText) findViewById(R.id.et_team_talk_description);
 
-        teamSelector = (TextView) findViewById(R.id.create_team_talk_select_team);
+        tv_selected_team_name = (TextView) findViewById(R.id.tv_selected_team_name);
     }
 
     // validate input data for validity with it's min and max length
@@ -101,19 +103,19 @@ public class CreateTeamTalkActivity extends AppCompatActivity implements View.On
             return false;
         }
         if (title == null || title.length() < 3) {
-            titleBox.setError("Invalid Title \nMin Char allowed is 3");
+            et_title.setError("Invalid Title \nMin Char allowed is 3");
             return false;
         }
         if (title.length() > 250) {
-            titleBox.setError("Invalid Title \nMax Char allowed is 250");
+            et_title.setError("Invalid Title \nMax Char allowed is 250");
             return false;
         }
         if (description == null || description.length() < 3) {
-            descriptionBox.setError("Invalid Description \nMin Char allowed is 3");
+            et_description.setError("Invalid Description \nMin Char allowed is 3");
             return false;
         }
         if (description.length() > 1000) {
-            descriptionBox.setError("Invalid Description \nMax Char allowed is 1000");
+            et_description.setError("Invalid Description \nMax Char allowed is 1000");
             return false;
         }
         return true;
@@ -188,11 +190,11 @@ public class CreateTeamTalkActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        KeyboardOperation.hide(getApplicationContext(), descriptionBox.getWindowToken());
+        KeyboardOperation.hide(getApplicationContext(), et_description.getWindowToken());
         switch (v.getId()) {
             case R.id.imageview_toolbar_save:
-                String title = titleBox.getText().toString().trim();
-                String description = descriptionBox.getText().toString().trim();
+                String title = et_title.getText().toString().trim();
+                String description = et_description.getText().toString().trim();
                 if (validate(title, description, v)) {
                     showLoader.showPostingDialog(this);
                     postThread(title, description, v);
@@ -204,8 +206,8 @@ public class CreateTeamTalkActivity extends AppCompatActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
-        group_id = Integer.parseInt(Preferences.get(General.GROUP_ID));
-        String group_name = Preferences.get(General.GROUP_NAME);
-        teamSelector.setText(group_name);
+        group_id = Integer.parseInt(Preferences.get(General.TEAM_ID));
+        String group_name = Preferences.get(General.TEAM_NAME);
+        tv_selected_team_name.setText(group_name);
     }
 }

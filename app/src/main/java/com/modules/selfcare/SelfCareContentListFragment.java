@@ -173,7 +173,6 @@ public class SelfCareContentListFragment extends Fragment implements SelfCareCon
         requestMap.put(General.LANGUAGE, language);
         requestMap.put(General.LIKE, like);
         requestMap.put(General.COMMENT, comment);
-
         requestMap.put(General.TYPE, "" + type);
         requestMap.put(General.COUNTRY, "" + location);
         requestMap.put(General.STATE, "" + state);

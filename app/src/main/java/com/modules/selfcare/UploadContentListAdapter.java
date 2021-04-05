@@ -106,7 +106,7 @@ class UploadContentListAdapter extends ArrayAdapter<CareUploaded_> {
             viewHolder.thumbnail = (ImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_icon);
 
             viewHolder.icon = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_type_icon);
-            viewHolder.likeIcon = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_like);
+            viewHolder.likeIcon = (AppCompatImageView) view.findViewById(R.id.btn_like);
             viewHolder.commentIcon = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_comment);
 
             viewHolder.imageLayout = (RelativeLayout) view.findViewById(R.id.relativelayout_selfcarecontentlistitem_icon);

@@ -21,9 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.modules.sos.SosValidation;
 import com.modules.team.TeamDetailsActivity;
-import com.sagesurfer.animation.ActivityTransition;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
@@ -64,7 +62,7 @@ public class TeamTaskListFragment extends Fragment implements SwipeRefreshLayout
 
     private DatabaseRetrieve_ databaseRetrieve_;
     private Activity activity;
-    private TaskListAdapter taskListAdapter;
+    private TaskListAdapter adapter_taskList;
     private MainActivityInterface mainActivityInterface;
     String lastDate = "0";
     private AppCompatImageView postButton;
@@ -131,8 +129,8 @@ public class TeamTaskListFragment extends Fragment implements SwipeRefreshLayout
         swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setEnabled(false);
 
-        taskListAdapter = new TaskListAdapter(activity, taskList, this);
-        listView.setAdapter(taskListAdapter);
+        adapter_taskList = new TaskListAdapter(activity, taskList, this);
+        listView.setAdapter(adapter_taskList);
 
         errorText = (TextView) view.findViewById(R.id.textview_error_message);
         errorIcon = (AppCompatImageView) view.findViewById(R.id.imageview_error_icon);
@@ -207,8 +205,8 @@ public class TeamTaskListFragment extends Fragment implements SwipeRefreshLayout
                 if (taskList.size() > 0) {
                     if (taskList.get(0).getStatus() == 1) {
                         saveTask(taskList);
-                        taskListAdapter = new TaskListAdapter(activity, taskList, this);
-                        listView.setAdapter(taskListAdapter);
+                        adapter_taskList = new TaskListAdapter(activity, taskList, this);
+                        listView.setAdapter(adapter_taskList);
                     } else {
                         showError(true, taskList.get(0).getStatus());
                     }

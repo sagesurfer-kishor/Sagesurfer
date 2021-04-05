@@ -7,7 +7,7 @@ import androidx.databinding.BindingAdapter;
 
 import com.cometchat.pro.core.UsersRequest;
 import com.cometchat.pro.uikit.R;
-import com.cometchat.pro.uikit.CometChatGroupList;
+import com.cometchat.pro.uikit.CometChatGroupListAdapter;
 import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.User;
 
@@ -51,7 +51,7 @@ public class CometChatBind {
     }
 
     @BindingAdapter(value = {"android:data_source","android:context"} )
-    public static void setData(CometChatGroupList groupListView, Context c, List<Group> groups) {
+    public static void setData(CometChatGroupListAdapter groupListView, Context c, List<Group> groups) {
            context=c;
         if (groups!=null) {
             for (Group group : groups) {

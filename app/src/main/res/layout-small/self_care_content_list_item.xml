@@ -157,11 +157,12 @@
                     android:gravity="center_vertical|start"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imageview_selfcarecontentlistitem_like"
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_like"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:padding="2dp"
+                        android:background="?android:attr/selectableItemBackground"
                         app:srcCompat="@drawable/vi_like_gray" />
 
                     <TextView
@@ -212,11 +213,12 @@
                     android:gravity="center_vertical|start"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imageview_selfcarecontentlistitem_share"
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_share"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:padding="2dp"
+                        android:background="?android:attr/selectableItemBackground"
                         app:srcCompat="@drawable/vi_share_gray" />
 
                     <TextView
@@ -227,6 +229,7 @@
                         android:gravity="center"
                         android:paddingStart="5dp"
                         android:paddingEnd="@dimen/activity_horizontal_margin"
+
                         android:text="123"
                         android:textColor="@color/text_color_primary"
                         android:textSize="@dimen/text_size_14"

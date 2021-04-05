@@ -424,10 +424,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 setDeleteData((DeleteMessageViewHolder) viewHolder, i);
                 break;
             case LEFT_TEXT_MESSAGE:
+                Log.i(TAG, "onBindViewHolder: leftText "+messageList.get(i).toString());
+
             case LEFT_REPLY_TEXT_MESSAGE:
+                Log.i(TAG, "onBindViewHolder: RIGHT_REPLY_TEXT_MESSAGE");
                 ((TextMessageViewHolder) viewHolder).ivUser.setVisibility(View.GONE);
+
             case RIGHT_TEXT_MESSAGE:
+                Log.i(TAG, "onBindViewHolder: rightText "+messageList.get(i).toString());
+
             case RIGHT_REPLY_TEXT_MESSAGE:
+                Log.i(TAG, "onBindViewHolder: RIGHT_REPLY_TEXT_MESSAGE");
                 setTextData((TextMessageViewHolder) viewHolder, i);
                 break;
             case LEFT_LINK_MESSAGE:
@@ -827,6 +834,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         });
 
 
+
         showMessageTime(viewHolder, baseMessage);
         if (selectedItemList.contains(baseMessage.getId()))
             viewHolder.txtTime.setVisibility(View.VISIBLE);
@@ -1070,10 +1078,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 // viewHolder.textView.setText(call.getSender().getName() + " " + call.getCallStatus() + " " + call.getType() + " " + context.getResources().getString(R.string.call).toLowerCase());
                 viewHolder.textView.setText(call.getSender().getName() + " " + call.getCallStatus() + " " + call.getType() + " " + context.getResources().getString(R.string.call).toLowerCase());
 
-                viewHolder.txtTime.setText(Utils.getHeaderDate(call.getInitiatedAt() * 1000));
+                viewHolder.txtTime.setText(Utils.getHeaderDate(call.getSentAt() * 1000));
+                Log.i(TAG, "setActionData: initited callSentAt"+(call.getSentAt()+1000));
+            }else if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_ONGOING)) {
+                // viewHolder.textView.setText(call.getSender().getName() + " " + call.getCallStatus() + " " + call.getType() + " " + context.getResources().getString(R.string.call).toLowerCase());
+                viewHolder.textView.setText(call.getSender().getName() + " " + call.getCallStatus() + " " + call.getType() + " " + context.getResources().getString(R.string.call).toLowerCase());
+                Log.i(TAG, "setActionData: ongoing  callSentAt"+(call.getSentAt()+1000));
+                viewHolder.txtTime.setText(Utils.getHeaderDate(call.getSentAt() * 1000));
             } else
-                viewHolder.textView.setText(context.getResources().getString(R.string.call) + " " + ((Call) baseMessage).getCallStatus());
-            viewHolder.txtTime.setText(Utils.getHeaderDate(call.getInitiatedAt() * 1000));
+                Log.i(TAG, "setActionData: ended at callSentAt"+(call.getSentAt()+1000));
+                viewHolder.textView.setText(call.getSender().getName() + " " + call.getCallStatus() + " " + call.getType() + " " + context.getResources().getString(R.string.call).toLowerCase());
+                viewHolder.txtTime.setText(Utils.getHeaderDate(call.getSentAt() * 1000));
         }
     }
 
@@ -1320,14 +1335,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             } else {
                 //viewHolder.txtMessage.setText(profanityFilter);
+                /*code changed for fetching data from received data from cometchat API
+                * changed by rahul*/
                 JSONObject metadata = baseMessage.getMetadata();
                 try {
-                    JSONObject injectedObject = metadata.getJSONObject("@injected");
-                    if (injectedObject.has("extensions")) {
-                        JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
-                        if (extensionsObject.has("message-translation")) {
-                            JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
-                            JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                    //JSONObject injectedObject = metadata.getJSONObject("@injected");
+                    //if (injectedObject.has("extensions")) {
+                        //JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                        if (metadata.has("message-translation_languages")) {
+                            //JSONObject messageTranslationObject = metadata.getJSONObject("message-translation_languages");
+                            JSONArray translations = metadata.getJSONArray("message-translation_languages");
                             HashMap<String, String> translationsMap = new HashMap<String, String>();
 
                             for (int ii = 0; ii < translations.length(); ii++) {
@@ -1340,7 +1357,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 }
                             }
                         }
-                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1394,7 +1411,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     private void setCustomData(CustomMessageViewHolder viewHolder, int i) throws JSONException {
-
         BaseMessage baseMessage = messageList.get(i);
         if (baseMessage != null) {
             if (!baseMessage.getSender().getUid().equals(loggedInUser.getUid())) {
@@ -1455,8 +1471,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 viewHolder.txtTime.setText(Utils.getHeaderDate(baseMessage.getReadAt() * 1000));
 
                 try {
-
-
                     try {
                         s = baseMessage.getMetadata().getString("whiteboard_URL_one");
                         if (!s.isEmpty()) {
@@ -1469,15 +1483,19 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 translatedText = ss;
                             }
                         } catch (Exception eee) {
-                            String ss = baseMessage.getMetadata().getString("whiteboard_URL_group");
-                            if (!ss.isEmpty()) {
-                                translatedText = ss;
+                            String whiteboard_URL_group="";
+                            whiteboard_URL_group = baseMessage.getMetadata().getString("whiteboard_URL_group");
+                            if (!whiteboard_URL_group.isEmpty()) {
+                                translatedText="";
+                                translatedText = whiteboard_URL_group;
+                                Log.i(TAG, "setCustomData: ss "+whiteboard_URL_group);
                             }
                         }
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.i(TAG, "setCustomData: exception ");
                     try {
                         String ss = baseMessage.getMetadata().getString("whiteboard_URL");
                         if (!ss.isEmpty()) {
@@ -1519,6 +1537,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onClick(View v) {
                     Intent intent = new Intent(context, WhiteboardActivity.class);
                     intent.putExtra("whiteBoardUrl", translatedText);
+                    Log.i(TAG, "onClick: sessionId"+translatedText);
                     context.startActivity(intent);
 
                 }
@@ -2055,17 +2074,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         JSONObject metadata = baseMessage.getMetadata();
         if (metadata != null) {
             try {
-
                 JSONObject injectedObject = metadata.getJSONObject("@injected");
                 if (injectedObject != null && injectedObject.has("extensions")) {
                     JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
                     if (extensionsObject != null && extensionsObject.has("voice-transcription")) {
                         JSONObject transcriptionObject = extensionsObject.getJSONObject("voice-transcription");
-
                         Log.e("transcription", transcriptionObject.toString());
                     }
                 }
-
             } catch (Exception e) {
 
             }
@@ -2388,7 +2404,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super(itemView);
 
             type = (int) itemView.getTag();
-
             stickerView = itemView.findViewById(R.id.sticker_view);
             tvUser = itemView.findViewById(R.id.tv_user);
             ivUser = itemView.findViewById(R.id.iv_user);
@@ -2402,9 +2417,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     public class DateItemHolder extends RecyclerView.ViewHolder {
-
         TextView txtMessageDate;
-
         DateItemHolder(@NonNull View itemView) {
             super(itemView);
             txtMessageDate = itemView.findViewById(R.id.txt_message_date);

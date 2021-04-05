@@ -7,10 +7,12 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,12 +210,16 @@ public class CaseloadContactActivity extends AppCompatActivity implements View.O
                 break;
 
             case R.id.linearlayout_message:
+                /*code commented after discussed with sunil here for all instances we are sending username in intent
+                 * commented and changed by rahulmsk*/
                 Intent intent = new Intent(getApplicationContext(), CreateMailActivity.class);
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
+                 /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
                     intent.putExtra(General.NAME, userName);
                 } else {
                     intent.putExtra(General.NAME, name);
-                }
+                }*/
+                intent.putExtra(General.NAME, userName);
+                startActivity(intent);
                 startActivity(intent);
                 break;
         }

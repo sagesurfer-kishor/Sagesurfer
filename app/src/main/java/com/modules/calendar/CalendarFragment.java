@@ -149,6 +149,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener, 
             //Changed after discussion with Sagar and Nirmal as Sagar have implemented owner_id and isModerator on backend for all instances
             if ((Preferences.get(General.GROUP_OWNER_ID) != null && Preferences.get(General.GROUP_OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID)))
                     || (Preferences.get(General.IS_MODERATOR) != null && Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1"))
+                    || (Preferences.get(General.IS_CC) != null && Preferences.get(General.IS_CC).equalsIgnoreCase("1"))
                     || General.isCurruntUserHasPermissionToCreateEvent()) {
                 fab.setVisibility(View.VISIBLE);
             } else {

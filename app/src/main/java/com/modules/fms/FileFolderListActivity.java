@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.github.clans.fab.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
@@ -57,7 +57,7 @@ public class FileFolderListActivity extends AppCompatActivity implements View.On
     private AppCompatImageView errorIcon;
 
     Toolbar toolbar;
-    private FloatingActionButton fab;
+    private com.google.android.material.floatingactionbutton.FloatingActionButton fab;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -103,7 +103,7 @@ public class FileFolderListActivity extends AppCompatActivity implements View.On
         listView = (ListView) findViewById(R.id.swipe_menu_listview);
         listView.setDividerHeight(3);
 
-        fab = (FloatingActionButton) findViewById(R.id.listview_fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab_listview);
         fab.setOnClickListener(this);
         fab.setImageResource(R.drawable.ic_add_white);
         fab.setVisibility(View.VISIBLE);
@@ -256,7 +256,7 @@ public class FileFolderListActivity extends AppCompatActivity implements View.On
             case R.id.imagebutton_activitytoolbar_send:
 
                 break;
-            case R.id.listview_fab:
+            case R.id.fab_listview:
                 Intent createIntent = new Intent(getApplicationContext(), UploadFileActivity.class);
                 createIntent.putExtra(General.GROUP_ID, Integer.parseInt(Preferences.get(General.GROUP_ID)));
                 startActivity(createIntent);

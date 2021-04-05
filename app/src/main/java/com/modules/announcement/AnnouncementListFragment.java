@@ -111,17 +111,17 @@ public class AnnouncementListFragment extends Fragment implements View.OnClickLi
             }
         });
 
-        fab = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         fab.setOnClickListener(this);
         fab.setImageResource(R.drawable.ic_add_white);
 
         if (Preferences.get(General.OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID))
-                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")) {
+                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
+                || Preferences.get(General.IS_CC).equalsIgnoreCase("1") ) {
             fab.setVisibility(View.VISIBLE);
         } else {
             fab.setVisibility(View.GONE);
         }
-
         getHeight(fab);
         return view;
     }
@@ -239,7 +239,7 @@ public class AnnouncementListFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.listview_fab:
+            case R.id.fab_listview:
                 Intent createIntent = new Intent(activity.getApplicationContext(), PostAnnouncementActivity.class);
                 activity.startActivity(createIntent);
                 break;

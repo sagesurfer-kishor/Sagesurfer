@@ -2,7 +2,6 @@ package com.sagesurfer.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +16,7 @@ import com.bumptech.glide.Glide;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
-import com.modules.cometchat_7_30.ChatFragment_;
-import com.sagesurfer.collaborativecares.BlockedMembersActivity;
-import com.sagesurfer.collaborativecares.MainActivity;
+import com.modules.cometchat_7_30.CometChatMainFragment;
 import com.sagesurfer.collaborativecares.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +28,7 @@ import java.util.List;
 public class Blockeduserlistadapter extends RecyclerView.Adapter<Blockeduserlistadapter.MyViewHolder> {
     private final Context mContext;
     private final List<User> userList;
-    private static final String TAG = ChatFragment_.class.getSimpleName();
+    private static final String TAG = CometChatMainFragment.class.getSimpleName();
 
 
     public Blockeduserlistadapter(Context mContext, List<User> userList) {
@@ -77,7 +74,7 @@ public class Blockeduserlistadapter extends RecyclerView.Adapter<Blockeduserlist
         User teams_ = userList.get(position);
 
         holder.title.setText(teams_.getName());
-
+        holder.imgBan.setText("Unblock");
         // unblocked user form list
         holder.imgBan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +88,6 @@ public class Blockeduserlistadapter extends RecyclerView.Adapter<Blockeduserlist
                         // Handle unblock users success.
                         userList.remove(position);
                         notifyDataSetChanged();
-
                     }
 
                     @Override

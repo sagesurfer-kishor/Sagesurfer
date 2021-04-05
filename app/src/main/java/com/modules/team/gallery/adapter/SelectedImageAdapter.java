@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,6 +111,7 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
                 holder.galleryTickSelected.setVisibility(View.VISIBLE);
                 images_.setSelectImgs(true);
                 notifyDataSetChanged();
+                Log.e(TAG, "onClick:galary tick " );
                 SelectedImageListActivity.showGalleryImages();
             }
         });
@@ -122,6 +124,7 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
                 images_.setSelectImgs(false);
                 notifyDataSetChanged();
                 SelectedImageListActivity.showGalleryImages();
+                Log.e(TAG, "onClick: galaryTickSelected" );
             }
         });
 

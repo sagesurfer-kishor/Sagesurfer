@@ -68,6 +68,7 @@ public class General {
     public static final String ERROR = "error";
     public static final String TEAM = "team";
     public static final String TEAM_NAME = "team_name";
+    public static final String TEAM_NAME_NEW = "saved_team_name";
     public static final String TEAM_ID = "team_id";
     public static final String IS_DELETE = "is_delete";
     public static final String IS_REVIEWER = "is_reviewer";
@@ -124,6 +125,7 @@ public class General {
     public static final String CREATED_BY = "created_by";
     public static final String FULL_NAME = "full_name";
     public static final String TYPE = "type";
+    public static final String MEMBER_USER_ID = "member_user_id";
     public static final String CONTACTED_LAST_TYPE = "contacted_last_type";
     public static final String LAST_TEAM_INTERACTION_TYPE = "last_team_interaction_type";
     public static final String LAST_TEAM_INTERACTION = "last_team_interaction";
@@ -815,6 +817,9 @@ public class General {
     public static final String STR_ACTION_WEEK = "Weekly";
     public static final String STR_ACTION_OTHER = "Other";
     public static final String STR_ACTION_DAY_PLAIN_DAY = "Day";
+    public static final String IS_CASE_MANAGER = "Case Manager";
+    public static final String MY_TEST_TAG = "my_test_tag";
+    public static final String IS_STUDENT = "Student";
 
 
     public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {

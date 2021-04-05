@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.modules.wall.CommentDialog;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
@@ -47,7 +49,7 @@ import okhttp3.RequestBody;
  * Last Modified on 14-12-2017
  */
 
-public class PollListFragment extends Fragment implements View.OnClickListener {
+public class PollListFragment extends Fragment implements View.OnClickListener, CommentDialog.callGetPollMethod {
 
     private static final String TAG = PollListFragment.class.getSimpleName();
     private ArrayList<Poll_> pollArrayList;
@@ -60,6 +62,7 @@ public class PollListFragment extends Fragment implements View.OnClickListener {
     private static Activity activity;
     private MainActivityInterface mainActivityInterface;
 
+    
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
@@ -120,7 +123,8 @@ public class PollListFragment extends Fragment implements View.OnClickListener {
 
         //Changed after discussion with Sagar and Nirmal as Sagar have implemented owner_id and isModerator on backend for all instances
         if ((Preferences.get(General.OWNER_ID) != null && Preferences.get(General.OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID)))
-                || (Preferences.get(General.OWNER_ID) != null && Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1"))) {
+                || (Preferences.get(General.OWNER_ID) != null && Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1"))
+                || (Preferences.get(General.OWNER_ID) != null && Preferences.get(General.IS_CC).equalsIgnoreCase("1"))) {
             fab.setVisibility(View.VISIBLE);
         } else {
             fab.setVisibility(View.GONE);
@@ -135,9 +139,11 @@ public class PollListFragment extends Fragment implements View.OnClickListener {
         getPoll();
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "onResume: called");
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.poll));
         mainActivityInterface.setToolbarBackgroundColor();
         fab.setBackgroundTintList(ColorStateList.valueOf(GetColor.getHomeIconBackgroundColorColorParse(true)));
@@ -148,6 +154,7 @@ public class PollListFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void onClick(View v) {
@@ -173,7 +180,7 @@ public class PollListFragment extends Fragment implements View.OnClickListener {
     }
 
     // make network call to fetch poll posted in respective team
-    private void getPoll() {
+    public void getPoll() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.GET_POLL);
         requestMap.put(General.GROUP_ID, Preferences.get(General.TEAM_ID));
@@ -210,6 +217,12 @@ public class PollListFragment extends Fragment implements View.OnClickListener {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void getPollFromCommentBackPressed() {
+        getPoll();
+        Log.i(TAG, "getPollFromCommentBackPressed: ");
     }
 
     private class BottomOffsetDecoration extends RecyclerView.ItemDecoration {

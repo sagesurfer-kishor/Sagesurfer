@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.modules.calendar.CustomCalendar;
-import com.modules.team.ContactRecycleViewAdapter;
 import com.sagesurfer.adapters.MoodStatsActivityCountAdapter;
 import com.sagesurfer.adapters.MoodStatsMoodCountAdapter;
 import com.sagesurfer.adapters.MoodStatsPendingEntriesAdapter;
@@ -31,7 +30,6 @@ import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.library.GetColor;
-import com.sagesurfer.library.GetErrorResources;
 import com.sagesurfer.models.MoodStats_;
 import com.sagesurfer.network.MakeCall;
 import com.sagesurfer.network.NetworkCall_;

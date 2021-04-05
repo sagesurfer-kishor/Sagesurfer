@@ -33,7 +33,6 @@ import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.interfaces.MainActivityInterface;
-import com.sagesurfer.library.CheckRole;
 import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetErrorResources;
 import com.sagesurfer.network.NetworkCall_;
@@ -112,7 +111,7 @@ public class TeamTalkListFragment extends Fragment implements View.OnClickListen
             }
         });
 
-        fab = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         fab.setImageResource(R.drawable.ic_add_white);
         fab.setOnClickListener(this);
 
@@ -219,7 +218,7 @@ public class TeamTalkListFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.listview_fab:
+            case R.id.fab_listview:
                 Intent createIntent = new Intent(activity.getApplicationContext(), CreateTeamTalkActivity.class);
                 activity.startActivity(createIntent);
                 activity.overridePendingTransition(0, 0);

@@ -3,9 +3,11 @@ package com.firebase;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,18 +19,19 @@ import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.Call;
 import com.cometchat.pro.helpers.CometChatHelper;
 import com.cometchat.pro.models.BaseMessage;
-import com.cometchat.pro.models.TextMessage;
+import com.cometchat.pro.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.modules.cometchat_7_30.ChatFragment_;
+import com.modules.cometchat_7_30.CometChatFriendsListFragment_;
 import com.sagesurfer.collaborativecares.LoginActivity;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.logger.Logger;
 import com.sagesurfer.network.AppConfig;
+import com.sagesurfer.utilities.AppInfo;
 import com.storage.preferences.Preferences;
 
 import org.json.JSONException;
@@ -43,54 +46,60 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import constant.StringContract;
+import screen.messagelist.CometChatMessageScreen;
+import utils.Utils;
 
 /**
  * @author Kailash Karankal
  **/
-
 /*
  * This file contains firebase messaging service to get firabase push messages
  * Methods is added to parse and show push notifications
  */
-
-
 public class MessagingService extends FirebaseMessagingService {
     private static final String TAG = MessagingService.class.getSimpleName();
-    public static final String PUSH_CHANNEL = "push_channel";
     private NotificationUtils notificationUtils;
-
-
     private JSONObject json;
-    private Intent intent;
     private int count = 0;
     private Call call;
+    Intent intentMain;
     JSONObject messageData;
-    private TextMessage textMessage;
-
     public static String token;
     private static final int REQUEST_CODE = 12;
-    private Context mContext;
+   /* private Context mContext;
+        private Intent intent;
+   public static final String PUSH_CHANNEL = "push_channel";
     private Random random = new Random();
-    private int singleNotificationId, bundleNotificationId;
+    private boolean isText;
+    private int singleNotificationId, bundleNotificationId;*/
 
     private boolean isCall;
-    private boolean isText;
+    private boolean isChatScreen, IsFriendListingPage;
+    SharedPreferences preferencesCheckCurrentActivity;
+    SharedPreferences.Editor editor;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.e("notification", remoteMessage.toString());
+        /* this preferences used to know that chat creen is open or not if it is open we are not going to show notification*/
+        preferencesCheckCurrentActivity = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+        isChatScreen = preferencesCheckCurrentActivity.getBoolean("IsChatScreen", false);
+        IsFriendListingPage = preferencesCheckCurrentActivity.getBoolean("IsFriendListingPage", false);
 
+        intentMain = new Intent(this, MainActivity.class);
+
+        Log.e("notification received..", remoteMessage.toString());
         Logger.error("Debug", "Firebase Notification payload : " + remoteMessage.getData().toString(), getApplicationContext());
+
         Preferences.save(General.IS_PUSH_NOTIFICATION_SENT, false);
+
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             handleNotification(remoteMessage.getNotification().getBody());
         }
+        // Check if message contains a data payload
 
-        // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             try {
                 if (remoteMessage.getData().containsKey("action")) {
@@ -99,7 +108,8 @@ public class MessagingService extends FirebaseMessagingService {
                     //  }
                 } else {
                     Logger.error("Debug", "Firebase Notification payload12 : " + remoteMessage.getData().toString(), getApplicationContext());
-                    JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                    JSONObject json = new JSONObject(remoteMessage.getData());
+                    Log.i(TAG, "onMessageReceived: data " + json.toString());
                     handleDataMessage(json);
                 }
             } catch (Exception e) {
@@ -107,11 +117,16 @@ public class MessagingService extends FirebaseMessagingService {
             }
         }
 
+/*
+        CometChatMessageScreen myFragment = (CometChatMessageScreen) getSupportFragmentManager().findFragmentByTag("MY_FRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+        }
+*/
         //Comet chat messages
         try {
             count++;
             json = new JSONObject(remoteMessage.getData());
-
             messageData = new JSONObject(json.getString("message"));
             String title = messageData.getString("receiver");
             String receiverType = messageData.getString("receiverType");
@@ -122,12 +137,19 @@ public class MessagingService extends FirebaseMessagingService {
             if (baseMessage instanceof Call) {
                 call = (Call) baseMessage;
                 isCall = true;
-            }
+                if (!AppInfo.isAppRunning(getApplicationContext(),"com.sagesurfer.collaborativecares"))
+                {
+                    showNotifcation(baseMessage);
+                }
+            }else{
+
             showNotifcation(baseMessage);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.i(TAG, "onMessageReceived: error " + e.getMessage());
         }
-
     }
 
     public static void subscribeUserNotification(String UID) {
@@ -168,11 +190,12 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         token = s;
-        Log.e(TAG, "onNewToken: " + s);
+        Log.d(TAG, "onNewToken: " + s);
     }
 
 
     private void handleNotification(String message) {
+        Log.d(TAG, "handleNotification: ");
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
             Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
@@ -186,12 +209,10 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     private void handleDataMessage(JSONObject json) {
-        Logger.debug(TAG, "" + json, getApplicationContext());
+        Log.d(TAG, "handleDataMessage " + json);
+
         try {
             JSONObject data = json.getJSONObject("data");
-
-            //{data={"image":"","is_background":false,"ampm":"pm","groupid":"0","ismodrator":"0","title":"You have daily dosage due","message":"Did you take the medicine in the night (PM)?","menu_id":"24_","timestamp":"2020-05-25 10:39:29"}}
-
             Preferences.initialize(getApplicationContext());
             String title = data.getString("title");
             String message = data.getString("message");
@@ -277,71 +298,90 @@ public class MessagingService extends FirebaseMessagingService {
 
     // Show text notification
     private void showNotificationMessage(Context context, String title, String message, String timeStamp, String type, Intent intent) {
-        notificationUtils = new NotificationUtils(context);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //timeStamp is notification id to make notification stack
-        notificationUtils.showNotificationMessage(title, message, timeStamp, type, intent);
+        Log.e(TAG, "showNotificationMessage: ");
+        if (!isChatScreen) {
+            notificationUtils = new NotificationUtils(context);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //timeStamp is notification id to make notification stack
+            notificationUtils.showNotificationMessage(title, message, timeStamp, type, intent);
+        } else {
+            Log.i(TAG, "showNotificationMessage: Is chat screen");
+        }
     }
 
     // Show notifications with image or image with text
     private void showNotificationMessageWithBigImage(Context context, String title, String message, String timeStamp, String type, Intent intent, String imageUrl) {
-        notificationUtils = new NotificationUtils(context);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, type, intent, imageUrl);
+        if (!isChatScreen) {
+            notificationUtils = new NotificationUtils(context);
+            Log.e(TAG, "showNotificationMessageWithBigImage: ");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            notificationUtils.showNotificationMessage(title, message, timeStamp, type, intent, imageUrl);
+        } else {
+            Log.i(TAG, "showNotificationMessageWithBigImage: Is chat screen");
+        }
     }
 
     private void showNotifcation(BaseMessage baseMessage) {
-
         try {
-            int m = (int) ((new Date().getTime()));
-            String GROUP_ID = "group_id";
+            if (!isChatScreen) {
+                Log.e(TAG, "showNotifcation: " + json.toString());
+                int m = (int) ((new Date().getTime()));
+                String GROUP_ID = "group_id";
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "2")
+                        .setSmallIcon(R.drawable.ic_sage_icon)
+                        .setContentTitle(json.getString("title"))
+                        .setContentText(json.getString("alert"))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setColor(getResources().getColor(R.color.colorPrimary))
+                        .setLargeIcon(getBitmapFromURL(baseMessage.getSender().getAvatar()))
+                        .setGroup(GROUP_ID)
+                        .setAutoCancel(true)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setContentIntent(getIntent())
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "2")
-                    .setSmallIcon(R.drawable.ic_sage_icon)
-                    .setContentTitle(json.getString("title"))
-                    .setContentText(json.getString("alert"))
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setColor(getResources().getColor(R.color.colorPrimary))
-                    .setLargeIcon(getBitmapFromURL(baseMessage.getSender().getAvatar()))
-                    .setGroup(GROUP_ID)
-                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                    .setContentIntent(getIntent())
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                NotificationCompat.Builder summaryBuilder = new NotificationCompat.Builder(this, "2")
+                        .setContentTitle("CometChat")
+                        .setContentText(count + " messages")
+                        .setSmallIcon(R.drawable.ic_sage_icon)
+                        .setGroup(GROUP_ID)
+                        .setAutoCancel(true)
+                        .setGroupSummary(true);
 
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                if (isCall) {
+                    builder.setGroup(GROUP_ID + "Call");
+                    //intentMain.putExtra("callJson", (Parcelable) json);
+                    Utils.startCallIntent(getApplicationContext(), (User) call.getCallInitiator(), call.getType(),
+                            false, call.getSessionId());
 
-            NotificationCompat.Builder summaryBuilder = new NotificationCompat.Builder(this, "2")
-                    .setContentTitle("CometChat")
-                    .setContentText(count + " messages")
-                    .setSmallIcon(R.drawable.ic_sage_icon)
-                    .setGroup(GROUP_ID)
-                    .setGroupSummary(true);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-
-            if (isCall) {
-                builder.setGroup(GROUP_ID + "Call");
-                if (json.getString("alert").equals("Incoming audio call") || json.getString("alert").equals("Incoming video call")) {
-                    builder.setOngoing(true);
-                    builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-                    builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
-                    builder.addAction(0, "Answers", PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE, getCallIntent("Answers"), PendingIntent.FLAG_UPDATE_CURRENT));
-                    builder.addAction(0, "Decline", PendingIntent.getBroadcast(getApplicationContext(), 1, getCallIntent("Decline"), PendingIntent.FLAG_UPDATE_CURRENT));
+                    //intentMain.putExtra("CallInitiator",""+)
+                    if (json.getString("alert").equals("Incoming audio call") || json.getString("alert").equals("Incoming video call")) {
+                        builder.setOngoing(true);
+                        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+                        builder.addAction(0, "Answers", PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE, getCallIntent("Answers"), PendingIntent.FLAG_UPDATE_CURRENT));
+                        builder.addAction(0, "Decline", PendingIntent.getBroadcast(getApplicationContext(), 1, getCallIntent("Decline"), PendingIntent.FLAG_UPDATE_CURRENT));
+                    }
+                    notificationManager.notify(05, builder.build());
+                } else {
+                    notificationManager.notify(baseMessage.getId(), builder.build());
+                    notificationManager.notify(0, summaryBuilder.build());
                 }
-                notificationManager.notify(05, builder.build());
             } else {
-
-                notificationManager.notify(baseMessage.getId(), builder.build());
-                notificationManager.notify(0, summaryBuilder.build());
+                Log.i(TAG, "showNotifcation: Is chat screen");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.i(TAG, "showNotifcation: error 2" + e.getMessage());
+
         }
     }
 
     private Intent getCallIntent(String title) {
+        Log.e(TAG, "getCallIntent: ");
         Intent callIntent = new Intent(getApplicationContext(), CallNotificationAction.class);
         callIntent.putExtra(StringContract.IntentStrings.SESSION_ID, call.getSessionId());
         callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -350,23 +390,69 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     private PendingIntent getIntent() {
-        Intent intent = new Intent(this, MainActivity.class);
+
         if (Preferences.contains(General.IS_LOGIN) && Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
             // User is logged in
             try {
                 // Getting team logs id
-                String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
-                intent.putExtra("team_logs_id", team_logs_id);
-                intent.putExtra("receiver", messageData.optString("receiver"));
-                intent.putExtra("sender", messageData.optString("sender"));
-                intent.putExtra("receiverType", messageData.optString("receiverType"));
+                if (!isCall) {
+                    if (messageData.has("type")) {
+                        String type = messageData.getString("type");
+                        if (type.equals("groupMember")) {
+                            String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
+                            intentMain.putExtra("team_logs_id", team_logs_id);
+                            intentMain.putExtra("receiver", messageData.optString("receiver"));
+                            intentMain.putExtra("sender", messageData.optString("sender"));
+                            intentMain.putExtra("receiverType", messageData.optString("receiverType"));
+                            intentMain.putExtra("username", "" + json.get("title"));
+                            intentMain.putExtra("type", "groupMember");
+                        } else {
+                        String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
+                        intentMain.putExtra("team_logs_id", team_logs_id);
+                        intentMain.putExtra("receiver", messageData.optString("receiver"));
+                        intentMain.putExtra("sender", messageData.optString("sender"));
+                        intentMain.putExtra("receiverType", messageData.optString("receiverType"));
+                        intentMain.putExtra("username", "" + json.get("title"));
+                        }
+                    }
+//              intent.putExtra("json", (Parcelable) json);
+                } else {
+                    String team_logs_id = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on")
+                            .getJSONObject("entity").getJSONObject("data").getJSONObject("metadata").getString("team_logs_id");
+                    String receiver = messageData.getString("receiver");
+
+                    String sender = messageData.getJSONObject("data").getJSONObject("entities").
+                            getJSONObject("by").getJSONObject("entity").getString("uid");
+
+                    String lastActiveAt = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("lastActiveAt");
+                    String uid = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("uid");
+                    String role = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("role");
+                    String name = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("name");
+                    String avatar = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("avatar");
+                    String status = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("status");
+                    String sessionid = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on").getJSONObject("entity").getString("sessionid");
+
+                    String callType = messageData.getString("type");
+                    Log.i(TAG, "getIntent: teamLogID " + team_logs_id + " receiver" + receiver + " sender" + sender);
+                    /*intentMain.putExtra("receiver", ""+receiver);
+                    intentMain.putExtra("sender", ""+sender);*/
+                    intentMain.putExtra("lastActiveAt", "" + lastActiveAt);
+                    intentMain.putExtra("uid", "" + uid);
+                    intentMain.putExtra("role", "" + role);
+                    intentMain.putExtra("name", "" + name);
+                    intentMain.putExtra("avatar", "" + avatar);
+                    intentMain.putExtra("status", "" + status);
+                    intentMain.putExtra("callType", "" + callType);
+                    intentMain.putExtra("sessionid", "" + sessionid);
+                }
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         } else
             // User has not logged in. Send him to login screen
-            intent = new Intent(this, LoginActivity.class);
-        return PendingIntent.getActivity(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            intentMain = new Intent(this, LoginActivity.class);
+        return PendingIntent.getActivity(this, REQUEST_CODE, intentMain, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public Bitmap getBitmapFromURL(String strURL) {
@@ -387,5 +473,4 @@ public class MessagingService extends FirebaseMessagingService {
             return null;
         }
     }
-
 }

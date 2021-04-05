@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sagesurfer.animation.ActivityTransition;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
@@ -78,7 +77,7 @@ public class PendingFormFragment extends Fragment {
         activity = getActivity();
 
 
-        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createButton.setVisibility(View.GONE);
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);

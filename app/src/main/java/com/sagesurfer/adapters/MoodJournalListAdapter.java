@@ -2,6 +2,7 @@ package com.sagesurfer.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -135,11 +136,11 @@ public class MoodJournalListAdapter extends ArrayAdapter<MoodJournalData_> {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")){
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
             viewHolder.linearLayoutDescription1.setVisibility(View.GONE);
             viewHolder.linearLayoutDescription2.setVisibility(View.GONE);
             viewHolder.linearLayoutDescription3.setVisibility(View.GONE);
-        }else {
+        } else {
             viewHolder.linearLayoutDescription1.setVisibility(View.VISIBLE);
             viewHolder.linearLayoutDescription2.setVisibility(View.VISIBLE);
             viewHolder.linearLayoutDescription3.setVisibility(View.VISIBLE);
@@ -284,10 +285,12 @@ public class MoodJournalListAdapter extends ArrayAdapter<MoodJournalData_> {
                 } else {
                     viewHolder.locationOneText.setText("N/A");
                 }
-                setTextColor(moodOne.getMood_name(), viewHolder.moodOneText, viewHolder.timeOneText, viewHolder.activityOneText);
-                setImage(viewHolder.moodOneImageView, moodOne.getMood_url());
-                setImage(viewHolder.activityOneImageView, moodOne.getActivity_url());
 
+                if (moodOne.getMood_name() != null) {
+                    setTextColor(moodOne.getMood_name(), viewHolder.moodOneText, viewHolder.timeOneText, viewHolder.activityOneText);
+                    setImage(viewHolder.moodOneImageView, moodOne.getMood_url());
+                    setImage(viewHolder.activityOneImageView, moodOne.getActivity_url());
+                }
                 if (journalList.get(position).getMood().get(1).getStatus() == 1) {
                     MoodJournalDataMood_ moodTwo = journalList.get(position).getMood().get(1);
                     viewHolder.moodTwoLinearLayout.setVisibility(View.VISIBLE);
@@ -528,7 +531,7 @@ public class MoodJournalListAdapter extends ArrayAdapter<MoodJournalData_> {
         View moodOneView, moodTwoView;
         CardView cardViewActions;
         TextView moodAdded, moodAddedOne, moodAddedTwo;
-        LinearLayout linearLayoutDescription1,linearLayoutDescription2,linearLayoutDescription3;
+        LinearLayout linearLayoutDescription1, linearLayoutDescription2, linearLayoutDescription3;
     }
 
     private String getDate(long time) {

@@ -176,7 +176,6 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
                 viewAddGoalActivityLineOne.setBackgroundColor(this.getResources().getColor(R.color.disable_button_color));
                 viewAddGoalActivityLineTwo.setBackgroundColor(this.getResources().getColor(R.color.disable_button_color));
                 viewAddGoalActivityLineThree.setBackgroundColor(this.getResources().getColor(R.color.disable_button_color));
-
                 textViewActivityToolbarPost.setText(this.getResources().getString(R.string.next));
                 break;
             case 1:
@@ -194,12 +193,10 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
                 textViewAddGoalActivityBubbleOne.setBackgroundResource(R.drawable.primary_circle);
                 textViewAddGoalActivityBubbleTwo.setBackgroundResource(R.drawable.primary_circle);
                 textViewAddGoalActivityBubbleThree.setBackgroundResource(R.drawable.primary_circle);
-
                 viewAddGoalActivityLineZero.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
                 viewAddGoalActivityLineOne.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
                 viewAddGoalActivityLineTwo.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
                 viewAddGoalActivityLineThree.setBackgroundColor(this.getResources().getColor(R.color.colorPrimary));
-
                 textViewActivityToolbarPost.setText(this.getResources().getString(R.string.done));
                 break;
         }

@@ -103,7 +103,7 @@ public class CommentGalleryActivity extends AppCompatActivity {
         commentGalleryImg = findViewById(R.id.care_details_image_view);
         commentTitle = findViewById(R.id.comment_title);
         loginUserName = findViewById(R.id.login_user_name);
-        commentAlbumName = findViewById(R.id.album_name);
+        commentAlbumName = findViewById(R.id.et_album_name);
         commentAlbumDesc = findViewById(R.id.album_description);
         commentCount = findViewById(R.id.comments_count_txt);
         commentBox = findViewById(R.id.comment_message_box);
@@ -334,7 +334,7 @@ public class CommentGalleryActivity extends AppCompatActivity {
     private boolean commentGalleryValidation(View view, EditText commentTxt) {
         String comment = commentTxt.getText().toString().trim();
 
-        if (comment == null || comment.trim().length() <= 3) {
+        if (comment == null || comment.trim().length() <= 2) {
             ShowSnack.viewWarning(view, "Comment: Min 3 char required", getApplicationContext());
             return false;
         }

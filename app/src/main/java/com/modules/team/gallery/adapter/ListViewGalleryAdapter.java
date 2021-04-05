@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.modules.team.gallery.activity.SelectedImageListActivity;
-import com.modules.team.gallery.fragment.GalleryListFragment;
+import com.modules.team.gallery.fragment.GalleryAlbumsListFragment;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.models.Gallery_;
@@ -110,7 +110,7 @@ public class ListViewGalleryAdapter extends RecyclerView.Adapter<ListViewGallery
                 holder.galleryTick.setVisibility(View.GONE);
                 holder.galleryTickSelected.setVisibility(View.VISIBLE);
 
-                GalleryListFragment.showDeleteButton();
+                GalleryAlbumsListFragment.showDeleteButton();
             }
         });
 
@@ -121,7 +121,7 @@ public class ListViewGalleryAdapter extends RecyclerView.Adapter<ListViewGallery
                 holder.galleryTick.setVisibility(View.VISIBLE);
                 holder.galleryTickSelected.setVisibility(View.GONE);
 
-                GalleryListFragment.hideDeleteButton();
+                GalleryAlbumsListFragment.hideDeleteButton();
             }
         });
     }

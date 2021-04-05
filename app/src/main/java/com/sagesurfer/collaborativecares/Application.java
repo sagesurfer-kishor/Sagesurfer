@@ -1,6 +1,5 @@
 package com.sagesurfer.collaborativecares;
 
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,10 +7,8 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
-
 import com.cometchat.pro.core.AppSettings;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
@@ -21,13 +18,9 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.modules.caseload.observer.AppObserver;
 import com.sagesurfer.directory.DirectoryList;
 import com.sagesurfer.network.AppConfig;
-
-
 import java.io.File;
-
 import constant.StringContract;
 import listeners.CometChatCallListener;
-
 
 /**
  * Created by Kailash on 7/18/2018.

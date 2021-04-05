@@ -8,6 +8,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import constant.StringContract;
+import screen.messagelist.General;
 import utils.AnimUtil;
 import helper.CometChatAudioHelper;
 import helper.OutgoingAudioHelper;
@@ -48,10 +50,8 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
 
     private static final int REQUEST_PERMISSION = 1;
 
-    private String TAG = CometChatCallActivity.class.getSimpleName();
-
+    private static final String TAG = "CometChatCallActivity";
     private TextView callTv;
-
 
     //Incoming Call Screen
     private TextView callerName;
@@ -79,7 +79,6 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     public RelativeLayout mainView;
 
     private FloatingActionButton hangUp;
-    //
 
     private String sessionId;
 
@@ -95,6 +94,8 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
 
     private Uri notification;
 
+    static boolean active = false;
+
     public static CometChatAudioHelper cometChatAudioHelper;
 
     public static CometChatCallActivity callActivity;
@@ -104,11 +105,13 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         callActivity = this;
-        handleIntent();
-        setContentView(R.layout.activity_comet_chat_call);
-        handleIntent();
-        initView();
-        setValues();
+        //if (!active) {
+            handleIntent();
+            setContentView(R.layout.activity_comet_chat_call);
+            initView();
+            setValues();
+       // }
+        Log.d(TAG, "onCreate: ");
     }
 
     /**
@@ -150,11 +153,19 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //active = true;
+    }
+
+
     /**
      * This method is used to initialize the view of this activity class.
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initView() {
+        Log.d(TAG, "initView: ");
         callerName = findViewById(R.id.caller_name);
         callMessage = findViewById(R.id.call_type);
         callerAvatar = findViewById(R.id.caller_av);
@@ -184,9 +195,10 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     }
 
     /**
-     * This method is used to set the values recieve from <code>handleIntent()</code>.
+     * This method is used to set the values received from <code>handleIntent()</code>.
      */
     private void setValues() {
+        Log.d(TAG, General.MY_TAG +"setValues: ");
         if (isOngoing)
         {
             cometChatAudioHelper.stop(false);
@@ -211,7 +223,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      * @see CometChatAudioHelper
      */
     public void setCallType(boolean isVideoCall, boolean isIncoming) {
-
+        Log.d(TAG, General.MY_TAG +"setCallType: ");
         AnimUtil.blinkAnimation(tvDots);
 
         if (isIncoming) {
@@ -250,6 +262,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      */
     @Override
     public void onClick(View v) {
+        Log.d(TAG, General.MY_TAG +"onClick: ");
         int id = v.getId();
         if (id == R.id.call_hang_btn) {
             cometChatAudioHelper.stop(false);
@@ -267,7 +280,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     }
 
     /**
-     * This methof is used to reject the call.
+     * When we reject the call this method will invoked
      *
      * @param sessionId is a String, It is call session Id.
      * @param callStatus is a String, It the reason for call being rejected.
@@ -276,6 +289,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      * @see Call
      */
     private void rejectCall(String sessionId, String callStatus) {
+        Log.d(TAG, General.MY_TAG +" rejectCall: ");
         CometChat.rejectCall(sessionId,callStatus, new CometChat.CallbackListener<Call>() {
             @Override
             public void onSuccess(Call call) {
@@ -285,8 +299,8 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onError(CometChatException e) {
                 finish();
-                Log.e(TAG, "onErrorReject: "+e.getMessage()+" "+e.getCode());
-                Toast.makeText(CometChatCallActivity.this,"Unable to end call",Toast.LENGTH_LONG).show();
+                Log.e(TAG, General.MY_TAG +" onErrorReject: "+e.getMessage()+" "+e.getCode());
+                //Toast.makeText(CometChatCallActivity.this,"Unable to end call",Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -302,17 +316,18 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      * @see Call
      */
     private void answerCall(RelativeLayout mainView, String sessionId) {
+        Log.d(TAG, General.MY_TAG +" answerCall: ");
         CometChat.acceptCall(sessionId, new CometChat.CallbackListener<Call>() {
             @Override
             public void onSuccess(Call call) {
-                Log.e("CallMeta",call.toString());
+                Log.e(TAG,General.MY_TAG +" CallMeta"+call.toString());
                 startCall(mainView,call);
             }
 
             @Override
             public void onError(CometChatException e) {
                 finish();
-                Log.e(TAG, "onErrorAccept: "+e.getMessage()+" "+e.getCode());
+                Log.e(TAG, General.MY_TAG +"onErrorAccept: "+e.getMessage()+" "+e.getCode());
             }
 
         });
@@ -328,6 +343,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      * @see CometChat#startCall(Activity, String, RelativeLayout, CometChat.OngoingCallListener)
      */
     private void startCall(RelativeLayout mainView,Call call) {
+        Log.d(TAG, General.MY_TAG +" startCall: ");
         hangUp.setVisibility(View.GONE);
         Utils.startCall(CometChatCallActivity.this,call);
     }
@@ -350,6 +366,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onStop() {
         super.onStop();
+        //active=false;
     }
 
     @Override

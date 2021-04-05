@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -155,10 +157,11 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
         //Changed after discussion with Sagar and Nirmal as Sagar have implemented owner_id and isModerator on backend for all instances
         if (Preferences.get(General.OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID))
                 || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
+                || Preferences.get(General.IS_CC).equalsIgnoreCase("1")
                 || Preferences.get(General.ROLE_ID).equals(General.UserRoleMHAW_CPST_Clinician)) {
             fab.setVisibility(View.VISIBLE);
         } else {
-            fab.setVisibility(View.GONE);
+            fab.setVisibility(View.INVISIBLE);
         }
 
         Intent data = getIntent();
@@ -179,7 +182,6 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
     // Make network call to get calendar counters
     static void getCounters() {
         mSavedEventDays = new ArrayList<>();
-
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, "calendar_counts");
         requestMap.put("year", "" + CustomCalendar.mYear);

@@ -37,8 +37,10 @@ import java.util.regex.Pattern;
 import constant.StringContract;
 import screen.messagelist.CometChatMessageListActivity;
 
-public class JoinTeamFragment extends Fragment implements JoinChatExpandableListAdapter.JoinChatExpandableListAdapterListener {
-    private static final String TAG = JoinTeamFragment.class.getSimpleName();
+import static android.content.Context.MODE_PRIVATE;
+
+public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpandableListAdapter.JoinChatExpandableListAdapterListener {
+    private static final String TAG = CometChatJoinTeamFragment.class.getSimpleName();
 
     private static ExpandableListView expandableListView;
     private JoinChatExpandableListAdapter teamsListAdapter;
@@ -49,19 +51,19 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
     private TextView errorText;
     private LinearLayout cardview_actions;
     private AppCompatImageView errorIcon;
-
+    SharedPreferences preferenOpenActivity;
     private BroadcastReceiver customReceiver;
-    private JoinTeamFragment cometChat;
-    private ChatFragment_ parentActivity;
+//    private CometChatJoinTeamFragment cometChat;
+//    private CometChatMainFragment parentActivity;
 
     SharedPreferences sp;
 
-    public JoinTeamFragment() {
+    public CometChatJoinTeamFragment() {
         // Required empty public constructor
     }
 
-    public static JoinTeamFragment newInstance(String param1, String param2) {
-        JoinTeamFragment fragment = new JoinTeamFragment();
+    public static CometChatJoinTeamFragment newInstance(String param1, String param2) {
+        CometChatJoinTeamFragment fragment = new CometChatJoinTeamFragment();
         return fragment;
     }
 
@@ -69,9 +71,7 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_join_teams, container, false);
-
         sp = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
-
         //SubcribeCometChat_.SubcribeToCometChat(getActivity());
 
         editTextSearch = view.findViewById(R.id.ed_search_friend);
@@ -108,11 +108,7 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
             }
         });
 
-        // fetch all join team from server
-        getTeams();
-
-        //push notification
-        checkIntent();
+        preferenOpenActivity = getActivity().getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
 
         return view;
     }
@@ -126,6 +122,7 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
     @Override
     public void onResume() {
         super.onResume();
+        getTeams();
         //refreshFragment();
     }
 
@@ -134,8 +131,12 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
     }
 
     // open chat window join team
-    private void openChatActivity(String username, String userId, int status, String gid) {
+    private void openChatActivity(String username, String userId, int status, String gid,String memberId) {
         Log.e("userName", username);
+        SharedPreferences sp = getActivity().getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences.Editor editor=sp.edit();
+        editor.putString("membersIds",memberId);
+        editor.putString("teamIds",gid);
         Intent intent = new Intent(getContext(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.NAME, username);
         intent.putExtra(StringContract.IntentStrings.UID, userId);
@@ -155,6 +156,12 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
     // make call to fetch all teams
     private void getTeams() {
         String team_type = "2";
+        if (!primaryList.isEmpty()){
+            primaryList.clear();
+        }
+        if (!searchList.isEmpty()){
+            searchList.clear();
+        }
         primaryList = PerformGetTeamsTask.getMyteam(Actions_.ALL_TEAMS_CHAT, team_type, getActivity(), TAG, false, getActivity());
         if (primaryList.size() == 0) {
             errorLayout.setVisibility(View.VISIBLE);
@@ -166,6 +173,7 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
             searchList.addAll(primaryList);
             teamsListAdapter = new JoinChatExpandableListAdapter(getContext(), primaryList, searchList, this, getActivity());
             expandableListView.setAdapter(teamsListAdapter);
+            checkIntent();
         }
     }
 
@@ -190,6 +198,7 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
     public void onMemberRelativeLayoutClicked(int memberPosition, Teams_ team_) {
         Log.e(TAG, "position: " + memberPosition + " user name: " + team_.getMembersArrayList().get(memberPosition).getUsername());
         Log.e(TAG, "team id: " + team_.getId() + " team name: " + team_.getName());
+        Log.e(TAG, "member id: " + team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
 
         String memberId = String.valueOf(team_.getMembersArrayList().get(memberPosition).getUser_id());
         String teamId = String.valueOf(team_.getId());
@@ -198,16 +207,17 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
         Preferences.save(General.TEAM_ID, team_.getId());
         Preferences.save(General.TEAM_NAME, team_.getName());
 
-        final String contactId = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+        final String receiverCometchatId = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
         final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
         final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
 
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("teamIds", teamId);
-        editor.putString("membersIds", memberId);
+        editor.putString("membersIds", receiverCometchatId);
+
         editor.commit();
 
-        openChatActivity(username, contactId, status, String.valueOf(team_.getId()));
+        openChatActivity(username, receiverCometchatId, status, String.valueOf(team_.getId()),""+team_.getMembersArrayList().get(memberPosition).getUser_id());
 
     }
 
@@ -223,8 +233,40 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
         }
     }
 
-    // Code By Debopam
+    /*created this method for redirecting pushnotification message to chat screen
+    * created by rahulmsk */
     private void checkIntent() {
+        if (preferenOpenActivity.getBoolean("openActivity", false)) {
+            if (getActivity() != null && getActivity().getIntent().hasExtra("receiverType")) {
+                String receiverType = getActivity().getIntent().getStringExtra("receiverType");
+                if (receiverType.equals("user")) {
+                    String team_logs_id = getActivity().getIntent().getStringExtra("team_logs_id");
+                    if (team_logs_id != null && !team_logs_id.isEmpty()) {
+                        if (team_logs_id.endsWith("3")) {
+                            String ids[] = team_logs_id.split(Pattern.quote("_"));
+                            Log.i(TAG, "checkIntent: teamIdIs " + ids[2].substring(1));
+                            Log.i(TAG, "checkIntent: memberId: " + ids[0].substring(0));
+
+                            SharedPreferences.Editor editor = preferenOpenActivity.edit();
+                            editor.putBoolean("openActivity", false);
+                            editor.apply();
+
+                            openChatActivity(
+                                    "" + getActivity().getIntent().getStringExtra("username"),
+                                    "" + getActivity().getIntent().getStringExtra("sender"),
+                                    0,
+                                    "" + Integer.parseInt(ids[2].substring(1)),
+                                    "" + ids[0].substring(0));
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+        //below code is commented by rahul msk
+        /* // Code By Debopam
         if (getActivity() != null && getActivity().getIntent().hasExtra("receiverType")) {
             String receiverType = getActivity().getIntent().getStringExtra("receiverType");
             if (receiverType.equals("user")) {
@@ -252,8 +294,4 @@ public class JoinTeamFragment extends Fragment implements JoinChatExpandableList
                 }
 
             }
-        }
-
-    }
-
-}
+        }*/

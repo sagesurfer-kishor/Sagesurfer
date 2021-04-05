@@ -40,9 +40,8 @@ public class NetworkCall_ {
     private static RefreshToken refreshToken;
 
     public static RequestBody make(HashMap<String, String> map, String url, String tag, Context _context) {
-
         map.put("IMEI", DeviceInfo.getDeviceId(_context));
-
+        Log.e(TAG, "make: 1" );
         refreshToken = new RefreshToken(_context);
         Request request = new Request.Builder()
                 .url(url)
@@ -60,7 +59,7 @@ public class NetworkCall_ {
 
     public static RequestBody make(HashMap<String, String> map, String url, String tag,
                                    Context _context, Activity activity) {
-
+        Log.e(TAG, "make: 2" );
         map.put(General.IMEI, DeviceInfo.getDeviceId(activity));
         map.put(General.VERSION, DeviceInfo.getVersion());
         map.put(General.MODELNO, DeviceInfo.getDeviceName());
@@ -96,8 +95,8 @@ public class NetworkCall_ {
     }
 
     public static String post(String url, RequestBody formBody, String tag, Context _context, Activity activity) throws Exception {
+        Log.e(TAG, "post: " );
         MyCall myCall = new MyCall(url, formBody, tag, _context, activity);
-
         return myCall.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR).get();
     }
 
@@ -351,9 +350,10 @@ public class NetworkCall_ {
         HashMap<String, String> keyMap = KeyMaker_.getKey();
         map.put(General.TOKEN, keyMap.get(General.TOKEN));
         map.put(General.KEY, keyMap.get(General.KEY));
-        map.put(General.USER_ID, Preferences.get(General.USER_ID)); //logged in user id
+        //map.put(General.USER_ID,)
+        /*map.put(General.USER_ID, Preferences.get(General.USER_ID)); //logged in user id
         map.put(General.TIMEZONE, Preferences.get(General.TIMEZONE));
-        map.put(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
+        map.put(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));*/
         Set keys = map.keySet();
         FormBody.Builder formBuilder = new FormBody.Builder();
         for (Object object : keys) {

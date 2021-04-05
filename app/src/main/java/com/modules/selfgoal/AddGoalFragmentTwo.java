@@ -428,7 +428,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
                 textViewCountMandatory.setVisibility(View.VISIBLE);
                 toggleGoalType();
                 break;
-
+            //textViewFragmentAddGoalTwoFrequency
             case R.id.radiobutton_fragmentaddgoaltwo_option:
                 isCounting = false;
                 textViewCountMandatory.setVisibility(View.GONE);

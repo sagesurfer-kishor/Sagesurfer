@@ -26,6 +26,9 @@ public class Notification {
     @SerializedName(General.TYPE)
     private String type;
 
+    @SerializedName(General.MEMBER_USER_ID)
+    private String member_user_id;
+
     @SerializedName(General.SUBTYPE)
     private String sub_type;
 
@@ -482,5 +485,13 @@ public class Notification {
 
     public void setAmpm_msg(String ampm_msg) {
         this.ampm_msg = ampm_msg;
+    }
+
+    public String getMember_user_id() {
+        return member_user_id;
+    }
+
+    public void setMember_user_id(String member_user_id) {
+        this.member_user_id = member_user_id;
     }
 }

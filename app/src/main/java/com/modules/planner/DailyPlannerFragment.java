@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -24,7 +25,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.os.Build;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
@@ -32,6 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.JsonObject;
 import com.modules.announcement.AnnouncementDetailsActivity;
@@ -40,9 +42,9 @@ import com.modules.calendar.CustomCalendarAdapter;
 import com.modules.calendar.CustomCalendarWeekAdapter;
 import com.modules.calendar.EventDetailsActivity;
 import com.modules.calendar.InviteListActivity;
-import com.sagesurfer.collaborativecares.BuildConfig;
 import com.modules.selfgoal.SelfGoalDetailsActivity;
 import com.modules.task.TaskDetailsActivity;
+import com.sagesurfer.collaborativecares.BuildConfig;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
@@ -127,13 +129,14 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
     AppCompatImageView imageViewSwipeRefreshError;
     @BindView(R.id.textview_swiperefresh_error_message)
     TextView textViewSwipeRefreshErrorMessage;
-
+    Handler sageHandler = new Handler();
+    Handler senjamHandler = new Handler();
+    static Handler invitationCounterHandler = new Handler();
     private int mYear = 0, mMonth = 0, mDay = 0;
     private int sYear, sMonth, sDay;
     private static String date;
     private ArrayList<DailyPlanner_> dailyPlannerArrayList = new ArrayList<>();
     private ArrayList<DailyPlanner_> dailyPlannerSearchArrayList = new ArrayList<>();
-
     private static Activity activity;
     private MainActivityInterface mainActivityInterface;
     private Unbinder unbinder;
@@ -261,13 +264,60 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
         mainActivityInterface.setToolbarBackgroundColor();
 
         if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
-            getSenjamPlanner();
+            //getSenjamPlanner();
+            getSenjamDataFromBackgroundThread();
         } else {
-            getSagesurfer();
+            getSageSurferDataFromBackgroundThread();
         }
 
         Preferences.save(General.IS_FROM_DAILYPLANNER, true);
-        getInvitationCounters();
+        getInvitationCounterThread();
+    }
+
+    /* sageplanner data getting through background thread
+     * created by rahul */
+    private void getSageSurferDataFromBackgroundThread() {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getSagesurfer(DailyPlannerFragment.this);
+            }
+        };
+
+        Thread SageDataThread = new Thread(runnable);
+        SageDataThread.start();
+    }
+
+    /*counter data getting through background thread
+     * created by rahul */
+    private void getInvitationCounterThread() {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getInvitationCounters();
+            }
+        };
+
+        Thread invitationCounter = new Thread(runnable);
+        invitationCounter.start();
+    }
+
+    /*senjam planner data getting through background thread
+     * created by rahul */
+    private void getSenjamDataFromBackgroundThread() {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getSenjamPlanner(DailyPlannerFragment.this);
+
+            }
+        };
+
+        Thread SenjamDataThread = new Thread(runnable);
+        SenjamDataThread.start();
     }
 
     @Override
@@ -279,8 +329,14 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
 
     private void setHeader() {
         //dateText.setText(showDate());
-        textViewFragmentDailyPlannerName.setText(Preferences.get(General.NAME));
-        setSunIcon();
+        sageHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textViewFragmentDailyPlannerName.setText(Preferences.get(General.NAME));
+                setSunIcon();
+            }
+        });
+
     }
 
     private String showDate() {
@@ -384,6 +440,7 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
     };
 
     // Make network call to get calendar counters and invitations
+    /*updated by rahul for background threading..*/
     static void getInvitationCounters() {
         //ArrayList<Integer> mSavedEventDays = new ArrayList<>();
         HashMap<String, String> requestMap = new HashMap<>();
@@ -412,10 +469,21 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
                     }
                     int invite_count = jsonObject.get("invitation").getAsInt();
                     if (invite_count <= 0) {
-                        countText.setVisibility(View.GONE);
+                        invitationCounterHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                countText.setVisibility(View.GONE);
+                            }
+                        });
+
                     } else {
-                        countText.setVisibility(View.VISIBLE);
-                        countText.setText(GetCounters.convertCounter(invite_count));
+                        invitationCounterHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                countText.setVisibility(View.VISIBLE);
+                                countText.setText(GetCounters.convertCounter(invite_count));
+                            }
+                        });
                     }
                 }
             } catch (Exception e) {
@@ -519,9 +587,9 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
                 CustomCalendar.previousOnClick(mPrevious, mMonthName, mCalendar, mMaterialCalendarAdapter);
                 date = CustomCalendar.mYear + "-" + (CustomCalendar.mMonth + 1) + "-" + mDay;
                 if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
-                    getSenjamPlanner();
+                    getSenjamDataFromBackgroundThread();
                 } else {
-                    getSagesurfer();
+                    getSageSurferDataFromBackgroundThread();
                 }
                 break;
 
@@ -530,9 +598,9 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
                 CustomCalendar.nextOnClick(mNext, mMonthName, mCalendar, mMaterialCalendarAdapter);
                 date = CustomCalendar.mYear + "-" + (CustomCalendar.mMonth + 1) + "-" + mDay;
                 if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
-                    getSenjamPlanner();
+                    getSenjamDataFromBackgroundThread();
                 } else {
-                    getSagesurfer();
+                    getSageSurferDataFromBackgroundThread();
                 }
                 break;
         }
@@ -568,9 +636,9 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
                     date = CustomCalendar.mYear + "-" + (CustomCalendar.mMonth + 1) + "-" + selectedDate;
                 }
                 if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
-                    getSenjamPlanner();
+                    getSenjamDataFromBackgroundThread();
                 } else {
-                    getSagesurfer();
+                    getSageSurferDataFromBackgroundThread();
                 }
                 break;
             default:
@@ -679,18 +747,22 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
             selectedType = "month";
         }
         if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
-            getSenjamPlanner();
+            getSenjamDataFromBackgroundThread();
         } else {
-            getSagesurfer();
+            getSageSurferDataFromBackgroundThread();
         }
     }
 
 
     // Senjam planner call
-
-    private void getSenjamPlanner() {
-
-        setHeader();
+    /*updated by rahul for background threading..*/
+    private void getSenjamPlanner(DailyPlannerFragment dailyPlannerFragment) {
+        senjamHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                setHeader();
+            }
+        });
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.TIMEZONE, Preferences.get(General.TIMEZONE));
         requestMap.put(General.ACTION, Actions_.GET_DATA);
@@ -707,19 +779,37 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
                     dailyPlannerArrayList = Planner_.parseFeed(response, activity.getApplicationContext(), TAG);
                     if (dailyPlannerArrayList.size() > 0) {
                         if (dailyPlannerArrayList.get(0).getStatus() == 1) {
-                            linearLayoutSwipeRefreshError.setVisibility(View.GONE);
-                            recyclerViewSwipeRefresh.setVisibility(View.VISIBLE);
+                            senjamHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    linearLayoutSwipeRefreshError.setVisibility(View.GONE);
+                                    recyclerViewSwipeRefresh.setVisibility(View.VISIBLE);
 
-                            senjamPlannerListAdapter = new SenjamPlannerListAdapter(activity, dailyPlannerArrayList, this);
-                            recyclerViewSwipeRefresh.setAdapter(senjamPlannerListAdapter);
+                                    senjamPlannerListAdapter = new SenjamPlannerListAdapter(activity, dailyPlannerArrayList, dailyPlannerFragment);
+                                    recyclerViewSwipeRefresh.setAdapter(senjamPlannerListAdapter);
+                                }
+                            });
+
 
 //                            plannerListAdapter = new PlannerListAdapter(activity.getApplicationContext(), dailyPlannerArrayList, this, activity);
 //                            recyclerViewSwipeRefresh.setAdapter(plannerListAdapter);
                         } else {
-                            showError(true, dailyPlannerArrayList.get(0).getStatus());
+                            senjamHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showError(true, dailyPlannerArrayList.get(0).getStatus());
+                                }
+                            });
+
                         }
                     } else {
-                        showError(true, 12);
+                        senjamHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showError(true, 12);
+                            }
+                        });
+
                     }
                     return;
                 }
@@ -727,13 +817,19 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
                 e.printStackTrace();
             }
         }
-        showError(true, 11);
+        senjamHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                showError(true, 11);
+            }
+        });
+
 
     }
 
-// Sagesurfer planner call
-
-    private void getSagesurfer() {
+    // Sagesurfer planner call
+    /*updated by rahul for background threading..*/
+    private void getSagesurfer(DailyPlannerFragment dailyPlannerFragment) {
 
         setHeader();
         HashMap<String, String> requestMap = new HashMap<>();
@@ -744,6 +840,7 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_DAY_PLANNER;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, activity, activity);
+        Log.e(TAG, "getSagesurfer: " + requestBody);
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, activity, activity);
@@ -752,16 +849,34 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
                     dailyPlannerArrayList = Planner_.parseFeed(response, activity.getApplicationContext(), TAG);
                     if (dailyPlannerArrayList.size() > 0) {
                         if (dailyPlannerArrayList.get(0).getStatus() == 1) {
-                            linearLayoutSwipeRefreshError.setVisibility(View.GONE);
-                            recyclerViewSwipeRefresh.setVisibility(View.VISIBLE);
-                            plannerListAdapter = new PlannerListAdapter(activity.getApplicationContext(), dailyPlannerArrayList, this, activity);
-                            recyclerViewSwipeRefresh.setAdapter(plannerListAdapter);
+
+                            sageHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    linearLayoutSwipeRefreshError.setVisibility(View.GONE);
+                                    recyclerViewSwipeRefresh.setVisibility(View.VISIBLE);
+                                    plannerListAdapter = new PlannerListAdapter(activity.getApplicationContext(), dailyPlannerArrayList, dailyPlannerFragment, activity);
+                                    recyclerViewSwipeRefresh.setAdapter(plannerListAdapter);
+                                }
+                            });
 
                         } else {
-                            showError(true, dailyPlannerArrayList.get(0).getStatus());
+                            sageHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showError(true, dailyPlannerArrayList.get(0).getStatus());
+                                }
+                            });
+
                         }
                     } else {
-                        showError(true, 12);
+                        sageHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showError(true, 12);
+                            }
+                        });
+
                     }
                     return;
                 }
@@ -769,12 +884,18 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
                 e.printStackTrace();
             }
         }
-        showError(true, 11);
 
+        sageHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                showError(true, 11);
+            }
+        });
     }
 
     @Override
     public void onSenjamPlannerLayoutClicked(DailyPlanner_ dailyPlanner) {
 
     }
+
 }

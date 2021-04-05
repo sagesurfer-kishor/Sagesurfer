@@ -80,17 +80,17 @@ public class CreateMessageBoardActivity extends AppCompatActivity implements Vie
         postButton.setOnClickListener(this);
 
         TextView teamLabel = (TextView) findViewById(R.id.create_team_talk_select_team_label);
-        TextView teamText = (TextView) findViewById(R.id.create_team_talk_select_team);
+        TextView teamText = (TextView) findViewById(R.id.tv_selected_team_name);
         TextView messageBoxLabel = (TextView) findViewById(R.id.create_team_talk_title_box_label);
         TextView validateText = (TextView) findViewById(R.id.textview_validate);
-        EditText messageBox = (EditText) findViewById(R.id.create_team_talk_title_box);
+        EditText messageBox = (EditText) findViewById(R.id.et_title);
         teamLabel.setVisibility(View.GONE);
         messageBoxLabel.setVisibility(View.GONE);
         validateText.setVisibility(View.GONE);
         teamText.setVisibility(View.GONE);
         messageBox.setVisibility(View.GONE);
 
-        descriptionBox = (EditText) findViewById(R.id.create_team_talk_description_box);
+        descriptionBox = (EditText) findViewById(R.id.et_team_talk_description);
     }
 
     private void showResponses(int status) {

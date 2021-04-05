@@ -10,6 +10,7 @@
         android:id="@+id/groupDetailToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         app:navigationIcon="@drawable/ic_close_24dp"
         app:title="@string/details" />
 
@@ -17,6 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:id="@+id/nested_scrollview"
+        android:background="@color/textColorWhite"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -61,6 +64,7 @@
                         android:id="@+id/group_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/primaryTextColor"
                         tools:text="@tools:sample/lorem/random" />
                 </LinearLayout>
 
@@ -109,6 +113,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:text="@string/administrators"
+                    android:id="@+id/tv_adminstrators"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="18sp" />
 
                 <TextView
@@ -118,6 +124,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="16dp"
+
+                    android:textColor="@color/grey"
                     android:drawableEnd="@drawable/ic_arrow_right_24dp"
                     android:drawablePadding="8dp"
                     android:gravity="center" />
@@ -148,6 +156,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:text="@string/moderators"
+                    android:id="@+id/tv_moderators"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="18sp" />
 
                 <TextView
@@ -157,6 +167,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="16dp"
+                    android:textColor="@color/grey"
                     android:drawableEnd="@drawable/ic_arrow_right_24dp"
                     android:drawablePadding="8dp"
                     android:gravity="center" />
@@ -222,6 +233,7 @@
                 android:layout_marginBottom="8dp"
                 android:letterSpacing="0.1"
                 android:text="@string/members"
+                android:textColor="@color/primaryTextColor"
                 android:textAllCaps="true"
                 android:textSize="@dimen/fourteen"
                 android:textStyle="bold" />
@@ -322,6 +334,7 @@
                         android:paddingEnd="16dp"
                         android:paddingBottom="4dp"
                         android:text="@string/shared_media"
+                        android:textColor="@color/primaryTextColor"
                         android:textAllCaps="true"
                         android:textSize="@dimen/twelve" />
 

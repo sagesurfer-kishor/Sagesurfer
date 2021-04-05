@@ -685,6 +685,7 @@
     <string name="edit_journal">Edit Journal</string>
     <string name="edit_appointment">Edit Appointment Form</string>
     <string name="reschedule_appointment">Reschedule Appointment Form</string>
+    <string name="reschedule_appointment2">Reschedule</string>
     <string name="log_book">Logbook</string>
     <string name="edit_application">Edit Leave Application</string>
     <string name="create_team">Create Team</string>
@@ -1069,8 +1070,13 @@
     <string name="text_cancel">Cancel</string>
     <string name="name_text">Name</string>
     <string name="unblock">unblock</string>
+    <string name="unban">Unban</string>
     <string name="no_conversation_available">no record found</string>
     <string name="create_group">Create Group</string>
     <string name="change_language">Change Language</string>
+    <string name="join_team_message">SageSurfer is not designed to be used for emergencies. If you are experiencing behavioral health or medical emergency, please dial 911.</string>
+    <string name="btn_add_member">Add Member</string>
+    <string name="group_members">Group Members</string>
+    <string name="Cancel_Appointment">Cancel</string>
 
 </resources>

@@ -72,7 +72,7 @@ public class FriendsFragment extends Fragment {
         activity = getActivity();
 
 
-        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createButton.setVisibility(View.GONE);
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
@@ -91,7 +91,7 @@ public class FriendsFragment extends Fragment {
     }
 
 
-    // Make network call to fetch all forms list
+    // Make network call to fetch all friends
     private void getList() {
         friendArrayList = new ArrayList<>();
 

@@ -46,7 +46,6 @@ import com.sagesurfer.library.FileOperations;
 import com.sagesurfer.library.FileUpload;
 import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetThumbnails;
-import com.sagesurfer.library.PathUtils;
 import com.sagesurfer.library.UriUtils;
 import com.sagesurfer.models.Friends_;
 import com.sagesurfer.network.MakeCall;
@@ -90,9 +89,9 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private RadioButton customRadio, defaultRadio;
     private TextView selectFolder, postButton, fileNameText, fileSizeText, removeFileButton;
     private RelativeLayout footerLayout;
-    private EditText commentBox, descriptionBox;
+    private EditText et_commentBox, et_descriptionBox;
     private ImageView fileThumbnail, backImage;
-    private AppCompatImageView addFolderIcon;
+    private AppCompatImageView iv_addFolder;
 
     Toolbar toolbar;
     private SparseIntArray mErrorString;
@@ -147,8 +146,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         selectFolder.setOnClickListener(this);
         selectFolder.setText("root/");
 
-        addFolderIcon = (AppCompatImageView) findViewById(R.id.file_upload_add_folder);
-        addFolderIcon.setOnClickListener(this);
+        iv_addFolder = (AppCompatImageView) findViewById(R.id.iv_add_folder);
+        iv_addFolder.setOnClickListener(this);
 
         footerLayout = (RelativeLayout) findViewById(R.id.file_upload_footer);
 
@@ -160,8 +159,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         removeFileButton = (TextView) findViewById(R.id.file_upload_remove);
         removeFileButton.setOnClickListener(this);
 
-        commentBox = (EditText) findViewById(R.id.file_upload_comment);
-        descriptionBox = (EditText) findViewById(R.id.file_upload_description);
+        et_commentBox = (EditText) findViewById(R.id.file_upload_comment);
+        et_descriptionBox = (EditText) findViewById(R.id.file_upload_description);
 
         toggleAddFolder();
 
@@ -227,7 +226,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             case R.id.file_upload_select_folder:
                 openFoldersSelector();
                 break;
-            case R.id.file_upload_add_folder:
+            case R.id.iv_add_folder:
                 createFoldersDialog();
                 break;
             case R.id.file_upload_custom_radio:
@@ -254,8 +253,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         musicIntent.setType("*/*");
                         startActivityForResult(musicIntent, Chat.INTENT_FILE);
                     } else {
-                        String comment = commentBox.getText().toString().trim();
-                        String description = descriptionBox.getText().toString().trim();
+                        String comment = et_commentBox.getText().toString().trim();
+                        String description = et_descriptionBox.getText().toString().trim();
                         if (validate(comment, description)) {
                             uploadFile(comment, description);
                         }
@@ -327,15 +326,15 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         setThumbnail(file_.getRealName());
 
-        commentBox.setText(comment);
-        commentBox.setSelection(comment.length());
-        descriptionBox.setText(description);
-        descriptionBox.setSelection(description.length());
+        et_commentBox.setText(comment);
+        et_commentBox.setSelection(comment.length());
+        et_descriptionBox.setText(description);
+        et_descriptionBox.setSelection(description.length());
         selectFolder.setText(directory);
         //   folderText.setVisibility(View.VISIBLE);
         //    folderName.setVisibility(View.GONE);
         selectFolder.setEnabled(false);
-        addFolderIcon.setVisibility(View.GONE);
+        iv_addFolder.setVisibility(View.GONE);
         if (file_.getIsDefault() == 1) {
             defaultRadio.setChecked(true);
             customRadio.setChecked(false);
@@ -377,23 +376,23 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             return false;
         }
         if (description.length() < 3 && description.length() > 0) {
-            descriptionBox.setError("Min 3 char required");
+            et_descriptionBox.setError("Min 3 char required");
             return false;
         }
         if (description.length() > 500) {
-            descriptionBox.setError("Max 500 char allowed");
+            et_descriptionBox.setError("Max 500 char allowed");
             return false;
         }
         if (comment == null || comment.length() <= 0) {
-            commentBox.setError("Comment is mandatory");
+            et_commentBox.setError("Comment is mandatory");
             return false;
         }
         if (comment.length() < 3) {
-            commentBox.setError("Min 3 char required");
+            et_commentBox.setError("Min 3 char required");
             return false;
         }
         if (comment.length() > 100) {
-            commentBox.setError("Max 100 char allowed");
+            et_commentBox.setError("Max 100 char allowed");
             return false;
         }
         return true;
@@ -582,10 +581,11 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     // set add folder visibility based on accessibility
     private void toggleAddFolder() {
         if (Preferences.get(General.USER_ID).equalsIgnoreCase(Preferences.get(General.OWNER_ID)) ||
-                Preferences.get(General.USER_ID).equalsIgnoreCase(Preferences.get(General.MODERATOR))) {
-            addFolderIcon.setVisibility(View.VISIBLE);
+                Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
+                ||Preferences.get(General.IS_CC).equalsIgnoreCase("1")) {
+            iv_addFolder.setVisibility(View.VISIBLE);
         } else {
-            addFolderIcon.setVisibility(View.GONE);
+            iv_addFolder.setVisibility(View.GONE);
         }
     }
 

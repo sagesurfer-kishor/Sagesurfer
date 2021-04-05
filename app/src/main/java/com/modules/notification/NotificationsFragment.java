@@ -52,7 +52,6 @@ import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.Group;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sagesurfer.collaborativecares.BuildConfig;
 import com.modules.announcement.AnnouncementDetailsActivity;
 import com.modules.appointment.activity.AppointmentDetailsActivity;
 import com.modules.appointment.model.Appointment_;
@@ -86,6 +85,7 @@ import com.modules.team.PollListFragment;
 import com.modules.team.TeamDetailsActivity;
 import com.modules.teamtalk.activity.TalkDetailsActivity;
 import com.modules.teamtalk.model.TeamTalk_;
+import com.sagesurfer.collaborativecares.BuildConfig;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
@@ -107,7 +107,6 @@ import com.sagesurfer.models.CareUploaded_;
 import com.sagesurfer.models.CaseloadPeerNote_;
 import com.sagesurfer.models.Content_;
 import com.sagesurfer.models.Event_;
-import com.sagesurfer.models.GetGroupsCometchat;
 import com.sagesurfer.models.Goal_;
 import com.sagesurfer.models.MessageBoard_;
 import com.sagesurfer.models.Task_;
@@ -160,7 +159,6 @@ public class NotificationsFragment extends Fragment {
     private ImageButton imageButtonSetting, notificationFilterButton;
     private SwipeRefreshLayout swipeRefreshLayout;
     private NotificationAdapter notificationAdapter;
-
     //notification filter part
     private ArrayList<String> notificationFilterIds;
     private ListView filterlistView;
@@ -200,7 +198,7 @@ public class NotificationsFragment extends Fragment {
         activity = getActivity();
 
         Preferences.initialize(activity.getApplicationContext());
-        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createButton.setVisibility(View.GONE);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
@@ -242,7 +240,6 @@ public class NotificationsFragment extends Fragment {
         });
 
         notificationSrearchFunctionality(view);
-
         notificationFilterData();
 
         sdfDate = new SimpleDateFormat("MMM dd, yyyy");
@@ -730,6 +727,7 @@ public class NotificationsFragment extends Fragment {
                 }
             } else if (NotificationTypeDetector.getType(notificationList.get(position).getType()) == 10) { //Group Invitation
                 isShowErrorMsg = false;
+                Log.i(TAG, "onItemClick: group invitation");
                 Intent detailsIntent = new Intent(activity.getApplicationContext(), InviteListActivity.class);
                 detailsIntent.putExtra(General.TEAM_ID, String.valueOf(notificationList.get(position).getGroup_id()));
                 startActivity(detailsIntent);
@@ -1422,7 +1420,7 @@ public class NotificationsFragment extends Fragment {
                 String userId = Preferences.get(General.USER_ID);
                 String GUID = String.valueOf(notificationList.get(position).getGroup_id());
                 String member_Id = userId;
-
+                Log.i(TAG, "Member_user_id : "+notificationList.get(position).getMember_user_id());
                 RelativeLayout linearLayout = dialog.findViewById(R.id.invition_status);
 
                 if (notificationList.get(position).getIs_member().equals("1")) {
@@ -1452,7 +1450,6 @@ public class NotificationsFragment extends Fragment {
 
 
                 TextView txt_timestamp = dialog.findViewById(R.id.txt_timestamp);
-
                 String date = getDateForDailyDosing(notificationList.get(position).getTimestamp());
                 if (date != null) {
                     txt_timestamp.setText(date);
@@ -1487,6 +1484,9 @@ public class NotificationsFragment extends Fragment {
                 btnDecline.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.i(TAG, "onClick: memberID"+member_Id);
+                        Log.i(TAG, "onClick: userID"+userId);
+                        Log.i(TAG, "onClick: userGUID"+GUID);
                         declineinvite(action, userId, GUID, member_Id, dialog);
                     }
                 });
@@ -1498,15 +1498,16 @@ public class NotificationsFragment extends Fragment {
                         // join group by self
                         String GUID, groupType, password;
                         GUID = String.valueOf(notificationList.get(position).getGroup_id());
+                        Log.e("GUID is -> "," "+GUID);
                         groupType = notificationList.get(position).getGroup_type();
                         password = notificationList.get(position).getGroup_password();
 
                         final String action = "accept_invite";
                         final String userId = Preferences.get(General.USER_ID);
                         final String groupId = GUID;
-                        final String memberId = userId;
+                        final String memberId = notificationList.get(position).getMember_user_id();
 
-                        Log.e("", GUID + "..." + groupType + "..." + password);
+                        Log.e("notification params ", "GUID "+GUID + "groupType " + groupType + "password" + password +" memberId"+ memberId);
                         CometChat.joinGroup(GUID, groupType, password, new CometChat.CallbackListener<Group>() {
                             @Override
                             public void onSuccess(Group joinedGroup) {
@@ -1834,6 +1835,4 @@ public class NotificationsFragment extends Fragment {
         String date = DateFormat.format("yyyy-MM-dd", cal).toString();
         return date;
     }
-
-
 }

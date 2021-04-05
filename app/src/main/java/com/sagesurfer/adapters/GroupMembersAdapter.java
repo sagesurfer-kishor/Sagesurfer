@@ -7,9 +7,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +19,7 @@ import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.GroupMember;
 import com.cometchat.pro.uikit.Avatar;
-import com.modules.cometchat_7_30.ChatroomFragment_;
+import com.modules.cometchat_7_30.FragmentCometchatGroupsList;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.network.NetworkCall_;
@@ -38,7 +36,7 @@ import okhttp3.RequestBody;
 class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyViewHolder> {
 
     private final Context mContext;
-    private static final String TAG = ChatroomFragment_.class.getSimpleName();
+    private static final String TAG = FragmentCometchatGroupsList.class.getSimpleName();
     String adminUid = "";
 
     RecyclerView recyclerView;

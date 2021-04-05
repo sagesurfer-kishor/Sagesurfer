@@ -92,7 +92,10 @@ public class MessageBoardFragment extends Fragment implements SwipeRefreshLayout
         fab.setVisibility(View.GONE);
         fab.setOnClickListener(this);
         if (Preferences.get(General.OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID))
-                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")) {
+                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
+                || Preferences.get(General.IS_CC).equalsIgnoreCase("1")
+                || Preferences.get(General.IS_CASE_MANAGER).equalsIgnoreCase("1"))
+        {
             fab.setVisibility(View.VISIBLE);
         } else {
             fab.setVisibility(View.GONE);

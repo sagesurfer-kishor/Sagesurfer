@@ -94,10 +94,9 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
             setAppointmentTime(holder.appointmentTime, appointment_.getStart_time().substring(0, 5), appointment_.getEnd_time().substring(0, 5));
 
-            if (appointment_.getStatus() == 1) {
+            if (appointment_.getApp_status() == 1) {
                 holder.appointmentStatus.setText("Confirmed");
                 holder.appointmentStatus.setTextColor(activity.getResources().getColor(R.color.self_goal_green));
-
                 String roleId = Preferences.get(General.ROLE_ID);
 
                 Log.e("roleId", roleId);
@@ -107,13 +106,13 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                     holder.txtreschedule.setVisibility(View.GONE);
                 }
 
-            } else if (appointment_.getStatus() == 2) {
+            } else if (appointment_.getApp_status() == 2) {
                 holder.appointmentStatus.setText("Rescheduled");
                 holder.appointmentStatus.setTextColor(activity.getResources().getColor(R.color.busy));
-            } else if (appointment_.getStatus() == 3) {
+            } else if (appointment_.getApp_status() == 3) {
                 holder.appointmentStatus.setText("Canceled");
                 holder.appointmentStatus.setTextColor(activity.getResources().getColor(R.color.busy));
-            } else {
+            } else if(appointment_.getApp_status() == 4){
                 holder.appointmentStatus.setText("Completed");
                 holder.appointmentStatus.setTextColor(activity.getResources().getColor(R.color.self_goal_green));
             }

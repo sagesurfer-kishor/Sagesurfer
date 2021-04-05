@@ -4,10 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +27,12 @@ import android.widget.TextView;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.modules.team.MemberStatisticsFragment;
+import com.modules.team.PollListFragment;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
+import com.sagesurfer.library.GetFragments;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
 import com.sagesurfer.parser.Error_;
@@ -46,13 +57,18 @@ public class CommentDialog extends DialogFragment implements View.OnClickListene
     private static final String TAG = CommentDialog.class.getSimpleName();
     private ArrayList<Comment_> commentArrayList;
     private int _id;
-
+    FragmentActivity myContext;
     private Activity activity;
     private CommentListAdapter commentListAdapter;
-
+    public callGetPollMethod callGetPollMethodListener;
     private AppCompatImageButton sendButton;
     private EditText commentBox;
     private TextView titleText;
+
+    public interface callGetPollMethod{
+        public void getPollFromCommentBackPressed();
+    }
+
 
     @SuppressLint("InflateParams")
     @Override
@@ -60,7 +76,7 @@ public class CommentDialog extends DialogFragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.comment_dialog_layout, null);
 
         activity = getActivity();
-
+        myContext = (FragmentActivity) activity;
         commentArrayList = new ArrayList<>();
 
         Preferences.initialize(activity.getApplicationContext());
@@ -203,11 +219,20 @@ public class CommentDialog extends DialogFragment implements View.OnClickListene
         setStyle(DialogFragment.STYLE_NORMAL, R.style.MY_DIALOG);
     }
 
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.comment_dialog_back:
+                Log.i(TAG, "onClick: comment_dialog_back");
+                Fragment fragment = GetFragments.get(1, null);
+                FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                ft.commit();
                 dismiss();
+
                 break;
             case R.id.comment_dialog_send:
                 String comment = commentBox.getText().toString();
@@ -222,5 +247,4 @@ public class CommentDialog extends DialogFragment implements View.OnClickListene
                 break;
         }
     }
-
 }

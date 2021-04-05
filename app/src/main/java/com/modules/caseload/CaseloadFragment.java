@@ -254,10 +254,9 @@ public class CaseloadFragment extends Fragment implements CaseloadListAdapter.Ca
         unbinder.unbind();
     }
 
-    //make network call to fetch all consumers for Care Coordinator/Clinician
+    //make network call to fetch all consumers for Care Coordinator / Clinician
     private void getCaseloadData(String action) {
         HashMap<String, String> requestMap = new HashMap<>();
-
         if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024))) {
             requestMap.put(General.ACTION, action);
@@ -267,8 +266,9 @@ public class CaseloadFragment extends Fragment implements CaseloadListAdapter.Ca
             requestMap.put(General.ACTION, action);
             requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
             requestMap.put(General.SEARCH, "");
-        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage030)) ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031))) {
+        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage030))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031)))
+        {
             requestMap.put(General.ACTION, action);
             requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
             requestMap.put(General.SEARCH, "");

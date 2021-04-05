@@ -2,6 +2,8 @@ package listeners;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cometchat.pro.constants.CometChatConstants;
@@ -12,7 +14,12 @@ import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.User;
 
 import screen.CometChatCallActivity;
+import screen.CometChatStartCallActivity;
+import screen.messagelist.General;
 import utils.Utils;
+
+import static android.content.Context.MODE_PRIVATE;
+import static org.webrtc.ContextUtils.getApplicationContext;
 
 /**
  * CometChatCallListener.class is used to add and remove CallListener in app.
@@ -21,6 +28,7 @@ import utils.Utils;
 public class CometChatCallListener {
 
     public static boolean isInitialized;
+    static int developmenenen = 0;
 
     /**
      * This method is used to add CallListener in app
@@ -28,13 +36,22 @@ public class CometChatCallListener {
      * @param TAG     is a unique Identifier
      * @param context is a object of Context.
      */
+    String sessionId;
+
+    /*this listner is call when user get call*/
     public static void addCallListener(String TAG, Context context) {
         isInitialized = true;
         CometChat.addCallListener(TAG, new CometChat.CallListener() {
             @Override
             public void onIncomingCallReceived(Call call) {
+                /*this method is called when user get call in his phone but before accepted it calls..*/
                 if (CometChat.getActiveCall() == null) {
                     if (call.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+                        /*here we are opening the call receive popup so that user can accept the call..*/
+                        Log.i(TAG, General.MY_TAG +" onIncomingCallReceived: initiater "+(User) call.getCallInitiator());
+                        Log.i(TAG, General.MY_TAG +" onIncomingCallReceived: type "+call.getType());
+                        Log.i(TAG, General.MY_TAG +" onIncomingCallReceived: sessionId "+call.getSessionId());
+
                         Utils.startCallIntent(context, (User) call.getCallInitiator(), call.getType(),
                                 false, call.getSessionId());
                     } else {
@@ -45,11 +62,12 @@ public class CometChatCallListener {
                     CometChat.rejectCall(call.getSessionId(), CometChatConstants.CALL_STATUS_BUSY, new CometChat.CallbackListener<Call>() {
                         @Override
                         public void onSuccess(Call call) {
+                            Log.i(TAG, General.MY_TAG +" onSuccess: rejectCall");
                         }
 
                         @Override
                         public void onError(CometChatException e) {
-                            Toast.makeText(context, "Error:" + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, General.MY_TAG +" Error:" + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -57,14 +75,73 @@ public class CometChatCallListener {
 
             @Override
             public void onOutgoingCallAccepted(Call call) {
-                if (CometChatCallActivity.callActivity != null) {
-                    CometChatCallActivity.cometChatAudioHelper.stop(false);
-                    Utils.startCall(CometChatCallActivity.callActivity, call);
+                /*code updated by rahul maske and deva for calling session was regenerating and creating new instances
+                 * */
+                SharedPreferences sharedPreferencesSessionId = context.getApplicationContext().getSharedPreferences("login", MODE_PRIVATE);
+                String myCallGeneratedSession = sharedPreferencesSessionId.getString("sessionId", null);
+                SharedPreferences.Editor spSessionEditor = sharedPreferencesSessionId.edit();
+
+                if (!sharedPreferencesSessionId.getBoolean("onGoingCall",false)) {
+                    Log.i(TAG, "onOutgoingCallAccepted: onGoingCall condition");
+                        //call.getSessionId()
+                        if (CometChatCallActivity.callActivity != null) {
+                            spSessionEditor.putBoolean("onGoingCall", true);
+                            CometChatCallActivity.cometChatAudioHelper.stop(false);
+                            Utils.startCall(CometChatCallActivity.callActivity, call);
+                        }else {
+                            Log.i(TAG, "onOutgoingCallAccepted: 1");
+                        }
+
+                }else {
+                    Log.i(TAG, "onOutgoingCallAccepted: 3");
                 }
+
+                /*if (call.getSessionId() != myCallGeneratedSession) {
+                    developmenenen = 0;
+                }
+                    developmenenen++;
+
+                    if (developmenenen != 1) {
+                        Log.e(TAG, "onOutgoingCallAccepted: developmenenen!=1");
+                    } else {
+                        Log.e(TAG, "onOutgoingCallAccepted: " + sharedPreferencesSessionId.getString("sessionId", null));
+                        if (CometChat.getActiveCall() == null) {
+                            //call.getSessionId()
+                            if (CometChatCallActivity.callActivity != null) {
+                                CometChatCallActivity.cometChatAudioHelper.stop(false);
+                                Utils.startCall(CometChatCallActivity.callActivity, call);
+                            }
+                        }
+                    }*/
+                    /*var sessionId = call.sessionId;
+                        if(sessionId !=$('#comet_chat_video_session').val()) {
+                            developmenenen=0;
+                        }
+                        $('#comet_chat_video_session').val(sessionId);
+                        developmenenen++;
+                        if(developmenenen !=1){
+                            return false;
+}                    */
+
+                //commetchat team suggested code comented because it was not working
+                /*if (CometChat.getActiveCall() == null) {
+                    //call.getSessionId()
+                    if (CometChatCallActivity.callActivity != null) {
+                        CometChatCallActivity.cometChatAudioHelper.stop(false);
+                        Utils.startCall(CometChatCallActivity.callActivity, call);
+                    }
+                }else {
+                    CometChatStartCallActivity.activity.finish();
+                    if (CometChatCallActivity.callActivity != null) {
+                        CometChatCallActivity.cometChatAudioHelper.stop(false);
+                        Utils.startCall(CometChatCallActivity.callActivity, call);
+                    }
+                }*/
             }
 
             @Override
             public void onOutgoingCallRejected(Call call) {
+                Log.i(TAG, General.MY_TAG+" onOutgoingCallRejected: ");
                 if (CometChatCallActivity.callActivity != null)
                     CometChatCallActivity.callActivity.finish();
             }
@@ -72,6 +149,7 @@ public class CometChatCallListener {
             @Override
             public void onIncomingCallCancelled(Call call) {
                 if (CometChatCallActivity.callActivity != null)
+                    Log.i(TAG, General.MY_TAG+" onIncomingCallCancelled: "+call);
                     CometChatCallActivity.callActivity.finish();
             }
         });

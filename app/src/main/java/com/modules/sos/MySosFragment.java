@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,12 +58,9 @@ import okhttp3.RequestBody;
  *         Last Modified on 14-12-2017
  */
 public class MySosFragment extends Fragment implements View.OnClickListener/*, MySosListAdapter.MySosListAdapterListener*/ {
-
     private static final String TAG = MySosFragment.class.getSimpleName();
-
     private ArrayList<MySos_> sosArrayList;
     private ArrayList<MySos_> searchSosArrayList;
-
     private ListView listView;
     private LinearLayout errorLayout;
     private TextView errorText;
@@ -125,12 +123,12 @@ public class MySosFragment extends Fragment implements View.OnClickListener/*, M
         frameLayoutFab = (FrameLayout) view.findViewById(R.id.framelayout_fab);
         createButton = (FloatingActionButton) view.findViewById(R.id.sos_update_float);
         createButton.setOnClickListener(this);
-
+        Log.i(TAG, "onCreateView: roleId"+ Preferences.get(General.ROLE_ID));
+        Log.e(TAG, "onCreateView: "+CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID))));
         if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))
                 || CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))
                 || CheckRole.isNaturalSupportId(Integer.parseInt(Preferences.get(General.ROLE_ID)))
                 || CheckRole.isParentId(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
-
             frameLayoutFab.setVisibility(View.VISIBLE);
             //getHeight(createButton);
         } else {
@@ -187,6 +185,7 @@ public class MySosFragment extends Fragment implements View.OnClickListener/*, M
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, activity, activity);
                 if (response != null) {
+                    Log.e(TAG, "fetchSos: "+response );
                     sosArrayList = Sos_.parseMySos(response, activity.getApplicationContext(), TAG);
                     if (sosArrayList.size() <= 0 || sosArrayList.get(0).getStatus() != 1) {
                         if (sosArrayList.size() <= 0) {

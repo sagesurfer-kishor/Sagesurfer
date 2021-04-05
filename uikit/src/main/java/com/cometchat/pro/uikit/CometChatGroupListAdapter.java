@@ -33,28 +33,28 @@ import viewmodel.GroupListViewModel;
  *
  */
 
-@BindingMethods( value ={@BindingMethod(type = CometChatGroupList.class, attribute = "app:grouplist", method = "setGroupList")})
-public class CometChatGroupList extends RecyclerView {
+@BindingMethods( value ={@BindingMethod(type = CometChatGroupListAdapter.class, attribute = "app:grouplist", method = "setGroupList")})
+public class CometChatGroupListAdapter extends RecyclerView {
 
     private Context context;
 
     private GroupListViewModel groupListViewModel;
 
-    public CometChatGroupList(@NonNull Context context) {
+    public CometChatGroupListAdapter(@NonNull Context context) {
         super(context);
         this.context=context;
         setViewModel();
 
     }
 
-    public CometChatGroupList(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CometChatGroupListAdapter(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         getAttributes(attrs);
         this.context=context;
         setViewModel();
     }
 
-    public CometChatGroupList(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public CometChatGroupListAdapter(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         getAttributes(attrs);
         this.context=context;
@@ -153,7 +153,11 @@ public class CometChatGroupList extends RecyclerView {
      * @param groups is object of List<Group>, It is list of searched groups.
      */
     public void searchGroupList(List<Group> groups) {
+
         groupListViewModel.searchGroupList(groups);
+
+        //notifyDataSetChange(BR)
+
     }
 
     /**

@@ -23,8 +23,10 @@ import com.bumptech.glide.Glide;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
-import com.modules.cometchat_7_30.FriendsFragment_;
+import com.modules.cometchat_7_30.CometChatFriendsListFragment_;
+import com.modules.cometchat_7_30.ModelUserCount;
 import com.sagesurfer.collaborativecares.R;
+import com.sagesurfer.constant.General;
 import com.storage.preferences.Preferences;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,20 +39,19 @@ import constant.StringContract;
 import screen.messagelist.CometChatMessageListActivity;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.MyViewHolder> implements Filterable {
-    private static final String TAG = FriendsFragment_.class.getSimpleName();
-
+    private static final String TAG = CometChatFriendsListFragment_.class.getSimpleName();
     private final Context mContext;
     private final List<User> friendList;
-
     private List<User> filteredNameList;
+    private List<ModelUserCount> al_unreadCountList;
+    private CometChatFriendsListFragment_ fragment;
 
-    private FriendsFragment_ fragment;
-
-    public FriendListAdapter(FriendsFragment_ fragment, Context mContext, List<User> friendList) {
+    public FriendListAdapter(CometChatFriendsListFragment_ fragment, Context mContext, List<User> friendList, ArrayList<ModelUserCount> al_unreadCountList) {
         this.mContext = mContext;
         this.fragment = fragment;
         this.friendList = friendList;
         this.filteredNameList = friendList;
+        this.al_unreadCountList = al_unreadCountList;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
@@ -60,7 +61,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
         ImageView BlockUser;
         RelativeLayout relativeLayout;
 
-        TextView txtView;
+        TextView txtView, tv_counter;
 
         MyViewHolder(View view) {
             super(view);
@@ -70,6 +71,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
             BlockUser = view.findViewById(R.id.friend_block);
             relativeLayout = view.findViewById(R.id.friend_list_item_layout);
             txtView = view.findViewById(R.id.txt_errorMsg);
+            tv_counter = view.findViewById(R.id.friend_ic_counter);
         }
 
         @Override
@@ -93,12 +95,34 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
         User user = friendList.get(position);
 
         // set friend name on list
-        holder.title.setText(user.getName());
-
+        holder.title.setText(user.getName());//+" "+al_unreadCountList.get(position)
         Glide.with(mContext).load(user.getAvatar()).into(holder.imgBan);
         String status = user.getStatus();
-
         String UID = friendList.get(position).getUid();
+        /*getting unread count for all users
+        * added by rahul maske*/
+        CometChat.getUnreadMessageCountForUser(UID, new CometChat.CallbackListener<HashMap<String, Integer>>() {
+            @Override
+            public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
+                // handle success
+
+
+                if (!String.valueOf(stringIntegerHashMap.get(UID)).equalsIgnoreCase("null")) {
+                    holder.tv_counter.setVisibility(View.VISIBLE);
+                    holder.tv_counter.setText("" +stringIntegerHashMap.get(UID));
+                }else{
+                    holder.tv_counter.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                // handle error
+                holder.tv_counter.setVisibility(View.GONE);
+                Log.e(TAG, "fetchedUserMessage_onError: " + e.getMessage());
+            }
+        });
+
 
         // check user is online or offline
         if (status.equals("online")) {
@@ -166,7 +190,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                 String providerArray = Preferences.get("providers");
                 if (!youth.isEmpty()) {
                     if (providerArray.contains(user.getUid())) {
-
                         String status = user.getStatus();
                         if (status.equals("online")) {
                             AlertDialog.Builder builder;
@@ -182,6 +205,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                                             intent.putExtra(StringContract.IntentStrings.UID, (friendList.get(position).getUid()));
                                             intent.putExtra(StringContract.IntentStrings.AVATAR, (friendList.get(position).getAvatar()));
                                             intent.putExtra(StringContract.IntentStrings.STATUS, (friendList.get(position).getStatus()));
+                                            //intent.putExtra(General.USER_ID, Preferences.get(General.USER_ID));
+                                            // Log.e(TAG, General.MY_TEST_TAG + "providers block UID"+Preferences.get(General.USER_ID));
                                             intent.putExtra(StringContract.IntentStrings.TABS, "1");
                                             mContext.startActivity(intent);
                                         }
@@ -213,6 +238,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                                             intent.putExtra(StringContract.IntentStrings.AVATAR, (friendList.get(position).getAvatar()));
                                             intent.putExtra(StringContract.IntentStrings.STATUS, (friendList.get(position).getStatus()));
                                             intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                                            //Log.e(TAG, General.MY_TEST_TAG + "staff unavailable block UID"+Preferences.get(General.USER_ID));
+                                            //intent.putExtra(General.USER_ID, Preferences.get(General.USER_ID));
                                             mContext.startActivity(intent);
                                         }
                                     })
@@ -236,6 +263,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                         intent.putExtra(StringContract.IntentStrings.UID, (friendList.get(position).getUid()));
                         intent.putExtra(StringContract.IntentStrings.AVATAR, (friendList.get(position).getAvatar()));
                         intent.putExtra(StringContract.IntentStrings.STATUS, (friendList.get(position).getStatus()));
+                        //intent.putExtra(StringContract.IntentStrings.LOGGED_IN_USERID, Preferences.get(General.USER_ID));
+                        Log.e(TAG, General.MY_TEST_TAG+"onClick: USERID = "+Preferences.get(General.USER_ID) );
+                        Log.e(TAG, General.MY_TEST_TAG+"onClick: SenderId = "+friendList.get(position).getUid());
+                        Log.e(TAG, General.MY_TEST_TAG+"onClick: senderName = "+friendList.get(position).getName() );
                         intent.putExtra(StringContract.IntentStrings.TABS, "1");
                         mContext.startActivity(intent);
                     }
@@ -262,6 +293,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(fragment.filteredNameList);
             } else {
+
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (User item : fragment.filteredNameList) {
                     if (item.getName().toLowerCase().contains(filterPattern)) {

@@ -42,9 +42,11 @@
         <activity
             android:name="screen.blockuserlist.CometChatBlockUserListScreenActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="screen.CometChatGroupDetailScreenActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="screen.addmember.CometChatAddMemberScreenActivity"
             android:screenOrientation="portrait" />
@@ -56,9 +58,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="image/*" />
             </intent-filter>
             <intent-filter>

@@ -94,14 +94,14 @@ public class PostAnnouncementActivity extends AppCompatActivity implements View.
 
         messageBoxLabel = (TextView) findViewById(R.id.create_team_talk_title_box_label);
         messageBoxLabel.setText(this.getResources().getString(R.string.message));
-        messageBox = (EditText) findViewById(R.id.create_team_talk_title_box);
+        messageBox = (EditText) findViewById(R.id.et_title);
         TextView descriptionBoxLabel = (TextView) findViewById(R.id.create_team_talk_description_box_label);
         descriptionBoxLabel.setVisibility(View.GONE);
         TextView descriptionBoxValidate = (TextView) findViewById(R.id.textview_description_validate);
         descriptionBoxValidate.setVisibility(View.GONE);
-        EditText descriptionBox = (EditText) findViewById(R.id.create_team_talk_description_box);
+        EditText descriptionBox = (EditText) findViewById(R.id.et_team_talk_description);
         descriptionBox.setVisibility(View.GONE);
-        teamSelector = (TextView) findViewById(R.id.create_team_talk_select_team);
+        teamSelector = (TextView) findViewById(R.id.tv_selected_team_name);
     }
 
     // Validate if all necessary fields for valid data

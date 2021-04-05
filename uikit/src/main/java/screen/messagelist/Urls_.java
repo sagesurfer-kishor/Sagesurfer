@@ -4,12 +4,13 @@ public class Urls_ {
 
     // change to local envorment kishor k
     public static final String SERVER_LIST_URL = "https://design.sagesurfer.com/mobile_get_instances.php";
-    //public static final String SERVER_LIST_URL = "https://designstaging.sagesurfer.com/mobile_get_instances.php";
+    public static final String SAVE_STICKER_TO_THE_SERVER = "https://designstaging.sagesurfer.com/phase3/mobile_cometchat.php";
     //public static final String SERVER_LIST_URL = "https://ndesign.sagesurfer.com/mobile_get_instances.php";
     public static final String LOGIN_URL = "mobile_login.php";
     public static final String CREATE_GROUP = "mobile_cometchat.php";
 
     public static final String MOBILE_USER_SYNC = "mobile_user_synch.php";
+    public static final String SAVE_STICKER_TO_SERVER = "mobile_user_synch.php";
     public static final String COUNTER_URL = "mobile_sos_counter.php";
     public static final String WALL_URL = "mobile_wall_feeds.php";
     public static final String MOBILE_TEAMS = "mobile_teams.php";
@@ -55,7 +56,6 @@ public class Urls_ {
     public static final String MOBILE_FORGOT_PASSWORD = "mobile_forgot_password.php";
     public static final String MOBILE_SIGN_UP = "mobile_sign_up.php";
     public static final String MOBILE_QUOTES = "mobile_quotes.php";
-
     public static final String COMETCHAT_URL = "cometchat7.0.36/";
     public static final String MOBILE_CASELOAD = "mobile_caseload.php";
     public static final String ACTIVITY_REVIEW_API = "activity_review_api.php";

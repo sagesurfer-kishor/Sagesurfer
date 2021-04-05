@@ -64,7 +64,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="8">
-
+            <TextView
+                android:id="@+id/group_ic_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/primary_circle"
+                android:layout_margin="2dp"
+                android:maxLength="2"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text=""
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                android:textSize="11sp" />
             <ImageView
                 android:id="@+id/selfInvite"
                 android:layout_width="match_parent"
@@ -74,10 +88,10 @@
                 android:padding="3dp"
                 android:src="@drawable/addcallar_icon"
                 android:textAllCaps="false"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <ImageView
-                android:id="@+id/groupAccept"
+                android:id="@+id/img_group_item_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

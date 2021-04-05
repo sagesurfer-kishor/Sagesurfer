@@ -6,12 +6,10 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.modules.cometchat_7_30.ChatroomFragment_;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
 import com.storage.database.Cometchat_log;
-import com.storage.database.Sync;
 import com.storage.preferences.Preferences;
 
 import org.json.JSONArray;

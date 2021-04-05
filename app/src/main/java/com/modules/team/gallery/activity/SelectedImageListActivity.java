@@ -69,7 +69,7 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
     private LinearLayout errorLayout;
     private TextView errorText;
     private AppCompatImageView errorIcon;
-    private RecyclerView listView;
+    private RecyclerView recyclerViewAlbumImages;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView listTitle;
     private static TextView selectedCount;
@@ -90,7 +90,7 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
     private int isModerator;
     private int isCC;
     private static long addedBy;
-    private FloatingActionButton createAlbum;
+    private FloatingActionButton fb_uplodeImagesForAlbum;
 
     @SuppressLint("RestrictedApi")
     @SuppressWarnings("unchecked")
@@ -123,11 +123,11 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
         });
 
         titleText = (TextView) findViewById(R.id.textview_activitytoolbar_title);
-        listView = (RecyclerView) findViewById(R.id.swipe_menu_listview);
+        recyclerViewAlbumImages = (RecyclerView) findViewById(R.id.swipe_menu_listview);
         mLayoutManager = new GridLayoutManager(this, 2);
-        listView.setLayoutManager(mLayoutManager);
-        listView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
-        listView.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewAlbumImages.setLayoutManager(mLayoutManager);
+        recyclerViewAlbumImages.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
+        recyclerViewAlbumImages.setItemAnimator(new DefaultItemAnimator());
 
         errorText = (TextView) findViewById(R.id.swipe_refresh_recycler_view_error_message);
         errorIcon = (AppCompatImageView) findViewById(R.id.swipe_refresh_recycler_view__error_icon);
@@ -162,13 +162,13 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
             onBackPressed();
         }
 
-        createAlbum = findViewById(R.id.swipe_refresh_layout_recycler_view_float);
-        createAlbum.setImageResource(R.drawable.ic_add_white);
+        fb_uplodeImagesForAlbum = findViewById(R.id.swipe_refresh_layout_recycler_view_float);
+        fb_uplodeImagesForAlbum.setImageResource(R.drawable.ic_add_white);
 
-        createAlbum.setOnClickListener(new View.OnClickListener() {
+        fb_uplodeImagesForAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent uploadAlbumIntent = new Intent(getApplicationContext(), UploadImageActivity.class);
+                Intent uploadAlbumIntent = new Intent(getApplicationContext(), AlbumImagesUplodeActivity.class);
                 uploadAlbumIntent.putExtra(General.ID_UPLOAD, id);
                 uploadAlbumIntent.putExtra(General.TITLE, albumTitle);
                 startActivity(uploadAlbumIntent);
@@ -197,13 +197,13 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
                 || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
                 ||  !General.isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction()) {
 
-            createAlbum.setVisibility(View.VISIBLE);
+            fb_uplodeImagesForAlbum.setVisibility(View.VISIBLE);
         } else {
             commentAlbunImg.setEnabled(false);
             commentAlbunImg.setClickable(false);
             shareAlbumImg.setEnabled(false);
             shareAlbumImg.setClickable(false);
-            createAlbum.setVisibility(View.GONE);
+            fb_uplodeImagesForAlbum.setVisibility(View.GONE);
         }
     }
 
@@ -267,8 +267,8 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
                     final TextView albumName = customView.findViewById(R.id.edit_album_name);
                     final ImageView imageviewSave = customView.findViewById(R.id.imageview_toolbar_save);
                     final ImageView imageviewBack = customView.findViewById(R.id.imageview_back);
-                    final EditText title = customView.findViewById(R.id.album_name);
-                    final EditText description = customView.findViewById(R.id.description);
+                    final EditText title = customView.findViewById(R.id.et_album_name);
+                    final EditText description = customView.findViewById(R.id.et_description);
 
                     albumName.setText(imageName);
                     title.setText(imageName);
@@ -411,7 +411,7 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
         }
 
         imageListAdapter = new SelectedImageAdapter(this, list, this);
-        listView.setAdapter(imageListAdapter);
+        recyclerViewAlbumImages.setAdapter(imageListAdapter);
 
         return list;
     }
@@ -455,7 +455,7 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
                     if (imagesArrayList.size() > 0) {
                         if (imagesArrayList.get(0).getStatus() == 1) {
                             imageListAdapter = new SelectedImageAdapter(this, imagesArrayList, this);
-                            listView.setAdapter(imageListAdapter);
+                            recyclerViewAlbumImages.setAdapter(imageListAdapter);
                             showError(false, imagesArrayList.get(0).getStatus());
                         } else {
                             showError(true, imagesArrayList.get(0).getStatus());
@@ -497,7 +497,7 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
 
         if (selectedCountImg == 1) {
 
-            if ((Integer.parseInt(Preferences.get(General.USER_ID)) == (Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID))))) {
+            if (Preferences.get(General.USER_ID).equalsIgnoreCase(Preferences.get(General.GROUP_OWNER_ID) )) {
                 commentAlbunImg.setVisibility(View.VISIBLE);
                 shareAlbumImg.setVisibility(View.VISIBLE);
                 coverAlbumImg.setVisibility(View.VISIBLE);
@@ -541,7 +541,7 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
                 selectAlbumImg.setImageResource(R.drawable.select_all_img_blue);
                 deleteAlbumImg.setImageResource(R.drawable.delete_img_blue);
                 deleteAlbumImg.setClickable(true);
-            } else if ((Integer.parseInt(Preferences.get(General.IS_MODERATOR)) == 1 && imgAddedBy != Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID)))) {
+            } else if (Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1") && imgAddedBy != Integer.parseInt(Preferences.get(General.GROUP_OWNER_ID))) {
                 commentAlbunImg.setVisibility(View.VISIBLE);
                 shareAlbumImg.setVisibility(View.VISIBLE);
                 coverAlbumImg.setVisibility(View.VISIBLE);
@@ -696,14 +696,14 @@ public class SelectedImageListActivity extends AppCompatActivity implements Sele
     private void showError(boolean isError, int status) {
         if (isError) {
             errorLayout.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.GONE);
+            recyclerViewAlbumImages.setVisibility(View.GONE);
             headerLayout.setVisibility(View.GONE);
             functionsLayout.setVisibility(View.GONE);
             errorText.setText(GetErrorResources.getGalleryMessage(status, getApplicationContext()));
             errorIcon.setImageResource(GetErrorResources.getIcon(status));
         } else {
             errorLayout.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+            recyclerViewAlbumImages.setVisibility(View.VISIBLE);
             headerLayout.setVisibility(View.VISIBLE);
             functionsLayout.setVisibility(View.VISIBLE);
         }

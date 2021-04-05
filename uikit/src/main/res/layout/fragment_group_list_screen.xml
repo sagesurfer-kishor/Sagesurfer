@@ -6,7 +6,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="screen.CometChatGroupListScreen">
+    tools:context="screen.FragmentCometChatGroupList">
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-    <com.cometchat.pro.uikit.CometChatGroupList
+    <com.cometchat.pro.uikit.CometChatGroupListAdapter
         android:id="@+id/rv_group_list"
         android:layout_below="@+id/searchBar_vw"
         android:layout_width="match_parent"

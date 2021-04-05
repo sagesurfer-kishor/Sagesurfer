@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
@@ -47,6 +49,7 @@ import com.sagesurfer.interfaces.MainActivityInterface;
 import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetCounters;
 import com.sagesurfer.library.GetErrorResources;
+import com.sagesurfer.library.GetFragments;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
 import com.sagesurfer.parser.Wall_;
@@ -566,4 +569,6 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 break;
         }
     }
+
+
 }

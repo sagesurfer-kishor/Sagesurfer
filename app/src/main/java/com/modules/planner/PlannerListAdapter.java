@@ -91,6 +91,7 @@ public class PlannerListAdapter extends RecyclerView.Adapter<PlannerListAdapter.
             holder.mainContainer.setVisibility(View.VISIBLE);
 
             DailyPlanner_ dailyPlanner_ = dailyPlannerList.get(position);
+
             switch (dailyPlanner_.getType()) {
                 case 1:
                     holder.time.setText(GetTime.wallTime(dailyPlanner_.getAnnouncement().getDate()));

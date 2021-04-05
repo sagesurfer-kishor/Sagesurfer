@@ -116,14 +116,13 @@ public class BlockedMembersActivity extends AppCompatActivity {
         super.onResume();
         // fetched all blocked friend
         fetchBlockuser();
-
-
     }
 
     private void fetchBlockuser() {
         // fetched all blocked user list
-        BlockedUsersRequest blockedUsersRequest = new BlockedUsersRequest.BlockedUsersRequestBuilder().setLimit(10).build();
-
+        BlockedUsersRequest blockedUsersRequest = new BlockedUsersRequest.BlockedUsersRequestBuilder()
+                .setLimit(10)
+                .setDirection(BlockedUsersRequest.DIRECTION_BLOCKED_BY_ME).build();
         blockedUsersRequest.fetchNext(new CometChat.CallbackListener<List<User>>() {
             @Override
             public void onSuccess(List<User> users) {

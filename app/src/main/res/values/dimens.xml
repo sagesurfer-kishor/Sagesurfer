@@ -56,5 +56,6 @@
     <dimen name="ms__padding_top">12dp</dimen>
     <dimen name="ms__popup_padding_left">24dp</dimen>
     <dimen name="ms__popup_padding_top">12dp</dimen>
+    <dimen name="text_size_1">3</dimen>
 
 </resources>

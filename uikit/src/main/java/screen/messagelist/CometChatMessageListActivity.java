@@ -48,6 +48,8 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
     Fragment fragment = new CometChatMessageScreen();
     FloatingActionButton btnAdd;
     SharedPreferences sp;
+    SharedPreferences preferencesCheckCurrentActivity;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +64,16 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
             bundle.putString(StringContract.IntentStrings.AVATAR, getIntent().getStringExtra(StringContract.IntentStrings.AVATAR));
             bundle.putString(StringContract.IntentStrings.NAME, getIntent().getStringExtra(StringContract.IntentStrings.NAME));
             bundle.putString(StringContract.IntentStrings.TYPE, getIntent().getStringExtra(StringContract.IntentStrings.TYPE));
-
+            bundle.putString(StringContract.IntentStrings.TIME_ZONE, getIntent().getStringExtra(StringContract.IntentStrings.TYPE));
+           // Preferences.save(General.USER_ID,getIntent().getStringExtra(General.USER_ID));
+            //checked type is user or group
             if (getIntent().hasExtra(StringContract.IntentStrings.TYPE) && getIntent().getStringExtra(StringContract.IntentStrings.TYPE).equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                bundle.putString(StringContract.IntentStrings.UID, getIntent().getStringExtra(StringContract.IntentStrings.UID));
+                bundle.putString(StringContract.IntentStrings.SENDER_ID, getIntent().getStringExtra(StringContract.IntentStrings.SENDER_ID));
                 bundle.putString(StringContract.IntentStrings.STATUS, getIntent().getStringExtra(StringContract.IntentStrings.STATUS));
                 bundle.putString(StringContract.IntentStrings.TABS, getIntent().getStringExtra(StringContract.IntentStrings.TABS));
                 bundle.putString("teamId", getIntent().getStringExtra("teamId"));
 
-
+                Log.e(TAG, "onCreate: UID"+getIntent().getStringExtra(StringContract.IntentStrings.UID) );
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("UserIds", getIntent().getStringExtra(StringContract.IntentStrings.UID));
                 editor.putString("types", getIntent().getStringExtra(StringContract.IntentStrings.TYPE));
@@ -90,8 +94,9 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
                 editor.commit();
             }
 
+
             fragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.ChatFragment, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.ChatFragment, fragment,"CometChatMessageScreenFragment").commit();
         }
 
         btnAdd = findViewById(R.id.addMember);
@@ -118,6 +123,11 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        preferencesCheckCurrentActivity = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+        editor = preferencesCheckCurrentActivity.edit();
+        editor.putBoolean("IsChatScreen",false);
+        editor.commit();
+        Log.i(TAG, "onBackPressed: ");
     }
 
     @Override

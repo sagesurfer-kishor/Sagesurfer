@@ -26,7 +26,6 @@ import okio.Buffer;
 public class MakeCall {
 
     private static final OkHttpClient client = new OkHttpClient();
-
     public static String post(String url, RequestBody formBody, String TAG, Context _context, Activity activity) throws Exception {
         Request request = new Request.Builder()
                 .url(url)
@@ -34,14 +33,21 @@ public class MakeCall {
                 .tag(TAG)
                 .build();
         Logger.debug(TAG, url + "?" + bodyToString(request), _context);
+
         Request request_new = new Request.Builder()
                 .url(url)
                 .post(convertBody(bodyToString(request)))
                 .tag(TAG)
                 .build();
+
+        Log.e(TAG, "post: getInstancesRequest"+request_new.toString() );
+
         Logger.debug(TAG, url + "?" + bodyToString(request_new), _context);
+
         Log.d(TAG, url + "?" + bodyToString(request_new) );
+
         String s = url + "?" + bodyToString(request_new);
+
         Response response = client.newCall(request_new).execute();
         if (response != null) {
             String res = response.body().string();
