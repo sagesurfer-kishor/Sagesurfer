@@ -10,7 +10,9 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
+
 import androidx.core.app.ActivityCompat;
+
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
@@ -32,22 +34,11 @@ public class DeviceInfo {
 
     public static String get(Activity activity) {
 
-        return "DeviceId:" +
-                getDeviceId(activity) +
-                LINE_SEPARATOR +
-                "IMEI:" +
-                getImei(activity) +
-                LINE_SEPARATOR +
-                "isTablet:" +
-                isTablet(activity.getApplicationContext()) +
-                LINE_SEPARATOR +
-                "Model:" +
-                getDeviceName() +
-                LINE_SEPARATOR +
-                "Release:" +
-                getVersion() +
-                LINE_SEPARATOR +
-                "OS:Android";
+        return "DeviceId:" + getDeviceId(activity) + LINE_SEPARATOR +
+                "IMEI:" + getImei(activity) + LINE_SEPARATOR +
+                "isTablet:" + isTablet(activity.getApplicationContext()) + LINE_SEPARATOR +
+                "Model:" + getDeviceName() + LINE_SEPARATOR +
+                "Release:" + getVersion() + LINE_SEPARATOR + "OS:Android";
     }
 
     public static String getDeviceName() {
@@ -153,7 +144,9 @@ public class DeviceInfo {
             //tManager.getDeviceId().length();
             //String androidid = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             //String l = tManager.getDeviceId();
-            return tManager.getDeviceId();
+
+
+            //return tManager.getDeviceId();
         }
         return "NA";
     }
@@ -177,11 +170,10 @@ public class DeviceInfo {
             if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
             else
-                deviceUniqueIdentifier = tm.getDeviceId();
-            if (null == deviceUniqueIdentifier || 0 == deviceUniqueIdentifier.length())
-                deviceUniqueIdentifier = "0";
+                //              deviceUniqueIdentifier = tm.getDeviceId();
+                if (null == deviceUniqueIdentifier || 0 == deviceUniqueIdentifier.length())
+                    deviceUniqueIdentifier = "0";
         }
         return deviceUniqueIdentifier;
     }
-
 }

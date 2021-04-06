@@ -1,124 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white">
 
-    <ImageView
-        android:id="@+id/imgDismiss"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/close_red_big" />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imgDismiss"
-        android:layout_margin="5dp"
-        android:background="#FFF"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btnAddMember"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/colorPrimary"
-            android:text="View members"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/btnDeleteGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/colorPrimary"
-            android:text="Delete Group"
-            android:textColor="#FFFFFF"
-            android:visibility="gone" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="10dp"
-            android:background="#000000"
-            android:padding="5dp" />
+        <ImageView
+            android:id="@+id/imgDismiss"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/close_red_big" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_below="@+id/imgDismiss"
+            android:layout_margin="5dp"
+            android:background="#FFF"
+            android:orientation="vertical"
+            android:padding="5dp">
 
-            <RelativeLayout
+            <Button
+                android:id="@+id/btnViewMember"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimary"
+                android:text="View members"
+                android:textColor="#FFFFFF" />
 
-                <TextView
-                    android:id="@+id/txtTitelmember"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Group Members : "
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/txtmemberCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/txtTitelmember"
-                    android:padding="5dp"
-                    android:textColor="#000000" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <Button
+                android:id="@+id/btnDeleteGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimary"
+                android:text="Delete Group"
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/txtTiteldate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Group Created : "
-                    android:textColor="#000000" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="#000000"
+                android:padding="5dp" />
 
-                <TextView
-                    android:id="@+id/txtcreatedDated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/txtTiteldate"
-                    android:hint="12 june 2020"
-                    android:padding="5dp"
-                    android:textColor="#000000" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:padding="10dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txtTitelowner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Group owner : "
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/txtowner"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/txtTitelowner"
-                    android:hint="Group owner"
-                    android:padding="5dp"
-                    android:textColor="#000000" />
-            </RelativeLayout>
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txtTitelmember"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Group Members : "
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:id="@+id/txtmemberCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/txtTitelmember"
+                        android:padding="5dp"
+                        android:textColor="#000000" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txtTiteldate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Group Created : "
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:id="@+id/txtcreatedDated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/txtTiteldate"
+                        android:hint="12 june 2020"
+                        android:padding="5dp"
+                        android:textColor="#000000" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/txtTitelowner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Group owner : "
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:id="@+id/txtowner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/txtTitelowner"
+                        android:hint="Group owner"
+                        android:padding="5dp"
+                        android:textColor="#000000" />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

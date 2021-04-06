@@ -210,7 +210,6 @@ public class LandingQuestionListAdapter extends ArrayAdapter<LandingQuestion_> {
         return view;
     }
 
-
     private class ViewHolder {
         TextView textViewSerialNumber, textViewQuestion, textViewMultiple, textViewOnce, textViewNever;
         RadioButton radioButtonYes, radioButtonNo, radioButtonMultiple, radioButtonOnce, radioButtonNever;

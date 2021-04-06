@@ -2,7 +2,6 @@ package com.cometchat.pro.uikit;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,13 +23,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.WebView;
 import android.widget.Chronometer;
 
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -39,11 +35,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.aghajari.emojiview.listener.SimplePopupAdapter;
 import com.aghajari.emojiview.view.AXEmojiPager;
@@ -51,11 +44,8 @@ import com.aghajari.emojiview.view.AXEmojiPopup;
 import com.aghajari.emojiview.view.AXSingleEmojiView;
 import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.CometChat;
-import com.cometchat.pro.core.GroupMembersRequest;
 import com.cometchat.pro.exceptions.CometChatException;;
 import com.cometchat.pro.models.CustomMessage;
-import com.cometchat.pro.models.GroupMember;
-import com.cometchat.pro.models.TextMessage;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
@@ -65,7 +55,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -123,7 +112,7 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
 
     private RelativeLayout voiceMessageLayout;
 
-    private RelativeLayout rlActionContainer;
+    private ConstraintLayout cl_ActionContainer;
 
     private boolean hasFocus;
 
@@ -215,7 +204,7 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
         emojiImg = this.findViewById(R.id.imageView);
 
         etComposeBox = this.findViewById(R.id.etComposeBox);
-        rlActionContainer = this.findViewById(R.id.rlActionContainers);
+        cl_ActionContainer = this.findViewById(R.id.rlActionContainers);
 
         ivArrow.setImageTintList(ColorStateList.valueOf(color));
         ivCamera.setImageTintList(ColorStateList.valueOf(color));
@@ -403,7 +392,7 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
             ImageView ivAudio = dialog.findViewById(R.id.ivAudio);
             ImageView ivFile = dialog.findViewById(R.id.ivFile);
             ImageView close = dialog.findViewById(R.id.close);
-            ImageView ivLocation = dialog.findViewById(R.id.ivLocation);
+            //ImageView ivLocation = dialog.findViewById(R.id.ivLocation);
 
 
             ivCamera.setOnClickListener(new OnClickListener() {
@@ -435,13 +424,13 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
                 }
             });
 
-            ivLocation.setOnClickListener(new OnClickListener() {
+            /*ivLocation.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     composeActionListener.onLocationActionClicked();
                     dialog.dismiss();
                 }
-            });
+            });*/
 
             close.setOnClickListener(new OnClickListener() {
                 @Override
@@ -463,7 +452,6 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
             composeBoxActionFragment.show(fm, composeBoxActionFragment.getTag());*/
         if (view.getId() == R.id.ivMic) {
             if (Utils.hasPermissions(context, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
-
                 if (isOpen) {
                     closeActionContainer();
                 }
@@ -604,16 +592,16 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
         ivArrow.setRotation(45f);
         isOpen = true;
         Animation rightAnimate = AnimationUtils.loadAnimation(getContext(), R.anim.animate_right_slide);
-        rlActionContainer.startAnimation(rightAnimate);
-        rlActionContainer.setVisibility(View.VISIBLE);
+        cl_ActionContainer.startAnimation(rightAnimate);
+        cl_ActionContainer.setVisibility(View.VISIBLE);
     }
 
     public void closeActionContainer() {
         ivArrow.setRotation(0);
         isOpen = false;
         Animation leftAnim = AnimationUtils.loadAnimation(getContext(), R.anim.animate_left_slide);
-        rlActionContainer.startAnimation(leftAnim);
-        rlActionContainer.setVisibility(GONE);
+        cl_ActionContainer.startAnimation(leftAnim);
+        cl_ActionContainer.setVisibility(GONE);
     }
 
     public void startRecord() {
@@ -631,7 +619,6 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startPlayingAudio(String path) {
         try {
-
             if (timerRunnable != null) {
                 seekHandler.removeCallbacks(timerRunnable);
                 timerRunnable = null;
@@ -651,6 +638,7 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
             voiceSeekbar.setMax(duration);
             recordTime.setBase(SystemClock.elapsedRealtime());
             recordTime.start();
+
             timerRunnable = new Runnable() {
                 @Override
                 public void run() {
@@ -697,6 +685,7 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
             mediaRecorder = new MediaRecorder();
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            //mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             audioFileNameWithPath = Utils.getOutputMediaFile(getContext());
             mediaRecorder.setOutputFile(audioFileNameWithPath);

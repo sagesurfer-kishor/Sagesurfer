@@ -28,7 +28,6 @@ import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.interfaces.MainActivityInterface;
-import com.sagesurfer.library.CheckRole;
 import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetErrorResources;
 import com.sagesurfer.network.NetworkCall_;
@@ -110,7 +109,7 @@ public class FileSharingListFragment extends Fragment implements View.OnClickLis
         /*RelativeLayout teamSelector = (RelativeLayout) view.findViewById(R.id.list_team_selector);
         teamSelector.setOnClickListener(this);*/
 
-        fab = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         fab.setImageResource(R.drawable.ic_add_white);
         fab.setOnClickListener(this);
 
@@ -298,7 +297,7 @@ public class FileSharingListFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.listview_fab:
+            case R.id.fab_listview:
                 if (group_id == 0) {
                     ShowSnack.viewWarning(v, activity.getApplicationContext().getResources()
                             .getString(R.string.please_select_team), activity.getApplicationContext());

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.fragment.app.FragmentActivity;
@@ -74,7 +75,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
     private TextView tvSendMessage;
 
-    private TextView tvBlockUser;
+    private TextView tvBlockUser,tv_action,tv_privacy,tv_shared_media;
 
     private MaterialToolbar toolbar;
 
@@ -85,6 +86,8 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
     private ImageView callBtn;
 
     private ImageView vidoeCallBtn;
+
+    private NestedScrollView nested_scrollview;
 
     private LinearLayout historyView;
 
@@ -100,7 +103,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
     private boolean fromCallList;
 
-    private View divider1,divider2,divider3;
+    private View divider1,divider2,divider3,divider4;
 
     private List<BaseMessage> callList = new ArrayList<>();
 
@@ -119,6 +122,9 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
         historyRv = findViewById(R.id.history_rv);
         userAvatar = findViewById(R.id.iv_user);
         userName = findViewById(R.id.tv_name);
+        tv_privacy = findViewById(R.id.tv_privacy);
+        tv_shared_media = findViewById(R.id.tv_shared_media);
+        tv_action = findViewById(R.id.tv_action);
         userStatus = findViewById(R.id.tv_status);
         callBtn = findViewById(R.id.callBtn_iv);
         vidoeCallBtn = findViewById(R.id.video_callBtn_iv);
@@ -128,6 +134,8 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
         divider1 = findViewById(R.id.divider_1);
         divider2 = findViewById(R.id.divider_2);
         divider3 = findViewById(R.id.divider_3);
+        divider4 = findViewById(R.id.divider_4);
+        nested_scrollview = findViewById(R.id.nested_scrollview);
 
         setSupportActionBar(toolbar);
          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -198,15 +206,27 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
     private void checkDarkMode() {
         if (Utils.isDarkMode(this)) {
+            Log.i(TAG, "checkDarkMode: true");
             userName.setTextColor(getResources().getColor(R.color.textColorWhite));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.darkModeBackground));
             divider1.setBackgroundColor(getResources().getColor(R.color.grey));
             divider2.setBackgroundColor(getResources().getColor(R.color.grey));
             divider3.setBackgroundColor(getResources().getColor(R.color.grey));
+            divider4.setBackgroundColor(getResources().getColor(R.color.grey));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            nested_scrollview.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
         } else {
+            Log.i(TAG, "checkDarkMode: false");
             userName.setTextColor(getResources().getColor(R.color.primaryTextColor));
+            tv_shared_media.setTextColor(getResources().getColor(R.color.primaryTextColor));
+            tv_privacy.setTextColor(getResources().getColor(R.color.primaryTextColor));
+            tv_action.setTextColor(getResources().getColor(R.color.primaryTextColor));
             divider1.setBackgroundColor(getResources().getColor(R.color.light_grey));
             divider2.setBackgroundColor(getResources().getColor(R.color.light_grey));
             divider3.setBackgroundColor(getResources().getColor(R.color.light_grey));
+            divider4.setBackgroundColor(getResources().getColor(R.color.light_grey));
+            userStatus.setTextColor(getResources().getColor(R.color.primaryTextColor));
+            nested_scrollview.setBackgroundColor(getResources().getColor(R.color.textColorWhite));
         }
     }
 
@@ -296,6 +316,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
     }
 
     private void fetchCallHistory() {
+
         if (messageRequest==null)
         {
             messageRequest = new MessagesRequest.MessagesRequestBuilder().setUID(uid).setCategory(CometChatConstants.CATEGORY_CALL).setLimit(30).build();
@@ -377,7 +398,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
     }
 
     private void kickGroupMember() {
-
+        Log.i(TAG, "kickGroupMember: ");
         CometChat.kickGroupMember(uid, guid, new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
@@ -399,6 +420,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
 
     private void unblockUser() {
+        Log.i(TAG, "unblockUser: ");
         ArrayList<String> uids = new ArrayList<>();
         uids.add(uid);
 
@@ -422,7 +444,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
 
     private void blockUser() {
-
+        Log.i(TAG, "blockUser: ");
         ArrayList<String> uids = new ArrayList<>();
         uids.add(uid);
         CometChat.blockUsers(uids, new CometChat.CallbackListener<HashMap<String, String>>() {

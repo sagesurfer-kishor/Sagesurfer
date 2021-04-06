@@ -82,6 +82,7 @@ public class Extensions {
         HashMap<String, JSONObject> extensionMap = new HashMap<>();
         try {
             if (metadata != null) {
+                Log.e(TAG, "extensionCheck: "+metadata );
                 JSONObject injectedObject = metadata.getJSONObject("@injected");
                 if (injectedObject != null && injectedObject.has("extensions")) {
                     JSONObject extensionsObject = injectedObject.getJSONObject("extensions");

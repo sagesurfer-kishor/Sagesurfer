@@ -136,7 +136,7 @@ public class LeaveListingFragment extends Fragment implements View.OnClickListen
         errorLayout = (LinearLayout) view.findViewById(R.id.linealayout_error);
         imageButtonFilter = (ImageButton) view.findViewById(R.id.notification_filter);
         createButton = (FloatingActionButton) view.findViewById(R.id.fab);
-        createLeave = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        createLeave = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createButton.setOnClickListener(this);
         createLeave.setOnClickListener(this);
 
@@ -572,7 +572,7 @@ public class LeaveListingFragment extends Fragment implements View.OnClickListen
                 activity.startActivity(leaveIntent);
                 break;
 
-            case R.id.listview_fab:
+            case R.id.fab_listview:
                 Intent leaveIntent1 = new Intent(activity.getApplicationContext(), LeaveApplicationActivity.class);
                 activity.startActivity(leaveIntent1);
                 break;

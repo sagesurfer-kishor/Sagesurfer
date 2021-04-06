@@ -3,6 +3,7 @@ package com.modules.team;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.MyViewHolder>
     private final Context mContext;
     private final TeamListAdapterListener listener;
     private final ArrayList<Teams_> teamList, list;
+    private static final String TAG = "TeamListAdapter";
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView title, teamType;
@@ -134,6 +136,7 @@ class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.MyViewHolder>
             @Override
             public void onClick(View view) {
                 if (teamList.get(position).getStatus() == 1) {
+                    Log.e(TAG, "onClick: Team Name "+teamList.get(position).getName() );
                     listener.onItemClicked(position);
                 }
             }

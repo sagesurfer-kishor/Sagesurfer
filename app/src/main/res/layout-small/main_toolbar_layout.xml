@@ -128,15 +128,23 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/main_toolbar_bell"
-                    android:layout_width="wrap_content"
+                    android:layout_width="30dp"
                     android:layout_height="@dimen/actionBarSize"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
+
                     android:visibility="visible"
                     app:srcCompat="@drawable/vc_bell_white" />
-
-                <Button
+                <TextView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:id="@+id/main_toolbar_bell_counter"
+                    android:background="@drawable/pink_circle"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:textSize="@dimen/text_size_8"/>
+               <!-- <Button
                     android:id="@+id/main_toolbar_bell_counter"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
@@ -147,7 +155,7 @@
                     android:text=""
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_10"
-                    android:visibility="visible" />
+                    android:visibility="visible" />-->
             </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatImageView

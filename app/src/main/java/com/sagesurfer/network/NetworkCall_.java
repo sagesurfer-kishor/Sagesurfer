@@ -69,8 +69,8 @@ public class NetworkCall_ {
         }*/
         //HashMap<String, String> requestMap = new HashMap<>();
         //String deviceId = Settings.Secure.getString(_context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        map.put(General.IMEI, DeviceInfo.getDeviceId(_context));
 
+        map.put(General.IMEI, DeviceInfo.getDeviceId(_context));
         refreshToken = new RefreshToken(_context);
         Request request = new Request.Builder()
                 .url(url)
@@ -103,7 +103,9 @@ public class NetworkCall_ {
                 .post(makeBody(map))
                 .tag(tag)
                 .build();
+
         String body = bodyToString(request);
+        Log.e(TAG, tag+ " make: request body "+body );
         Logger.debug(tag, url + "?" + body, _context);
         String token = getToken(_context);
         if (token != null) {
@@ -121,7 +123,7 @@ public class NetworkCall_ {
                 .tag(tag)
                 .build();
         String body = bodyToString(request);
-        Logger.debug(tag, url + "?" + body, _context);
+        Logger.debug(tag, ""+url + "?" + body, _context);
 
         return null;
     }
@@ -155,7 +157,6 @@ public class NetworkCall_ {
                     .writeTimeout(60, TimeUnit.SECONDS)
                     .readTimeout(60, TimeUnit.SECONDS)
                     .build();
-
             Request request = new Request.Builder()
                     .url(url)
                     .post(formBody)
@@ -167,7 +168,9 @@ public class NetworkCall_ {
             try {
                 Response response = client.newCall(request).execute();
                 String res = response.body().string();
+                Log.e(TAG, "doInBackground: "+res );
                 if (res.trim().length() > 0) {
+                    Log.e(TAG, "doInBackground: teamsResponse"+response);
                     JsonElement jelement = new JsonParser().parse(res);
                     JsonObject jsonObject1 = jelement.getAsJsonObject();
                     JSONObject jsonObject = new JSONObject(res);

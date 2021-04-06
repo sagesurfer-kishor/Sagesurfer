@@ -21,7 +21,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sagesurfer.animation.ActivityTransition;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
@@ -52,7 +51,7 @@ public class MyTaskListFragment extends Fragment implements SwipeRefreshLayout.O
     private static final String TAG = MyTaskListFragment.class.getSimpleName();
     private ArrayList<Task_> taskList;
 
-    private FloatingActionButton fab;
+    private FloatingActionButton fb_create_task;
     private SwipeRefreshLayout swipeRefreshLayout;
     private SwipeMenuListView listView;
 
@@ -89,9 +88,9 @@ public class MyTaskListFragment extends Fragment implements SwipeRefreshLayout.O
 
         taskList = new ArrayList<>();
 
-        fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
-        fab.setOnClickListener(this);
+        fb_create_task = (FloatingActionButton) view.findViewById(R.id.fab);
+        fb_create_task.setVisibility(View.VISIBLE);
+        fb_create_task.setOnClickListener(this);
 
         listView = (SwipeMenuListView) view.findViewById(R.id.swipe_menu_listview);
         listView.setDividerHeight(0);
@@ -112,7 +111,7 @@ public class MyTaskListFragment extends Fragment implements SwipeRefreshLayout.O
         super.onResume();
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.task_list));
         mainActivityInterface.setToolbarBackgroundColor();
-        fab.setBackgroundTintList(ColorStateList.valueOf(GetColor.getHomeIconBackgroundColorColorParse(true)));
+        fb_create_task.setBackgroundTintList(ColorStateList.valueOf(GetColor.getHomeIconBackgroundColorColorParse(true)));
 
         if (taskList.size()>0){
             taskList.clear();
@@ -208,7 +207,7 @@ public class MyTaskListFragment extends Fragment implements SwipeRefreshLayout.O
             case R.id.fab:
                 Preferences.save(General.IS_FROM_TEAM_TASK, false);
                 Intent sosIntent = new Intent(activity.getApplicationContext(), CreateTaskActivity.class);
-              //  startActivity(sosIntent, ActivityTransition.moveToNextAnimation(activity.getApplicationContext()));
+              //startActivity(sosIntent, ActivityTransition.moveToNextAnimation(activity.getApplicationContext()));
                 startActivity(sosIntent);
                 activity.overridePendingTransition(0, 0);
                 break;

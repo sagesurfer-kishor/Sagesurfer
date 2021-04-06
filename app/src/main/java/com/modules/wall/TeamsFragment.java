@@ -66,7 +66,7 @@ public class TeamsFragment extends Fragment {
         activity = getActivity();
 
 
-        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createButton.setVisibility(View.GONE);
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);

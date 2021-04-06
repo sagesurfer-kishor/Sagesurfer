@@ -78,7 +78,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="@dimen/activity_vertical_margin"
-                            android:layout_toStartOf="@+id/file_upload_add_folder"
+                            android:layout_toStartOf="@+id/iv_add_folder"
                             android:background="@drawable/ic_bottom_line_down_arrow"
                             android:gravity="start"
                             android:paddingBottom="7dp"
@@ -89,7 +89,7 @@
                             android:textSize="@dimen/text_size_18" />
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/file_upload_add_folder"
+                            android:id="@+id/iv_add_folder"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_alignParentEnd="true"

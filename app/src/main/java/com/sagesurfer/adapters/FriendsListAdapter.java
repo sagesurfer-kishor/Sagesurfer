@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
-import com.modules.cometchat_7_30.FriendsFragment_;
+import com.modules.cometchat_7_30.CometChatFriendsListFragment_;
 import com.sagesurfer.collaborativecares.R;
 import com.storage.preferences.Preferences;
 
@@ -35,7 +35,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     private final Context mContext;
     private final List<User> friendList;
 
-    private static final String TAG = FriendsFragment_.class.getSimpleName();
+    private static final String TAG = CometChatFriendsListFragment_.class.getSimpleName();
 
     public FriendsListAdapter(Context mContext, List<User> friendList) {
         this.mContext = mContext;

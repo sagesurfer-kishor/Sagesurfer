@@ -44,7 +44,7 @@ import com.modules.crisis.CrisisFragment;
 import com.modules.fms.FileSharingListFragment;
 import com.modules.messageboard.MessageBoardFragment;
 import com.modules.task.TeamTaskListFragment;
-import com.modules.team.gallery.fragment.GalleryListFragment;
+import com.modules.team.gallery.fragment.GalleryAlbumsListFragment;
 import com.modules.team.team_invitation_werhope.activity.TeamInviteMemberActivity;
 import com.modules.teamtalk.fragment.TeamTalkListFragment;
 import com.sagesurfer.collaborativecares.MainActivity;
@@ -213,7 +213,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
     private Toolbar toolbar;
     private TextView titleText;
     private Boolean fromFragment = false;
-    private ArrayList<Teams_> teamArrayList = new ArrayList<>();
+    private ArrayList<Teams_> al_team = new ArrayList<>();
     private TeamCounters_ teamCounter = new TeamCounters_();
     private ArrayList<Friends_> contactsArrayList = new ArrayList<>();
     private CircleLayout circleLayout, circleLayoutDots;
@@ -360,27 +360,40 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         imageViewTeamTalk.setColorFilter(color);
         imageViewTeamTalk.setImageResource(R.drawable.vi_drawer_teamtalk);
 
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015") && CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
+        /*if (Preferences.contains(General.DOMAIN_CODE)){
+            Log.e(TAG, "DomainCode "+Preferences.get(General.DOMAIN_CODE));
+            Log.e(TAG, "CheckIsCoordinator "+CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID))));
+        }else {
+            Log.e(TAG, "Not found domain code" );
+        }*/
+
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015")
+                && CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
             linearLayoutCrisisPlan.setVisibility(View.GONE);
             linearLayoutMessageBoard.setVisibility(View.VISIBLE);
             imageViewMessageBoard.setColorFilter(color);
+            Log.i(TAG, "initViews: condition1 sage015");
             imageViewMessageBoard.setImageResource(R.drawable.vi_team_messageboard);
         } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021")) {
             linearLayoutCrisisPlan.setVisibility(View.GONE);
             linearLayoutMessageBoard.setVisibility(View.VISIBLE);
             imageViewMessageBoard.setColorFilter(color);
             imageViewMessageBoard.setImageResource(R.drawable.vi_team_messageboard);
-        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage006") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage035")) {
+            Log.i(TAG, "initViews: condition2 sage021");
+        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage006")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage035")) {
             linearLayoutCrisisPlan.setVisibility(View.VISIBLE);
             linearLayoutMessageBoard.setVisibility(View.GONE);
             imageViewCrisisPlan.setColorFilter(color);
             imageViewCrisisPlan.setImageResource(R.drawable.vi_drawer_crisisplan);
+            Log.i(TAG, "initViews: condition2 sage006,035");
         } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) {
             linearLayoutPoll.setVisibility(View.GONE);
             linearLayoutCrisisPlan.setVisibility(View.GONE);
             linearLayoutMessageBoard.setVisibility(View.VISIBLE);
             imageViewMessageBoard.setColorFilter(color);
             imageViewMessageBoard.setImageResource(R.drawable.vi_team_messageboard);
+            Log.i(TAG, "initViews: condition2 sage024");
         } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage008") ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027")) {
@@ -442,6 +455,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
             Teams_ team_ = new Teams_();
             team_.setId(Integer.parseInt(Preferences.get(General.TEAM_ID)));
             team_.setName(Preferences.get(General.TEAM_NAME));
+            Log.e(TAG, "onBackPressed: "+Preferences.get(General.TEAM_NAME ));
             team_.setBanner(Preferences.get(General.BANNER_IMG));
 
             Intent detailsIntent = new Intent(getApplicationContext(), TeamDetailsActivity.class);
@@ -746,7 +760,6 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                             }
                         }
                     }
-
                     //removing circle view based on totalMembersCount
                     for (int i = 0; i < 6; i++) {
                         if (i >= totalMembers) {
@@ -825,16 +838,16 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                 if (response != null) {
                     //team data parsing
                     Preferences.save(General.GROUP_ID, String.valueOf(team_id));
-                    teamArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
+                    al_team = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
 
                     if (Preferences.getBoolean(General.IS_PUSH_NOTIFICATION)) {
                         Preferences.save(General.IS_PUSH_NOTIFICATION, false);
-                        titleText.setText(teamArrayList.get(0).getName());
+                        titleText.setText(al_team.get(0).getName());
 
-                        Preferences.save(General.GROUP_OWNER_ID, teamArrayList.get(0).getOwnerId());
-                        Preferences.save(General.IS_MODERATOR, teamArrayList.get(0).getIs_moderator());
+                        Preferences.save(General.GROUP_OWNER_ID, al_team.get(0).getOwnerId());
+                        Preferences.save(General.IS_MODERATOR, al_team.get(0).getIs_moderator());
 
-                        Glide.with(getApplicationContext()).load(teamArrayList.get(0).getBanner())
+                        Glide.with(getApplicationContext()).load(al_team.get(0).getBanner())
                                 .thumbnail(0.5f)
                                 .transition(withCrossFade())
                                 .apply(new RequestOptions()
@@ -842,7 +855,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                                 .into(banner);
                     }
 
-                    Glide.with(getApplicationContext()).load(Uri.parse(teamArrayList.get(0).getBanner()))
+                    Glide.with(getApplicationContext()).load(Uri.parse(al_team.get(0).getBanner()))
                             .thumbnail(0.5f)
                             .transition(withCrossFade())
                             .apply(new RequestOptions()
@@ -1109,7 +1122,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
 
             case R.id.linearlayout_gallery:
                 fromFragment = true;
-                fragment = new GalleryListFragment();
+                fragment = new GalleryAlbumsListFragment();
                 replaceFragment(fragment);
                 break;
 

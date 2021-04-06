@@ -5,18 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -26,14 +23,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.sagesurfer.animation.ActivityTransition;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.interfaces.MainActivityInterface;
 import com.sagesurfer.library.CheckRole;
 import com.sagesurfer.library.GetColor;
-import com.sagesurfer.views.TextWatcherExtended;
 import com.storage.preferences.Preferences;
 
 /**
@@ -47,7 +42,7 @@ public class SosUpdatesFragment extends Fragment implements View.OnClickListener
     private static final String TAG = SosUpdatesFragment.class.getSimpleName();
 
     @SuppressLint("StaticFieldLeak")
-    static FloatingActionButton createButton;
+    static FloatingActionButton fb_createSOS;
 
     private Activity activity;
     private MainActivityInterface mainActivityInterface;
@@ -60,6 +55,7 @@ public class SosUpdatesFragment extends Fragment implements View.OnClickListener
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mainActivityInterface = (MainActivityInterface) activity;
+        Log.i(TAG, "onAttach: ");
     }
 
     @SuppressWarnings("deprecation")
@@ -81,8 +77,8 @@ public class SosUpdatesFragment extends Fragment implements View.OnClickListener
 
         editTextSearch = (EditText) view.findViewById(R.id.edittext_search);
         frameLayoutFab = (FrameLayout) view.findViewById(R.id.framelayout_fab);
-        createButton = (FloatingActionButton) view.findViewById(R.id.sos_update_float);
-        createButton.setOnClickListener(this);
+        fb_createSOS = (FloatingActionButton) view.findViewById(R.id.sos_update_float);
+        fb_createSOS.setOnClickListener(this);
 
         TabLayout tabs = (TabLayout) view.findViewById(R.id.sos_update_tab_layout);
         tabs.setBackgroundResource(GetColor.getHomeIconBackgroundColorColorParse(false));
@@ -95,16 +91,18 @@ public class SosUpdatesFragment extends Fragment implements View.OnClickListener
             tabs.addTab(tabs.newTab().setText(activity.getApplicationContext().getResources().getString(R.string.received_sos)));
             tabs.addTab(tabs.newTab().setText(activity.getApplicationContext().getResources().getString(R.string.my_sos)));
         }
-
+        Log.e(TAG, "RoleId: "+Integer.parseInt(Preferences.get(General.ROLE_ID)));
         if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))
                 || CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))
                 || CheckRole.isNaturalSupportId(Integer.parseInt(Preferences.get(General.ROLE_ID)))
-                || CheckRole.isParentId(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
-
-            frameLayoutFab.setVisibility(View.GONE);
+                || CheckRole.isParentId(Integer.parseInt(Preferences.get(General.ROLE_ID)))
+        ) {
+            Log.i(TAG, "onCreateView: Fab visible");
+            frameLayoutFab.setVisibility(View.VISIBLE);
             //getHeight(createButton);
         } else {
             frameLayoutFab.setVisibility(View.GONE);
+            Log.i(TAG, "onCreateView: Fab gone");
             //getHeight(SosUpdatesFragment.createButton);
         }
 

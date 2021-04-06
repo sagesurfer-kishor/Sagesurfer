@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.PorterDuff;
@@ -22,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -32,6 +34,7 @@ import android.widget.VideoView;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -81,7 +84,6 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public class SelfCareDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = SelfCareDetailsActivity.class.getSimpleName();
-
     @BindView(R.id.relativelayout_activityselfcaredetails_action)
     RelativeLayout relativeLayoutActivitySelfCareDetailsAction;
     @BindView(R.id.relativelayout_activityselfcaredetails_top)
@@ -100,8 +102,10 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
     ProgressBar progressBarActivitySelfCareDetails;
     @BindView(R.id.textview_activityselfcaredetails_title)
     TextView textViewActivitySelfCareDetailsTitle;
+
     @BindView(R.id.imageview_activityselfcaredetails_like)
     AppCompatImageView imageViewActivitySelfCareDetailsLike;
+
     @BindView(R.id.textview_activityselfcaredetails_like_count)
     TextView textViewActivitySelfCareDetailsLikeCount;
     @BindView(R.id.imageview_activityselfcaredetails_comment)
@@ -124,8 +128,10 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
     RelativeLayout relativeLayoutActivitySelfCareDetailsFooter;
     @BindView(R.id.edittext_activityselfcaredetails_footer_message)
     EditText editTextActivitySelfCareDetailsFooterMessage;
+    /*@BindView(R.id.imageview_activityselfcaredetails_footer_send)
+    ImageButton imageViewActivitySelfCareDetailsFooterSend;*/
     @BindView(R.id.imageview_activityselfcaredetails_footer_send)
-    AppCompatImageView imageViewActivitySelfCareDetailsFooterSend;
+    AppCompatImageButton imageViewActivitySelfCareDetailsFooterSend;
 
     private Content_ content_;
     private Toolbar toolbar;
@@ -166,6 +172,12 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
                 onBackPressed();
             }
         });
+
+       /* View myView = findViewById(R.id.imageview_activityselfcaredetails_footer_send);
+        int[] attrs = new int[]{R.attr.selectableItemBackground};
+        TypedArray typedArray = this.obtainStyledAttributes(attrs);
+        int backgroundResource = typedArray.getResourceId(0, 0);
+        myView.setBackgroundResource(backgroundResource);*/
 
         relativeLayoutActivitySelfCareDetailsAction.setVisibility(View.GONE);
         relativeLayoutActivitySelfCareDetailsFooter.setVisibility(View.VISIBLE);
@@ -356,7 +368,6 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
     // make network call to fetch comment for respective self care content
     private void getComments() {
         linearLayoutActivitySelfCareDetailsComment.removeAllViews();
-
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.GET_COMMENTS);
         requestMap.put(General.ID, "" + content_.getId());

@@ -75,7 +75,7 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
 
     private String type;
 
-    private String Id;
+    private String Id,tabs;
 
     private long sentAt;
 
@@ -132,6 +132,10 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
                  if (getIntent().hasExtra(StringContract.IntentStrings.UID))
                      Id = getIntent().getStringExtra(StringContract.IntentStrings.UID);
              }
+             Log.i(TAG, "onCreate: tabs"+getIntent().getStringExtra(StringContract.IntentStrings.TABS));
+             if (getIntent().hasExtra(StringContract.IntentStrings.TABS))
+                 tabs = getIntent().getStringExtra(StringContract.IntentStrings.TABS);
+
              bundle.putString(StringContract.IntentStrings.ID,Id);
              bundle.putString(StringContract.IntentStrings.CONVERSATION_NAME,conversationName);
              bundle.putString(StringContract.IntentStrings.TYPE,type);
@@ -141,6 +145,7 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
              bundle.putInt(StringContract.IntentStrings.REPLY_COUNT,replyCount);
              bundle.putString(StringContract.IntentStrings.MESSAGE_TYPE,messageType);
              bundle.putString(StringContract.IntentStrings.UID, uid);
+             bundle.putString(StringContract.IntentStrings.TABS, tabs);
              bundle.putLong(StringContract.IntentStrings.SENTAT, sentAt);
 
               if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT))

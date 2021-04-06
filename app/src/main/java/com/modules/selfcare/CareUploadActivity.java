@@ -57,7 +57,6 @@ import com.sagesurfer.library.FileUpload;
 import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetCounters;
 import com.sagesurfer.library.GetSelected;
-import com.sagesurfer.library.PathUtils;
 import com.sagesurfer.library.UriUtils;
 import com.sagesurfer.models.CareUploaded_;
 import com.sagesurfer.models.Choices_;
@@ -76,9 +75,6 @@ import com.sagesurfer.snack.SubmitSnackResponse;
 import com.sagesurfer.validator.Care;
 import com.storage.preferences.Preferences;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -565,6 +561,7 @@ public class CareUploadActivity extends AppCompatActivity implements View.OnClic
         }
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
+        Log.e(TAG, "addContent: Action"+action );
         requestMap.put(General.ID, "" + care_id);
         requestMap.put(General.TITLE, title);
         requestMap.put(General.TYPE, "" + contentType);

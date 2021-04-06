@@ -80,7 +80,6 @@ public class CaseloadListNewAdapter extends RecyclerView.Adapter<CaseloadListNew
     public void onBindViewHolder(final MyViewHolder viewHolder, final int position) {
 
         final Caseload_ caseload_ = caseloadList.get(position);
-
         viewHolder.nameText.setText(ChangeCase.toTitleCase(caseloadList.get(position).getUsername()));
         viewHolder.contactedText.setText(caseloadList.get(position).getContacted_last());
 
@@ -230,7 +229,7 @@ public class CaseloadListNewAdapter extends RecyclerView.Adapter<CaseloadListNew
                 Preferences.save(General.GROUP_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_NAME, caseload_.getGroup_name());
-                teamArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
+                teamArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
                 if (teamArrayList.size() > 0) {
                     detailsIntent = new Intent(activity.getApplicationContext(), CalenderActivity.class);
                     detailsIntent.putExtra(General.USER_ID, caseload_.getUser_id());
@@ -245,7 +244,7 @@ public class CaseloadListNewAdapter extends RecyclerView.Adapter<CaseloadListNew
             public void onClick(View v) {
                 Preferences.save(General.GROUP_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_ID, "" + caseload_.getGroup_id());
-                teamArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
+                teamArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
                 if (teamArrayList.size() > 0) {
                     detailsIntent = new Intent(activity.getApplicationContext(), TeamTaskListActivity.class);
                     activity.startActivity(detailsIntent);

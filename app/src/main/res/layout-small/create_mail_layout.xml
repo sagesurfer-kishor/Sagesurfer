@@ -86,11 +86,12 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="16dp"
                         android:visibility="visible"
+                        android:textColor="@color/black"
                         TagsEditText:allowSpaceInTag="true"
                         TagsEditText:tagsBackground="@drawable/square"
                         TagsEditText:tagsCloseImagePadding="@dimen/defaultTagsCloseImagePadding"
                         TagsEditText:tagsCloseImageRight="@drawable/tag_close"
-                        TagsEditText:tagsTextColor="@color/white"
+                        TagsEditText:tagsTextColor="@color/black"
                         TagsEditText:tagsTextSize="@dimen/defaultTagsTextSize" />
 
 
@@ -119,11 +120,12 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="16dp"
                         android:visibility="visible"
+                        android:textColor="@color/black"
                         TagsEditText:allowSpaceInTag="true"
                         TagsEditText:tagsBackground="@drawable/square"
                         TagsEditText:tagsCloseImagePadding="@dimen/defaultTagsCloseImagePadding"
                         TagsEditText:tagsCloseImageRight="@drawable/tag_close"
-                        TagsEditText:tagsTextColor="@color/white"
+                        TagsEditText:tagsTextColor="@color/black"
                         TagsEditText:tagsTextSize="@dimen/defaultTagsTextSize" />
 
                 </LinearLayout>

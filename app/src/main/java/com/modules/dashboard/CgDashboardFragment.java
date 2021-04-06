@@ -140,7 +140,7 @@ public class CgDashboardFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.listview_fab:
+            case R.id.fab_listview:
                 break;
         }
     }

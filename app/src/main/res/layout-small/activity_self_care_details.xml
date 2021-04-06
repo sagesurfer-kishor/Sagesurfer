@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -442,14 +442,15 @@
                 android:textColorHint="@color/text_color_tertiary"
                 android:textSize="@dimen/text_size_14" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/imageview_activityselfcaredetails_footer_send"
                 android:layout_width="@dimen/actionBarSize"
                 android:layout_height="@dimen/actionBarSize"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/activity_horizontal_margin"
+                android:background="?android:attr/selectableItemBackground"
                 app:srcCompat="@drawable/vi_chat_send" />
         </RelativeLayout>
     </RelativeLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

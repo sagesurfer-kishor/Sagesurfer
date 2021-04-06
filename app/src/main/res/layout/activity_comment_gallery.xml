@@ -108,7 +108,7 @@
                             android:padding="5dp">
 
                             <TextView
-                                android:id="@+id/album_name"
+                                android:id="@+id/et_album_name"
                                 style="@style/CustomFontStyleSecondary"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

@@ -97,7 +97,7 @@ public class PlatformMessageListFragment extends Fragment {
             }
         });
 
-        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createButton.setVisibility(View.GONE);
         return view;
     }

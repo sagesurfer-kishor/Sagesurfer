@@ -67,7 +67,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginRight="10dp"
                 android:padding="10dp"
-                android:text="@string/unblock"
+                android:text="@string/unban"
 
 
                 android:textColor="@color/warning_text_color"

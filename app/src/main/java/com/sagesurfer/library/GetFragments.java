@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.BuildConfig;
 import com.modules.admin.AdminActivityFragment;
 import com.modules.admin.AdminApprovalsFragment;
 import com.modules.announcement.AnnouncementListFragment;
@@ -18,7 +17,7 @@ import com.modules.calendar.CalendarFragment;
 import com.modules.caseload.CaseloadFragment;
 import com.modules.caseload.CaseloadPeerNoteFragment;
 import com.modules.caseload.fragment.CaseLoadNoteStatusFragment;
-import com.modules.cometchat_7_30.ChatFragment_;
+import com.modules.cometchat_7_30.CometChatMainFragment;
 import com.modules.consent.MyConsentFragment;
 import com.modules.contacts.ContactListFragment;
 import com.modules.crisis.CrisisFragment;
@@ -91,7 +90,7 @@ public class GetFragments {
             case 8:
                 return new TeamListFragment();
             case 9:
-                return new ChatFragment_();//ChatMainFragment();//ChatFragment();//ChatFragment_();
+                return new CometChatMainFragment();//ChatMainFragment();//ChatFragment();//ChatFragment_();
             case 10:
                 return new ContactListFragment();
             case 11:
@@ -160,7 +159,7 @@ public class GetFragments {
             case 35:
                 return new TaskMainFragment();
             case 36:
-                return new ChatFragment_();//ChatMainFragment();//ChatFragment();//ChatFragment_();
+                return new CometChatMainFragment();//ChatMainFragment();//ChatFragment();//ChatFragment_();
             case 37:
                 return new AnnouncementListFragment();
             case 41:

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -44,6 +45,11 @@ import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
 import com.firebase.MessagingService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -81,6 +87,7 @@ import com.sagesurfer.tasks.PerformServerTask;
 import com.sagesurfer.validator.LoginValidator;
 import com.storage.preferences.Preferences;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -109,7 +116,6 @@ import okhttp3.Response;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, AuthorizationCallbacks, TokenCallbacks {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
-
     @BindView(R.id.edittext_login_user_name)
     EditText editTextUserName;
     @BindView(R.id.edittext_login_user_password)
@@ -127,7 +133,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String start_time = "0";
     private UserInfo_ userInfo;
     private ProgressDialog progressDialog;
-
     private LottieAnimationView animationView;
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
@@ -143,6 +148,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AlertDialog alertDialog;
     private String blockCharacterSet = ".?@;:'#~!£$%^&*()_+-=¬`,./<>";
     private String errorMsg;
+    String firebaseToken;
     private PopupWindow popupWindow = new PopupWindow();
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -611,6 +617,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             response = new PerformLoginTask(user_name, password, start_time, this).execute().get();
             Log.e("Login", "" + response);
+
+            /*JSONObject jsonObject=new JSONObject(response);
+            if(jsonObject.has("drawer")){
+                Toast.makeText(this, "drawer object found", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Not found", Toast.LENGTH_SHORT).show();
+            }*/
             if (response != null) {
                 JsonParser jsonParser = new JsonParser();
                 JsonObject jsonObject = jsonParser.parse(response).getAsJsonObject();
@@ -989,9 +1002,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean checkCode(String code) {
         for (Server_ server : serverList) {
             if (server.getKey().equalsIgnoreCase(code)) {
+                Log.e(TAG, "DomainCodeBeforeSaving: " + code);
                 Preferences.save(General.DOMAIN, server.getDomainUrl());//server.getDomainUrl());
                 Preferences.save(General.DOMAIN_CODE, code);
                 Preferences.save(General.CHAT_URL, server.getChatUrl());
+                Log.e(TAG, "DomainCodeFromPreferences: " + Preferences.get(General.DOMAIN_CODE));
                 return true;
             }
         }
@@ -1003,10 +1018,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String response = null;
         try {
             response = new PerformServerTask(this).execute(getApplicationContext()).get();
+            //Log.e(TAG, "getServers: "+response.toString() );
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            Log.e(TAG, "getServers: catch" + e.getMessage());
         }
         if (response != null) {
+
             serverList = Servers_.parse(response, getApplicationContext(), TAG);
             if (serverList.size() > 0) {
                 toggleLogin(true);
@@ -1081,9 +1099,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //Storing user data in preferences onSuccess login, onSuccessful oAuth token generation
     private void saveData() {
         String password = editTextUserPassword.getText().toString();
-
         Preferences.save(General.PASSWORD, password);
         Preferences.save(General.USER_ID, userInfo.getUserId());
+        screen.messagelist.Preferences.initialize(getApplicationContext());
+        screen.messagelist.Preferences.save(General.USER_ID, userInfo.getUserId());
+        screen.messagelist.Preferences.save(General.TIMEZONE, DeviceInfo.getTimeZone());
+        screen.messagelist.Preferences.save(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
+        Log.e(TAG, "saveData: screen.messagelist.Preferences UserId " + screen.messagelist.Preferences.get(General.USER_ID));
+        Log.e(TAG, "saveData: screen.messagelist.Preferences timezone " + screen.messagelist.Preferences.get(General.TIMEZONE));
+        Log.e(TAG, "saveData: screen.messagelist.Preferences Domain code " + screen.messagelist.Preferences.get(General.DOMAIN_CODE));
         Preferences.save(General.TIMEZONE, DeviceInfo.getTimeZone());
         Preferences.save(General.NAME, userInfo.getName());
         Preferences.save(General.FIRST_NAME, userInfo.getFirstName());
@@ -1091,6 +1115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Preferences.save(General.USERNAME, userInfo.getUsername());
         Preferences.save(General.EMAIL, userInfo.getEmail());
         Preferences.save(General.ROLE, userInfo.getRole());
+        Log.e(TAG, "User Role is " + userInfo.getRole() + " Id = " + userInfo.getRoleId());
         Preferences.save(General.ROLE_ID, userInfo.getRoleId());
         Preferences.save(General.URL_IMAGE, userInfo.getImage());
         Preferences.save(General.LOCAL_IMAGE, DirectoryList.DIR_MY_PIC);
@@ -1109,6 +1134,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Preferences.save(General.BIRTDATE, userInfo.getDob());
         Preferences.save(General.BIRTDATE, userInfo.getComet_chat_id());
 
+        if (userInfo.getRole().equalsIgnoreCase("care coordinator")) {
+            Preferences.save(General.IS_CC, 1);
+        } else if (userInfo.getRole().equalsIgnoreCase("moderator")) {
+            Preferences.save(General.IS_MODERATOR, 1);
+        } else if (userInfo.getRole().equalsIgnoreCase("Case Manager")) {
+            Preferences.save(General.IS_CASE_MANAGER, 1);
+        } else if (userInfo.getRole().equalsIgnoreCase("Student")) {
+            Preferences.save(General.IS_STUDENT, 1);
+        }
+        Log.e(TAG, "saveData: is_case_manager " + Preferences.get(General.IS_CASE_MANAGER));
+
         if (userInfo.getLati_longi() != null) {
             Preferences.save(General.LATI_LONGI, userInfo.getLati_longi());
         } else {
@@ -1121,7 +1157,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage013")
-                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage016") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021")) {
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage016")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021")) {
             Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
         } else {
             try {
@@ -1133,24 +1170,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void cometChatLogin(String Uid) {
-        CometChat.login(Uid, AppConfig.AppDetails.API_KEY, new CometChat.CallbackListener<User>() {
+        if (CometChat.getLoggedInUser() == null) {
+            CometChat.login(Uid, AppConfig.AppDetails.API_KEY, new CometChat.CallbackListener<User>() {
+                @Override
+                public void onSuccess(User user) {
+                    Log.e(TAG, "Login Successful : " + user.toString());
+                    CometChat.getLoggedInUser().setUid(Uid);
+                    Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
+                    MessagingService.subscribeUserNotification(user.getUid());
+                    Log.e(TAG, "subscribe : " + user.getUid());
+                    registerPushNotificationToken();
+                }
 
-            @Override
-            public void onSuccess(User user) {
-                Log.e(TAG, "Login Successful : " + user.toString());
-                CometChat.getLoggedInUser().setUid(Uid);
-                Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
-                MessagingService.subscribeUserNotification(user.getUid());
-                Log.e(TAG, "subscribe : " + user.getUid());
+                @Override
+                public void onError(CometChatException e) {
+                    Log.d(TAG, "Login failed with exception: " + e.getMessage());
+                    Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
+                }
+            });
+        }
+    }
 
-            }
+    private void registerPushNotificationToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        // Get new FCM registration token
+                        firebaseToken = task.getResult();
+                        Log.i(TAG, "onComplete: token "+firebaseToken);
 
-            @Override
-            public void onError(CometChatException e) {
-                Log.d(TAG, "Login failed with exception: " + e.getMessage());
-                Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
-            }
-        });
+                        CometChat.registerTokenForPushNotification(firebaseToken, new CometChat.CallbackListener<String>() {
+                            @Override
+                            public void onSuccess(String s) {
+                                Toast.makeText(LoginActivity.this, s, Toast.LENGTH_LONG).show();
+                                Log.e(TAG, "registerPushNotification onSuccess: token register successfully");
+                            }
+
+                            @Override
+                            public void onError(CometChatException e) {
+                                Log.e("onErrorPN: ", e.getMessage());
+                                Log.e(TAG, "registerPushNotification onSuccess: token register successfully");
+                            }
+                        });
+                    }
+                });
     }
 
     @Override
@@ -1196,5 +1264,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void tokenFailCallback(JSONObject jsonObject) {
         showResponses(13);
     }
-
 }

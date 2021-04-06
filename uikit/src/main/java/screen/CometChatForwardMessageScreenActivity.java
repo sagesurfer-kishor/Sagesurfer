@@ -2,9 +2,11 @@ package screen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -43,6 +46,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -53,6 +58,10 @@ import java.util.List;
 import adapter.ConversationListAdapter;
 import constant.StringContract;
 import listeners.OnItemClickListener;
+import screen.messagelist.CometChatMessageListActivity;
+import screen.messagelist.CometChatMessageScreen;
+import screen.messagelist.General;
+import screen.messagelist.Preferences;
 import screen.unified.CometChatUnified;
 import utils.FontUtils;
 import utils.MediaUtils;
@@ -62,17 +71,16 @@ import utils.Utils;
  * Purpose - CometChatForwardMessageScreenActivity class is a fragment used to display list of users to which
  * we will forward the message.
  * Created on - 20th December 2019
- *
+ * <p>
  * Modified on  - 16th January 2020
  */
-
 
 public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
     private static final String TAG = "CometChatForward";
 
     private CometChatConversationList rvConversationList;
 
-    private HashMap<String,Conversation> userList = new HashMap<>();
+    private HashMap<String, Conversation> userList = new HashMap<>();
 
     private ConversationListAdapter conversationListAdapter;
 
@@ -82,28 +90,33 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
 
     private ImageView clearSearch;
 
-    private String name,avatar;
+    private String name, avatar;
 
     private MaterialButton forwardBtn;
 
     private ChipGroup selectedUsers;
 
-    private String textMessage="";
+    private String textMessage = "";
+    int listSize;
 
     private FontUtils fontUtils;
+    Fragment fragment = new CometChatMessageScreen();
 
     private String messageType;
+    String avatarUrl, status, uname, mtype, tabs, team_Ids, SenderId, memberCount, groupDesc, groupPassword, groupType, groupOwner;
 
-    private String mediaMessageUrl,mediaMessageExtension,mediaMessageName,mediaMessageMime;
+    private String mediaMessageUrl, mediaMessageExtension, mediaMessageName, mediaMessageMime;
 
     private int mediaMessageSize;
 
     private int id;
+    private int listCounter=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comet_chat_forward_message_screen);
-        fontUtils= FontUtils.getInstance(this);
+        fontUtils = FontUtils.getInstance(this);
         handleIntent();
         init();
     }
@@ -122,14 +135,14 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         if (imageUri != null) {
             messageType = StringContract.IntentStrings.INTENT_MEDIA_MESSAGE;
             mediaMessageUrl = imageUri.toString();
-            Log.e(TAG, "handleSendImage: "+mediaMessageUrl);
+            Log.e(TAG, "handleSendImage: " + mediaMessageUrl);
         }
     }
+
     /**
      * This method is used to handle parameter passed to this class.
      */
     private void handleIntent() {
-
         // Get intent, action and MIME type
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -146,14 +159,14 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         if (getIntent().hasExtra(StringContract.IntentStrings.TYPE)) {
             messageType = getIntent().getStringExtra(StringContract.IntentStrings.TYPE);
         }
-        if (getIntent().hasExtra(CometChatConstants.MESSAGE_TYPE_TEXT)){
+        if (getIntent().hasExtra(CometChatConstants.MESSAGE_TYPE_TEXT)) {
             textMessage = getIntent().getStringExtra(CometChatConstants.MESSAGE_TYPE_TEXT);
         }
         if (getIntent().hasExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_URL)) {
             mediaMessageUrl = getIntent().getStringExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_URL);
         }
         if (getIntent().hasExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_SIZE)) {
-            mediaMessageSize = getIntent().getIntExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_SIZE,0);
+            mediaMessageSize = getIntent().getIntExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_SIZE, 0);
         }
         if (getIntent().hasExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_EXTENSION)) {
             mediaMessageExtension = getIntent().getStringExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_EXTENSION);
@@ -165,8 +178,29 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
             mediaMessageMime = getIntent().getStringExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_MIME_TYPE);
         }
         if (getIntent().hasExtra(StringContract.IntentStrings.ID)) {
-            id = getIntent().getIntExtra(StringContract.IntentStrings.ID,0);
+            id = getIntent().getIntExtra(StringContract.IntentStrings.ID, 0);
         }
+
+        if (getIntent().hasExtra(StringContract.IntentStrings.TABS)) {
+            tabs = getIntent().getStringExtra(StringContract.IntentStrings.TABS);
+        }
+
+        /*avatarUrl = getIntent().getStringExtra(""+StringContract.IntentStrings.AVATAR);
+        status =  getIntent().getStringExtra(StringContract.IntentStrings.STATUS);
+        uname =  getIntent().getStringExtra(StringContract.IntentStrings.NAME);
+        mtype =  getIntent().getStringExtra(StringContract.IntentStrings.TYPE);
+        tabs =  getIntent().getStringExtra(StringContract.IntentStrings.TABS);
+        team_Ids =  getIntent().getStringExtra("teamId");
+
+        if (mtype != null && type.equals(CometChatConstants.RECEIVER_TYPE_GROUP)) {
+            SenderId = getIntent().getStringExtra(StringContract.IntentStrings.GUID);
+            memberCount =getIntent().getStringExtra(StringContract.IntentStrings.MEMBER_COUNT);
+            groupDesc = getIntent().getStringExtra(StringContract.IntentStrings.GROUP_DESC);
+            groupPassword = getIntent().getStringExtra(StringContract.IntentStrings.GROUP_PASSWORD);
+            groupType = getIntent().getStringExtra(StringContract.IntentStrings.GROUP_TYPE);
+            groupOwner = getIntent().getStringExtra(StringContract.IntentStrings.GROUP_OWNER);
+
+        }*/
     }
 
     /**
@@ -177,7 +211,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.forward_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (Utils.changeToolbarFont(toolbar)!=null){
+        if (Utils.changeToolbarFont(toolbar) != null) {
             Utils.changeToolbarFont(toolbar).setTypeface(fontUtils.getTypeFace(FontUtils.robotoMedium));
         }
         selectedUsers = findViewById(R.id.selected_user);
@@ -204,16 +238,16 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                 if (editable.toString().length()!=0) {
-                     if (conversationListAdapter != null)
-                         conversationListAdapter.getFilter().filter(editable.toString());
-                 }
+                if (editable.toString().length() != 0) {
+                    if (conversationListAdapter != null)
+                        conversationListAdapter.getFilter().filter(editable.toString());
+                }
             }
         });
 
         etSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
             if (i == EditorInfo.IME_ACTION_SEARCH) {
-                if (conversationListAdapter!=null)
+                if (conversationListAdapter != null)
                     conversationListAdapter.getFilter().filter(textView.getText().toString());
                 clearSearch.setVisibility(View.VISIBLE);
                 return true;
@@ -233,7 +267,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         rvConversationList.setItemClickListener(new OnItemClickListener<Conversation>() {
             @Override
             public void OnItemClick(Conversation conversation, int position) {
-                if (userList!=null&&userList.size()<5){
+                if (userList != null && userList.size() < 5) {
                     if (!userList.containsKey(conversation.getConversationId())) {
                         userList.put(conversation.getConversationId(), conversation);
                         Chip chip = new Chip(CometChatForwardMessageScreenActivity.this);
@@ -262,12 +296,11 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
 
                             }
                         });
-                        selectedUsers.addView(chip,0);
+                        selectedUsers.addView(chip, 0);
                     }
                     checkUserList();
-                }
-                else {
-                    Toast.makeText(CometChatForwardMessageScreenActivity.this,"You cannot forward message to more than 5 members",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(CometChatForwardMessageScreenActivity.this, "You cannot forward message to more than 5 members", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -277,14 +310,17 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         forwardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                listSize=userList.size();
 
-                if (messageType!=null&&messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                if (messageType != null && messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                     new Thread(() -> {
                         for (int i = 0; i <= userList.size() - 1; i++) {
+                            listCounter=+i;
                             Conversation conversation = new ArrayList<>(userList.values()).get(i);
                             TextMessage message;
                             String uid;
                             String type;
+
                             Log.e(TAG, "run: " + conversation.getConversationId());
                             if (conversation.getConversationType().equals(CometChatConstants.CONVERSATION_TYPE_USER)) {
                                 uid = ((User) conversation.getConversationWith()).getUid();
@@ -294,17 +330,21 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                                 type = CometChatConstants.RECEIVER_TYPE_GROUP;
                             }
                             message = new TextMessage(uid, textMessage, type);
-                            sendMessage(message);
-                            if (i == userList.size() - 1) {
+                            //
+                            setMetadata(message);
+                            /*commented by rahul maske to redirect on back page and it was sending on CometChatUnified.class */
+                            /*if (i == userList.size() - 1) {
+                                Log.i(TAG, "onClick: messageTypeText");
                                 Intent intent = new Intent(CometChatForwardMessageScreenActivity.this, CometChatUnified.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
-                            }
+                            }*/
                         }
 
                     }).start();
-                } else if (messageType!=null && !messageType.equals(StringContract.IntentStrings.INTENT_MEDIA_MESSAGE)) {
+                } else if (messageType != null && !messageType.equals(StringContract.IntentStrings.INTENT_MEDIA_MESSAGE)) {
+
                     new Thread(() -> {
                         for (int i = 0; i <= userList.size() - 1; i++) {
                             Conversation conversation = new ArrayList<>(userList.values()).get(i);
@@ -319,7 +359,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                                 uid = ((Group) conversation.getConversationWith()).getGuid();
                                 type = CometChatConstants.RECEIVER_TYPE_GROUP;
                             }
-                            message = new MediaMessage(uid,null,messageType,type);
+                            message = new MediaMessage(uid, null, messageType, type);
                             Attachment attachment = new Attachment();
                             attachment.setFileUrl(mediaMessageUrl);
                             attachment.setFileMimeType(mediaMessageMime);
@@ -327,18 +367,21 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                             attachment.setFileExtension(mediaMessageExtension);
                             attachment.setFileName(mediaMessageName);
                             message.setAttachment(attachment);
-                            Log.e(TAG, "onClick: "+attachment.toString());
+                            Log.e(TAG, "onClick: " + attachment.toString());
                             sendMediaMessage(message);
-                            if (i == userList.size() - 1) {
+                            /*commented by rahul maske to redirect on back page and it was sending on CometChatUnified.class */
+                            /*if (i == userList.size() - 1) {
+                                Log.i(TAG, "onClick: messageTypeMedia");
                                 Intent intent = new Intent(CometChatForwardMessageScreenActivity.this, CometChatUnified.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
-                            }
+                            }*/
                         }
 
                     }).start();
                 } else {
+                    Log.i(TAG, "onClick: messageTypeElse");
                     new Thread(() -> {
                         for (int i = 0; i <= userList.size() - 1; i++) {
                             Conversation conversation = new ArrayList<>(userList.values()).get(i);
@@ -353,22 +396,24 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                                 uid = ((Group) conversation.getConversationWith()).getGuid();
                                 type = CometChatConstants.RECEIVER_TYPE_GROUP;
                             }
-                            File file = MediaUtils.getRealPath(CometChatForwardMessageScreenActivity.this,Uri.parse(mediaMessageUrl));
-                            message = new MediaMessage(uid,file,CometChatConstants.MESSAGE_TYPE_IMAGE, type);
+                            File file = MediaUtils.getRealPath(CometChatForwardMessageScreenActivity.this, Uri.parse(mediaMessageUrl));
+                            message = new MediaMessage(uid, file, CometChatConstants.MESSAGE_TYPE_IMAGE, type);
                             try {
                                 JSONObject jsonObject = new JSONObject();
-                                jsonObject.put("path",mediaMessageUrl);
+                                jsonObject.put("path", mediaMessageUrl);
                                 message.setMetadata(jsonObject);
                             } catch (Exception e) {
-                                Log.e(TAG, "onError: "+e.getMessage());
+                                Log.e(TAG, "onError: " + e.getMessage());
                             }
                             sendMediaMessage(message);
-                            if (i == userList.size() - 1) {
+                            /*commented by rahul maske to redirect on back page and it was sending on CometChatUnified.class */
+                            /*if (i == userList.size() - 1) {
+                                Log.i(TAG, "onClick: messageTypeMedia");
                                 Intent intent = new Intent(CometChatForwardMessageScreenActivity.this, CometChatUnified.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
-                            }
+                            }*/
                         }
 
                     }).start();
@@ -388,32 +433,102 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
 
     }
 
+    public void setMetadata(TextMessage message){
+        JSONArray languageArray = new JSONArray();
+        languageArray.put("en");
+        languageArray.put("hi");
+        languageArray.put("ar");
+        languageArray.put("ko");
+        languageArray.put("de");
+        languageArray.put("fr");
+        languageArray.put("fr-CA");
+        languageArray.put("es");
+        languageArray.put("ru");
+        languageArray.put("pt");
+        languageArray.put("vi");
+        languageArray.put("ur");
+
+        JSONObject jsonObject = new JSONObject();
+
+        switch (tabs) {
+            //Friend chat
+            case "1":
+                try {
+                    jsonObject.put("team_logs_id", 0);
+                    jsonObject.put("message_translation_languages", languageArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            //group
+            case "2":
+
+                try {
+                    jsonObject.put("message_translation_languages", languageArray);
+                    Log.i(TAG, "sendMessage: Hello its tab 2 sending msg");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "3":
+                break;
+
+            case "4":
+                break;
+        }
+        message.setMetadata(jsonObject);
+        sendMessage(message);
+    }
+
+
     private void sendMessage(TextMessage message) {
 
         CometChat.sendMessage(message, new CometChat.CallbackListener<TextMessage>() {
             @Override
             public void onSuccess(TextMessage textMessage) {
-                Log.e(TAG, "onSuccess: "+textMessage.getReceiverUid());
-            }
+                Log.e(TAG, "onSuccess: receiver uid" + textMessage.getReceiverUid());
+                /*called previous activity by rahul maske */
 
+                if (listCounter==listSize-1) {
+                    Handler handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onBackPressed();
+                            Toast.makeText(CometChatForwardMessageScreenActivity.this, "Message sent successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
             @Override
             public void onError(CometChatException e) {
-                Log.e(TAG, "onError: "+e.getMessage());
+                Log.e(TAG, "onError: " + e.getMessage());
             }
         });
     }
 
-    public void sendMediaMessage(MediaMessage mediaMessage)
-    {
+    public void sendMediaMessage(MediaMessage mediaMessage) {
         CometChat.sendMediaMessage(mediaMessage, new CometChat.CallbackListener<MediaMessage>() {
             @Override
             public void onSuccess(MediaMessage mediaMessage) {
                 Log.d(TAG, "sendMediaMessage onSuccess: " + mediaMessage.toString());
+                /*called previous activity by rahul maske */
+                if (listCounter==listSize-1) {
+                    Handler handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onBackPressed();
+                        }
+                    });
+                }
             }
 
             @Override
             public void onError(CometChatException e) {
-                Log.e(TAG, "onError: "+e.getMessage());
+                Log.e(TAG, "onError: " + e.getMessage());
             }
         });
     }
@@ -426,18 +541,17 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-         if (item.getItemId()==android.R.id.home){
-             onBackPressed();
-         }
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     private void checkUserList() {
-        Log.e(TAG, "checkUserList: "+userList.size() );
-        if (userList.size()>0) {
+        Log.e(TAG, "checkUserList: " + userList.size());
+        if (userList.size() > 0) {
             forwardBtn.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             forwardBtn.setVisibility(View.GONE);
         }
     }
@@ -454,17 +568,41 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<Conversation> conversationsList) {
                 if (conversationsList.size() != 0) {
+                    List<Conversation> conversationsListCustom = new ArrayList<>();
+                    for (Conversation item : conversationsList) {
+                        Log.i(TAG, "onSuccess: tab is " + tabs);
 
-                    setAdapter(conversationsList);
+                        if (tabs.equals("1")) {
+                            if (item.getConversationType().equals("user")){
+                                Log.i(TAG, "onSuccess: conversation type " + item.getConversationType());
+                                conversationsListCustom.add(item);
+                            }
+                        }else if (tabs.equals("2")) {
+                            if (item.getConversationType().equals("group")){
+                                Log.i(TAG, "onSuccess: conversation type " + item.getConversationType());
+                                conversationsListCustom.add(item);
+                            }
+                        }
+                        /*if (item.getConversationType().equals("user")) {
+                            if (tabs.equals("1")) {
+                                conversationsListCustom.add(item);
+                            }
+                        }else if (item.getConversationType().equals("group")) {
+                        if (tabs.equals("2")) {
+                            conversationsListCustom.add(item);
+                        }
+                    }*/
                 }
+                setAdapter(conversationsListCustom);
             }
+        }
 
-            @Override
-            public void onError(CometChatException e) {
-               Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+        @Override
+        public void onError (CometChatException e){
+            Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    });
+}
 
     private void setAdapter(List<Conversation> conversations) {
         if (conversationListAdapter == null) {
@@ -480,7 +618,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume: ");
         conversationsRequest = null;
-        conversationListAdapter=null;
+        conversationListAdapter = null;
         makeConversationList();
     }
 
@@ -503,4 +641,39 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         super.onStop();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    /*public Intent createIntent(){
+        Intent intent = new Intent(CometChatForwardMessageScreenActivity.this, CometChatMessageListActivity.class);
+        if (getIntent() != null) {
+
+            intent.putExtra(StringContract.IntentStrings.AVATAR,avatar);
+            intent.putExtra(StringContract.IntentStrings.NAME,uname);
+            intent.putExtra(StringContract.IntentStrings.TYPE,mtype);
+            intent.putExtra(StringContract.IntentStrings.TIME_ZONE,mtype);
+            if (mtype.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+                intent.putExtra(StringContract.IntentStrings.SENDER_ID, SenderId);
+                intent.putExtra(StringContract.IntentStrings.STATUS, status);
+                intent.putExtra(StringContract.IntentStrings.TABS,tabs);
+                intent.putExtra("teamId",team_Ids);
+
+            }else {
+                intent.putExtra(StringContract.IntentStrings.GUID, getIntent().getStringExtra(StringContract.IntentStrings.GUID));
+                intent.putExtra(StringContract.IntentStrings.GROUP_OWNER, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_OWNER));
+                intent.putExtra(StringContract.IntentStrings.MEMBER_COUNT, getIntent().getIntExtra(StringContract.IntentStrings.MEMBER_COUNT, 0));
+                intent.putExtra(StringContract.IntentStrings.GROUP_TYPE, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_TYPE));
+                intent.putExtra(StringContract.IntentStrings.GROUP_DESC, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_DESC));
+                intent.putExtra(StringContract.IntentStrings.GROUP_PASSWORD, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_PASSWORD));
+                intent.putExtra(StringContract.IntentStrings.TABS, getIntent().getStringExtra(StringContract.IntentStrings.TABS));
+                intent.putExtra(StringContract.IntentStrings.GROUP_OWNER, groupOwner);
+            }
+
+
+        }
+        return intent;
+    }*/
 }

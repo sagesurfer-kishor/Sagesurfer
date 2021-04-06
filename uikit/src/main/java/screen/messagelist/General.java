@@ -509,6 +509,7 @@ public class General {
     public static final String GROUP_URL = "group_url";
     public static final String PRIVACY = "privacy";
     public static final String ACCESS = "access";
+    public static final String MY_TAG = "my_tag";
     public static final String ANONYMOUS = "anonymous";
     public static final String COACH_ID = "coach_id";
     public static final String NOTIFICATION_COACH_ID = "coach_id";
@@ -785,6 +786,10 @@ public class General {
     public static final String STR_ACTION_WEEK = "Weekly";
     public static final String STR_ACTION_OTHER = "Other";
     public static final String STR_ACTION_DAY_PLAIN_DAY = "Day";
+    public static final String ACTION_SAVE_STICKER ="get_sticker" ;
+    public static final String CHATSCREEN_RECEIVED_MESSAGE ="chat_screen" ;
+    public static final String FILTER_MESSAGE ="chat_screen" ;
+    public static final String IMG = "img";
 
 
     public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {

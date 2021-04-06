@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -31,7 +29,6 @@ import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.interfaces.MainActivityInterface;
 import com.sagesurfer.library.GetColor;
-import com.sagesurfer.models.LanguageList;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
 import com.storage.database.Cometchat_log;
@@ -53,16 +50,14 @@ import okhttp3.RequestBody;
  */
 
 
-public class ChatFragment_ extends Fragment {
-    public static final String TAG = ChatFragment_.class.getSimpleName();
+public class CometChatMainFragment extends Fragment {
+    public static final String TAG = CometChatMainFragment.class.getSimpleName();
     private TabLayout tabLayout;
 
     private Activity activity;
     private MainActivityInterface mainActivityInterface;
     private FragmentActivity mContext;
-
     private String fragment_name;
-
     private List<String> unreadCount = new ArrayList<>();
     SharedPreferences sp;
     private Cometchat_log db;
@@ -78,11 +73,11 @@ public class ChatFragment_ extends Fragment {
         super.onAttach(activity);
         mContext = (FragmentActivity) activity;
         mainActivityInterface = (MainActivityInterface) activity;
-
-        if (getActivity() instanceof MainActivity) {
+        //
+/*        if (getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.hidesettingIcon(true);
-        }
+        }*/
 
     }
 
@@ -99,11 +94,8 @@ public class ChatFragment_ extends Fragment {
         activity = getActivity();
 
         sp = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
-
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.chat));
-
         db = new Cometchat_log(getActivity());
-
         tabLayout = view.findViewById(R.id.chat_tab_layout);
         tabLayout.setOnTabSelectedListener(tabSelectedListener);
 
@@ -113,8 +105,22 @@ public class ChatFragment_ extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("My Team"));
         tabLayout.addTab(tabLayout.newTab().setText("Join Team"));
 
-       /* // action bar setting button
-        setting.setOnClickListener(new View.OnClickListener() {
+        //Toolbar toolbar=(Toolbar)getActivity().findViewById(R.id.toolbar);
+
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            /*if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
+                mainActivity.hideLogBookIcon(true);
+            } else {
+                mainActivity.hideLogBookIcon(false);
+            }*/
+            mainActivity.showHideBellIcon2(true);
+            mainActivity.hidesettingIcon(true);
+
+        }
+
+        // action bar setting button
+        /*setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showSettingPopup(view);
@@ -130,7 +136,6 @@ public class ChatFragment_ extends Fragment {
         getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
         // Checking the intent for navigation from push notification
         checkIntent();
-
         Cursor cursor = db.getNames();
         if (cursor.moveToFirst()) {
             do {
@@ -164,13 +169,13 @@ public class ChatFragment_ extends Fragment {
         Fragment fragment;
 
         if (fragment_name.equalsIgnoreCase("Friends")) {
-            fragment = new FriendsFragment_();
+            fragment = new CometChatFriendsListFragment_();
         } else if (fragment_name.equalsIgnoreCase("Group")) {
-            fragment = new ChatroomFragment_();
+            fragment = new FragmentCometchatGroupsList();
         } else if (fragment_name.equalsIgnoreCase("My Team")) {
-            fragment = new TeamsChatFragment_();
+            fragment = new CometChatMyTeamsFragment_();
         } else {
-            fragment = new JoinTeamFragment();
+            fragment = new CometChatJoinTeamFragment();
         }
 
         replaceFragment(fragment);
@@ -238,7 +243,6 @@ public class ChatFragment_ extends Fragment {
         requestMap.put(General.ACTION, "provider_user_id");
         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
-
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getActivity(), getActivity());
         if (requestBody != null) {
             try {
@@ -252,7 +256,6 @@ public class ChatFragment_ extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -326,8 +329,10 @@ public class ChatFragment_ extends Fragment {
         }
     }
 
+    /*This method is use to check the intent provided by main activity to redirect from firebase push notification
+    * here we will redirect as per team log id tab*/
     private void checkIntent() {
-
+        Log.i(TAG, "checkIntent: in main now it will redirect");
         if (getArguments() != null) {
             if (getArguments().getString("receiverType") != null) {
                 String receiverType = getArguments().getString("receiverType");
@@ -348,8 +353,6 @@ public class ChatFragment_ extends Fragment {
                     tabLayout.getTabAt(1).select();
                 }
             }
-
         }
     }
-
 }

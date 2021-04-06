@@ -2,7 +2,6 @@ package com.modules.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -238,6 +237,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         if (getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.showHideBellIcon(false);
+            mainActivity.hidesettingIcon(false);
         }
     }
 
@@ -320,6 +320,8 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         Preferences.save("start_date_one", "");
         Preferences.save("end_date_one", "");
         return view;
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -982,6 +984,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
 
         AppCompatImageView[] imageViewArray = {imageViewHomeOne, imageViewHomeTwo, imageViewHomeThree,
                 imageViewHomeFour, imageViewHomeFive, imageViewHomeSix};
+
         TextView[] textViews = {textViewHomeOne, textViewHomeTwo, textViewHomeThree, textViewHomeFour,
                 textViewHomeFive, textViewHomeSix};
 
@@ -1000,9 +1003,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
                         }
                     }
                 }
-
                 //Teams, Chat, Planner, SOS update, Mood and Notification  60,36,27,29,34,26
-
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023)) ||
                         Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage025))) {
                     if (CheckRole.isWerHope(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
@@ -1104,6 +1105,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
     private void updateHomeMenuList() {
         Button[] buttonViews = {buttonHomeOne, buttonHomeTwo, buttonHomeThree, buttonHomeFour,
                 buttonHomeFive, buttonHomeSix};
+
         for (int i = 0; i < homeMenuList.size(); i++) {
 
             if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))

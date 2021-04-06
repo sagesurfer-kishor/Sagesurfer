@@ -46,14 +46,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.modules.team.TeamDetailsActivity;
-import com.modules.team.gallery.activity.CreateAlbumActivity;
+import com.modules.team.gallery.activity.CreateGalleryActivity;
 import com.modules.team.gallery.adapter.ImageGalleryAdapter;
 import com.modules.team.gallery.adapter.ListViewGalleryAdapter;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.interfaces.MainActivityInterface;
-import com.sagesurfer.library.CheckRole;
 import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetErrorResources;
 import com.sagesurfer.models.Gallery_;
@@ -75,31 +74,32 @@ import okhttp3.RequestBody;
  * @author Kailash Karankal
  */
 
-public class GalleryListFragment extends Fragment {
-    private static final String TAG = GalleryListFragment.class.getSimpleName();
+public class GalleryAlbumsListFragment extends Fragment {
+    private static final String TAG = GalleryAlbumsListFragment.class.getSimpleName();
     private View view;
     private ArrayList<Gallery_> galleryArrayList = new ArrayList<>(), gallerySearchList;
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewList;
     private LinearLayout errorLayout;
-    private TextView errorText;
+    private FloatingActionButton fb_createGallery;
+    private TextView tv_errorText;
     private AppCompatImageView errorIcon;
     private static Activity activity;
     private MainActivityInterface mainActivityInterface;
-    private EditText editTextSearch;
+    private EditText et_SearchGalleries;
     private CardView cardViewActionsSearch;
     private Boolean isList = false;
     private RecyclerView.LayoutManager mLayoutManager;
     private ListViewGalleryAdapter listViewGalleryAdapter;
-    private ImageView searchIcon;
-    private static ImageView deleteGallery;
+    private ImageView iv_searchIcon;
+    private static ImageView iv_deleteGallery;
     private RelativeLayout countLayout;
-    private TextView countAlbum, cancelTxt, listVievLabel;
+    private TextView tv_albumCount, cancelTxt, listVievLabel;
     private ImageGalleryAdapter imageGalleryAdapter;
     private String msg;
     private AlertDialog alertDialog;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ArrayList<String> gallerySelectedIds = new ArrayList<String>();
+    private ArrayList<String> al_gallerySelectedIds = new ArrayList<String>();
     private LinearLayoutManager mLinearLayoutManager;
 
     @Override
@@ -146,13 +146,13 @@ public class GalleryListFragment extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
         recyclerViewList.setLayoutManager(mLinearLayoutManager);
 
-        errorText = (TextView) view.findViewById(R.id.swipe_refresh_recycler_view_error_message);
+        tv_errorText = (TextView) view.findViewById(R.id.swipe_refresh_recycler_view_error_message);
         errorIcon = (AppCompatImageView) view.findViewById(R.id.swipe_refresh_recycler_view__error_icon);
 
         errorLayout = (LinearLayout) view.findViewById(R.id.swipe_refresh_recycler_view_error_layout);
 
-        FloatingActionButton createAlbum = view.findViewById(R.id.swipe_refresh_layout_recycler_view_float);
-        createAlbum.setImageResource(R.drawable.ic_add_white);
+        fb_createGallery = view.findViewById(R.id.swipe_refresh_layout_recycler_view_float);
+        fb_createGallery.setImageResource(R.drawable.ic_add_white);
 
        /* if (CheckRole.showInviteMember(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
             createAlbum.setVisibility(View.GONE);
@@ -163,16 +163,16 @@ public class GalleryListFragment extends Fragment {
         if (Preferences.get(General.OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID))
                 || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
                 || !General.isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction()) {
-            createAlbum.setVisibility(View.VISIBLE);
+            fb_createGallery.setVisibility(View.VISIBLE);
         } else {
-            createAlbum.setVisibility(View.GONE);
+            fb_createGallery.setVisibility(View.GONE);
         }
 
 
-        createAlbum.setOnClickListener(new View.OnClickListener() {
+        fb_createGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sosIntent = new Intent(activity.getApplicationContext(), CreateAlbumActivity.class);
+                Intent sosIntent = new Intent(activity.getApplicationContext(), CreateGalleryActivity.class);
                 startActivity(sosIntent);
                 activity.overridePendingTransition(0, 0);
             }
@@ -180,11 +180,11 @@ public class GalleryListFragment extends Fragment {
 
         cardViewActionsSearch = (CardView) view.findViewById(R.id.cardview_actions);
         cardViewActionsSearch.setVisibility(View.GONE);
-        editTextSearch = (EditText) view.findViewById(R.id.edittext_search);
-        searchIcon = (ImageView) view.findViewById(R.id.search_icon);
-        deleteGallery = (ImageView) view.findViewById(R.id.delete_gallery);
+        et_SearchGalleries = (EditText) view.findViewById(R.id.edittext_search);
+        iv_searchIcon = (ImageView) view.findViewById(R.id.search_icon);
+        iv_deleteGallery = (ImageView) view.findViewById(R.id.delete_gallery);
         countLayout = view.findViewById(R.id.count_layout);
-        countAlbum = view.findViewById(R.id.count_album_txt);
+        tv_albumCount = view.findViewById(R.id.count_album_txt);
         cancelTxt = view.findViewById(R.id.cancel_txt);
         listVievLabel = view.findViewById(R.id.list_view_label);
 
@@ -227,15 +227,15 @@ public class GalleryListFragment extends Fragment {
     }
 
     public static void showDeleteButton() {
-        deleteGallery.setVisibility(View.VISIBLE);
+        iv_deleteGallery.setVisibility(View.VISIBLE);
     }
 
     public static void hideDeleteButton() {
-        deleteGallery.setVisibility(View.GONE);
+        iv_deleteGallery.setVisibility(View.GONE);
     }
 
     private void setClickListeners() {
-        searchIcon.setOnClickListener(new View.OnClickListener() {
+        iv_searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cardViewActionsSearch.setVisibility(View.VISIBLE);
@@ -248,11 +248,11 @@ public class GalleryListFragment extends Fragment {
             public void onClick(View v) {
                 cardViewActionsSearch.setVisibility(View.GONE);
                 countLayout.setVisibility(View.VISIBLE);
-                editTextSearch.setText("");
+                et_SearchGalleries.setText("");
             }
         });
 
-        deleteGallery.setOnClickListener(new View.OnClickListener() {
+        iv_deleteGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ViewGroup viewGroup = v.findViewById(android.R.id.content);
@@ -297,13 +297,13 @@ public class GalleryListFragment extends Fragment {
     private void searchFilterFunctionality() {
 
 
-        editTextSearch.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        et_SearchGalleries.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    editTextSearch.clearFocus();
+                    et_SearchGalleries.clearFocus();
                     InputMethodManager in = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    in.hideSoftInputFromWindow(editTextSearch.getWindowToken(), 0);
+                    in.hideSoftInputFromWindow(et_SearchGalleries.getWindowToken(), 0);
                     return true;
                 }
                 return false;
@@ -311,7 +311,7 @@ public class GalleryListFragment extends Fragment {
         });
 
 
-        editTextSearch.addTextChangedListener(new TextWatcherExtended() {
+        et_SearchGalleries.addTextChangedListener(new TextWatcherExtended() {
             @Override
             public void afterTextChanged(Editable s, boolean backSpace) {
                 performSearch();
@@ -325,11 +325,11 @@ public class GalleryListFragment extends Fragment {
 
     public void performSearch() {
         gallerySearchList = new ArrayList<>();
-        String searchText = editTextSearch.getText().toString().trim();
+        String searchText = et_SearchGalleries.getText().toString().trim();
         if (searchText.length() == 0) {
-            editTextSearch.clearFocus();
+            et_SearchGalleries.clearFocus();
             InputMethodManager in = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            in.hideSoftInputFromWindow(editTextSearch.getWindowToken(), 0);
+            in.hideSoftInputFromWindow(et_SearchGalleries.getWindowToken(), 0);
         }
         for (Gallery_ gallery_ : galleryArrayList) {
             if (gallery_.getName() != null) {
@@ -359,7 +359,7 @@ public class GalleryListFragment extends Fragment {
         if (isError) {
             errorLayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-            errorText.setText(GetErrorResources.getGalleryMessage(status, activity.getApplicationContext()));
+            tv_errorText.setText(GetErrorResources.getGalleryMessage(status, activity.getApplicationContext()));
             errorIcon.setImageResource(GetErrorResources.getIcon(status));
         } else {
             errorLayout.setVisibility(View.GONE);
@@ -384,10 +384,10 @@ public class GalleryListFragment extends Fragment {
                         if (galleryArrayList.get(0).getStatus() == 1) {
 
                             if (galleryArrayList.size() == 0) {
-                                searchIcon.setVisibility(View.GONE);
+                                iv_searchIcon.setVisibility(View.GONE);
                             } else {
-                                searchIcon.setVisibility(View.VISIBLE);
-                                countAlbum.setText("Total Albums (" + galleryArrayList.size() + ")");
+                                iv_searchIcon.setVisibility(View.VISIBLE);
+                                tv_albumCount.setText("Total Albums (" + galleryArrayList.size() + ")");
                             }
 
                             if (isList) {
@@ -402,7 +402,7 @@ public class GalleryListFragment extends Fragment {
 
                         } else {
                             showError(true, galleryArrayList.get(0).getStatus());
-                            countAlbum.setText("Total Albums (" + 0 + ")");
+                            tv_albumCount.setText("Total Albums (" + 0 + ")");
                         }
                     } else {
                         showError(true, 12);
@@ -506,16 +506,16 @@ public class GalleryListFragment extends Fragment {
 
 
     private String getIds() {
-        gallerySelectedIds.clear();
+        al_gallerySelectedIds.clear();
         if (galleryArrayList != null && galleryArrayList.size() > 0) {
             for (int i = 0; i < galleryArrayList.size(); i++) {
                 if (galleryArrayList.get(i).isSelectImgs()) {
-                    gallerySelectedIds.add(String.valueOf(galleryArrayList.get(i).getId()));
+                    al_gallerySelectedIds.add(String.valueOf(galleryArrayList.get(i).getId()));
                 }
             }
         }
 
-        return gallerySelectedIds.toString()
+        return al_gallerySelectedIds.toString()
                 .replace("[", "")
                 .replace("]", "").trim();
     }

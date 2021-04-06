@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,11 +94,13 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
         activity = getActivity();
 
         buttonAssign.setOnClickListener(this);
-
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage022")) {
+        Log.i(TAG, "onCreateView: "+Preferences.get(General.DOMAIN_CODE));
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage022")) {
             peerParticipant.setText("Guest");
             peerTxt.setText("Wellness Associates");
         } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015")){
+            Log.i(TAG, "onCreateView: "+Preferences.get(General.DOMAIN_CODE));
             peerParticipant.setText("Peer Participant");
             peerTxt.setText("Peer Mentor");
         }else {

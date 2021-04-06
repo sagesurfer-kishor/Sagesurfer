@@ -14,9 +14,11 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cometchat.pro.core.AppSettings;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
+import com.cometchat.pro.uikit.Settings.UIKitSettings;
 import com.sagesurfer.constant.Chat;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.directory.MakeDirectory;
@@ -42,6 +44,25 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_layout);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        initializeCometChat();
+    }
+
+    private void initializeCometChat() {
+        AppSettings appSettings=new AppSettings.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(AppConfig.AppDetails.REGION).build();
+
+        CometChat.init(this, AppConfig.AppDetails.APP_ID,appSettings, new CometChat.CallbackListener<String>() {
+            @Override
+            public void onSuccess(String successMessage) {
+                UIKitSettings.setAPIKey(AppConfig.AppDetails.API_KEY);
+                CometChat.setSource("ui-kit","android","java");
+                Log.d(TAG, "Initialization completed successfully");
+            }
+            @Override
+            public void onError(CometChatException e) {
+                Log.d(TAG, "Initialization failed with exception: " + e.getMessage());
+            }
+        });
     }
 
     //enable or display log print
@@ -72,12 +93,18 @@ public class SplashActivity extends AppCompatActivity {
 
     private void mainIntent() {
         MakeDirectory.makeDirectories();
-        if (!Preferences.getBoolean(General.IS_COMETCHAT_LOGIN_SUCCESS)) {
+        if (Preferences.getBoolean(General.IS_COMETCHAT_LOGIN_SUCCESS)) {
             String domainCode=Preferences.get(General.DOMAIN_CODE);
             if (domainCode.equalsIgnoreCase("sage013")
-                    || domainCode.equalsIgnoreCase("sage016") || domainCode.equalsIgnoreCase("sage021") || domainCode.equalsIgnoreCase("sage023")
-                    || domainCode.equalsIgnoreCase("sage024") || domainCode.equalsIgnoreCase("sage008") || domainCode.equalsIgnoreCase("sage006")
-                    || domainCode.equalsIgnoreCase("sage026") || domainCode.equalsIgnoreCase("sage027")) {
+                    || domainCode.equalsIgnoreCase("sage016")
+                    || domainCode.equalsIgnoreCase("sage021")
+                    || domainCode.equalsIgnoreCase("sage023")
+                    || domainCode.equalsIgnoreCase("sage024")
+                    || domainCode.equalsIgnoreCase("sage008")
+                    || domainCode.equalsIgnoreCase("sage006")
+                    || domainCode.equalsIgnoreCase("sage026")
+                    || domainCode.equalsIgnoreCase("sage027")
+                    || domainCode.equalsIgnoreCase("sage036")) {
                 Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
                 moveToDashboard();
             } else {

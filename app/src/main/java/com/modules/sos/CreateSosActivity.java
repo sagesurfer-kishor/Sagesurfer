@@ -14,12 +14,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
- import androidx.core.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import android.util.Log;
@@ -85,12 +86,10 @@ import okhttp3.RequestBody;
  */
 
 public class CreateSosActivity extends AppCompatActivity implements View.OnClickListener, SingleTeamSelectorDialog.GetChoice, LocationListener {
-
     private static final String TAG = CreateSosActivity.class.getSimpleName();
     private ArrayList<Teams_> teamsArrayList;
     private int group_id = 0;
     private String start_time = "0";
-
     private TextView teamSelector;
     private EditText messageBox;
     private Spinner spinnerPriority;
@@ -99,6 +98,7 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
     private int sosPriority = 0;
     LocationManager locationManager;
     Toolbar toolbar;
+    AppCompatImageView postButton;
     private GoogleApiClient googleApiClient;
     final static int REQUEST_LOCATION = 199;
     String locationAddressString = "";
@@ -117,13 +117,12 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, GetColor.getHomeIconBackgroundColorColorParse(false)));
-
         setContentView(R.layout.create_sos_layout);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         teamsArrayList = new ArrayList<>();
 
         toolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
+
         //toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.screen_background));
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
@@ -142,10 +141,11 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
         titleText.setPadding(120, 0, 0, 0);
         titleText.setText(this.getResources().getString(R.string.create_sos));
 
-        AppCompatImageView postButton = (AppCompatImageView) findViewById(R.id.imageview_toolbar_save);
+
         /*int color = Color.parseColor("#a5a5a5"); //text_color_tertiary
         postButton.setColorFilter(color);
         postButton.setImageResource(R.drawable.vi_check_white);*/
+        postButton = (AppCompatImageView)toolbar.findViewById(R.id.imageview_toolbar_save);
         postButton.setVisibility(View.VISIBLE);
         postButton.setOnClickListener(this);
 
@@ -160,6 +160,7 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
         linearLayoutConsumerName = (LinearLayout) findViewById(R.id.linearlayout_consumername);
         textViewConsumerNameLabel = (TextView) findViewById(R.id.textview_consumername_label);
         textViewConsumerName = (TextView) findViewById(R.id.textview_consumername);
+
         if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
             linearLayoutConsumerName.setVisibility(View.VISIBLE);
             if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015")) {
@@ -298,19 +299,24 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
     private boolean sosValidation(String message, View view) {
         if (message == null || message.trim().length() <= 0) {
             //messageBox.setError("Enter valid SOS");
+            Log.i(TAG, "sosValidation: not null msg");
             ShowSnack.viewWarning(view, "Enter valid SOS", getApplicationContext());
             return false;
         }
+
         if (message.length() < 6 || message.length() > 140) {
+            Log.i(TAG, "sosValidation: length less than zero msg");
             //messageBox.setError("Min 6 Char Required\nMax 140 Char allowed");
             ShowSnack.viewWarning(view, "Min 6 Char Required\nMax 140 Char allowed", getApplicationContext());
             return false;
         }
         if (group_id == 0) {
+            Log.i(TAG, "sosValidation: group id is zero");
             ShowSnack.viewWarning(view, this.getResources().getString(R.string.please_select_team), getApplicationContext());
             return false;
         }
         if (sosPriority == 0) {
+            Log.i(TAG, "sosValidation: select priority");
             ShowSnack.viewWarning(view, this.getResources().getString(R.string.please_select_priority), getApplicationContext());
             return false;
         }
@@ -379,6 +385,7 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.SOS_SEND_URL;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getApplicationContext(), this);
+        Log.i(TAG, "sendSosNo: "+requestBody);
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, getApplicationContext(), this);
@@ -503,7 +510,7 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
         super.onStart();
         start_time = GetTime.getChatTimestamp();
         if (teamsArrayList != null) {
-            teamsArrayList = PerformGetTeamsTask.get(Actions_.SOS_TEAMS, getApplicationContext(), TAG, false, this);
+            teamsArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.SOS_TEAMS, getApplicationContext(), TAG, false, this);
         }
     }
 
@@ -524,34 +531,44 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        Log.i(TAG, "onClick: hit");
         KeyboardOperation.hide(getApplicationContext(), messageBox.getWindowToken());
         switch (v.getId()) {
             case R.id.imageview_toolbar_save:
+                Log.i(TAG, "onClick: sendSOS1");
                 String message = messageBox.getText().toString().trim();
                 if (sosValidation(message, v)) {
+                    Log.i(TAG, "onClick: sendSOS2");
                     if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
                         alertDialog.show();
+                        Log.i(TAG, "onClick: sendSOS3");
                     } else {
                         lat_lon_status = 1;
                         sendSOSClciked = true;
+                        Log.i(TAG, "onClick: sendSOS4");
                         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                         boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
                         if ((lat_lon_status == 0) || (lat_lon_status == 1 && locationAddressString.length() > 0) || (lat_lon_status == 1 && !statusOfGPS)) {
                             sendSOSClciked = false;
+
                             sendSos(message);
                         }
                     }
+                }else{
+                    Log.i(TAG, "onClick: validation failed");
                 }
 
                 break;
             case R.id.create_sos_team_select:
                 if (teamsArrayList == null || teamsArrayList.size() <= 0) {
-                    ShowSnack.viewWarning(v, this.getResources().getString(R.string.teams_unavailable), getApplicationContext());
+                    ShowSnack.viewWarning(v,
+                            this.getResources().getString(R.string.teams_unavailable), getApplicationContext());
                     return;
                 }
                 openTeamSelector();
                 break;
             case R.id.linearlayout_select_message:
+                Log.i(TAG, "onClick: message");
                 showInbuilt();
                 break;
         }

@@ -4,16 +4,23 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.cometchat.pro.constants.CometChatConstants;
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.core.CometChatExtension;
+import com.cometchat.pro.exceptions.CometChatException;
 import com.firebase.MessagingService;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sagesurfer.collaborativecares.Application;
 import com.sagesurfer.collaborativecares.LoginActivity;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.library.DeviceInfo;
+import com.sagesurfer.network.AppConfig;
 import com.sagesurfer.network.MakeCall;
 import com.sagesurfer.network.Urls_;
 import com.sagesurfer.secure.KeyMaker_;
@@ -29,6 +36,8 @@ import java.util.List;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * @author Monika M (monikam@sagesurfer.com)
  * Created on 13/03/2018
@@ -38,6 +47,10 @@ import okhttp3.RequestBody;
 public class PerformLogoutTask {
 
     private static final String TAG = PerformLogoutTask.class.getSimpleName();
+    private static SharedPreferences loginPreferences;
+    private static SharedPreferences.Editor loginPrefsEditor;
+    private static SharedPreferences sp;
+    private static SharedPreferences.Editor spEditor;
 
     public static void logout(Activity activity) {
         Logout logout = new Logout(activity);
@@ -62,7 +75,6 @@ public class PerformLogoutTask {
 
             // for quote layout showing
             Preferences.save("showQuote", false);
-
             mProgressDialog.setMessage("Logout Successfully");
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mProgressDialog.setCancelable(false);
@@ -80,6 +92,7 @@ public class PerformLogoutTask {
                     .build();
             try {
                 MakeCall.post(Preferences.get(General.DOMAIN) + "/" + Urls_.LOGOUT_URL, logoutBody, TAG, activity.getApplicationContext(), activity);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -90,6 +103,17 @@ public class PerformLogoutTask {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             safeLogout(activity);
+
+            loginPreferences = activity.getSharedPreferences("loginPrefs", MODE_PRIVATE);
+            loginPrefsEditor = loginPreferences.edit();
+            loginPrefsEditor.clear();
+            loginPrefsEditor.commit();
+
+            sp = activity.getSharedPreferences("login", MODE_PRIVATE);
+            spEditor = sp.edit();
+            spEditor.clear();
+            spEditor.commit();
+
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
             }
@@ -102,10 +126,35 @@ public class PerformLogoutTask {
     // reset shared preferences values to logout state
     private static void safeLogout(Activity activity) {
 
-        MessagingService.unsubscribeUserNotification(Preferences.get(General.COMET_CHAT_ID));
+        /*cometchat account login for particular user
+         *code added by rahulmsk*/
 
-        Preferences.save(General.IS_LOGIN, 0);
-        Preferences.removeKey("regId");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConfig.AppDetails.APP_ID + "_" + CometChatConstants.RECEIVER_TYPE_USER + "_" +
+                Preferences.get(General.COMET_CHAT_ID)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e(TAG, Preferences.get(General.COMET_CHAT_ID) + " Unsubscribed Success");
+
+                CometChat.logout(new CometChat.CallbackListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        Log.i(TAG, "cometchat logout onSuccess: ");
+                    }
+
+                    @Override
+                    public void onError(CometChatException e) {
+                        Log.i(TAG, "cometchat logout failed: " + e.getMessage());
+                    }
+                });
+            }
+        });
+
+
+        //MessagingService.unsubscribeUserNotification(Preferences.get(General.COMET_CHAT_ID));
+        //MessagingService.unsubscribeGroupNotification(Preferences.get(General.COMET_CHAT_ID));
+        Preferences.clear();
+
+        /*Preferences.removeKey("regId");
         Preferences.removeKey(General.PASSWORD);
         Preferences.removeKey(General.USER_ID);
         Preferences.removeKey(General.TIMEZONE);
@@ -129,18 +178,16 @@ public class PerformLogoutTask {
         Preferences.removeKey(General.IS_LANDING_QUESTION_FILLED);
         Preferences.removeKey(General.SHOW_BEHAVIOURAL_FILLED);
         Preferences.removeKey(General.IS_FORM_SYNC_LANDING_QUESTION);
+        Preferences.removeKey(General.OWNER_ID);*/
+        //screen.messagelist.Preferences.clear();
 
-        Preferences.removeKey(General.OWNER_ID);
+        Preferences.save(General.IS_LOGIN, 0);
         Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
-
         Application.getInstance().clearApplicationData();
-
 
         Intent loginIntent = new Intent(activity.getApplicationContext(), LoginActivity.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         activity.startActivity(loginIntent);
         activity.finish();
     }
-
-
 }

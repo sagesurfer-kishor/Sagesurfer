@@ -12,7 +12,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.telephony.mbms.MbmsErrors;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,6 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.model.Model;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.JsonObject;
 import com.modules.selfgoal.werhope_self_goal.activity.GoalLogBookActivity;
@@ -69,8 +67,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -211,9 +207,7 @@ public class SelfGoalDetailsActivity extends AppCompatActivity implements GoalDe
 
         setContentView(R.layout.activity_self_goal_details);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         ButterKnife.bind(this);
-
         activityToolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
         setSupportActionBar(activityToolbar);
         assert getSupportActionBar() != null;

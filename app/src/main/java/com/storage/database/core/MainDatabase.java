@@ -198,12 +198,14 @@ public final class MainDatabase extends SQLiteOpenHelper {
         Cursor cursor = null;
         try {
             cursor = database.rawQuery(getSql, null);
-            cursor.moveToFirst();
-            int count = cursor.getInt(0);
-            if (count > 0) {
-                String deleteSql = "DELETE FROM " + table_name + " WHERE " + column + "= '" + id + "'";
-                cursor = database.rawQuery(deleteSql, null);
+            if (database != null && database.isOpen()){
                 cursor.moveToFirst();
+                int count = cursor.getInt(0);
+                if (count > 0) {
+                    String deleteSql = "DELETE FROM " + table_name + " WHERE " + column + "= '" + id + "'";
+                    cursor = database.rawQuery(deleteSql, null);
+                    cursor.moveToFirst();
+                }
             }
         } finally {
             if (cursor != null) {

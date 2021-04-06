@@ -9,7 +9,6 @@ import androidx.emoji.text.EmojiCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +21,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cometchat.pro.constants.CometChatConstants;
-import com.cometchat.pro.core.Call;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.uikit.R;
@@ -47,10 +45,8 @@ import listeners.CometChatCallListener;
 import listeners.CustomAlertDialogHelper;
 import listeners.OnAlertDialogButtonClickListener;
 import listeners.OnItemClickListener;
-import screen.CometChatCallActivity;
 import screen.CometChatConversationListScreen;
-import screen.CometChatGroupListScreen;
-import screen.CometChatUserDetailScreenActivity;
+import screen.FragmentCometChatGroupList;
 import screen.call.CometChatCallListScreen;
 import screen.messagelist.CometChatMessageListActivity;
 import screen.CometChatUserInfoScreen;
@@ -130,7 +126,7 @@ public class CometChatUnified extends AppCompatActivity implements
     }
 
     private void setGroupClickListener() {
-        CometChatGroupListScreen.setItemClickListener(new OnItemClickListener<Group>() {
+        FragmentCometChatGroupList.setItemClickListener(new OnItemClickListener<Group>() {
             @Override
             public void OnItemClick(Group g, int position) {
                 group = g;
@@ -359,7 +355,7 @@ public class CometChatUnified extends AppCompatActivity implements
      * @param item
      * @return true if fragment is not null.
      * @see CometChatUserListScreen
-     * @see CometChatGroupListScreen
+     * @see FragmentCometChatGroupList
      * @see CometChatConversationListScreen
      * @see CometChatUserInfoScreen
      */
@@ -370,7 +366,7 @@ public class CometChatUnified extends AppCompatActivity implements
         if (itemId == R.id.menu_users) {
             fragment = new CometChatUserListScreen();
         } else if (itemId == R.id.menu_group) {
-            fragment = new CometChatGroupListScreen();
+            fragment = new FragmentCometChatGroupList();
         } else if (itemId == R.id.menu_conversation) {
           fragment = new CometChatConversationListScreen();
         } else if (itemId == R.id.menu_more) {

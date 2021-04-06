@@ -76,6 +76,7 @@ public class TeamTalkListAdapter extends ArrayAdapter<TeamTalk_> {
             viewHolder.countIcon = (AppCompatImageView) view.findViewById(R.id.team_talk_list_item_comment_icon);
 
             view.setTag(viewHolder);
+
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }

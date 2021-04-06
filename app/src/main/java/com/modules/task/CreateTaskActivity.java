@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -64,19 +66,17 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
 
     private static final String TAG = CreateTaskActivity.class.getSimpleName();
     //private ArrayList<Teams_> teamsArrayList;
-    private ArrayList<Friends_> friendsArrayList, membersList, ownerList;
-    private ArrayList<Task_> taskArrayList;
+    private ArrayList<Friends_> al_friends, al_members, al_ownerList;
+    private ArrayList<Task_> al_task;
     private boolean isTeam = false;
     private int group_id = 0, owner_id = 0, task_id = 0;
     private String user_id = "0", group_name = "", start_time = "0";
     private String due_date = "0000-00-00", priority = "Low";
     private int mYear = 0, mMonth = 0, mDay = 0;
-
     //private RadioButton homeRadio, teamRadio;
-    private TextView teamSelectedLabel, teamSelected, ownerLabelText, ownerText, assignedText, dateText, priorityText;
-    private EditText titleBox, descriptionBox;
-    private AppCompatImageView addTaskList;
-
+    private TextView tv_team_name, tv_teamSelected, tv_ownerLabel, ownerText, tv_assigned, tv_date, tv_priority;
+    private EditText et_title, et_description;
+    private AppCompatImageView iv_addTaskList;
     Toolbar toolbar;
 
     @SuppressLint("RestrictedApi")
@@ -88,16 +88,11 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, GetColor.getHomeIconBackgroundColorColorParse(false)));
-
         setContentView(R.layout.create_task_layout);
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         //teamsArrayList = new ArrayList<>();
-        ownerList = new ArrayList<>();
-
+        al_ownerList = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
-        //toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.screen_background));
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -109,41 +104,38 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                 onBackPressed();
             }
         });
-
-        TextView titleText = (TextView) findViewById(R.id.textview_activitytoolbar_title);
-        //titleText.setTextColor(getResources().getColor(R.color.text_color_primary));
-        titleText.setText(this.getResources().getString(R.string.create_task));
-
+        TextView tv_title = (TextView) findViewById(R.id.textview_activitytoolbar_title);
+        //tv_title.setTextColor(getResources().getColor(R.color.text_color_primary));
+        tv_title.setText(this.getResources().getString(R.string.create_task));
         AppCompatImageView postButton = (AppCompatImageView) findViewById(R.id.imageview_toolbar_save);
         /*int color = Color.parseColor("#a5a5a5"); //text_color_tertiary
         postButton.setColorFilter(color);
         postButton.setImageResource(R.drawable.vi_check_white);*/
         postButton.setVisibility(View.VISIBLE);
         postButton.setOnClickListener(this);
-
         /*homeRadio = (RadioButton) findViewById(R.id.create_task_home_radio);
         homeRadio.setOnClickListener(this);
         teamRadio = (RadioButton) findViewById(R.id.create_task_team_radio);
         teamRadio.setOnClickListener(this);*/
-
-        teamSelectedLabel = (TextView) findViewById(R.id.create_task_team_selector_label);
-        teamSelected = (TextView) findViewById(R.id.create_task_team_selector);
-        teamSelected.setOnClickListener(this);
-        ownerLabelText = (TextView) findViewById(R.id.create_task_owner_label);
+        tv_team_name = (TextView) findViewById(R.id.create_task_team_selector_label);
+        tv_teamSelected = (TextView) findViewById(R.id.tv_team_name_for_task);
+        tv_teamSelected.setOnClickListener(this);
+        tv_ownerLabel = (TextView) findViewById(R.id.create_task_owner_label);
         ownerText = (TextView) findViewById(R.id.create_task_owner);
         ownerText.setOnClickListener(this);
-        assignedText = (TextView) findViewById(R.id.create_task_assigned);
-        assignedText.setOnClickListener(this);
-        dateText = (TextView) findViewById(R.id.create_task_due_date);
-        dateText.setOnClickListener(this);
-        priorityText = (TextView) findViewById(R.id.create_task_priority);
-        priorityText.setOnClickListener(this);
+        tv_assigned = (TextView) findViewById(R.id.tv_task_assigned_to);
+        tv_assigned.setOnClickListener(this);
+        tv_date = (TextView) findViewById(R.id.tv_task_due_date);
+        tv_date.setOnClickListener(this);
+        tv_priority = (TextView) findViewById(R.id.tv_task_priority);
+        tv_priority.setOnClickListener(this);
+        et_description = (EditText) findViewById(R.id.tv_task_description);
+        et_title = (EditText) findViewById(R.id.tv_task_title);
+        iv_addTaskList = (AppCompatImageView) findViewById(R.id.create_task_add_task);
+        iv_addTaskList.setOnClickListener(this);
+        //Log.e(TAG, "Group name "+Preferences.get(General.GROUP_NAME));
+        //Log.e(TAG, "Group id "+Preferences.get(General.GROUP_ID));
 
-        descriptionBox = (EditText) findViewById(R.id.create_task_description);
-        titleBox = (EditText) findViewById(R.id.create_task_title);
-
-        addTaskList = (AppCompatImageView) findViewById(R.id.create_task_add_task);
-        addTaskList.setOnClickListener(this);
     }
 
     private void showResponses(int status, View view) {
@@ -173,10 +165,10 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
     // make UI changes based on radio button selected (team/home task)
     private void toggleRadio() {
         isTeam = Preferences.getBoolean(General.IS_FROM_TEAM_TASK);
-        teamSelected.setText("");
-        assignedText.setText("");
+        tv_teamSelected.setText("");
+        tv_assigned.setText("");
         ownerText.setText("");
-        ownerList.clear();
+        al_ownerList.clear();
         toggleOwner();
         user_id = "0";
         owner_id = 0;
@@ -185,29 +177,29 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
             /*teamRadio.setChecked(true);
             homeRadio.setChecked(false);
             teamSelected.setHint(this.getResources().getString(R.string.select_team));*/
-            teamSelectedLabel.setText(this.getResources().getString(R.string.team));
-            addTaskList.setVisibility(View.GONE);
+            tv_team_name.setText(this.getResources().getString(R.string.team));
+            iv_addTaskList.setVisibility(View.GONE);
 
-            group_id = Integer.parseInt(Preferences.get(General.GROUP_ID));
-            group_name = Preferences.get(General.GROUP_NAME);
-            teamSelected.setText(group_name);
+            group_id = Integer.parseInt(Preferences.get(General.TEAM_ID));
+            tv_teamSelected.setText(""+Preferences.get(General.TEAM_NAME));
             getMembers();
         } else {
             /*teamRadio.setChecked(false);
             homeRadio.setChecked(true);*/
-            teamSelectedLabel.setText(this.getResources().getString(R.string.select_task_list));
-            addTaskList.setVisibility(View.VISIBLE);
+            tv_teamSelected.setText(""+Preferences.get(General.TEAM_NAME));
+            tv_team_name.setText(this.getResources().getString(R.string.select_task_list));
+            iv_addTaskList.setVisibility(View.VISIBLE);
             group_id = 0;
             group_name = "";
         }
     }
 
     private void toggleOwner() {
-        if (ownerList.size() > 0) {
-            ownerLabelText.setVisibility(View.VISIBLE);
+        if (al_ownerList.size() > 0) {
+            tv_ownerLabel.setVisibility(View.VISIBLE);
             ownerText.setVisibility(View.VISIBLE);
         } else {
-            ownerLabelText.setVisibility(View.GONE);
+            tv_ownerLabel.setVisibility(View.GONE);
             ownerText.setVisibility(View.GONE);
         }
     }
@@ -219,7 +211,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 priority = item.getTitle().toString();
-                priorityText.setText(priority);
+                tv_priority.setText(priority);
                 popup.dismiss();
                 return true;
             }
@@ -238,8 +230,8 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this, this);
                 if (response != null) {
-                    friendsArrayList = Users_.parseTaskFriends(response, "friend_list", getApplicationContext(), TAG);
-                    taskArrayList = Alerts_.parseTaskList(response, getApplicationContext(), TAG);
+                    al_friends = Users_.parseTaskFriends(response, "friend_list", getApplicationContext(), TAG);
+                    al_task = Alerts_.parseTaskList(response, getApplicationContext(), TAG);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -269,7 +261,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
     private void openTaskSelector() {
         Bundle bundle = new Bundle();
         TaskListSelectorDialog dialogFrag = new TaskListSelectorDialog();
-        bundle.putSerializable(General.TASK_LIST, taskArrayList);
+        bundle.putSerializable(General.TASK_LIST, al_task);
         dialogFrag.setArguments(bundle);
         dialogFrag.show(getSupportFragmentManager().beginTransaction(), General.TASK_LIST);
     }
@@ -279,17 +271,17 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
     private void openOwnerSelector() {
         Bundle bundle = new Bundle();
         OwnerSelectorDialog ownerSelectorDialog = new OwnerSelectorDialog();
-        bundle.putSerializable(General.USER_LIST, ownerList);
+        bundle.putSerializable(General.USER_LIST, al_ownerList);
         ownerSelectorDialog.setArguments(bundle);
         ownerSelectorDialog.show(getSupportFragmentManager().beginTransaction(), General.USER_LIST);
     }
 
     // make network call to fetch users from server
     private void getMembers() {
-        if (membersList != null) {
-            membersList.clear();
+        if (al_members != null) {
+            al_members.clear();
         } else {
-            membersList = new ArrayList<>();
+            al_members = new ArrayList<>();
         }
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.GROUP_FRIENDS);
@@ -301,7 +293,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this, this);
                 if (response != null) {
-                    membersList = Users_.parseTaskFriends(response, Actions_.GROUP_FRIENDS, getApplicationContext(), TAG);
+                    al_members = Users_.parseTaskFriends(response, Actions_.GROUP_FRIENDS, getApplicationContext(), TAG);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -312,31 +304,31 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
     // validate all fields for proper data
     private boolean validate(String task_title, String task_description) {
         if (isTeam && group_id == 0) {
-            ShowSnack.textViewWarning(teamSelected, this.getResources().getString(R.string.please_select_team), getApplicationContext());
+            ShowSnack.textViewWarning(tv_teamSelected, this.getResources().getString(R.string.please_select_team), getApplicationContext());
             return false;
         }
         if (!isTeam && task_id == 0) {
-            ShowSnack.textViewWarning(teamSelected, "Please select task list", getApplicationContext());
+            ShowSnack.textViewWarning(tv_teamSelected, "Please select task list", getApplicationContext());
             return false;
         }
         if (task_title == null) {
-            titleBox.setError("Invalid Task List Name");
+            et_title.setError("Invalid Task List Name");
             return false;
         }
         if (task_title.length() < 3) {
-            titleBox.setError("Min 3 char required");
+            et_title.setError("Min 3 char required");
             return false;
         }
         if (task_title.length() > 50) {
-            titleBox.setError("Max 50 char required");
+            et_title.setError("Max 50 char required");
             return false;
         }
         if (task_description.length() < 3 && task_description.length() > 0) {
-            descriptionBox.setError("Min 3 char required");
+            et_description.setError("Min 3 char required");
             return false;
         }
         if (task_description.length() > 500) {
-            descriptionBox.setError("Max 500 char required");
+            et_description.setError("Max 500 char required");
             return false;
         }
         return true;
@@ -369,7 +361,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                 String response = NetworkCall_.post(url, requestBody, TAG, this, this);
                 if (response != null) {
                     if (Error_.oauth(response, getApplicationContext()) == 13) {
-                        ShowSnack.viewWarning(addTaskList, this.getResources().getString(R.string.network_error_occurred), getApplicationContext());
+                        ShowSnack.viewWarning(iv_addTaskList, this.getResources().getString(R.string.network_error_occurred), getApplicationContext());
                         return;
                     }
                     JsonObject jsonObject = GetJson_.getObject(response, Actions_.ADD_TASK_LIST);
@@ -382,11 +374,11 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                             taskArrayList.add(task_);*/
                             ShowToast.successful("Task list added", getApplicationContext());
                         } else {
-                            ShowSnack.viewWarning(addTaskList, this.getResources().getString(R.string.action_failed), getApplicationContext());
+                            ShowSnack.viewWarning(iv_addTaskList, this.getResources().getString(R.string.action_failed), getApplicationContext());
                         }
                     }
                 } else {
-                    ShowSnack.viewWarning(addTaskList, this.getResources().getString(R.string.network_error_occurred), getApplicationContext());
+                    ShowSnack.viewWarning(iv_addTaskList, this.getResources().getString(R.string.network_error_occurred), getApplicationContext());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -493,7 +485,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                 if (response != null) {
                     if (Error_.oauth(response, getApplicationContext()) == 13) {
                         result = 13;
-                        showResponses(result, teamSelected);
+                        showResponses(result, tv_teamSelected);
                         return;
                     }
                     JsonObject jsonObject = GetJson_.getJson(response);
@@ -509,7 +501,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                 e.printStackTrace();
             }
         }
-        showResponses(result, teamSelected);
+        showResponses(result, tv_teamSelected);
     }
 
     @Override
@@ -546,7 +538,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
             group_id = savedInstanceState.getInt(General.GROUP_ID, 0);
             if (group_id != 0) {
                 group_name = savedInstanceState.getString(General.GROUP_NAME);
-                teamSelected.setText(group_name);
+                tv_teamSelected.setText(group_name);
             }
         }
     }
@@ -555,8 +547,8 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageview_toolbar_save:
-                String title = titleBox.getText().toString().trim();
-                String description = descriptionBox.getText().toString().trim();
+                String title = et_title.getText().toString().trim();
+                String description = et_description.getText().toString().trim();
                 if (validate(title, description)) {
                     if (due_date.trim().length() <= 0 || due_date.equalsIgnoreCase("0000-00-00")) {
                         dueDateConfirmation(title, description);
@@ -565,27 +557,30 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                     }
                 }
                 break;
+
             case R.id.create_task_owner:
-                if (ownerList != null && ownerList.size() > 0) {
+                if (al_ownerList != null && al_ownerList.size() > 0) {
                     openOwnerSelector();
                 }
                 break;
-            case R.id.create_task_assigned:
+
+            case R.id.tv_task_assigned_to:
                 if (isTeam) {
-                    if (membersList != null && membersList.size() > 0) {
-                        openUsersSelector(membersList);
+                    if (al_members != null && al_members.size() > 0) {
+                        openUsersSelector(al_members);
                     } else {
                         ShowSnack.viewWarning(v, this.getResources().getString(R.string.teams_unavailable), getApplicationContext());
                     }
                 } else {
-                    if (friendsArrayList != null && friendsArrayList.size() > 0) {
-                        openUsersSelector(friendsArrayList);
+                    if (al_friends != null && al_friends.size() > 0) {
+                        openUsersSelector(al_friends);
                     } else {
                         ShowSnack.viewWarning(v, this.getResources().getString(R.string.friends_unavailable), getApplicationContext());
                     }
                 }
                 break;
-            case R.id.create_task_team_selector:
+
+            case R.id.tv_team_name_for_task:
                 if (isTeam) {
                     if (group_id == 0) {
                     //if (teamsArrayList == null || teamsArrayList.size() <= 0) {
@@ -595,7 +590,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                     //openTeamSelector();
                 } else {
                     getTaskList();
-                    if (taskArrayList != null && taskArrayList.size() > 0) {
+                    if (al_task != null && al_task.size() > 0) {
                         openTaskSelector();
                     }
                 }
@@ -608,13 +603,11 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                 isTeam = false;
                 toggleRadio();
                 break;*/
-            case R.id.create_task_due_date:
+            case R.id.tv_task_due_date:
                 Calendar c = Calendar.getInstance();
-
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-
                 due_date = "0000-00-00";
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                         new DatePickerDialog.OnDateSetListener() {
@@ -631,11 +624,11 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                                             + (mMonth + 1) + "-" + mDay, year, due_date);
                                     if (result == 1) {
                                         due_date = "0000-00-00";
-                                        dateText.setText("");
-                                        ShowSnack.textViewWarning(dateText, getApplicationContext()
+                                        tv_date.setText("");
+                                        ShowSnack.textViewWarning(tv_date, getApplicationContext()
                                                 .getResources().getString(R.string.invalid_date), getApplicationContext());
                                     } else {
-                                        dateText.setText(due_date);
+                                        tv_date.setText(due_date);
                                     }
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -644,9 +637,11 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
                 break;
-            case R.id.create_task_priority:
+
+            case R.id.tv_task_priority:
                 showPriority(v);
                 break;
+
             case R.id.create_task_add_task:
                 createTaskDialog();
                 break;
@@ -673,18 +668,18 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void selectedUsers(ArrayList<Friends_> users_arrayList, String selfCareContentId, boolean isSelected) {
         if (isTeam) {
-            membersList = users_arrayList;
+            al_members = users_arrayList;
         } else {
-            friendsArrayList = users_arrayList;
+            al_friends = users_arrayList;
         }
         if (isSelected) {
             user_id = GetSelected.wallUsers(users_arrayList);
-            assignedText.setText(GetSelected.wallUsersName(users_arrayList));
+            tv_assigned.setText(GetSelected.wallUsersName(users_arrayList));
         }
-        ownerList = GetSelected.getSelectedUserList(users_arrayList);
-        if (ownerList.size() > 0) {
-            owner_id = ownerList.get(0).getUserId();
-            ownerText.setText(ownerList.get(0).getName());
+        al_ownerList = GetSelected.getSelectedUserList(users_arrayList);
+        if (al_ownerList.size() > 0) {
+            owner_id = al_ownerList.get(0).getUserId();
+            ownerText.setText(al_ownerList.get(0).getName());
         }
         toggleOwner();
     }
@@ -701,7 +696,7 @@ public class CreateTaskActivity extends AppCompatActivity implements View.OnClic
     public void getSelectedTask(Task_ task_, boolean isSelected) {
         if (isSelected) {
             task_id = task_.getId();
-            teamSelected.setText(task_.getName());
+            tv_teamSelected.setText(task_.getName());
         }
     }
 }

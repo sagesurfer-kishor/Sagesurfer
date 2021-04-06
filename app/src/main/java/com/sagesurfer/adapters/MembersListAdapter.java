@@ -19,10 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
-import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.GroupMember;
 import com.cometchat.pro.uikit.Avatar;
-import com.modules.cometchat_7_30.ChatroomFragment_;
+import com.modules.cometchat_7_30.FragmentCometchatGroupsList;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.models.GetAddNewMember;
@@ -42,8 +41,7 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
     private final Context mContext;
     private final ArrayList<GetAddNewMember> groupmemberList;
     private ArrayList<GetAddNewMember> primaryGroupList = new ArrayList<>();
-
-    private static final String TAG = ChatroomFragment_.class.getSimpleName();
+    private static final String TAG = FragmentCometchatGroupsList.class.getSimpleName();
     private String groupType;
 
     MembersListAdapter(Context mContext, ArrayList<GetAddNewMember> groupmemberList, String groupType) {
@@ -97,9 +95,8 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // send invition to user for add into group
-
                                 if (groupType.equals("private")) {
-
+                                    Log.i(TAG, "onClick: invite user in password group");
                                     String action = "invite_public_friend";
                                     String groupid = Preferences.get("gId");
                                     String UserId = Preferences.get(General.USER_ID);
@@ -108,27 +105,29 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
                                     addMemberTogroup(UserId, groupid, action, reciverId, rev, position);
                                     //invite(action, UserId, groupid, reciverId, position);
                                     dialog.cancel();
-
                                 } else {
-
                                     if (groupmemberList.get(position).getIs_friend().equals("0")) {
+                                        /*if the user is not already a friend of the sender then that user will get invitation to accept or decline  add in to the group
+                                         * so this block will add user in group  */
+                                        Log.i(TAG, "onClick: invite user public or password block 1");
                                         String action = "add_member_invite";
                                         String groupid = Preferences.get("gId");
                                         String UserId = Preferences.get(General.USER_ID);
                                         String reciverId = teams_.getComet_chat_id();
                                         String rev = teams_.getUserId();
-
                                         invite(action, UserId, groupid, reciverId, rev, position);
                                         Log.e("Yesy", "TEST");
                                         dialog.cancel();
 
                                     } else {
+                                        Log.i(TAG, "onClick: invite user public or password block 2");
+                                        /*if the user is already a friend of the sender then that user will directly add in to the group
+                                        * so this block will add user in group  */
                                         String action = "invite_public_friend";
                                         String groupid = Preferences.get("gId");
                                         String UserId = Preferences.get(General.USER_ID);
                                         String reciverId = teams_.getComet_chat_id();
                                         String rev = teams_.getUserId();
-
                                         Log.e("No", "TEST");
                                         addMemberTogroup(UserId, groupid, action, reciverId, rev, position);
                                         Log.e("cometId", reciverId);
@@ -163,7 +162,6 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
                 Log.e(TAG, "onSuccess: " + userList + "Group" + GUID);
                 invite(action, uid, GUID, reciveverId, rec, position);
             }
-
             @Override
             public void onError(CometChatException e) {
                 Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -178,12 +176,12 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
     }
 
     private void invite(String action, String userId, String gId, String reciver, String rec, int position) {
-
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
-        requestMap.put(General.USER_ID, userId);
+        requestMap.put(General.USER_ID, reciver);
         requestMap.put(General.GROUP_ID, gId);
         requestMap.put("receiver", rec);
+        Log.i(TAG, "invite: userId "+userId +" receiverId "+reciver);
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
         Log.e("invite", requestMap.toString());
@@ -239,5 +237,4 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
             notifyDataSetChanged();
         }
     };
-
 }

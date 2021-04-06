@@ -25,6 +25,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.sagesurfer.collaborativecares.BuildConfig;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
@@ -38,7 +39,6 @@ import com.sagesurfer.network.Urls_;
 import com.sagesurfer.parser.GetJson_;
 import com.sagesurfer.parser.SelfGoal_;
 import com.storage.preferences.Preferences;
-import com.sagesurfer.collaborativecares.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;

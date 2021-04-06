@@ -42,9 +42,9 @@
         android:layout_alignParentStart="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <!--<androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageview_error_icon"
             android:layout_width="200dp"
             android:layout_height="240dp" />
@@ -54,19 +54,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_50"
-            android:gravity="center">
+            android:gravity="center">-->
 
             <TextView
                 android:id="@+id/textview_error_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/margin_10"
+                android:gravity="center"
                 android:text="@string/no_record_found"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
-        </androidx.cardview.widget.CardView>
-
+      <!--  </androidx.cardview.widget.CardView>
+-->
     </LinearLayout>
 
 
@@ -107,7 +108,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SageSurfer is not designed to be used for emergencies. If you are experiencing behavioral health or medical emergency, please dial 911."
+            android:text="@string/join_team_message"
             android:textColor="#212121"
             android:textSize="16sp" />
     </LinearLayout>

@@ -21,8 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.sagesurfer.animation.ActivityTransition;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
@@ -50,9 +49,7 @@ public class ConsentListFragment extends Fragment {
     private static final String TAG = ConsentListFragment.class.getSimpleName();
     private long consumer_id = 0;
     private ArrayList<ConsentFile_> consentFileArrayList;
-
     private Activity activity;
-
     private ListView listView;
     private LinearLayout errorLayout;
     private TextView errorText;
@@ -79,7 +76,7 @@ public class ConsentListFragment extends Fragment {
 
         activity = getActivity();
 
-        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        com.google.android.material.floatingactionbutton.FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createButton.setVisibility(View.GONE);
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);

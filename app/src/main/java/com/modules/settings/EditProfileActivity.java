@@ -51,14 +51,14 @@ import okhttp3.RequestBody;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = EditProfileActivity.class.getSimpleName();
-    @BindView(R.id.edittext_editprofile_firstname)
-    EditText editTextEditProfileFirstName;
-    @BindView(R.id.edittext_editprofile_lastname)
-    EditText editTextEditProfileLastName;
-    @BindView(R.id.edittext_editprofile_username)
-    EditText editTextEditProfileUserName;
-    @BindView(R.id.edittext_editprofile_email)
-    EditText editTextEditProfileEmail;
+    @BindView(R.id.et_firstname)
+    EditText et_firstname;
+    @BindView(R.id.et_lastname)
+    EditText et_lastname;
+    @BindView(R.id.et_username)
+    EditText et_username;
+    @BindView(R.id.et_email)
+    EditText et_email;
     @BindView(R.id.textview_editprofile_dob)
     TextView textViewEditProfileDOB;
     @BindView(R.id.edittext_editprofile_address)
@@ -107,21 +107,21 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         textViewActivityToolbarPost.setText(this.getResources().getString(R.string.save));
 
         if(Preferences.get(General.FIRST_NAME).equalsIgnoreCase("")){
-            editTextEditProfileFirstName.setText("");
+            et_firstname.setText("");
         }else {
-            editTextEditProfileFirstName.setText(Preferences.get(General.FIRST_NAME));
+            et_firstname.setText(Preferences.get(General.FIRST_NAME));
         }
-        editTextEditProfileLastName.setText(Preferences.get(General.LAST_NAME));
-        editTextEditProfileUserName.setText(Preferences.get(General.USERNAME));
-        editTextEditProfileEmail.setText(Preferences.get(General.EMAIL));
+        et_lastname.setText(Preferences.get(General.LAST_NAME));
+        et_username.setText(Preferences.get(General.USERNAME));
+        et_email.setText(Preferences.get(General.EMAIL));
         textViewEditProfileDOB.setText(Preferences.get(General.BIRTDATE));
         textViewEditProfileDOB.setOnClickListener(this);
         textViewActivityToolbarPost.setOnClickListener(this);
 
-        editTextEditProfileUserName.setEnabled(false);
-        editTextEditProfileUserName.setClickable(false);
-        editTextEditProfileEmail.setEnabled(false);
-        editTextEditProfileEmail.setClickable(false);
+        et_username.setEnabled(false);
+        et_username.setClickable(false);
+        et_email.setEnabled(false);
+        et_email.setClickable(false);
 
         spinnerCityList = (Spinner) findViewById(R.id.spinner_city_list);
         spinnerStateList = (Spinner) findViewById(R.id.spinner_state_list);
@@ -392,8 +392,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private void submitUserSetting() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.EDIT_PROFILE);
-        requestMap.put(General.FIRST_NAME, editTextEditProfileFirstName.getText().toString().trim());
-        requestMap.put(General.LAST_NAME, editTextEditProfileLastName.getText().toString().trim());
+        requestMap.put(General.FIRST_NAME, et_firstname.getText().toString().trim());
+        requestMap.put(General.LAST_NAME, et_lastname.getText().toString().trim());
         requestMap.put(General.DOB, textViewEditProfileDOB.getText().toString().trim());
 
         int posCounrty = spinnerCountryList.getSelectedItemPosition();
@@ -446,10 +446,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     //validate all fields
     private boolean validate() {
-        String fist_name = editTextEditProfileFirstName.getText().toString().trim();
-        String last_name = editTextEditProfileLastName.getText().toString().trim();
-        String email = editTextEditProfileEmail.getText().toString().trim();
-        String user_name = editTextEditProfileUserName.getText().toString().trim();
+        String fist_name = et_firstname.getText().toString().trim();
+        String last_name = et_lastname.getText().toString().trim();
+        String email = et_email.getText().toString().trim();
+        String user_name = et_username.getText().toString().trim();
         String address = editTextEditProfileAddress.getText().toString();
         String bob = textViewEditProfileDOB.getText().toString();
 

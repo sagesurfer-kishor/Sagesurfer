@@ -15,7 +15,6 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,6 @@ import com.sagesurfer.library.CheckFileType;
 import com.sagesurfer.library.DeviceInfo;
 import com.sagesurfer.library.FileOperations;
 import com.sagesurfer.library.GetColor;
-import com.sagesurfer.library.PathUtils;
 import com.sagesurfer.library.UriUtils;
 import com.sagesurfer.logger.Logger;
 import com.sagesurfer.models.PostcardAttachment_;
@@ -65,8 +63,6 @@ import com.sagesurfer.snack.SubmitSnackResponse;
 import com.sagesurfer.tasks.PerformComposeMailTask;
 import com.sagesurfer.views.TagsEditText;
 import com.storage.preferences.Preferences;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;

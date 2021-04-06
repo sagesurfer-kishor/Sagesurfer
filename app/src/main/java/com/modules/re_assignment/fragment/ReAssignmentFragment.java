@@ -101,7 +101,7 @@ public class ReAssignmentFragment extends Fragment implements View.OnClickListen
         errorLayout = (LinearLayout) view.findViewById(R.id.linealayout_error);
         createButton = (FloatingActionButton) view.findViewById(R.id.fab);
         createButton.setImageResource(R.drawable.re_assignment_icon_white);
-        createLeave = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        createLeave = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createLeave.setImageResource(R.drawable.re_assignment_icon_white);
         createButton.setOnClickListener(this);
         createLeave.setOnClickListener(this);

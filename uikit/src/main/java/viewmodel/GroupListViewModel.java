@@ -5,7 +5,7 @@ import android.content.Context;
 import com.cometchat.pro.core.GroupsRequest;
 import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.User;
-import com.cometchat.pro.uikit.CometChatGroupList;
+import com.cometchat.pro.uikit.CometChatGroupListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class GroupListViewModel {
 
     private HashMap<String, Group> groupHashMap = new HashMap<>();
 
-    private CometChatGroupList groupListView;
+    private CometChatGroupListAdapter groupListView;
 
 
     private static final String TAG = "GroupListViewModel";
@@ -34,10 +34,10 @@ public class GroupListViewModel {
 
     }
 
-    public GroupListViewModel(Context context,CometChatGroupList cometChatGroupList){
-        this.groupListView=cometChatGroupList;
+    public GroupListViewModel(Context context, CometChatGroupListAdapter cometChatGroupListAdapter){
+        this.groupListView= cometChatGroupListAdapter;
         this.context=context;
-        setGroupListAdapter(cometChatGroupList);
+        setGroupListAdapter(cometChatGroupListAdapter);
     }
 
     private GroupListAdapter getAdapter(){
@@ -47,9 +47,9 @@ public class GroupListViewModel {
         return groupListAdapter;
     }
 
-    private void setGroupListAdapter(CometChatGroupList cometChatGroupList){
+    private void setGroupListAdapter(CometChatGroupListAdapter cometChatGroupListAdapter){
         groupListAdapter=new GroupListAdapter(context);
-        cometChatGroupList.setAdapter(groupListAdapter);
+        cometChatGroupListAdapter.setAdapter(groupListAdapter);
     }
 
     public void setGroupList(List<Group> groupList){

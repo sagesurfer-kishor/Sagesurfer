@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.icu.util.ULocale;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.sagesurfer.constant.General;
 import com.sagesurfer.datetime.GetTime;
@@ -72,6 +73,7 @@ public class PerformLoginTask extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
         try {
+            Log.i(TAG, "doInBackground: domain is "+Preferences.get(General.DOMAIN));
             return MakeCall.post(Preferences.get(General.DOMAIN) + Urls_.LOGIN_URL, loginBody, TAG, activity.getApplicationContext(), activity);
         } catch (Exception e) {
             e.printStackTrace();

@@ -97,6 +97,7 @@
                         android:background="@drawable/edit_text_primary"
                         android:gravity="start|center_vertical"
                         android:maxLines="1"
+                        android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:paddingBottom="7dp"
                         android:textColorHint="@color/text_color_tertiary"
@@ -147,6 +148,7 @@
                         android:maxHeight="100dp"
                         android:paddingTop="5dp"
                         android:paddingBottom="7dp"
+                        android:textColor="@color/black"
                         android:textColorHint="@color/text_color_tertiary"
                         android:textSize="@dimen/text_size_14" />
                 </LinearLayout>

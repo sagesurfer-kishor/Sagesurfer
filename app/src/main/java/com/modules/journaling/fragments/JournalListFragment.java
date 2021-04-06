@@ -40,13 +40,12 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sagesurfer.collaborativecares.BuildConfig;
 import com.modules.assignment.werhope.model.School;
-import com.modules.home.HomeFragment;
 import com.modules.journaling.activity.JournalAddActivity;
 import com.modules.journaling.adapter.JournalListAdapter;
 import com.modules.journaling.model.Journal_;
 import com.modules.journaling.model.Student_;
+import com.sagesurfer.collaborativecares.BuildConfig;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
@@ -63,7 +62,6 @@ import com.sagesurfer.parser.CaseloadParser_;
 import com.sagesurfer.parser.Journaling_;
 import com.sagesurfer.parser.SelfGoal_;
 import com.sagesurfer.snack.ShowSnack;
-import com.sagesurfer.snack.ShowToast;
 import com.sagesurfer.views.TextWatcherExtended;
 import com.storage.preferences.Preferences;
 

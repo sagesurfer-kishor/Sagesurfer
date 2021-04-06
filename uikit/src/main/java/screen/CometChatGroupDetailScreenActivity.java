@@ -2,6 +2,10 @@ package screen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +60,7 @@ import listeners.RecyclerTouchListener;
 import screen.addmember.CometChatAddMemberScreenActivity;
 import screen.adminAndModeratorList.CometChatAdminModeratorListScreenActivity;
 import screen.banmembers.CometChatBanMemberScreenActivity;
+import screen.messagelist.CometChatMessageListActivity;
 import screen.unified.CometChatUnified;
 import utils.FontUtils;
 import utils.Utils;
@@ -95,6 +100,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
     private GroupMemberAdapter groupMemberAdapter;
 
     private int adminCount;
+    private NestedScrollView nested_scrollview;
 
     private int moderatorCount;
 
@@ -112,7 +118,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
 
     private GroupMember groupMember;
 
-    private TextView tvDelete;
+    private TextView tvDelete,tv_adminstrators,tv_moderators;
 
     private TextView tvLoadMore;
 
@@ -159,6 +165,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         groupIcon = findViewById(R.id.iv_group);
         tvGroupName = findViewById(R.id.tv_group_name);
         tvGroupDesc = findViewById(R.id.group_description);
+        nested_scrollview = findViewById(R.id.nested_scrollview);
         tvGroupName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +173,8 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
             }
         });
         tvMemberCount = findViewById(R.id.tv_members);
+        tv_adminstrators = findViewById(R.id.tv_adminstrators);
+        tv_moderators = findViewById(R.id.tv_moderators);
         tvAdminCount = findViewById(R.id.tv_admin_count);
         tvModeratorCount = findViewById(R.id.tv_moderator_count);
         tvBanMemberCount = findViewById(R.id.tv_ban_count);
@@ -271,13 +280,17 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
     private void checkDarkMode() {
         if(Utils.isDarkMode(this)) {
             toolbar.setTitleTextColor(getResources().getColor(R.color.textColorWhite));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.darkModeBackground));
             tvGroupName.setTextColor(getResources().getColor(R.color.textColorWhite));
+            nested_scrollview.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
             dividerAdmin.setBackgroundColor(getResources().getColor(R.color.grey));
             dividerModerator.setBackgroundColor(getResources().getColor(R.color.grey));
             dividerBan.setBackgroundColor(getResources().getColor(R.color.grey));
             divider2.setBackgroundColor(getResources().getColor(R.color.grey));
+            tv_moderators.setTextColor(getResources().getColor(R.color.textColorWhite));
+            tv_adminstrators.setTextColor(getResources().getColor(R.color.textColorWhite));
         } else {
-            toolbar.setTitleTextColor(getResources().getColor(R.color.primaryTextColor));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.textColorWhite));
             tvGroupName.setTextColor(getResources().getColor(R.color.primaryTextColor));
             dividerAdmin.setBackgroundColor(getResources().getColor(R.color.light_grey));
             dividerModerator.setBackgroundColor(getResources().getColor(R.color.light_grey));
@@ -528,6 +541,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
     }
 
     private void launchUnified() {
+
         Intent intent = new Intent(CometChatGroupDetailScreenActivity.this, CometChatUnified.class);
         startActivity(intent);
         finish();
@@ -667,7 +681,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         CometChat.leaveGroup(guid, new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
-                launchUnified();
+                navigateToGroupList();
             }
 
             @Override
@@ -676,6 +690,22 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
                 Log.e(TAG, "onError: " + e.getMessage());
             }
         });
+    }
+
+    private void navigateToGroupList() {
+        //Bundle bundle = new Bundle();
+        //bundle.putString("OpenGroupFragment", "OpenGroupFragment");
+        Log.i(TAG, "navigateToGroupList: ");
+        /*Intent intent = new Intent(CometChatGroupDetailScreenActivity.this, CometChatMessageListActivity.class);
+        intent.putExtra("OpenGroupFragment", "OpenGroupFragment");
+        startActivity(intent);*/
+
+        FragmentCometChatGroupList fragment=new FragmentCometChatGroupList();
+        //fragment.setArguments(bundle);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        //ft.replace(R.id., fragment, TAG);
+        ft.commit();
+
     }
 
     /**

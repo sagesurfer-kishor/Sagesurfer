@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.view.LayoutInflater;
@@ -96,9 +97,9 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
             viewHolder.textViewSelfCareContentListItemShareCount = (TextView) view.findViewById(R.id.textview_selfcarecontentlistitem_share_count);
             viewHolder.imageViewSelfCareContentListItemIcon = (ImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_icon);
             viewHolder.imageViewSelfCareContentListItemTypeIcon = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_type_icon);
-            viewHolder.imageViewSelfCareContentListItemLike = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_like);
+            viewHolder.imageViewSelfCareContentListItemLike = (AppCompatImageButton) view.findViewById(R.id.btn_like);
             viewHolder.imageViewSelfCareContentListItemComment = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_comment);
-            viewHolder.imageViewSelfCareContentListItemShare = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_share);
+            viewHolder.imageViewSelfCareContentListItemShare = (AppCompatImageButton) view.findViewById(R.id.btn_share);
             viewHolder.relativeLayoutSelfCareContentListItemIcon = (RelativeLayout) view.findViewById(R.id.relativelayout_selfcarecontentlistitem_icon);
             viewHolder.mLinearLayoutShare = (LinearLayout) view.findViewById(R.id.linear_share);
 
@@ -173,7 +174,7 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
                 case R.id.imageview_selfcarecontentlistitem_comment:
                     break;
 
-                case R.id.imageview_selfcarecontentlistitem_like:
+                case R.id.btn_like:
                     status = SelfCareOperations.likeUnlike("" + content_.getId(), TAG, v, activity.getApplicationContext(), activity);
                     showResponses(status, v);
                     if (status == 1) {
@@ -181,7 +182,7 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
                     }
                     break;
 
-                case R.id.imageview_selfcarecontentlistitem_share:
+                case R.id.btn_share:
                     applyClickEvents(viewHolder, position);
                     break;
             }
@@ -313,7 +314,8 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
     private class ViewHolder {
         TextView textViewSelfCareContentListItemTitle, textViewSelfCareContentListItemDescription, textViewSelfCareContentListItemCategory, textViewSelfCareContentListItemLikeCount, textViewSelfCareContentListItemCommentCount, textViewSelfCareContentListItemShareCount;
         ImageView imageViewSelfCareContentListItemIcon;
-        AppCompatImageView imageViewSelfCareContentListItemTypeIcon, imageViewSelfCareContentListItemLike, imageViewSelfCareContentListItemComment, imageViewSelfCareContentListItemShare;
+        AppCompatImageButton imageViewSelfCareContentListItemLike,imageViewSelfCareContentListItemShare;
+        AppCompatImageView imageViewSelfCareContentListItemTypeIcon, imageViewSelfCareContentListItemComment;
         RelativeLayout relativeLayoutCaseloadDetails, relativeLayoutSelfCareContentListItemIcon;
         LinearLayout mLinearLayoutShare;
     }

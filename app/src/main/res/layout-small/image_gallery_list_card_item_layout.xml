@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/blue_rounded_border"
     android:padding="1dp"
     tools:ignore="MissingDefaultResource">
@@ -13,8 +14,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
             android:gravity="bottom|start"
@@ -23,9 +24,11 @@
             <TextView
                 android:id="@+id/gallery_card_title"
                 style="@style/CustomFontStylePrimary"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                app:layout_constraintEnd_toStartOf="@+id/gallery_card_count"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="3dp"
                 android:ellipsize="end"
                 android:lines="1"
@@ -38,7 +41,9 @@
                 style="@style/CustomFontStyleSecondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="5dp"
                 android:text="0"
@@ -50,7 +55,9 @@
                 style="@style/CustomFontStyleSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/gallery_card_title"
+                app:layout_constraintTop_toBottomOf="@+id/gallery_card_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="3dp"
                 android:ellipsize="end"
                 android:lines="1"
@@ -59,7 +66,7 @@
                 android:textSize="@dimen/text_size_14" />
 
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

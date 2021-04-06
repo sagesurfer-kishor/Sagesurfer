@@ -10,13 +10,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.provider.Settings;
 
 import androidx.core.app.ActivityCompat;
@@ -25,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.loader.content.CursorLoader;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -78,7 +73,6 @@ import com.sagesurfer.tasks.PerformGetTeamsTask;
 import com.sagesurfer.tasks.PerformGetUsersTask;
 import com.storage.preferences.Preferences;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -125,19 +119,14 @@ public class WallPostActivity extends AppCompatActivity implements View.OnClickL
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, GetColor.getHomeIconBackgroundColorColorParse(false)));
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
         setContentView(R.layout.wall_post_layout);
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Preferences.initialize(getApplicationContext());
-
         attachmentArrayList = new ArrayList<>();
         teamsArrayList = new ArrayList<>();
         friendsArrayList = new ArrayList<>();
         mErrorString = new SparseIntArray();
-
         showLoader = new ShowLoader();
-
         toolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
@@ -177,7 +166,6 @@ public class WallPostActivity extends AppCompatActivity implements View.OnClickL
         footerLayout.setVisibility(View.VISIBLE);
         footerLayout.getViewTreeObserver().addOnPreDrawListener(
                 new ViewTreeObserver.OnPreDrawListener() {
-
                     @Override
                     public boolean onPreDraw() {
                         footerLayout.getViewTreeObserver()
@@ -197,7 +185,6 @@ public class WallPostActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
         messageBox = (EditText) findViewById(R.id.wall_post_message_box);
-
         LinearLayout addFile = (LinearLayout) findViewById(R.id.wall_post_menu_add_file);
         addFile.setOnClickListener(this);
         LinearLayout addUser = (LinearLayout) findViewById(R.id.wall_post_menu_add_user);
@@ -256,9 +243,7 @@ public class WallPostActivity extends AppCompatActivity implements View.OnClickL
 
     // slide animation for footer to open/collapse
     private ValueAnimator slideAnimator(int start, int end) {
-
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
-
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -421,7 +406,7 @@ public class WallPostActivity extends AppCompatActivity implements View.OnClickL
     // get list of selected users only from users list
     private void getTeams() {
         if (teamsArrayList == null || teamsArrayList.size() == 0) {
-            teamsArrayList = PerformGetTeamsTask.get(Actions_.ALL_TEAMS, getApplicationContext(), TAG, false, this);
+            teamsArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.ALL_TEAMS, getApplicationContext(), TAG, false, this);
         }
     }
 

@@ -18,6 +18,7 @@ public class StringContract {
         public static final String IMAGE_TYPE = "image/*";
 
         public static final String UID="uid";
+        public static final String SENDER_ID="uid";
 
         public static final String AVATAR="avatar";
 
@@ -33,7 +34,8 @@ public class StringContract {
 
         public static final String tabBar = "tabBar";
 
-        public static final String[] EXTRA_MIME_DOC=new String[]{"text/plane","text/html","application/pdf","application/msword","application/vnd.ms.excel", "application/mspowerpoint","application/zip"};
+        //public static final String[] EXTRA_MIME_DOC=new String[]{"text/plane","text/html","application/pdf","application/msword","application/vnd.ms.excel", "application/mspowerpoint","application/zip"};
+        public static final String[] EXTRA_MIME_DOC=new String[]{"text/plane","text/html","application/pdf","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/x-vnd.oasis.opendocument.spreadsheet","application/vnd.ms-excel", "application/mspowerpoint","application/zip"};
 
         public static final String MEMBER_COUNT = "member_count";
 
@@ -108,6 +110,9 @@ public class StringContract {
         public static final String POLL_VOTE_COUNT = "poll_vote_count";
 
         public static final String POLLS = "extension_poll";
+        public static final String IMAGE = "image";
+        public static final String TIME_ZONE = "time_zone" ;
+        public static final String LOGGED_IN_USERID = "user_id";
 
         public static String POLL_QUESTION = "poll_question";
 
@@ -149,6 +154,8 @@ public class StringContract {
         public static final int RECORD = 003;
 
         public static final int LOCATION = 14;
+        public static final int READ_EXT_STORAGE = 21;
+        public static final int WRITE_EXT_STORAGE = 22;
     }
     public static class MapUrl{
 

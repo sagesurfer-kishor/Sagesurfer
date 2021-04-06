@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.text.Html;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -753,6 +754,7 @@ class NotificationAdapter extends ArrayAdapter<Notification> {
             case 70:// new Cometchat-pro group invitation  // 13-11-2020
                 message = notification.getTitle();
                 holder.titleText.setText(Html.fromHtml(message));
+                Log.i(TAG, "setText: notification type cometchat_request message "+Html.fromHtml(message));
 //                holder.descriptionText.setText("Goal title: " + notification.getDescription());
                 holder.descriptionText.setVisibility(View.GONE);
                 holder.typeText.setVisibility(View.GONE);

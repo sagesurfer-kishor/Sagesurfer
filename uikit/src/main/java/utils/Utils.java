@@ -86,7 +86,6 @@ import screen.CometChatStartCallActivity;
 public class Utils {
 
     private static final String TAG = "Utils";
-
     public static String removeEmojiAndSymbol(String content) {
         String utf8tweet = "";
         try {
@@ -293,7 +292,7 @@ public class Utils {
         messageTimestamp.setTimeInMillis(timestamp);
         Calendar now = Calendar.getInstance();
 //        if (now.get(5) == messageTimestamp.get(5)) {
-        return DateFormat.format("hh:mm a", messageTimestamp).toString();
+        return DateFormat.format("hh:mm:ss a", messageTimestamp).toString();
 //        } else {
 //            return now.get(5) - messageTimestamp.get(5) == 1 ? "Yesterday " + DateFormat.format("hh:mm a", messageTimestamp).toString() : DateFormat.format("d MMMM", messageTimestamp).toString() + " " + DateFormat.format("hh:mm a", messageTimestamp).toString();
 //        }
@@ -766,6 +765,7 @@ public class Utils {
     }
 
     public static void startCall(Context context, Call call) {
+        Log.d(TAG, "startCall: ");
         Intent intent = new Intent(context, CometChatStartCallActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(StringContract.IntentStrings.SESSION_ID,call.getSessionId());

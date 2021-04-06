@@ -124,7 +124,6 @@ public class BlockedListAdapter extends RecyclerView.Adapter<BlockedListAdapter.
         notifyDataSetChanged();
     }
 
-
     /**
      * This method is used to remove user from userlist.
      *
@@ -132,6 +131,7 @@ public class BlockedListAdapter extends RecyclerView.Adapter<BlockedListAdapter.
      *
      * @see User
      */
+
     public void removeUser(User user) {
         if (userArrayList.contains(user)) {
             int index=userArrayList.indexOf(user);
@@ -142,12 +142,10 @@ public class BlockedListAdapter extends RecyclerView.Adapter<BlockedListAdapter.
     }
 
     class BlockedViewHolder extends RecyclerView.ViewHolder {
-
         UserListRowBinding userListRowBinding;
         BlockedViewHolder(UserListRowBinding userListRowBinding) {
             super(userListRowBinding.getRoot());
             this.userListRowBinding = userListRowBinding;
-
         }
 
     }

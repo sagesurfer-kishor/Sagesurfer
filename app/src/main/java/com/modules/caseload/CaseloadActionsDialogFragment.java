@@ -149,27 +149,35 @@ public class CaseloadActionsDialogFragment extends DialogFragment implements Vie
         summaryImageView.setColorFilter(color);
         summaryImageView.setImageResource(R.drawable.vi_caseload_case_summary);
         summaryImageView.setOnClickListener(this);
+
         eventsImageView.setColorFilter(color);
         eventsImageView.setImageResource(R.drawable.vi_caseload_events);
         eventsImageView.setOnClickListener(this);
+
         planImageView.setColorFilter(color);
         planImageView.setImageResource(R.drawable.vi_drawer_crisisplan);
         planImageView.setOnClickListener(this);
+
         teamImageView.setColorFilter(color);
         teamImageView.setImageResource(R.drawable.vi_drawer_teams);
         teamImageView.setOnClickListener(this);
+
         statusImageView.setColorFilter(color);
         statusImageView.setImageResource(R.drawable.vi_warning);
         statusImageView.setOnClickListener(this);
+
         progressNoteImageView.setColorFilter(color);
         progressNoteImageView.setImageResource(R.drawable.vi_up_solid_arrow_white);
         progressNoteImageView.setOnClickListener(this);
+
         taskListImageView.setColorFilter(color);
         taskListImageView.setImageResource(R.drawable.vi_home_task_list);
         taskListImageView.setOnClickListener(this);
+
         contactImageView.setColorFilter(color);
         contactImageView.setImageResource(R.drawable.vi_caseload_contact);
         contactImageView.setOnClickListener(this);
+
         moodImageView.setColorFilter(color);
         moodImageView.setImageResource(R.drawable.vi_drawer_mood);
         moodImageView.setOnClickListener(this);
@@ -235,7 +243,6 @@ public class CaseloadActionsDialogFragment extends DialogFragment implements Vie
                 Preferences.save(General.GROUP_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_NAME, caseload_.getGroup_name());
-
                 detailsIntent = new Intent(activity.getApplicationContext(), CaseloadSummaryActivity.class);
                 startActivity(detailsIntent);
                 activity.overridePendingTransition(0, 0);
@@ -247,7 +254,7 @@ public class CaseloadActionsDialogFragment extends DialogFragment implements Vie
                 Preferences.save(General.GROUP_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_NAME, caseload_.getGroup_name());
-                teamArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
+                teamArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
                 if (teamArrayList.size() > 0) {
                     //PerformGetTeamsTask.get(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
                     detailsIntent = new Intent(activity.getApplicationContext(), CalenderActivity.class);
@@ -320,7 +327,7 @@ public class CaseloadActionsDialogFragment extends DialogFragment implements Vie
                 dismiss();
                 Preferences.save(General.GROUP_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_ID, "" + caseload_.getGroup_id());
-                teamArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
+                teamArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.TEAM_DATA, activity.getApplicationContext(), TAG, true, activity);
                 if (teamArrayList.size() > 0) {
                     detailsIntent = new Intent(activity.getApplicationContext(), TeamTaskListActivity.class);
                     activity.startActivity(detailsIntent);

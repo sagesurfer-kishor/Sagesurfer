@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -91,9 +92,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private int mYear = 0, mMonth = 0, mDay = 0;
     private boolean isFromPlanner = false;
 
-    private TextView selectTeamLabel, selectTeam, selectParticipants, startDateText, endDateText, textViewLocation;
-    private EditText titleBox, descriptionBox;
-    private Spinner startTimeText, endTimeText;
+    private TextView selectTeamLabel, tv_selectedTeam, selectParticipants, startDateText, endDateText, textViewLocation;
+    private EditText et_title, et_description;
+    private Spinner sp_startTimeText, sp_endTimeText;
     private AppCompatImageView imageViewAddTeam, imageViewAddParticipant, imageViewAddLocation;
     private LinearLayout linearLayoutTeam;
     private int startTimePosition = 0, tempStartTimePosition = 0;
@@ -108,17 +109,15 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, GetColor.getHomeIconBackgroundColorColorParse(false)));
-
         setContentView(R.layout.create_event_layout);
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         toolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
         toolbar.setNavigationIcon(R.drawable.vi_cancel_white);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,13 +141,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         linearLayoutTeam = (LinearLayout) findViewById(R.id.linearlayout_team);
         selectTeamLabel = (TextView) findViewById(R.id.create_event_select_team_label);
-        selectTeam = (TextView) findViewById(R.id.create_event_select_team);
+        tv_selectedTeam = (TextView) findViewById(R.id.create_event_select_team);
 
-        selectTeam.setOnClickListener(this);
+        tv_selectedTeam.setOnClickListener(this);
         if (isFromPlanner) {
             linearLayoutTeam.setVisibility(View.GONE);
             selectTeamLabel.setVisibility(View.GONE);
-            selectTeam.setVisibility(View.GONE);
+            tv_selectedTeam.setVisibility(View.GONE);
         }
 
         selectParticipants = (TextView) findViewById(R.id.create_event_select_participant);
@@ -159,8 +158,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         endDateText = (TextView) findViewById(R.id.create_event_end_date);
         endDateText.setOnClickListener(this);
 
-        startTimeText = (Spinner) findViewById(R.id.create_event_start_time);
-        endTimeText = (Spinner) findViewById(R.id.create_event_end_time);
+        sp_startTimeText = (Spinner) findViewById(R.id.create_event_start_time);
+        sp_endTimeText = (Spinner) findViewById(R.id.create_event_end_time);
 
         // Initializing an ArrayAdapter
         final ArrayAdapter<String> spinnerStartTimeArrayAdapter = new ArrayAdapter<String>(this, R.layout.drop_down_selected_text_item_layout, TimePicker.time12()) {
@@ -301,15 +300,15 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         spinnerStartTimeArrayAdapter.setDropDownViewResource(R.layout.drop_down_text_item_layout);
         spinnerEndTimeArrayAdapter.setDropDownViewResource(R.layout.drop_down_text_item_layout);
-        startTimeText.setAdapter(spinnerStartTimeArrayAdapter);
-        endTimeText.setAdapter(spinnerEndTimeArrayAdapter);
+        sp_startTimeText.setAdapter(spinnerStartTimeArrayAdapter);
+        sp_endTimeText.setAdapter(spinnerEndTimeArrayAdapter);
 
         AdapterView.OnItemSelectedListener startTimeSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> spinner, View container, int position, long id) {
                 startTimePosition = position;
                 tempStartTimePosition = position;
-                endTimeText.setSelection(startTimePosition + 1);
+                sp_endTimeText.setSelection(startTimePosition + 1);
             }
 
             @Override
@@ -319,7 +318,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         };
 
         // Setting ItemClick Handler for Spinner Widget
-        startTimeText.setOnItemSelectedListener(startTimeSelectedListener);
+        sp_startTimeText.setOnItemSelectedListener(startTimeSelectedListener);
 
         if (data != null && data.hasExtra(General.TEAM_ID)) {
             group_id = Integer.parseInt(data.getStringExtra(General.TEAM_ID));
@@ -345,14 +344,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             if (currentDateTime.before(spinnerDateTime)) {
                 startTimePosition = i;
                 tempStartTimePosition = i;
-                startTimeText.setSelection(i);
-                endTimeText.setSelection(i + 1);
+                sp_startTimeText.setSelection(i);
+                sp_endTimeText.setSelection(i + 1);
                 break;
             }
         }
 
-        titleBox = (EditText) findViewById(R.id.create_event_title);
-        descriptionBox = (EditText) findViewById(R.id.create_event_description);
+        et_title = (EditText) findViewById(R.id.create_event_title);
+        et_description = (EditText) findViewById(R.id.create_event_description);
 
         textViewLocation = (TextView) findViewById(R.id.textview_createevent_location);
         textViewLocation.setOnClickListener(this);
@@ -376,23 +375,23 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     // Validate all field for data before posting it
     private boolean validate(String title, String description) {
-        startTime = TimePicker.time24().get(startTimeText.getSelectedItemPosition());
-        endTime = TimePicker.time24().get(endTimeText.getSelectedItemPosition());
+        startTime = TimePicker.time24().get(sp_startTimeText.getSelectedItemPosition());
+        endTime = TimePicker.time24().get(sp_endTimeText.getSelectedItemPosition());
 
         if (title == null || title.length() < 3) {
-            titleBox.setError("Invalid Event Name \nMin Char allowed is 3");
+            et_title.setError("Invalid Event Name \nMin Char allowed is 3");
             return false;
         }
         if (title.length() > 70) {
-            titleBox.setError("Invalid Event Name \nMax Char allowed is 250");
+            et_title.setError("Invalid Event Name \nMax Char allowed is 250");
             return false;
         }
         if (description == null || description.length() < 3) {
-            descriptionBox.setError("Invalid Event Description \nMin Char allowed is 3");
+            et_description.setError("Invalid Event Description \nMin Char allowed is 3");
             return false;
         }
         if (description.length() > 1000) {
-            descriptionBox.setError("Invalid Event Description \nMax Char allowed is 1000");
+            et_description.setError("Invalid Event Description \nMax Char allowed is 1000");
             return false;
         }
 
@@ -413,11 +412,11 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             return false;
         }
 
-        if (startTimeText.getSelectedItemPosition() == endTimeText.getSelectedItemPosition()) {
+        if (sp_startTimeText.getSelectedItemPosition() == sp_endTimeText.getSelectedItemPosition()) {
             ShowSnack.textViewWarning(startDateText, "Please Enter Valid Event Time", getApplicationContext());
             return false;
         }
-        if (startTimeText.getSelectedItemPosition() > endTimeText.getSelectedItemPosition()) {
+        if (sp_startTimeText.getSelectedItemPosition() > sp_endTimeText.getSelectedItemPosition()) {
             ShowSnack.textViewWarning(startDateText, "Please Enter Valid Event Time", getApplicationContext());
             return false;
         }
@@ -469,6 +468,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this, this);
                 if (response != null) {
+                    Log.e(TAG, "postEvent: addEvent"+response +" request "+requestBody);
                     if (Error_.oauth(response, getApplicationContext()) == 13) {
                         result = 13;
                     } else {
@@ -520,7 +520,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private void openUsersSelector() {
         group_id = 0;
         group_name = "";
-        selectTeam.setText("");
+        tv_selectedTeam.setText("");
 
         Bundle bundle = new Bundle();
         android.app.DialogFragment dialogFrag = new MultiUserSelectorDialog();
@@ -606,8 +606,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageview_toolbar_save:
-                String title = titleBox.getText().toString().trim();
-                String description = descriptionBox.getText().toString().trim();
+                String title = et_title.getText().toString().trim();
+                String description = et_description.getText().toString().trim();
                 if (validate(title, description)) {
                     postEvent(title, description);
                 }
@@ -681,10 +681,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                                     int days = Compare.getWorkingDays(startDate, selected_date);
                                     if (days > 0) {
                                         startTimePosition = 0;
-                                        endTimeText.setSelection(0);
+                                        sp_endTimeText.setSelection(0);
                                     } else {
                                         startTimePosition = tempStartTimePosition;
-                                        endTimeText.setSelection(startTimePosition + 1);
+                                        sp_endTimeText.setSelection(startTimePosition + 1);
                                     }
                                 } else {
                                     endDateText.setText("");
@@ -737,7 +737,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         if (isSelected) {
             group_id = teams_.getId();
             group_name = teams_.getName();
-            selectTeam.setText(group_name);
+            tv_selectedTeam.setText(group_name);
         }
     }
 
@@ -755,7 +755,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     // make network call to fetch team at a glance
     private void fetchTeamDetails() {
         try {
-            teamArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
+            teamArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.TEAM_DATA, this, TAG, true, this);
 
             user_id = "0";
             user_name = "";
@@ -764,18 +764,17 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             if(teamArrayList.size()>0) {
                 group_id = teamArrayList.get(0).getId();
                 group_name = teamArrayList.get(0).getName();
-                selectTeam.setText(group_name);
+                tv_selectedTeam.setText(group_name);
                 for (int i=0; i<teamArrayList.size();i++) {
                     Teams_ objTeam = teamArrayList.get(i);
                     if(String.valueOf(objTeam.getId()).equals(Preferences.get(General.GROUP_ID))) {
                         group_id = objTeam.getId();
                         group_name = objTeam.getName();
-                        selectTeam.setText(group_name);
+                        tv_selectedTeam.setText(group_name);
                         break;
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

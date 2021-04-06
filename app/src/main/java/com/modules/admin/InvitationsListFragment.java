@@ -75,7 +75,7 @@ public class InvitationsListFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setEnabled(false);
 
-        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.listview_fab);
+        FloatingActionButton createButton = (FloatingActionButton) view.findViewById(R.id.fab_listview);
         createButton.setVisibility(View.GONE);
 
         listView = (SwipeMenuListView) view.findViewById(R.id.swipe_menu_listview);
