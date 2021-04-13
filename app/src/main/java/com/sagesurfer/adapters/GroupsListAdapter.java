@@ -36,6 +36,7 @@ import com.cometchat.pro.core.GroupMembersRequest;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.GroupMember;
+import com.cometchat.pro.models.User;
 import com.firebase.MessagingService;
 import com.modules.cometchat_7_30.FragmentCometchatGroupsList;
 import com.modules.cometchat_7_30.ModelUserCount;
@@ -88,6 +89,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         fragment = fragment_CometchatGroupsList_;
         preferenOpenActivity = mContext.getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
     }
+
+
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView title;
@@ -162,15 +165,11 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             @Override
             public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
                 Log.e(TAG, "onSuccess: cometchat groupId " + stringIntegerHashMap.get("670270470"));    //getting null values for group
-                /*for (Map.Entry<String, Integer> entry : stringIntegerHashMap.entrySet()) {
-                    String key = entry.getKey();
-                    String value = String.valueOf(entry.getValue());
-                    Log.e(TAG, "get groups cometchat onSuccess: group id " + key + " count " + value);
-                    al_unreadCountList.add(new ModelUserCount("" + value, "" + key));
-                }*/
-                //Log.e(TAG, "onSuccess: groupId"+stringIntegerHashMap.get(item.getGroupId()));
+
                 if (stringIntegerHashMap.get(group_item.getGroupId()) != null) {
-                    holder.group_ic_counter.setText("" + stringIntegerHashMap.get(group_item.getGroupId()));
+
+                    group_item.setStatus(stringIntegerHashMap.get(group_item.getGroupId()));
+                    holder.group_ic_counter.setText("" +group_item.getStatus());
                     holder.group_ic_counter.setVisibility(View.VISIBLE);
                 } else {
                     holder.group_ic_counter.setVisibility(View.GONE);
@@ -893,5 +892,26 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         }
     };
 
+    public void changeUnreadCount(String sender) {
+        CometChat.getUnreadMessageCountForGroup(sender, new CometChat.CallbackListener<HashMap<String, Integer>>() {
+            @Override
+            public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
+                Log.e(TAG, "onSuccess: cometchat groupId " + stringIntegerHashMap.get("670270470"));    //getting null values for group
+                for (GetGroupsCometchat group : searchGroupList ){
+                    if(group.getGroupId().equals(""+sender)){
+                        Log.i(TAG, "onSuccess: matched user");
+                        group.setStatus(stringIntegerHashMap.get(sender));
+                    }
+                }
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.i(TAG, "onError get groups " + e.getMessage());
+
+            }
+        });
+    }
 }
 

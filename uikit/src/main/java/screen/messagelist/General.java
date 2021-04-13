@@ -3,6 +3,7 @@ package screen.messagelist;
 public class General {
 
     public static final String USER_ID = "user_id";
+    public static final String COMETCHAT_GROUP_ID = "comet_group_id";
     public static final String CONTENT_TYPE = "content_type";
     public static final String CONTENT_PATH = "content_path";
     public static final String LOG_ID = "log_id";
@@ -790,6 +791,8 @@ public class General {
     public static final String CHATSCREEN_RECEIVED_MESSAGE ="chat_screen" ;
     public static final String FILTER_MESSAGE ="chat_screen" ;
     public static final String IMG = "img";
+    public static final String RECEIVER_ID ="receiver_id" ;
+
 
 
     public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {

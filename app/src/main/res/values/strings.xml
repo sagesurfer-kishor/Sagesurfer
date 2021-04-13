@@ -50,6 +50,7 @@
     <string name="message">Message</string>
     <string name="announcements">Announcements</string>
     <string name="task_list">Task List</string>
+
     <string name="file_sharing">File Sharing</string>
     <string name="team_talk">Team Talk</string>
     <string name="platform_message">Platform Messages</string>
@@ -616,6 +617,7 @@
 
     <string name="dummy_time">30 days ago</string>
     <string name="load_earlier_message">Load Earlier Message</string>
+    <string name="last_conversation">Last Conversation</string>
 
     <string name="logout">Logout</string>
     <string name="location">Location</string>

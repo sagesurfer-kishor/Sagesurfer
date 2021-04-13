@@ -1,9 +1,11 @@
 package com.modules.cometchat_7_30;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,9 +26,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +63,7 @@ import constant.StringContract;
 import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
 
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,6 +77,7 @@ public class FragmentCometchatGroupsList extends Fragment {
     private String creategroup;
     private String password;
     private String selectedReason;
+    LocalBroadcastManager bm;
     private String numbers;
     private GroupsRequest groupsRequest = null;
     private int limit = 30;
@@ -86,6 +92,8 @@ public class FragmentCometchatGroupsList extends Fragment {
     private TextView error;
     SharedPreferences preferenOpenActivity;
     SharedPreferences.Editor editor;
+    SharedPreferences preferenCheckIntent;
+    SharedPreferences.Editor editorCheckIntent;
     //public ArrayList<GetGroupsCometchat> groupList = new ArrayList<>();
 
     public FragmentCometchatGroupsList() {
@@ -120,6 +128,20 @@ public class FragmentCometchatGroupsList extends Fragment {
 
         preferenOpenActivity = getActivity().getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
         editor = preferenOpenActivity.edit();
+
+        /*created by rahul to know this fragment is open
+         * if it is open and id any messages comes from firebase then counter should change */
+        SharedPreferences preferencesCheckCurrentActivity = getActivity().getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferencesCheckCurrentActivity.edit();
+        editor.putBoolean("IsGroupListingPage", true);
+        editor.apply();
+        preferenCheckIntent = getActivity().getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
+        /*
+        editorCheckIntent = preferenCheckIntent.edit();
+        editorCheckIntent.putBoolean("openActivity", true);
+        editorCheckIntent.putBoolean("CheckIntent", true);
+        editorCheckIntent.apply();*/
+
 
         // search group from list
         edittext_search.addTextChangedListener(new TextWatcher() {
@@ -287,6 +309,35 @@ public class FragmentCometchatGroupsList extends Fragment {
         return view;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        bm = LocalBroadcastManager.getInstance(context);
+        IntentFilter actionReceiver = new IntentFilter();
+        actionReceiver.addAction("ActionGroup");
+        bm.registerReceiver(onJsonReceived, actionReceiver);
+    }
+
+    private BroadcastReceiver onJsonReceived = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                String sender = intent.getStringExtra("sender");
+                groupListAdapter.changeUnreadCount(sender);
+                Log.i(TAG, "onReceive: broadcast" + sender);
+            }
+        }
+    };
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        SharedPreferences preferencesCheckCurrentActivity = getActivity().getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferencesCheckCurrentActivity.edit();
+        editor.putBoolean("IsGroupListingPage", false);
+        editor.apply();
+    }
+
     private void getGroups() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, "get_groups_cometchat");
@@ -311,7 +362,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(groupListAdapter);
-                    //checkIntent();
+
                      /*ArrayList<ModelUserCount> al_unreadCountList = new ArrayList<>();
                     al_unreadCountList=getUnreadMessageCountList();
                     if (!al_unreadCountList.isEmpty()){
@@ -602,19 +653,36 @@ public class FragmentCometchatGroupsList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        checkIntent();
-        //getGroupsByCometchat();
-    }
-
-    private void searchGroup(String search) {
-        if (groupListAdapter!=null){
-        groupListAdapter.getFilter().filter(search);
+        /*if preferences is true that means user is navigating  from pushnotification and
+         *that time we shoud check intent
+         * if preferences is false that means user is returning back from chat screen and
+         *
+         * */
+        if (preferenCheckIntent.getBoolean("checkIntent", false)) {
+            checkIntent();
+        }
+        /*after highlight the group then user will go to the chat screen when it return back then it will have checkedHighlightedGroup = true so that we can unhighlight the group */
+        if (preferenCheckIntent.getBoolean("checkedHighlightedGroup", false)) {
+            Log.i(TAG, "checkIntent: receiver is " + "" + getActivity().getIntent().getStringExtra("receiver"));
+            editor.putString("receiver", "" + getActivity().getIntent().getStringExtra("receiver"));
+            editor.putBoolean("makeHighlight", false);
+            editor.putBoolean("checkedHighlightedGroup", false);
+            editor.apply();
+            getGroups();
         }
     }
 
-    // Code by Debopam
+    private void searchGroup(String search) {
+        if (groupListAdapter != null) {
+            groupListAdapter.getFilter().filter(search);
+        }
+    }
+
+
     private void checkIntent() {
         if (getActivity() != null && getActivity().getIntent().getExtras() != null) {
+            /*Here we open chat screen for the particular group
+             *  added by rahul maske*/
             String type = getActivity().getIntent().getStringExtra("type");
             if (type.equals("")) {
                 String receiver = getActivity().getIntent().getStringExtra("receiver");
@@ -626,12 +694,24 @@ public class FragmentCometchatGroupsList extends Fragment {
                         break;
                     }
                 }
-            }else{
-                Log.i(TAG, "checkIntent: receiver is "+""+getActivity().getIntent().getStringExtra("receiver"));
-                editor.putString("receiver", ""+getActivity().getIntent().getStringExtra("receiver"));
-                editor.putBoolean("makeHighlight",true);
-                editor.apply();
-                getGroups();
+            } else {
+                /*Here we highlight the group after clicking push notification for added in group
+                 * if highlightList is equals to true then group will highlight else not highlight
+                 * added by rahul maske*/
+                if (preferenCheckIntent.getBoolean("highlightList", true)) {
+                    Log.i(TAG, "checkIntent: receiver is " + "" + getActivity().getIntent().getStringExtra("receiver"));
+                    editor.putString("receiver", "" + getActivity().getIntent().getStringExtra("receiver"));
+                    editor.putBoolean("makeHighlight", true);
+                    editor.apply();
+                    getGroups();
+                } else {
+                    //if (!preferenCheckIntent.getBoolean("highlightList", false))
+                    Log.i(TAG, "checkIntent: receiver is " + "" + getActivity().getIntent().getStringExtra("receiver"));
+                    editor.putString("receiver", "" + getActivity().getIntent().getStringExtra("receiver"));
+                    editor.putBoolean("makeHighlight", false);
+                    editor.apply();
+                    getGroups();
+                }
             }
         }
     }
@@ -643,9 +723,9 @@ public class FragmentCometchatGroupsList extends Fragment {
         Log.e("grId", GID);
         List<String> l = new ArrayList<>();
         String providerArray = Preferences.get("providers");
-
-        editor.putBoolean("makeHighlight",false);
+        editor.putBoolean("makeHighlight", false);
         editor.commit();
+
         for (Members_ teamsItem : groupList.getMembersArrayList()) {
             String s = String.valueOf(teamsItem.getUser_id());
             l.add(s);
@@ -723,7 +803,6 @@ public class FragmentCometchatGroupsList extends Fragment {
 
                 break;
             case "password":
-
                 if (ownerId.equals(Uid)) {
                     openActivity(gName, groupIds, groupType, ownerId, memberCount, "");
                     Log.i(TAG, "performAdapterClick: pw1");
@@ -785,6 +864,4 @@ public class FragmentCometchatGroupsList extends Fragment {
         intent.putExtra(StringContract.IntentStrings.TABS, "2");
         getActivity().startActivity(intent);
     }
-
-
 }

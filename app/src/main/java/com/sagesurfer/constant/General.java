@@ -820,6 +820,7 @@ public class General {
     public static final String IS_CASE_MANAGER = "Case Manager";
     public static final String MY_TEST_TAG = "my_test_tag";
     public static final String IS_STUDENT = "Student";
+    public static final String USER_COMETCHAT_ID = "cometchat_uid";
 
 
     public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {

@@ -43,17 +43,13 @@ import java.util.List;
 
 import okhttp3.RequestBody;
 
-
 /**
  * @author kishor k
  * Created on 13/11/2020
  */
-
-
 public class CometChatMainFragment extends Fragment {
     public static final String TAG = CometChatMainFragment.class.getSimpleName();
     private TabLayout tabLayout;
-
     private Activity activity;
     private MainActivityInterface mainActivityInterface;
     private FragmentActivity mContext;
@@ -81,7 +77,6 @@ public class CometChatMainFragment extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //For setting status bar color
@@ -92,7 +87,6 @@ public class CometChatMainFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.chat_main_layout, null);
         activity = getActivity();
-
         sp = getActivity().getSharedPreferences("login", getActivity().MODE_PRIVATE);
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.chat));
         db = new Cometchat_log(getActivity());
@@ -116,7 +110,8 @@ public class CometChatMainFragment extends Fragment {
             }*/
             mainActivity.showHideBellIcon2(true);
             mainActivity.hidesettingIcon(true);
-
+            mainActivity.showChatIcon(false);
+            //mainActivity.hidePopup();
         }
 
         // action bar setting button
@@ -135,7 +130,7 @@ public class CometChatMainFragment extends Fragment {
         // get current language
         getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
         // Checking the intent for navigation from push notification
-        checkIntent();
+
         Cursor cursor = db.getNames();
         if (cursor.moveToFirst()) {
             do {
@@ -203,6 +198,7 @@ public class CometChatMainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        checkIntent();
     }
 
     public void addConversationListener() {

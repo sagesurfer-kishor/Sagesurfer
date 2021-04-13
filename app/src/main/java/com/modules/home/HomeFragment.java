@@ -236,7 +236,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
 
         if (getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.showHideBellIcon(false);
+//            mainActivity.showHideBellIcon(false);
             mainActivity.hidesettingIcon(false);
         }
     }
@@ -1193,6 +1193,10 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
 
             } else {
                 mainActivityInterface.toggleAdd(false);
+            }
+            Log.i(TAG, "replaceFragment: id"+id);
+            if (id==36){
+                id=82;
             }
             Fragment fragment = GetFragments.get(id, bundle);
             FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();

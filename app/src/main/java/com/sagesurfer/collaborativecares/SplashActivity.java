@@ -44,8 +44,8 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_layout);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         initializeCometChat();
+
     }
 
     private void initializeCometChat() {
@@ -111,14 +111,11 @@ public class SplashActivity extends AppCompatActivity {
                 try {
 
                     String Uid = Preferences.get(General.COMET_CHAT_ID);
-
                     CometChat.login(Uid, AppConfig.AppDetails.API_KEY, new CometChat.CallbackListener<User>() {
-
                         @Override
                         public void onSuccess(User user) {
                             Log.d(TAG, "Login Successful : " + user.toString());
                             moveToDashboard();
-
                         }
 
                         @Override

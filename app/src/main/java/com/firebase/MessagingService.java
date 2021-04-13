@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -76,7 +77,7 @@ public class MessagingService extends FirebaseMessagingService {
     private int singleNotificationId, bundleNotificationId;*/
 
     private boolean isCall;
-    private boolean isChatScreen, IsFriendListingPage;
+    private boolean isChatScreen, IsFriendListingPage, IsGroupListingPage;
     SharedPreferences preferencesCheckCurrentActivity;
     SharedPreferences.Editor editor;
 
@@ -86,6 +87,7 @@ public class MessagingService extends FirebaseMessagingService {
         preferencesCheckCurrentActivity = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
         isChatScreen = preferencesCheckCurrentActivity.getBoolean("IsChatScreen", false);
         IsFriendListingPage = preferencesCheckCurrentActivity.getBoolean("IsFriendListingPage", false);
+        IsGroupListingPage = preferencesCheckCurrentActivity.getBoolean("IsGroupListingPage", false);
 
         intentMain = new Intent(this, MainActivity.class);
 
@@ -137,13 +139,12 @@ public class MessagingService extends FirebaseMessagingService {
             if (baseMessage instanceof Call) {
                 call = (Call) baseMessage;
                 isCall = true;
-                if (!AppInfo.isAppRunning(getApplicationContext(),"com.sagesurfer.collaborativecares"))
-                {
+                if (!AppInfo.isAppRunning(getApplicationContext(), "com.sagesurfer.collaborativecares")) {
                     showNotifcation(baseMessage);
                 }
-            }else{
+            } else {
 
-            showNotifcation(baseMessage);
+                showNotifcation(baseMessage);
             }
 
         } catch (JSONException e) {
@@ -397,6 +398,8 @@ public class MessagingService extends FirebaseMessagingService {
                 // Getting team logs id
                 if (!isCall) {
                     if (messageData.has("type")) {
+                        /*Here we are redirecting from push to group when user added in group
+                         * added by rahul*/
                         String type = messageData.getString("type");
                         if (type.equals("groupMember")) {
                             String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
@@ -407,16 +410,39 @@ public class MessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("username", "" + json.get("title"));
                             intentMain.putExtra("type", "groupMember");
                         } else {
-                        String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
-                        intentMain.putExtra("team_logs_id", team_logs_id);
-                        intentMain.putExtra("receiver", messageData.optString("receiver"));
-                        intentMain.putExtra("sender", messageData.optString("sender"));
-                        intentMain.putExtra("receiverType", messageData.optString("receiverType"));
-                        intentMain.putExtra("username", "" + json.get("title"));
+                            String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
+                            /*This is a broad cast for refreshing the unread messages*/
+                            if (team_logs_id.equals("0")) {
+                                if (IsFriendListingPage) {
+                                    Intent intent = new Intent("ActionFriend");
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("sender", messageData.optString("sender"));
+                                    intent.putExtras(bundle);
+                                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                                }
+                            } else if (team_logs_id.equals("")) {
+                                if (IsGroupListingPage) {
+                                    Intent intent = new Intent("ActionGroup");
+                                    Bundle bundle = new Bundle();
+                                    Log.i(TAG, "getIntent: group " + messageData.optString("receiver"));
+                                    bundle.putString("sender", messageData.optString("receiver"));
+                                    intent.putExtras(bundle);
+                                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                                }
+                            }
+                            intentMain.putExtra("team_logs_id", team_logs_id);
+                            intentMain.putExtra("receiver", messageData.optString("receiver"));
+                            intentMain.putExtra("sender", messageData.optString("sender"));
+                            intentMain.putExtra("receiverType", ""+messageData.optString("receiverType"));
+                            intentMain.putExtra("username", "" + json.get("title"));
+                            intentMain.putExtra("type", "");
                         }
                     }
 //              intent.putExtra("json", (Parcelable) json);
                 } else {
+                    /*Here in this we are preparing for call push notification redirection
+                     * on click of notification user will redirect on calling screen
+                     * added by rahul maske*/
                     String team_logs_id = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on")
                             .getJSONObject("entity").getJSONObject("data").getJSONObject("metadata").getString("team_logs_id");
                     String receiver = messageData.getString("receiver");
@@ -445,7 +471,6 @@ public class MessagingService extends FirebaseMessagingService {
                     intentMain.putExtra("callType", "" + callType);
                     intentMain.putExtra("sessionid", "" + sessionid);
                 }
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

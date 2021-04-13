@@ -1,7 +1,9 @@
 package com.sagesurfer.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +19,20 @@ import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
 import com.modules.cometchat_7_30.CometChatMainFragment;
+import com.sagesurfer.collaborativecares.BlockedMembersActivity;
 import com.sagesurfer.collaborativecares.R;
+import com.sagesurfer.network.NetworkCall_;
+import com.storage.preferences.Preferences;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.RequestBody;
+import screen.messagelist.General;
+import screen.messagelist.Urls_;
 
 public class Blockeduserlistadapter extends RecyclerView.Adapter<Blockeduserlistadapter.MyViewHolder> {
     private final Context mContext;
@@ -72,7 +81,6 @@ public class Blockeduserlistadapter extends RecyclerView.Adapter<Blockeduserlist
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         User teams_ = userList.get(position);
-
         holder.title.setText(teams_.getName());
         holder.imgBan.setText("Unblock");
         // unblocked user form list
@@ -81,11 +89,15 @@ public class Blockeduserlistadapter extends RecyclerView.Adapter<Blockeduserlist
             public void onClick(View view) {
                 List<String> uids = new ArrayList<>();
                 uids.add(teams_.getUid());
+                String[] array = teams_.getUid().split("_");
                 // comet chat unblocked selected  user
+                Log.i(TAG, "onClick: block user id "+ array[0]+ "  user_Id  " + Preferences.get(com.sagesurfer.constant.General.USER_ID) );
                 CometChat.unblockUsers(uids, new CometChat.CallbackListener<HashMap<String, String>>() {
                     @Override
                     public void onSuccess(HashMap<String, String> resultMap) {
                         // Handle unblock users success.
+                        Log.i(TAG, "onSuccess: teamId "+teams_.getUid());
+                        unblockUserIntoDatabase(array[0]);
                         userList.remove(position);
                         notifyDataSetChanged();
                     }
@@ -106,5 +118,28 @@ public class Blockeduserlistadapter extends RecyclerView.Adapter<Blockeduserlist
         return userList.size();
     }
 
+
+    public void unblockUserIntoDatabase(String blockedUID) {
+        String action = "block_user_delete_db";
+        //String[] array = blockedUID.split("_");
+        String url = Urls_.SAVE_UNBLOCK_USER_TO_THE_SERVER;
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, action);
+        requestMap.put(General.RECEIVER_ID, blockedUID);
+        requestMap.put(General.USER_ID, Preferences.get(com.sagesurfer.constant.General.USER_ID));
+
+        Log.i(TAG, "unblockUserIntoDatabase:  receiver_Id  " +blockedUID +"  user_Id  " + Preferences.get(com.sagesurfer.constant.General.USER_ID) + " url " + Preferences.get(com.sagesurfer.constant.General.DOMAIN) + url);
+        RequestBody requestBody = NetworkCall_.make(requestMap, Preferences.get(com.sagesurfer.constant.General.DOMAIN) + url, TAG, mContext);
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(Preferences.get(com.sagesurfer.constant.General.DOMAIN) + url, requestBody, TAG, mContext);
+                if (response != null) {
+                    Log.i(TAG, "unblockUserIntoDatabase:  response " + response);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
 

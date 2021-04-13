@@ -1,8 +1,11 @@
 package com.modules.cometchat_7_30;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -16,9 +19,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,17 +34,26 @@ import com.cometchat.pro.core.UsersRequest;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
 
+import com.google.gson.JsonObject;
 import com.sagesurfer.adapters.FriendListAdapter;
 
 import com.sagesurfer.collaborativecares.R;
 import com.storage.preferences.Preferences;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import constant.StringContract;
+import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
+import screen.messagelist.General;
+import screen.messagelist.NetworkCall_;
+import screen.messagelist.Urls_;
 import utils.FontUtils;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -58,7 +73,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
     SharedPreferences preferenOpenActivity;
     public List<User> filteredNameList = new ArrayList<>();
     public List<User> friendList = new ArrayList<>();
-
+    LocalBroadcastManager bm;
     public CometChatFriendsListFragment_() {
     }
 
@@ -108,6 +123,31 @@ public class CometChatFriendsListFragment_ extends Fragment {
         return view;
 
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        bm = LocalBroadcastManager.getInstance(context);
+        IntentFilter actionReceiver = new IntentFilter();
+        actionReceiver.addAction("ActionFriend");
+        bm.registerReceiver(onJsonReceived , actionReceiver);
+    }
+
+    private BroadcastReceiver onJsonReceived = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                String sender = intent.getStringExtra("sender");
+                adapter.changeUnreadCount(sender);
+                /*try {
+                    JSONObject data = new JSONObject(json);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
+                Log.i(TAG, "onReceive: broadcast");
+            }
+        }
+    };
 
     @Override
     public void onDetach() {
@@ -176,7 +216,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
 
     // friend search filter
     private void searchFriend(String search) {
-        if (adapter!=null) {
+        if (adapter != null) {
             adapter.getFilter().filter(search);
         }
     }
@@ -294,6 +334,32 @@ public class CometChatFriendsListFragment_ extends Fragment {
                 intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
                 intent.putExtra(StringContract.IntentStrings.TABS, "1");
                 getActivity().startActivity(intent);
+            }
+        }
+    }
+
+    public void insertBlockUserIntoDatabase(String blockedUID) {
+        String action = "block_user_insert_db";
+        String[] array = blockedUID.split("_");
+        String url = Urls_.SAVE_BLOCK_USER_TO_THE_SERVER;
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, action);
+        requestMap.put(General.RECEIVER_ID,  array[0]);
+        requestMap.put(General.USER_ID, Preferences.get(com.sagesurfer.constant.General.USER_ID));
+
+
+        Log.i(TAG, "insertBlockUserIntoDatabase:  receiver_Id  " + array[0] + " user_Id " + Preferences.get(com.sagesurfer.constant.General.USER_ID) + " url " + Preferences.get(com.sagesurfer.constant.General.DOMAIN) + url);
+        RequestBody requestBody = NetworkCall_.make(requestMap, Preferences.get(com.sagesurfer.constant.General.DOMAIN) + url, TAG, getActivity());
+        Log.e(TAG, "insertBlockUserIntoDatabase: request body " + requestBody);
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(Preferences.get(com.sagesurfer.constant.General.DOMAIN) + url, requestBody, TAG, getActivity());
+                if (response != null) {
+                    Log.i(TAG, "insertBlockUserIntoDatabase:  response " + response);
+                }
+            } catch (Exception e) {
+                Log.i(TAG, "insertBlockUserIntoDatabase: "+e.getMessage());
+                e.printStackTrace();
             }
         }
     }

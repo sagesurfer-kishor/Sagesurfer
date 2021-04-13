@@ -81,7 +81,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
         }
     }
 
-
     @NotNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -93,23 +92,24 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         User user = friendList.get(position);
-
         // set friend name on list
         holder.title.setText(user.getName());//+" "+al_unreadCountList.get(position)
         Glide.with(mContext).load(user.getAvatar()).into(holder.imgBan);
         String status = user.getStatus();
         String UID = friendList.get(position).getUid();
+
         /*getting unread count for all users
         * added by rahul maske*/
+
         CometChat.getUnreadMessageCountForUser(UID, new CometChat.CallbackListener<HashMap<String, Integer>>() {
             @Override
             public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
                 // handle success
-
-
                 if (!String.valueOf(stringIntegerHashMap.get(UID)).equalsIgnoreCase("null")) {
+                    //this status is used for unread message counter
+                    user.setStatus(""+stringIntegerHashMap.get(UID));
                     holder.tv_counter.setVisibility(View.VISIBLE);
-                    holder.tv_counter.setText("" +stringIntegerHashMap.get(UID));
+                    holder.tv_counter.setText("" +user.getStatus());
                 }else{
                     holder.tv_counter.setVisibility(View.GONE);
                 }
@@ -149,8 +149,11 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                                     @Override
                                     public void onSuccess(HashMap<String, String> resultMap) {
                                         // Handle block users success.
+                                        Log.i(TAG, "onSuccess: "+ screen.messagelist.General.MY_TAG + " uid "+friendList.get(position).getUid());
+                                        fragment.insertBlockUserIntoDatabase(friendList.get(position).getUid());
                                         friendList.remove(position);
                                         notifyDataSetChanged();
+
                                     }
 
                                     @Override
@@ -316,5 +319,26 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
             notifyDataSetChanged();
         }
     };
+
+    public void changeUnreadCount(String sender) {
+        Log.i(TAG, "changeUnreadCount: "+sender);
+        CometChat.getUnreadMessageCountForUser(sender, new CometChat.CallbackListener<HashMap<String, Integer>>() {
+            @Override
+            public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
+                // handle successl
+                for (User user : friendList ){
+                    if(user.getUid().equals(""+sender)){
+                        Log.i(TAG, "onSuccess: matched user");
+                        user.setStatus(""+stringIntegerHashMap.get(sender));
+                    }
+                }
+                notifyDataSetChanged();
+}
+            @Override
+            public void onError(CometChatException e) {
+                Log.e(TAG, "fetchedUserMessage_onError: " + e.getMessage());
+            }
+        });
+    }
 }
 

@@ -96,6 +96,16 @@
                 android:visibility="visible"
                 app:srcCompat="@drawable/ic_add_white" />
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/chat_icon"
+                android:layout_width="56dp"
+                android:layout_height="64dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:visibility="gone"
+                android:tint="@color/white"
+                app:srcCompat="@drawable/chatt_iconn" />
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/setting"
                 android:layout_width="@dimen/actionBarSize"
                 android:layout_height="@dimen/actionBarSize"

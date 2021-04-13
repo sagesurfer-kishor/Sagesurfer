@@ -1473,6 +1473,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 try {
                     try {
                         s = baseMessage.getMetadata().getString("whiteboard_URL_one");
+
                         if (!s.isEmpty()) {
                             translatedText = s;
                         }
@@ -1536,10 +1537,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, WhiteboardActivity.class);
-                    intent.putExtra("whiteBoardUrl", translatedText);
-                    Log.i(TAG, "onClick: sessionId"+translatedText);
-                    context.startActivity(intent);
-
+                    //intent.putExtra("whiteBoardUrl", translatedText);
+                    try {
+                        if (baseMessage.getMetadata().has("whiteboard_URL_one")){
+                            intent.putExtra("whiteBoardUrl", messageList.get(i).getMetadata().getString("whiteboard_URL_one"));
+                        }else if (baseMessage.getMetadata().has("whiteboard_URL")){
+                            intent.putExtra("whiteBoardUrl", messageList.get(i).getMetadata().getString("whiteboard_URL"));
+                        }else if (baseMessage.getMetadata().has("whiteboard_URL_group")){
+                            intent.putExtra("whiteBoardUrl", messageList.get(i).getMetadata().getString("whiteboard_URL_group"));
+                        }
+                        Log.i(TAG, "onClick: sessionId"+translatedText);
+                        context.startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -2095,6 +2106,45 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             notifyItemChanged(index);
         }
     }
+
+    public void setEditedMessage(BaseMessage baseMessage) {
+        JSONObject metadata = baseMessage.getMetadata();
+        try {
+            if (metadata.has("@injected")) {
+                JSONObject injectedObject = null;
+                injectedObject = metadata.getJSONObject("@injected");
+                if (injectedObject.has("extensions")) {
+                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                    if (extensionsObject.has("message-translation")) {
+                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                        HashMap<String, String> translationsMap = new HashMap<String, String>();
+                        for (int i = 0; i < translations.length(); i++) {
+                            JSONObject translation = translations.getJSONObject(i);
+                            String translatedText = translation.getString("message_translated");
+                            String translatedLanguage = translation.getString("language_translated");
+                            translationsMap.put(translatedLanguage, translatedText);
+                            if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                    ((TextMessage) baseMessage).setText(translatedText);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (messageList.contains(baseMessage)) {
+            int index = messageList.indexOf(baseMessage);
+            messageList.remove(baseMessage);
+            messageList.add(index, baseMessage);
+            notifyItemChanged(index);
+        }
+    }
+
 
     public void resetList() {
         messageList.clear();

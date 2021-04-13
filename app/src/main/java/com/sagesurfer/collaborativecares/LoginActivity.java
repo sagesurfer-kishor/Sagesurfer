@@ -1,5 +1,6 @@
 package com.sagesurfer.collaborativecares;
 
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -105,8 +106,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-
 /**
  * @author Monika M (monikam@sagesurfer.com)
  * Created on 13/03/2018
@@ -235,6 +234,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }, 2000);
                 }*/
+
 
                 if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
                     if (code.equalsIgnoreCase(getResources().getString(R.string.sage030)) ||
@@ -510,7 +510,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Toast toast = Toast.makeText(LoginActivity.this, "Mail sent", Toast.LENGTH_LONG);
         toast.show();
-
     }
 
     //Checking if all fields are valid or not
@@ -1003,8 +1002,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         for (Server_ server : serverList) {
             if (server.getKey().equalsIgnoreCase(code)) {
                 Log.e(TAG, "DomainCodeBeforeSaving: " + code);
+                Log.e(TAG, "DomainURLMain: " + server.getDomainUrl());
                 Preferences.save(General.DOMAIN, server.getDomainUrl());//server.getDomainUrl());
                 Preferences.save(General.DOMAIN_CODE, code);
+                SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = domainUrlPref.edit();
+                editor.putString(General.DOMAIN, ""+server.getDomainUrl());
+                editor.commit();
+//                screen.messagelist.Preferences.save(General.DOMAIN, server.getDomainUrl());
                 Preferences.save(General.CHAT_URL, server.getChatUrl());
                 Log.e(TAG, "DomainCodeFromPreferences: " + Preferences.get(General.DOMAIN_CODE));
                 return true;
@@ -1029,7 +1034,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (serverList.size() > 0) {
                 toggleLogin(true);
             } else {
-                ShowSnack.buttonWarning(buttonLogin, this.getResources()
+                ShowSnack.buttonWarning(buttonLogin,    this.getResources()
                         .getString(R.string.servers_unavailable), getApplicationContext());
             }
         } else {
@@ -1132,7 +1137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Preferences.save(General.STATE_ID, userInfo.getState());
         Preferences.save(General.COUNTRY_ID, userInfo.getCountry());
         Preferences.save(General.BIRTDATE, userInfo.getDob());
-        Preferences.save(General.BIRTDATE, userInfo.getComet_chat_id());
+        Preferences.save(General.USER_COMETCHAT_ID, userInfo.getComet_chat_id());
 
         if (userInfo.getRole().equalsIgnoreCase("care coordinator")) {
             Preferences.save(General.IS_CC, 1);

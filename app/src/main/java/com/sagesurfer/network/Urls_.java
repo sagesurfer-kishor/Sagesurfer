@@ -9,7 +9,8 @@ package com.sagesurfer.network;
 public class Urls_ {
 
     // change to local envorment kishor k
-    public static final String SERVER_LIST_URL = "https://design.sagesurfer.com/mobile_get_instances.php";
+    //public static final String SERVER_LIST_URL = "https://design.sagesurfer.com/mobile_get_instances.php";
+    public static final String SERVER_LIST_URL = "https://designstagingtest.sagesurfer.com/mobile_get_instances.php";
     //public static final String SERVER_LIST_URL = "https://ndesign.sagesurfer.com/mobile_get_instances.php";
     public static final String LOGIN_URL = "mobile_login.php";
     public static final String MOBILE_USER_SYNC = "mobile_user_synch.php";

@@ -17,7 +17,9 @@ import com.modules.calendar.CalendarFragment;
 import com.modules.caseload.CaseloadFragment;
 import com.modules.caseload.CaseloadPeerNoteFragment;
 import com.modules.caseload.fragment.CaseLoadNoteStatusFragment;
+import com.modules.cometchat_7_30.Calls.FragmentMainCallHistory;
 import com.modules.cometchat_7_30.CometChatMainFragment;
+import com.modules.cometchat_7_30.LastConversion.FragmentLastConversation;
 import com.modules.consent.MyConsentFragment;
 import com.modules.contacts.ContactListFragment;
 import com.modules.crisis.CrisisFragment;
@@ -265,6 +267,10 @@ public class GetFragments {
                 return new AppointmentFragment();
             case 81:
                 return new AppointmentReportFragment();
+            case 82:
+                return new FragmentLastConversation();
+            case 83:
+                return new FragmentMainCallHistory();
             default:
                 return null;
         }

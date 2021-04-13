@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <item
         android:id="@+id/menu_block_member"
         android:title="Blocked Member"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/menu_change_language"
         android:title="Change Language"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/chatt_icon"
+        android:icon="@drawable/chatt_iconn"
+        android:title="Last Conversation"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/set_available_time"
+        android:title="Set Available Time"
+        android:icon="@drawable/available_time_icon"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/call_history"
+        android:title="Call History"
+        app:showAsAction="never"
+        />
 </menu>

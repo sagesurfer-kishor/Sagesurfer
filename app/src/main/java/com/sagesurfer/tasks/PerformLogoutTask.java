@@ -104,16 +104,6 @@ public class PerformLogoutTask {
             super.onPostExecute(aBoolean);
             safeLogout(activity);
 
-            loginPreferences = activity.getSharedPreferences("loginPrefs", MODE_PRIVATE);
-            loginPrefsEditor = loginPreferences.edit();
-            loginPrefsEditor.clear();
-            loginPrefsEditor.commit();
-
-            sp = activity.getSharedPreferences("login", MODE_PRIVATE);
-            spEditor = sp.edit();
-            spEditor.clear();
-            spEditor.commit();
-
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
             }
@@ -180,6 +170,17 @@ public class PerformLogoutTask {
         Preferences.removeKey(General.IS_FORM_SYNC_LANDING_QUESTION);
         Preferences.removeKey(General.OWNER_ID);*/
         //screen.messagelist.Preferences.clear();
+
+
+        loginPreferences = activity.getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        loginPrefsEditor = loginPreferences.edit();
+        loginPrefsEditor.clear();
+        loginPrefsEditor.apply();
+
+        sp = activity.getSharedPreferences("login", MODE_PRIVATE);
+        spEditor = sp.edit();
+        spEditor.clear();
+        spEditor.apply();
 
         Preferences.save(General.IS_LOGIN, 0);
         Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);

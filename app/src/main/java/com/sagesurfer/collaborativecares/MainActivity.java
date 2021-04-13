@@ -191,7 +191,6 @@ import utils.Utils;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static com.modules.mood.ConstantMood.context;
 
-
 /**
  * @author Kailash Karankal
  * Created on 13/03/2018
@@ -268,9 +267,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ArrayAdapter<String> reasonAdapter;
     SharedPreferences sp;
     private static final int JOB_ID = 0;
+    AppCompatImageView  chat_icon,main_toolbar_bell;
     private JobScheduler mScheduler;
     private SharedPreferences preferencesCheckCurrentActivity;
     private SharedPreferences.Editor editor;
+    PopupMenu popup;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"WrongConstant", "RestrictedApi", "SourceLockedOrientationActivity", "NewApi"})
@@ -344,7 +345,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             //mScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
             toolbar = (Toolbar) findViewById(R.id.main_toolbar_layout);
-
             setSupportActionBar(toolbar);
             assert getSupportActionBar() != null;
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -359,7 +359,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             };
             toggle.setDrawerIndicatorEnabled(false);
             toolbar.setNavigationIcon(R.drawable.vi_drawer_hamburger_icon);
-
+            chat_icon=toolbar.findViewById(R.id.chat_icon);
+            main_toolbar_bell=toolbar.findViewById(R.id.main_toolbar_bell);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -404,6 +405,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 public void onClick(View v) {
                     // open menu popup for change language and blocked user list
                     showSettingPopup(v);
+                }
+            });
+
+            chat_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle=new Bundle();
+                    Fragment fragment = GetFragments.get(9, bundle);
+                    fragment.setArguments(bundle);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                    ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                    ft.commit();
                 }
             });
 
@@ -497,10 +511,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }*/
 
     private void showSettingPopup(View view) {
-        final PopupMenu popup = new PopupMenu(MainActivity.this, view);
+        popup = new PopupMenu(MainActivity.this, view);
         popup.getMenuInflater().inflate(R.menu.menu_setting, popup.getMenu());
         Menu popupMenuItem = popup.getMenu();
-
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
@@ -555,6 +568,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         });
                         dialog.show();
                         break;
+
+                    case R.id.chatt_icon:
+                        Bundle bundle=new Bundle();
+                        Fragment fragment = GetFragments.get(82, bundle);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                        ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                        ft.commit();
+                        break;
+
+                    case R.id.call_history:
+                        Bundle bundleCalls=new Bundle();
+                        Fragment fragmentCalls = GetFragments.get(83, bundleCalls);
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                        fragmentTransaction.replace(R.id.app_bar_main_container, fragmentCalls, TAG);
+                        fragmentTransaction.commit();
+                        break;
                 }
                 popup.dismiss();
                 return true;
@@ -563,6 +594,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         popup.show();
     }
 
+    /*public void hidePopup(){
+        popup.getMenu().getItem(R.id.chatt_icon).setVisible(false);
+    }
+*/
     private void getLanguage(String action) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
@@ -659,8 +694,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (response != null) {
                     Log.i(TAG, "getUpdateLanguage success response" + response);
                     getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
+                    Toast.makeText(MainActivity.this, "Language changed successfully" , Toast.LENGTH_SHORT).show();
 //                    CometChatMessageScreen messageScreen = new CometChatMessageScreen();
-  //                  messageScreen.fetchMessage();
+//                  messageScreen.fetchMessage();
+
                 }
 
             } catch (Exception e) {
@@ -1624,8 +1661,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void showHideBellIcon2(boolean showHide) {
         if (showHide) {
             mainToolBarBellLayout.setVisibility(View.GONE);
+            main_toolbar_bell.setVisibility(View.GONE);
         } else {
             mainToolBarBellLayout.setVisibility(View.VISIBLE);
+            main_toolbar_bell.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void showChatIcon(boolean showHide) {
+        if (showHide) {
+            chat_icon.setVisibility(View.VISIBLE);
+        } else {
+            chat_icon.setVisibility(View.GONE);
         }
     }
 
@@ -1650,7 +1697,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }else{
                 type="";
             }
-
             Log.i(TAG, "handleIntent: team_logs_id"+team_logs_id);
             Log.i(TAG, "handleIntent: receiver"+receiver);
             Log.i(TAG, "handleIntent: sender"+sender);
@@ -1666,10 +1712,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 bundle.putString("username", username);
                 bundle.putString("type", type);
                 /*creating preferences for intent to open chat screen or not*/
-
                 SharedPreferences preferenOpenActivity = this.getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferenOpenActivity.edit();
-                editor.putBoolean("openActivity", true);
+                if (type.equals("groupMember")) {
+                    editor.putBoolean("highlightList", true);
+                    editor.apply();
+                }
+                editor.putBoolean("checkIntent", true);
                 editor.apply();
 
                 Fragment fragment = GetFragments.get(9, bundle);
@@ -1680,7 +1729,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 ft.commit();
             }
         }else{
-            /*Here we are getting intent */
+            /*Here we are getting intent  for call redirection*/
             Log.i(TAG, "handleIntent: else");
             if(mainIntent.hasExtra("sender")){
                 String lastActiveAt =mainIntent.getStringExtra("lastActiveAt");
@@ -1821,7 +1870,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             }
             Config.mapOfPosts = new HashMap<>();
-
 
             //all the home main functions will redirect from here
             if (type.trim().length() > 0) {
@@ -3160,8 +3208,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void hidesettingIcon(boolean showHide) {
         if (showHide) {
             setting.setVisibility(View.VISIBLE);
+            chat_icon.setVisibility(View.VISIBLE);
         } else {
             setting.setVisibility(View.GONE);
+            chat_icon.setVisibility(View.GONE);
         }
     }
 
