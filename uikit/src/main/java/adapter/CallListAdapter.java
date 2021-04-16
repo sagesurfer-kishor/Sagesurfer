@@ -74,9 +74,7 @@ public class CallListAdapter extends RecyclerView.Adapter<CallListAdapter.CallVi
     @Override
     public CallViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-
         CallListRowBinding callListRowBinding = DataBindingUtil.inflate(layoutInflater, R.layout.call_list_row, parent, false);
-
         return new CallViewHolder(callListRowBinding);
     }
 
@@ -111,6 +109,7 @@ public class CallListAdapter extends RecyclerView.Adapter<CallListAdapter.CallVi
                 callViewHolder.callListRowBinding.callSenderAvatar.setAvatar(((User)call.getCallReceiver()).getAvatar());
                 if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_UNANSWERED) || call.getCallStatus().equals(CometChatConstants.CALL_STATUS_CANCELLED)) {
                     callMessageText = context.getResources().getString(R.string.missed_call);
+                    callViewHolder.callListRowBinding.callSenderName.setTextColor(context.getResources().getColor(R.color.red));
                     isMissed = true;
                 } else if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_REJECTED)) {
                     callMessageText = context.getResources().getString(R.string.rejected_call);
@@ -124,6 +123,7 @@ public class CallListAdapter extends RecyclerView.Adapter<CallListAdapter.CallVi
                 callViewHolder.callListRowBinding.callSenderAvatar.setAvatar((User)call.getCallInitiator());
                 if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_UNANSWERED) || call.getCallStatus().equals(CometChatConstants.CALL_STATUS_CANCELLED)) {
                     callMessageText = context.getResources().getString(R.string.missed_call);
+                    callViewHolder.callListRowBinding.callSenderName.setTextColor(context.getResources().getColor(R.color.red));
                     isMissed = true;
                 } else if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_REJECTED)) {
                     callMessageText = context.getResources().getString(R.string.rejected_call);
@@ -151,6 +151,7 @@ public class CallListAdapter extends RecyclerView.Adapter<CallListAdapter.CallVi
             {
                 if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_UNANSWERED)) {
                     callMessageText = context.getResources().getString(R.string.missed_call);
+                    callViewHolder.callListRowBinding.callSenderName.setTextColor(context.getResources().getColor(R.color.red));
                     isMissed = true;
                 } else if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_REJECTED)) {
                     callMessageText = context.getResources().getString(R.string.rejected_call);

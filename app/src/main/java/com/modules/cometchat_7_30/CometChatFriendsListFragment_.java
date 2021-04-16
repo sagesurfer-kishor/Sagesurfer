@@ -95,6 +95,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
         friend_list_error = view.findViewById(R.id.friend_conversion_error);
         cardview_actions = view.findViewById(R.id.cardview_actions);
         // friend conversion search action
+        Log.i(TAG, "onCreateView: ");
         ed_search_friend.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -119,7 +120,6 @@ public class CometChatFriendsListFragment_ extends Fragment {
         editor.apply();
 
         preferenOpenActivity = getActivity().getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
-
         return view;
 
     }
@@ -223,6 +223,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
 
     // Code by Debopam
     private void checkIntent() {
+        Log.i(TAG, "checkIntent: ");
         if (preferenOpenActivity.getBoolean("openActivity", false)) {
             if (getActivity() != null && getActivity().getIntent().hasExtra("receiverType")) {
                 String receiverType = getActivity().getIntent().getStringExtra("receiverType");
@@ -346,8 +347,6 @@ public class CometChatFriendsListFragment_ extends Fragment {
         requestMap.put(General.ACTION, action);
         requestMap.put(General.RECEIVER_ID,  array[0]);
         requestMap.put(General.USER_ID, Preferences.get(com.sagesurfer.constant.General.USER_ID));
-
-
         Log.i(TAG, "insertBlockUserIntoDatabase:  receiver_Id  " + array[0] + " user_Id " + Preferences.get(com.sagesurfer.constant.General.USER_ID) + " url " + Preferences.get(com.sagesurfer.constant.General.DOMAIN) + url);
         RequestBody requestBody = NetworkCall_.make(requestMap, Preferences.get(com.sagesurfer.constant.General.DOMAIN) + url, TAG, getActivity());
         Log.e(TAG, "insertBlockUserIntoDatabase: request body " + requestBody);

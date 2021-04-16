@@ -42,7 +42,6 @@ import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.Group;
 import com.firebase.MessagingService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sagesurfer.adapters.FriendListAdapter;
 import com.sagesurfer.adapters.GroupsListAdapter;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
@@ -725,12 +724,17 @@ public class FragmentCometchatGroupsList extends Fragment {
         String providerArray = Preferences.get("providers");
         editor.putBoolean("makeHighlight", false);
         editor.commit();
-
+        StringBuffer sbGroupMemberIds=new StringBuffer("");
         for (Members_ teamsItem : groupList.getMembersArrayList()) {
             String s = String.valueOf(teamsItem.getUser_id());
-            l.add(s);
+            //l.add(s);
+            if (sbGroupMemberIds.length()==0){
+                sbGroupMemberIds.append(s);
+            }else {
+                sbGroupMemberIds.append("," + s);
+            }
         }
-
+        Log.i(TAG, "performAdapterClick: members id "+sbGroupMemberIds);
         final String gName = groupList.getName();
         final String groupIds = String.valueOf(groupList.getGroupId());
         final String groupType = mySearchList.get(position).getType();
@@ -747,7 +751,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                     if (ownerId.equals(Uid)) {
                         Log.i(TAG, "performAdapterClick: isMember" + isMembers);
                         Log.i(TAG, "performAdapterClick: 1");
-                        openActivity(gName, groupIds, groupType, ownerId, memberCount, "");
+                        openActivity(gName, groupIds, groupType, ownerId, memberCount, "",sbGroupMemberIds);
                     } else {
                         Log.i(TAG, "performAdapterClick: 2");
                         Log.i(TAG, "performAdapterClick: isMember" + isMembers);
@@ -770,7 +774,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                 } else {
                     Log.i(TAG, "performAdapterClick: 2");
                     Log.i(TAG, "performAdapterClick: isMember" + isMembers);
-                    openActivity(gName, groupIds, groupType, ownerId, memberCount, "");
+                    openActivity(gName, groupIds, groupType, ownerId, memberCount, "",sbGroupMemberIds);
                     //openActivity(gName, groupIds, groupType, ownerId, memberCount, "");
                 }
 
@@ -778,10 +782,10 @@ public class FragmentCometchatGroupsList extends Fragment {
 
             case "private":
                 if (ownerId.equals(Uid)) {
-                    openActivity(gName, groupIds, groupType, ownerId, memberCount, "");
+                    openActivity(gName, groupIds, groupType, ownerId, memberCount, "",sbGroupMemberIds);
                     Log.i(TAG, "performAdapterClick: private 1");
                 } else if (isMembers == 1) {
-                    openActivity(gName, groupIds, groupType, ownerId, memberCount, "");
+                    openActivity(gName, groupIds, groupType, ownerId, memberCount, "",sbGroupMemberIds);
                     Log.i(TAG, "performAdapterClick: private 2");
                 } else {
                     Log.i(TAG, "performAdapterClick: private 3");
@@ -804,7 +808,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                 break;
             case "password":
                 if (ownerId.equals(Uid)) {
-                    openActivity(gName, groupIds, groupType, ownerId, memberCount, "");
+                    openActivity(gName, groupIds, groupType, ownerId, memberCount, "",sbGroupMemberIds);
                     Log.i(TAG, "performAdapterClick: pw1");
                 } else {
                     Log.i(TAG, "performAdapterClick: pw2");
@@ -831,7 +835,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                             if (!TextUtils.isEmpty(pass)) {
 
                                 if (pass.equals(groupList.getPassword())) {
-                                    openActivity(gName, groupIds, groupType, ownerId, memberCount, pass);
+                                    openActivity(gName, groupIds, groupType, ownerId, memberCount, pass,sbGroupMemberIds);
                                     dialog.dismiss();
 
                                 } else {
@@ -850,7 +854,7 @@ public class FragmentCometchatGroupsList extends Fragment {
     }
 
     // open chat window on comet chat error
-    private void openActivity(String name, String groupId, String ownerId, String GroupType, String memberCount, String GroupPass) {
+    private void openActivity(String name, String groupId, String ownerId, String GroupType, String memberCount, String GroupPass,StringBuffer groupMembersId) {
         Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.TYPE, "group");
         intent.putExtra(StringContract.IntentStrings.NAME, name);
@@ -862,6 +866,7 @@ public class FragmentCometchatGroupsList extends Fragment {
         intent.putExtra(StringContract.IntentStrings.GROUP_DESC, "");
         intent.putExtra(StringContract.IntentStrings.GROUP_PASSWORD, GroupPass);
         intent.putExtra(StringContract.IntentStrings.TABS, "2");
+        intent.putExtra(StringContract.IntentStrings.ALL_MEMBERS_STRING,""+groupMembersId);
         getActivity().startActivity(intent);
     }
 }

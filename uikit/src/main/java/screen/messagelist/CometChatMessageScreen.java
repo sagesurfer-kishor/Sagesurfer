@@ -83,7 +83,6 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
@@ -94,12 +93,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -173,7 +170,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     private Toolbar toolbar;
     private View view;
     private LinearLayout blockUserLayout;
-    private ImageView replyMedia, replyClose, onGoingCallClose, callBtn, vidoeCallBtn;
+    private ImageView replyMedia, replyClose, onGoingCallClose, btn_audio_call, btn_video_call;
     private RelativeLayout replyMessageLayout, editMessageLayout, onGoingCallView, bottomLayout;
     private TextView tvMessageTitle, tvMessageSubTitle, replyTitle, replyMessage, tvName,
             tvStatus, blockedUserName, onGoingCallTxt;
@@ -181,7 +178,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     private LinearLayoutManager linearLayoutManager;
 
     private String type, groupType, loggedInUserScope, groupOwnerId, SenderId, memberNames, groupDesc, currentLang,
-            tabs, team_Ids, groupPassword, avatarUrl;
+            tabs, groupPassword, avatarUrl;
+    private String team_Ids = "";
     private static String teamId, receiverId, team_logs_id;
     private int memberCount;
     private boolean isEdit, isReply, isBlockedByMe, isNoMoreMessages, isInProgress, isSmartReplyClicked;
@@ -199,10 +197,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     private ImageView closeStickerView;
 
     private Cometchat_log db;
-    String from_chat = null;
-    String to_chat = null;
-    String comet_chat_type = null;
-    String chat_message_id = null;
+    /*String from_chat = null;
+   String to_chat = null;*/
+    int comet_chat_type;
+    /*String chat_message_id = null;
     String chat_group_id = null;
     String private_group_id = null;
     String chat_type = null;
@@ -212,7 +210,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     String is_duration_added = null;
     String device_tracking = null;
     String date_time = null;
-    String modified_date = null;
+    String modified_date = null;*/
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -232,6 +230,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     private String StickerURL;
     SharedPreferences preferenCheckIntent;
     SharedPreferences.Editor editorCheckIntent;
+    int ChatGroupId;
+    String ChatType="Text";
+    String Group_id, group_all_members_id, receiverMail, allMembersString;
 
     public CometChatMessageScreen() {
         // Required empty public constructor
@@ -255,7 +256,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         /*this is creted to remove highlighted group
          * added by rahul maske
          * */
-        /*preferenOpenActivity = getActivity().getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
+        /*preferenOpenActivity
+        = getActivity().getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
         editorOpenAct = preferenOpenActivity.edit();
         editorOpenAct.putBoolean("CheckIntent", false);
         editorOpenAct.apply();*/
@@ -288,17 +290,31 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             Log.e(TAG, "tabs:" + tabs);
             team_Ids = getArguments().getString("teamId");
 
+
             if (type != null && type.equals(CometChatConstants.RECEIVER_TYPE_GROUP)) {
                 SenderId = getArguments().getString(StringContract.IntentStrings.GUID);
+                Group_id = "" + getArguments().getString(StringContract.IntentStrings.GUID);
                 memberCount = getArguments().getInt(StringContract.IntentStrings.MEMBER_COUNT);
                 groupDesc = getArguments().getString(StringContract.IntentStrings.GROUP_DESC);
                 groupPassword = getArguments().getString(StringContract.IntentStrings.GROUP_PASSWORD);
                 groupType = getArguments().getString(StringContract.IntentStrings.GROUP_TYPE);
-
+                if (getArguments().containsKey(StringContract.IntentStrings.ALL_MEMBERS_STRING)) {
+                    group_all_members_id = getArguments().getString(StringContract.IntentStrings.ALL_MEMBERS_STRING);
+                }
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("IDS", SenderId);
                 Log.i(TAG, "handleArguments: " + SenderId);
                 editor.commit();
+            }
+            if ( tabs.equals("1")){
+                comet_chat_type=1;
+                ChatGroupId=0;
+            }else if (tabs.equals("2")){
+                comet_chat_type=2;
+                ChatGroupId = Integer.parseInt(Group_id);
+            }else if (tabs.equals("3") || tabs.equals("4")){
+                comet_chat_type=3;
+                ChatGroupId=0;
             }
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("IDS", SenderId);
@@ -325,8 +341,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         bottomLayout = view.findViewById(R.id.bottom_layout);
         composeBox = view.findViewById(R.id.message_box);
         messageShimmer = view.findViewById(R.id.shimmer_layout);
-        callBtn = view.findViewById(R.id.callBtn_iv);
-        vidoeCallBtn = view.findViewById(R.id.video_callBtn_iv);
+        btn_audio_call = view.findViewById(R.id.callBtn_iv);
+        btn_video_call = view.findViewById(R.id.video_callBtn_iv);
 
         setComposeBoxListener();
         rvSmartReply = view.findViewById(R.id.rv_smartReply);
@@ -432,16 +448,20 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         });
 
 
-        callBtn.setOnClickListener(new View.OnClickListener() {
+        btn_audio_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ChatType="Audio";
+                //private void saveChatLogToTheServer(String ChatType, String Message, int chat_group_id, int chat_message_id) {
+                saveChatLogToTheServer(ChatType,"",ChatGroupId,0);
                 checkOnGoingCall(CometChatConstants.CALL_TYPE_AUDIO);
             }
         });
 
-        vidoeCallBtn.setOnClickListener(new View.OnClickListener() {
+        btn_video_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ChatType="Video";
                 checkOnGoingCall(CometChatConstants.CALL_TYPE_VIDEO);
             }
         });
@@ -466,8 +486,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     }).setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    callBtn.setEnabled(true);
-                    vidoeCallBtn.setEnabled(true);
+                    btn_audio_call.setEnabled(true);
+                    btn_video_call.setEnabled(true);
                     dialog.dismiss();
                 }
             }).create().show();
@@ -1658,6 +1678,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         } catch (Exception e) {
                             e.printStackTrace();
                         }*/
+
                         Log.i(TAG, "filterBaseMessages: action category " + baseMessage.getCategory());
                         String team_log;
                         Log.i(TAG, "filterBaseMessages: delated at" + baseMessage.getDeletedAt());
@@ -1704,8 +1725,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                                     baseMessage.setMetadata(customMetadata);
                                                     //tempList.add(baseMessage);
                                                     //customMetadata.put("reply", );
-                                                }          
-                                                else{
+                                                } else {
                                                     //if (metadata != null) {
                                                     if (metadata.has("@injected")) {
                                                         JSONObject injectedObject = metadata.getJSONObject("@injected");
@@ -2971,7 +2991,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
      * @see CometChat#sendMessage(TextMessage, CometChat.CallbackListener)
      */
     public void sendMessage(String message) {
-
+        ChatType="Text";
         TextMessage textMessage;
         final TextMessage[] textMessageProfinity = new TextMessage[1];
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
@@ -2999,6 +3019,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             //Friend chat
             case "1":
                 try {
+
+
+                    group_all_members_id = "";
+                    receiverMail = "onetoone_mail";
                     jsonObject.put("team_logs_id", 0);
                     jsonObject.put("message_translation_languages", languageArray);
                 } catch (JSONException e) {
@@ -3011,6 +3035,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             case "2":
 
                 try {
+
+
+                    receiverMail = "group_mail";
                     jsonObject.put("message_translation_languages", languageArray);
                     Log.i(TAG, "sendMessage: Hello its tab 2 sending msg");
                 } catch (JSONException e) {
@@ -3021,6 +3048,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             case "3":
                 team_logs_id = receiverId + "_-" + teamId + "_-" + 3; //+"_sage036"
                 try {
+                    group_all_members_id = "";
+
+
+                    receiverMail = "myandjointeam";
                     jsonObject.put("team_logs_id", team_logs_id);
                     jsonObject.put("message_translation_languages", languageArray);
                     Log.i(TAG, "sendMessage: TeamId " + teamId);
@@ -3031,8 +3062,12 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 break;
 
             case "4":
-                team_logs_id = receiverId + "_-" + teamId + "_-" + 4; //+"_sage036"
+                team_logs_id = receiverId + "_-" + teamId + "_-" + 4;                                                              //+"_sage036"
                 try {
+                    group_all_members_id = "";
+
+
+                    receiverMail = "myandjointeam";
                     jsonObject.put("team_logs_id", team_logs_id);
                     jsonObject.put("message_translation_languages", languageArray);
                     Log.i(TAG, "sendMessage: Hello its tab4 sending msg" + team_logs_id);
@@ -3047,6 +3082,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         CometChat.sendMessage(textMessage, new CometChat.CallbackListener<TextMessage>() {
             @Override
             public void onSuccess(TextMessage textMessage) {
+                //BaseMessage baseMessage = (BaseMessage) textMessage;
+                saveChatLogToTheServer("Text", message, ChatGroupId, textMessage.getId());                   //team_Ids,comet_chat_type,group_all_members_id,receiverMail
                 JSONObject metadata = textMessage.getMetadata();
                 /*here we are getting translated sent message and showing that message in selected language
                  * code is added by rahul maske*/
@@ -4140,13 +4177,16 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     @Override
     public void onDetach() {
         super.onDetach();
-        preferencesCheckCurrentActivity = getActivity()
-                .getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+        Log.i(TAG, "onDetach: called");
+        logOutEnrtyCometchat();
+
+        preferencesCheckCurrentActivity = getActivity().getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
         editor = preferencesCheckCurrentActivity.edit();
         editor.putBoolean("IsChatScreen", false);
         editor.commit();
 
     }
+
 
     @Override
     public void onClick(View view) {
@@ -4692,5 +4732,140 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 Log.e(TAG, "sendMediaMessageForStickers onError: " + e.getMessage());
             }
         });
+    }
+
+
+    /*this method is created to send chat log to the server
+     *When user start chatting that means when send message we will call this webservice
+     * From friend, group, team data will send data with there info
+     *created by rahul maske
+     * */
+    private void saveChatLogToTheServer(String ChatType, String Message, int chat_group_id, int chat_message_id) {
+        String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
+        HashMap<String, String> requestMap = new HashMap<>();
+        /*  phase3\mobile_cometchat.php
+            from_chat=                                 // from whom chat start
+            to_chat=                                    // to chat
+            chat_type=                                 //Text ,Audio,Video
+            direction=                                   //1
+            message=                                  // actual message
+            chat_group_id=                         //One to one 0,my team and join 0 and group chat -> actual group, id of chart group group_id
+            chat_message_id=                    // message id of chat
+            private_group_id=                    //my team or join team group id
+            read_chat=                               // 0 always
+            comet_chat_type=                    // One to one 1,Comet chat group 2,private 3
+            group_all_members_id            // comma seperated group member ids
+            receiverMail                            //Team=> myandjointeam, Friends =>onetoone_mail, group=>group_mail
+            lastconversion_sttaus            //  */
+        //team_Ids,comet_chat_type,group_all_members_id,receiverMail
+        SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(General.USER_ID, null);
+
+        String DomainURL = domainUrlPref.getString(General.DOMAIN, null);
+
+        Log.i(TAG, "saveChatLogToTheServer: userId" + UserId);
+        Log.i(TAG, "saveChatLogToTheServer: domainURL" + DomainURL + url);
+        Log.i(TAG, "saveChatLogToTheServer: TO_CHAT" + SenderId);
+        Log.i(TAG, "saveChatLogToTheServer: CHAT_TYPE" + ChatType);
+        Log.i(TAG, "saveChatLogToTheServer: message" + Message);
+        Log.i(TAG, "saveChatLogToTheServer: CHAT_GROUP_ID" + chat_group_id);
+        Log.i(TAG, "saveChatLogToTheServer: PRIVATE_GROUP_ID" + team_Ids);
+        Log.i(TAG, "saveChatLogToTheServer: cometchatType" + comet_chat_type);
+        Log.i(TAG, "saveChatLogToTheServer: GROUP_ALL_MEMBERS_ID_" + group_all_members_id);
+        Log.i(TAG, "saveChatLogToTheServer: receiverMail" + receiverMail);
+        Log.i(TAG, "saveChatLogToTheServer: LAST_CONVERSATION_STATUS" + "online");
+        Log.i(TAG, "saveChatLogToTheServer: messageId " + chat_message_id);
+
+        if (tabs.equals("1") || tabs.equals("2")){
+            team_Ids = "";
+        }
+        requestMap.put(General.ACTION, "cometchat_log");
+        requestMap.put(General.FROM_CHAT, UserId);
+        requestMap.put(General.TO_CHAT, SenderId);
+        requestMap.put(General.CHAT_TYPE, ChatType);
+        requestMap.put(General.DIRECTION, "1");
+        requestMap.put(General.MESSAGE, Message);
+        requestMap.put(General.CHAT_GROUP_ID, "" + chat_group_id);
+        requestMap.put(General.PRIVATE_GROUP_ID, team_Ids);
+        requestMap.put(General.READ_CHAT, "0");
+        requestMap.put(General.COMET_CHAT_TYPE, "" + comet_chat_type);
+        requestMap.put(General.CHAT_MSG_ID, "" + chat_message_id);
+        requestMap.put(General.GROUP_ALL_MEMBERS_ID_, group_all_members_id);
+        requestMap.put(General.RECEIVE_MAIL, receiverMail);
+        requestMap.put(General.LAST_CONVERSATION_STATUS, "online");
+        requestMap.put("read_chat", "0");
+        RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
+        // Log.e(TAG, "saveChatLogToTheServer: request body " + requestBody);
+        try {
+            if (requestBody != null) {
+                String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
+                if (response != null) {
+                    Log.i(TAG, "saveChatLogToTheServerRequest:  response " + response);
+                }
+            } else {
+                Log.i(TAG, "saveChatLogToTheServerRequest:  null");
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "saveChatLogToTheServerRequest: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void logOutEnrtyCometchat() {
+        /* action=cometchat_outlog
+            missed_call=// missed_call else blank
+            comet_chat_type=// One to one 1,Comet chat group 2,private 3
+            chat_type=//Text ,Audio,Video
+            group_id
+            user_id=//current login id*/
+
+        SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(General.USER_ID, null);
+        SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String DomainURL = domainUrlPref.getString(General.DOMAIN, null);
+        if (!getArguments().getString(StringContract.IntentStrings.TYPE).equals(CometChatConstants.RECEIVER_TYPE_GROUP)){
+            Group_id="";
+        }
+        String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
+        HashMap<String, String> requestMap = new HashMap<>();
+       /* Log.i(TAG, "logOutEnrtyCometchat: comet_chat_type  "+comet_chat_type);
+        Log.i(TAG, "logOutEnrtyCometchat: ChatType  "+ChatType);
+        Log.i(TAG, "logOutEnrtyCometchat: ChatType  "+ChatType);
+        Log.i(TAG, "logOutEnrtyCometchat: Group_id  "+Group_id);
+        Log.i(TAG, "logOutEnrtyCometchat: UserId  "+UserId);*/
+
+        requestMap.put(General.ACTION, "cometchat_outlog");
+        requestMap.put(General.MISSED_CALL, "");
+        requestMap.put(General.COMET_CHAT_TYPE, ""+ comet_chat_type);
+        requestMap.put(General.CHAT_TYPE, ChatType);
+        requestMap.put(General.GROUP_ID, Group_id);
+        requestMap.put(General.USER_ID,UserId );
+        //https://designstagingtest.sagesurfer.com/phase3/mobile_cometchat.php?
+        // chat_type=Text
+        // &miss_call=
+        // &group_id=
+        // &user_id=3053
+        // &action=cometchat_outlog
+        // &comet_chat_type=1
+        // &debug=1
+        RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
+        // Log.e(TAG, "saveChatLogToTheServer: request body " + requestBody);
+        Log.i(TAG, "logOutEnrtyCometchat: Domain "+DomainURL+url);
+        try {
+            if (requestBody != null) {
+                String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
+                if (response != null) {
+                    Log.i(TAG, "logOutEnrtyCometchat:  response " + response);
+                }else {
+                    Log.i(TAG, "logOutEnrtyCometchat:  null  ");
+                }
+            } else {
+                Log.i(TAG, "logOutEnrtyCometchat:  null2");
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "logOutEnrtyCometchat: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

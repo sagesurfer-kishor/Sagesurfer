@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.TimePickerDialog;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,6 +38,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -49,6 +51,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private static final String TAG = MainActivity.class.getSimpleName();
     private List<HomeMenu_> homeMenuList;
     private List<DrawerMenu_> drawerMenuList;
-
+    int mYear, mMonth, mDay, mHour, mMinute;
     private DrawerLayout drawerLayout;
     private RelativeLayout mainToolBarBellLayout;
     private AppCompatImageView searchButton, addButton, notificationImageView, addFilter, logBookIcon, setting;
@@ -230,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private boolean setBackButton;
     private NotificationUtils notificationUtils;
     private PopupWindow popupWindow;
-    private int mYear = 0, mMonth = 0, mDay = 0;
+    // private int mYear = 0, mMonth = 0, mDay = 0;
     private int sYear, sMonth, sDay;
     private String start_date = "", end_date = "", mCurrentDate, selectedReason = "";
     private LeaveListingFragment leaveListingFragment;
@@ -267,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ArrayAdapter<String> reasonAdapter;
     SharedPreferences sp;
     private static final int JOB_ID = 0;
-    AppCompatImageView  chat_icon,main_toolbar_bell;
+    AppCompatImageView chat_icon, main_toolbar_bell;
     private JobScheduler mScheduler;
     private SharedPreferences preferencesCheckCurrentActivity;
     private SharedPreferences.Editor editor;
@@ -359,8 +362,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             };
             toggle.setDrawerIndicatorEnabled(false);
             toolbar.setNavigationIcon(R.drawable.vi_drawer_hamburger_icon);
-            chat_icon=toolbar.findViewById(R.id.chat_icon);
-            main_toolbar_bell=toolbar.findViewById(R.id.main_toolbar_bell);
+            chat_icon = toolbar.findViewById(R.id.chat_icon);
+            main_toolbar_bell = toolbar.findViewById(R.id.main_toolbar_bell);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -411,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             chat_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Bundle bundle=new Bundle();
+                    Bundle bundle = new Bundle();
                     Fragment fragment = GetFragments.get(9, bundle);
                     fragment.setArguments(bundle);
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -570,7 +573,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         break;
 
                     case R.id.chatt_icon:
-                        Bundle bundle=new Bundle();
+                        Bundle bundle = new Bundle();
                         Fragment fragment = GetFragments.get(82, bundle);
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
@@ -579,12 +582,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         break;
 
                     case R.id.call_history:
-                        Bundle bundleCalls=new Bundle();
+                        Bundle bundleCalls = new Bundle();
                         Fragment fragmentCalls = GetFragments.get(83, bundleCalls);
                         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
                         fragmentTransaction.replace(R.id.app_bar_main_container, fragmentCalls, TAG);
                         fragmentTransaction.commit();
+                        break;
+
+                    case R.id.set_available_time:
+                        openSetAvailabilityDialog();
                         break;
                 }
                 popup.dismiss();
@@ -593,6 +600,164 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         });
         popup.show();
     }
+
+    public void openSetAvailabilityDialog() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.layout_provider_time_slot, null);
+        builder.setView(view);
+        dialog = builder.create();
+        EditText et_startTime = view.findViewById(R.id.et_startTime);
+        EditText et_endTime = view.findViewById(R.id.et_endTime);
+        Button btn_add = (Button) view.findViewById(R.id.btn_add);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+
+        et_startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                try {
+                                    et_startTime.setText(ConvertTimeIn12hr(hourOfDay + ":" + minute));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+        et_endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                try {
+                                    et_endTime.setText(""+ConvertTimeIn12hr(hourOfDay + ":" + minute));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // saveProviderSlot("provider_time",)
+                String starthour,startMinute,startType,endhour,endMinute,endType;
+
+                String array[] = et_startTime.getText().toString().split(":");
+                String arrayAmPm[] = array[1].split(" ");
+                starthour=array[0];
+                startMinute=arrayAmPm[0];
+                startType=arrayAmPm[1];
+
+                Log.i(TAG, "onClick: start hour "+array[0]);
+                Log.i(TAG, "onClick: start minute "+arrayAmPm[0]);
+                Log.i(TAG, "onClick:start timeType "+arrayAmPm[1]);
+
+                String array2[] = et_endTime.getText().toString().split(":");
+                Log.i(TAG, "onClick: end hour "+array2[0]);
+
+                String arrayAmPm2[] = array2[1].split(" ");
+                Log.i(TAG, "onClick: end minute "+arrayAmPm2[0]);
+                Log.i(TAG, "onClick: end timeType "+arrayAmPm2[1]);
+
+                endhour=array2[0];
+                endMinute=arrayAmPm2[0];
+                endType=arrayAmPm2[1];
+
+                if (array[0].equals("0")){
+                    starthour="1";
+                }
+                if (array2[0].equals("0")){
+                    endhour="1";
+                }
+               saveProviderSlot(starthour,startMinute,startType,endhour,endMinute,endType,"provider_time");
+                dialog.dismiss();
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.setCancelable(false);
+    }
+
+    public String ConvertTimeIn12hr(String time) throws ParseException {
+
+            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
+            final Date dateObj = sdf.parse(time);
+            Log.i(TAG, "ConvertTimeIn12hr: dateObj" + dateObj);
+            Log.i(TAG, "ConvertTimeIn12hr: new SimpleDateFormat " + new SimpleDateFormat("K:mm a").format(dateObj));
+            return new SimpleDateFormat("K:mm a").format(dateObj);
+    }
+
+    private void saveProviderSlot(String starthour, String startMinute, String startType, String endhour, String endMinute, String endType, String action) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, action);
+        requestMap.put(General.FROM_TIMEH, starthour);
+        requestMap.put(General.FROM_TIMEM, startMinute);
+        requestMap.put(General.FROM_TIMEMAM, startType);
+        requestMap.put(General.TOTIMEH, endhour);
+        requestMap.put(General.TOTIMEM, endMinute);
+        requestMap.put(General.TOTIMES, endType);
+
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
+
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this);
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, this);
+                if (response != null) {
+                    Log.e("data", response);
+                    try {
+
+                        JSONObject injectedObject = new JSONObject(response);
+                        JSONArray data = new JSONArray(injectedObject.getJSONArray("provider_time"));
+                        for (int i=0;i<data.length();i++){
+                            JSONObject object=data.getJSONObject(i);
+                            Log.i(TAG, "saveProviderSlot: "+data.getJSONObject(i).get("msg"));
+                            Toast.makeText(MainActivity.this, ""+object.getString("msg"), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     /*public void hidePopup(){
         popup.getMenu().getItem(R.id.chatt_icon).setVisible(false);
@@ -694,7 +859,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (response != null) {
                     Log.i(TAG, "getUpdateLanguage success response" + response);
                     getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
-                    Toast.makeText(MainActivity.this, "Language changed successfully" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Language changed successfully", Toast.LENGTH_SHORT).show();
 //                    CometChatMessageScreen messageScreen = new CometChatMessageScreen();
 //                  messageScreen.fetchMessage();
 
@@ -1692,16 +1857,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             String receiverType = mainIntent.getStringExtra("receiverType");
             String username = mainIntent.getStringExtra("username");
             String type;
-            if (mainIntent.hasExtra("type")){
-                type=mainIntent.getStringExtra("type");
-            }else{
-                type="";
+            if (mainIntent.hasExtra("type")) {
+                type = mainIntent.getStringExtra("type");
+            } else {
+                type = "";
             }
-            Log.i(TAG, "handleIntent: team_logs_id"+team_logs_id);
-            Log.i(TAG, "handleIntent: receiver"+receiver);
-            Log.i(TAG, "handleIntent: sender"+sender);
-            Log.i(TAG, "handleIntent: receiverType"+receiverType);
-            Log.i(TAG, "handleIntent: username"+username);
+            Log.i(TAG, "handleIntent: team_logs_id" + team_logs_id);
+            Log.i(TAG, "handleIntent: receiver" + receiver);
+            Log.i(TAG, "handleIntent: sender" + sender);
+            Log.i(TAG, "handleIntent: receiverType" + receiverType);
+            Log.i(TAG, "handleIntent: username" + username);
 
             if (team_logs_id != null) {
                 Bundle bundle = new Bundle();
@@ -1728,19 +1893,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 ft.replace(R.id.app_bar_main_container, fragment, TAG);
                 ft.commit();
             }
-        }else{
+        } else {
             /*Here we are getting intent  for call redirection*/
             Log.i(TAG, "handleIntent: else");
-            if(mainIntent.hasExtra("sender")){
-                String lastActiveAt =mainIntent.getStringExtra("lastActiveAt");
-                String uid =mainIntent.getStringExtra("uid");
-                String role =mainIntent.getStringExtra("role");
-                String name =mainIntent.getStringExtra("name");
-                String avatar =mainIntent.getStringExtra("avatar");
-                String status =mainIntent.getStringExtra("status");
-                String callType =mainIntent.getStringExtra("callType");
-                String sessionid =mainIntent.getStringExtra("sessionid");
-                User user=new User();
+            if (mainIntent.hasExtra("sender")) {
+                String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
+                String uid = mainIntent.getStringExtra("uid");
+                String role = mainIntent.getStringExtra("role");
+                String name = mainIntent.getStringExtra("name");
+                String avatar = mainIntent.getStringExtra("avatar");
+                String status = mainIntent.getStringExtra("status");
+                String callType = mainIntent.getStringExtra("callType");
+                String sessionid = mainIntent.getStringExtra("sessionid");
+                User user = new User();
                 user.setLastActiveAt(Long.parseLong(lastActiveAt));
                 user.setUid(uid);
                 user.setRole(role);

@@ -46,7 +46,7 @@ import listeners.CustomAlertDialogHelper;
 import listeners.OnAlertDialogButtonClickListener;
 import listeners.OnItemClickListener;
 import screen.CometChatConversationListScreen;
-import screen.FragmentCometChatGroupList;
+import screen.FragmentCometChatGroupList2;
 import screen.call.CometChatCallListScreen;
 import screen.messagelist.CometChatMessageListActivity;
 import screen.CometChatUserInfoScreen;
@@ -126,7 +126,7 @@ public class CometChatUnified extends AppCompatActivity implements
     }
 
     private void setGroupClickListener() {
-        FragmentCometChatGroupList.setItemClickListener(new OnItemClickListener<Group>() {
+        FragmentCometChatGroupList2.setItemClickListener(new OnItemClickListener<Group>() {
             @Override
             public void OnItemClick(Group g, int position) {
                 group = g;
@@ -355,7 +355,7 @@ public class CometChatUnified extends AppCompatActivity implements
      * @param item
      * @return true if fragment is not null.
      * @see CometChatUserListScreen
-     * @see FragmentCometChatGroupList
+     * @see FragmentCometChatGroupList2
      * @see CometChatConversationListScreen
      * @see CometChatUserInfoScreen
      */
@@ -366,7 +366,7 @@ public class CometChatUnified extends AppCompatActivity implements
         if (itemId == R.id.menu_users) {
             fragment = new CometChatUserListScreen();
         } else if (itemId == R.id.menu_group) {
-            fragment = new FragmentCometChatGroupList();
+            fragment = new FragmentCometChatGroupList2();
         } else if (itemId == R.id.menu_conversation) {
           fragment = new CometChatConversationListScreen();
         } else if (itemId == R.id.menu_more) {

@@ -538,6 +538,22 @@ public class General {
     public static final String FORM_ID = "form_id";
     public static final String FORM_NAME = "form_name";
     public static final String SENDER = "sender";
+
+    public static final String FROM_CHAT = "from_chat";
+    public static final String TO_CHAT = "to_chat";
+    public static final String CHAT_TYPE = "chat_type";
+    public static final String DIRECTION = "direction";
+    public static final String CHAT_GROUP_ID = "chat_group_id";
+    public static final String CHAT_MSG_ID = "chat_message_id";
+    public static final String PRIVATE_GROUP_ID = "private_group_id";
+    public static final String READ_CHAT = "read_chat";
+    public static final String COMET_CHAT_TYPE = "comet_chat_type";
+    public static final String GROUP_ALL_MEMBERS_ID_ = "group_all_members_id";
+    public static final String RECEIVE_MAIL = "receiverMail";
+    public static final String LAST_CONVERSATION_STATUS = "lastconversion_sttaus";
+    public static final String COMETCHAT_OUTLOG = "cometchat_outlog";
+    public static final String MISSED_CALL = "missed_call";
+
     public static final String STATE_ID = "state_id";
     public static final String COUNTRY_ID = "country_id";
     public static final String CITY_ID = "city_id";

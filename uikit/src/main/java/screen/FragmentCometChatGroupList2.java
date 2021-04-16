@@ -51,7 +51,7 @@ import utils.Utils;
 
 */
 
-public class FragmentCometChatGroupList extends Fragment  {
+public class FragmentCometChatGroupList2 extends Fragment  {
 
     private static OnItemClickListener event;
 
@@ -73,7 +73,7 @@ public class FragmentCometChatGroupList extends Fragment  {
 
     private static final String TAG = "FragmentChatGroupList";
 
-    public FragmentCometChatGroupList() {
+    public FragmentCometChatGroupList2() {
         // Required empty public constructor
     }
 
@@ -195,9 +195,13 @@ public class FragmentCometChatGroupList extends Fragment  {
         groupsRequest.fetchNext(new CometChat.CallbackListener<List<Group>>() {
             @Override
             public void onSuccess(List<Group> groups) {
+
                 cometChatGroupListAdapter.setGroupList(groups); // sets the groups in rvGroupList i.e CometChatGroupList Component.
                 groupList.addAll(groups);
                 if (groupList.size()==0) {
+                    for (Group group : groupList){
+                        Log.i(TAG, "onSuccess: group "+group);
+                    }
                     noGroupLayout.setVisibility(View.VISIBLE);
                     cometChatGroupListAdapter.setVisibility(View.GONE);
                 } else {

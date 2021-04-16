@@ -38,6 +38,7 @@ public class StringContract {
         public static final String[] EXTRA_MIME_DOC=new String[]{"text/plane","text/html","application/pdf","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/x-vnd.oasis.opendocument.spreadsheet","application/vnd.ms-excel", "application/mspowerpoint","application/zip"};
 
         public static final String MEMBER_COUNT = "member_count";
+        public static final String ALL_MEMBERS_STRING = "all_members_string";
 
         public static final String GROUP_MEMBER = "group_members";
 

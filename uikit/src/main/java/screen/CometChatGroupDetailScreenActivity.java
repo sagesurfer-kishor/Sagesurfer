@@ -3,8 +3,6 @@ package screen;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,17 +65,14 @@ import okhttp3.RequestBody;
 import screen.addmember.CometChatAddMemberScreenActivity;
 import screen.adminAndModeratorList.CometChatAdminModeratorListScreenActivity;
 import screen.banmembers.CometChatBanMemberScreenActivity;
-import screen.messagelist.CometChatMessageListActivity;
 import screen.messagelist.General;
 import screen.messagelist.NetworkCall_;
-import screen.messagelist.Preferences;
 import screen.messagelist.Urls_;
 import screen.unified.CometChatUnified;
 import utils.FontUtils;
 import utils.Utils;
 
 import static utils.Utils.UserToGroupMember;
-import static utils.Utils.isLoggedInUser;
 
 
 public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
@@ -169,7 +164,6 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
     }
 
     private void initComponent() {
-
         dividerAdmin = findViewById(R.id.tv_seperator_admin);
         dividerModerator = findViewById(R.id.tv_seperator_moderator);
         dividerBan = findViewById(R.id.tv_seperator_ban);
@@ -712,7 +706,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         intent.putExtra("OpenGroupFragment", "OpenGroupFragment");
         startActivity(intent);*/
 
-        FragmentCometChatGroupList fragment = new FragmentCometChatGroupList();
+        FragmentCometChatGroupList2 fragment = new FragmentCometChatGroupList2();
         //fragment.setArguments(bundle);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //ft.replace(R.id., fragment, TAG);

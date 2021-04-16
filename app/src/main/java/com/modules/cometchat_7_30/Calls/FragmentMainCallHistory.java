@@ -1,13 +1,16 @@
 package com.modules.cometchat_7_30.Calls;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
+import com.sagesurfer.interfaces.MainActivityInterface;
 
 import adapter.TabAdapter;
 import screen.call.AllCall;
@@ -44,6 +48,8 @@ public class FragmentMainCallHistory extends Fragment {
     private View view;
     private MessagesRequest messageRequest;    //Uses to fetch Conversations.
     private TextView tvTitle;
+    private FragmentActivity mContext;
+    private MainActivityInterface mainActivityInterface;
     private ShimmerFrameLayout conversationShimmer;
 
     private static final String TAG = "CallList";
@@ -151,4 +157,17 @@ public class FragmentMainCallHistory extends Fragment {
         Intent intent = new Intent(getContext(), CometChatNewCallList.class);
         startActivity(intent);
     }*/
+    @Override
+    public void onStart() {
+        super.onStart();
+        mainActivityInterface.setMainTitle("Call History");
+        mainActivityInterface.setToolbarBackgroundColor();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = (FragmentActivity) context;
+        mainActivityInterface = (MainActivityInterface) context;
+    }
 }

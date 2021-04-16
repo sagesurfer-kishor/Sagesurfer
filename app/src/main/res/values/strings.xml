@@ -368,6 +368,7 @@
     <string name="invitations">Invitations</string>
     <string name="reject">Reject</string>
     <string name="accept">Accept</string>
+    <string name="provider_time_slot">Provider available time slot</string>
     <string name="done">Done</string>
     <string name="now">Now</string>
     <string name="resend">Resend</string>
@@ -1080,5 +1081,7 @@
     <string name="btn_add_member">Add Member</string>
     <string name="group_members">Group Members</string>
     <string name="Cancel_Appointment">Cancel</string>
+    <string name="from_time">From Time</string>
+    <string name="to_time">To Time</string>
 
 </resources>

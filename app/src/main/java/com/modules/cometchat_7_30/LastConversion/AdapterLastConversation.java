@@ -7,9 +7,11 @@ import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -23,22 +25,24 @@ import com.cometchat.pro.models.User;
 import com.modules.cometchat_7_30.ModelUserCount;
 import com.sagesurfer.collaborativecares.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import constant.StringContract;
 import screen.messagelist.CometChatMessageListActivity;
 
-public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastConversation.MyViewHolder> {
+public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastConversation.MyViewHolder> implements Filterable {
     private final Context mContext;
     private final List<Conversation> conversationList;
-    private List<User> filteredNameList;
+    private List<Conversation> fullConversationList;
     private List<ModelUserCount> al_unreadCountList;
     private FragmentLastConversation fragment;
     private static final String TAG = "AdapterLastConversation";
 
     public AdapterLastConversation(FragmentLastConversation fragment, List<Conversation> conversationList, Context mContext) {
         this.mContext = mContext;
-        this.conversationList = conversationList;
+        this.conversationList = new ArrayList<>(conversationList);
+        this.fullConversationList = new ArrayList<>(conversationList);
         this.al_unreadCountList = al_unreadCountList;
         this.fragment = fragment;
     }
@@ -77,18 +81,19 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                 holder.activeUser.setImageResource(R.drawable.offline_sta);
             }
         } else if (conversation.getConversationType().equals("group")) {
+            Log.i(TAG, "onBindViewHolder: if group");
             holder.title.setText(((Group) conversation.getConversationWith()).getName());
-            Log.i(TAG, "onBindViewHolder: counter " + conversation.getUnreadMessageCount());
-
-            holder.title.setText(((Group) conversation.getConversationWith()).getName());
-            Log.i(TAG, "onBindViewHolder: Type" + conversation.getLastMessage().getType());
-            if (conversation.getLastMessage().getType().equals("text")) {
-                holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
-            } else {
-                holder.friend_list_item_statusmessage.setVisibility(View.GONE);
+            //Log.i(TAG, "onBindViewHolder: counter " + conversation.getUnreadMessageCount());
+//            Log.i(TAG, "onBindViewHolder: Type" + conversation.getLastMessage().getType());
+            if(conversation.getLastMessage()!=null) {
+                Log.i(TAG, "onBindViewHolder: time"+conversation.getLastMessage().getDeliveredToMeAt());
+                if (conversation.getLastMessage().getType().equals("text")) {
+                    holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                    holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
+                } else {
+                    holder.friend_list_item_statusmessage.setVisibility(View.GONE);
+                }
             }
-
 
 //            holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
             //Glide.with(mContext).load(((User) conversation.getConversationWith()).getAvatar()).into(holder.imgBan);
@@ -144,6 +149,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
         return conversationList.size();
     }
 
+
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView title, friend_list_item_statusmessage;
         ImageView imgBan;
@@ -168,4 +174,44 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
             return true;
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Conversation> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0||constraint.equals("")) {
+                filteredList.addAll(fullConversationList);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Conversation item : fullConversationList) {
+                    if (item.getConversationType().equals("group")){
+                        if (((Group) item.getConversationWith()).getName().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
+                        }
+                    }else if(item.getConversationType().equals("user"))
+                        if (((User) item.getConversationWith()).getName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            conversationList.clear();
+            conversationList.addAll((List<Conversation>) results.values);
+            if (conversationList.isEmpty()) {
+                Toast.makeText(mContext, "No Result Found", Toast.LENGTH_SHORT).show();
+            }
+            notifyDataSetChanged();
+        }
+    };
 }

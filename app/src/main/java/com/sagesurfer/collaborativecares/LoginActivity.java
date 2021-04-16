@@ -1008,7 +1008,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = domainUrlPref.edit();
                 editor.putString(General.DOMAIN, ""+server.getDomainUrl());
-                editor.commit();
+                editor.apply();
 //                screen.messagelist.Preferences.save(General.DOMAIN, server.getDomainUrl());
                 Preferences.save(General.CHAT_URL, server.getChatUrl());
                 Log.e(TAG, "DomainCodeFromPreferences: " + Preferences.get(General.DOMAIN_CODE));
@@ -1106,6 +1106,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = editTextUserPassword.getText().toString();
         Preferences.save(General.PASSWORD, password);
         Preferences.save(General.USER_ID, userInfo.getUserId());
+
+        SharedPreferences UserInfoForUIKitPref =getSharedPreferences("UserInfoForUIKitPref",MODE_PRIVATE);
+        SharedPreferences.Editor editor = UserInfoForUIKitPref.edit();
+        editor.putString(General.USER_ID, userInfo.getUserId());
+        editor.apply();
+
         screen.messagelist.Preferences.initialize(getApplicationContext());
         screen.messagelist.Preferences.save(General.USER_ID, userInfo.getUserId());
         screen.messagelist.Preferences.save(General.TIMEZONE, DeviceInfo.getTimeZone());

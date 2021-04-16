@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fillViewport="true"
-    tools:context="screen.FragmentCometChatGroupList">
+    tools:context="screen.FragmentCometChatGroupList2">
 
     <RelativeLayout
         android:layout_width="match_parent"

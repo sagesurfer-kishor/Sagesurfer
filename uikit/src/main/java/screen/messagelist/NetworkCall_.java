@@ -57,9 +57,7 @@ public class NetworkCall_ {
         return null;
     }
 
-    public static RequestBody make(HashMap<String, String> map, String url, String tag,
-                                   Context _context, Activity activity) {
-        Log.e(TAG, "make: 2" );
+    public static RequestBody make(HashMap<String, String> map, String url, String tag, Context _context, Activity activity) {
         map.put(General.IMEI, DeviceInfo.getDeviceId(activity));
         map.put(General.VERSION, DeviceInfo.getVersion());
         map.put(General.MODELNO, DeviceInfo.getDeviceName());
@@ -71,10 +69,10 @@ public class NetworkCall_ {
                 .build();
         String body = bodyToString(request);
 
-        Log.e("request", request.toString() + "" + body);
-
+        Log.e(tag+" request", request.toString() + "" + body);
         String token = getToken(_context);
         if (token != null) {
+
             return finalBody(body, token);
         }
         return null;
@@ -329,6 +327,7 @@ public class NetworkCall_ {
                 .add("akujs", UrlEncoder_.encrypt(mainBody))
                 .add("d", "a")
                 .add(Oauth.ACCESS_TOKEN, token);
+        Log.i(TAG, "finalBody: "+formBuilder.build());
         return formBuilder.build();
     }
 
