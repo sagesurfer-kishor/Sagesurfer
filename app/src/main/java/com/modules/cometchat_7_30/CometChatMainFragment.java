@@ -74,7 +74,6 @@ public class CometChatMainFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.hidesettingIcon(true);
         }*/
-
     }
 
     @Override

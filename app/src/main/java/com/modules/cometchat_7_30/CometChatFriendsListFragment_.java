@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.core.UsersRequest;
 import com.cometchat.pro.exceptions.CometChatException;
@@ -120,6 +121,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
         editor.apply();
 
         preferenOpenActivity = getActivity().getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
+        Log.i(TAG, "onCreateView: "+preferenOpenActivity.getBoolean("checkIntent",false));
         return view;
 
     }
@@ -182,7 +184,6 @@ public class CometChatFriendsListFragment_ extends Fragment {
     public void getFriendsList() {
         if (!friendList.isEmpty())
             friendList.clear();
-
         UsersRequest usersRequest = null;
         int limit = 30;
         usersRequest = new UsersRequest.UsersRequestBuilder().friendsOnly(true).setLimit(limit).hideBlockedUsers(true).build();
@@ -222,12 +223,15 @@ public class CometChatFriendsListFragment_ extends Fragment {
     }
 
     // Code by Debopam
-    private void checkIntent() {
-        Log.i(TAG, "checkIntent: ");
-        if (preferenOpenActivity.getBoolean("openActivity", false)) {
+    private void checkIntent() {//preferenOpenActivity.getBoolean("checkIntent",false)
+        Log.i(TAG, "checkIntent: 1"+preferenOpenActivity.getBoolean("checkIntent",false));
+        if (preferenOpenActivity.getBoolean("checkIntent",false)) {
+            Log.i(TAG, "checkIntent: 2");
             if (getActivity() != null && getActivity().getIntent().hasExtra("receiverType")) {
+                Log.i(TAG, "checkIntent: 3");
                 String receiverType = getActivity().getIntent().getStringExtra("receiverType");
-                if (receiverType.equals("user")) {
+                if (receiverType.equals("user"))
+                    Log.i(TAG, "checkIntent: 4");{
                     // tab 1
                     String team_logs_id = getActivity().getIntent().getStringExtra("team_logs_id");
                     if (team_logs_id.equals("0") || team_logs_id.isEmpty()) {
@@ -237,7 +241,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
                             if (filteredNameList.get(i).getUid().equals(sender)) {
                                 Log.i(TAG, "checkIntent: " + filteredNameList.get(i).getUid());
                                 SharedPreferences.Editor editor = preferenOpenActivity.edit();
-                                editor.putBoolean("openActivity", false);
+                                editor.putBoolean("checkIntent", false);
                                 editor.apply();
                                 performAdapterClick(i);
                                 break;
@@ -256,7 +260,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
         String youth = Preferences.get("youths");
         Log.i(TAG, "performAdapterClick: 1");
         if (!youth.isEmpty()) {
-            Log.i(TAG, "performAdapterClick: 2");
+            Log.i(TAG, "performAdapterClick: 2 user id "+user.getUid());
             if (providerArray.contains(user.getUid())) {
                 String status = user.getStatus();
                 if (status.equals("online")) {
@@ -291,7 +295,8 @@ public class CometChatFriendsListFragment_ extends Fragment {
                     alert.setTitle("Alert Notification");
                     alert.show();
                 } else {
-                    Log.i(TAG, "performAdapterClick: 1");
+                    checkProviderAvailableTime(user.getUid(), position);
+                    /*Log.i(TAG, "performAdapterClick: 1");
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(getActivity());
                     //Setting message manually and performing action on button click
@@ -320,22 +325,106 @@ public class CometChatFriendsListFragment_ extends Fragment {
                     AlertDialog alert = builder.create();
                     //Setting the title manually
                     alert.setTitle("Alert Notification");
-                    alert.show();
+                    alert.show();*/
                 }
             } else {
-                // open comet chat chat form uikit
-                Log.i(TAG, "performAdapterClick: Friends");
-                Log.i(TAG, "performAdapterClick: " + user.getUid());
-                Log.i(TAG, "performAdapterClick: " + user.getUid());
-                Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
-                intent.putExtra(StringContract.IntentStrings.TYPE, "user");
-                intent.putExtra(StringContract.IntentStrings.NAME, (user.getName()));
-                intent.putExtra(StringContract.IntentStrings.SENDER_ID, (user.getUid()));
-                intent.putExtra(StringContract.IntentStrings.AVATAR, (user.getAvatar()));
-                intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
-                intent.putExtra(StringContract.IntentStrings.TABS, "1");
-                getActivity().startActivity(intent);
+                checkMemberList(user,position );
+
             }
+        }
+    }
+
+    private void checkMemberList(User user, int position) {
+        /*action=get_admin_set_role
+        user_id=//Login_user_id
+                is_test_user=//send real and test user status*/
+        SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(General.USER_ID, null);
+        SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String DomainURL = domainUrlPref.getString(General.DOMAIN, null);
+        String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, "get_admin_set_role");
+        requestMap.put(General.IS_TEST_USER, ""+0);
+        requestMap.put(General.USER_ID,UserId );
+        Log.i(TAG, "checkMemberList: User Id "+UserId);
+        RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
+        Log.i(TAG, "checkMemberList: Domain "+DomainURL+url);
+        try {
+            if (requestBody != null) {
+                String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
+                if (response != null) {
+                    Log.i(TAG, "checkMemberList:  response " + response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray provider_time_check_in_db = jsonObject.getJSONArray("get_admin_set_role");
+                    String success = provider_time_check_in_db.getJSONObject(0).getString("other_user_id");
+                    String arrayMembersId[]=success.split(",");
+                    for (String s : arrayMembersId){
+                        if (s.equals(user.getUid())){
+                            checkOtherMemberAvailable(user,position);
+                        }else{
+                            // open comet chat chat form uikit
+                            Log.i(TAG, "performAdapterClick: Friends");
+                            Log.i(TAG, "performAdapterClick: " + user.getUid());
+                            Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+                            intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                            intent.putExtra(StringContract.IntentStrings.NAME, (user.getName()));
+                            intent.putExtra(StringContract.IntentStrings.SENDER_ID, (user.getUid()));
+                            intent.putExtra(StringContract.IntentStrings.AVATAR, (user.getAvatar()));
+                            intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
+                            intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                            getActivity().startActivity(intent);
+                        }
+                    }
+                   /* if(success.contains(",")){
+
+                    }*/
+                }else {
+                    Log.i(TAG, "checkMemberList:  null  ");
+                }
+            } else {
+                Log.i(TAG, "checkMemberList:  null2");
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "checkMemberList: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void checkProviderAvailableTime(String receiver_id, int position) {
+        SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+        SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
+        Log.i(TAG, "checkProviderAvailableTime: 1");
+        String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
+        HashMap<String, String> requestMap = new HashMap<>();
+
+        requestMap.put(screen.messagelist.General.ACTION, "provider_time_check_in_db");
+        requestMap.put(screen.messagelist.General.USER_ID, "" + UserId);
+        requestMap.put(screen.messagelist.General.RECEIVER_ID, "" + receiver_id);
+
+        RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
+        Log.i(TAG, "checkProviderAvailableTime: 2");
+        Log.i(TAG, "checkProviderAvailableTime: Domain " + DomainURL + url);
+        try {
+            if (requestBody != null) {
+                String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
+                if (response != null) {
+                    Log.i(TAG, "checkProviderAvailableTime:  response " + response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray provider_time_check_in_db = jsonObject.getJSONArray("provider_time_check_in_db");
+                    String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
+                    showDialog(success, position);
+                } else {
+                    Log.i(TAG, "checkProviderAvailableTime:  null  ");
+                }
+            } else {
+                Log.i(TAG, "checkProviderAvailableTime:  null2");
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "checkProviderAvailableTime: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -360,6 +449,91 @@ public class CometChatFriendsListFragment_ extends Fragment {
                 Log.i(TAG, "insertBlockUserIntoDatabase: "+e.getMessage());
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void showDialog(String success, int position) {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(getActivity());
+        String message;
+        if (success.equals("Success") || success.equals("Fail") ){
+            message="Are you sure you want chat with provider?";
+        }else{
+            message=success;
+        }
+        builder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+                        intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                        intent.putExtra(StringContract.IntentStrings.NAME, (friendList.get(position).getName()));
+                        intent.putExtra(StringContract.IntentStrings.UID, (friendList.get(position).getUid()));
+                        intent.putExtra(StringContract.IntentStrings.AVATAR, (friendList.get(position).getAvatar()));
+                        intent.putExtra(StringContract.IntentStrings.STATUS, (friendList.get(position).getStatus()));
+                        intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                        getActivity().startActivity(intent);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        //Creating dialog box
+        AlertDialog alert = builder.create();
+        //Setting the title manually
+        alert.setTitle("Alert Notification");
+        alert.show();
+    }
+
+    private void checkOtherMemberAvailable(User user, int position) {
+        SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+        SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
+        Log.i(TAG, "checkOtherMemberAvailable: 1");
+        String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
+        HashMap<String, String> requestMap = new HashMap<>();
+
+        requestMap.put(screen.messagelist.General.ACTION, "other_members_time_check_in_db");
+        requestMap.put(screen.messagelist.General.USER_ID, "" + UserId);
+        requestMap.put(screen.messagelist.General.RECEIVER_ID, "" + user.getUid());
+
+        RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
+        Log.i(TAG, "checkOtherMemberAvailable: 2");
+        Log.i(TAG, "checkOtherMemberAvailable: Domain " + DomainURL + url);
+        try {
+            if (requestBody != null) {
+                String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
+                if (response != null) {
+                    Log.i(TAG, "checkOtherMemberAvailable:  response " + response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray provider_time_check_in_db = jsonObject.getJSONArray("other_members_time_check_in_db");
+                    String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
+                    if (success.equals("success") || success.equals("fail")){
+                        Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+                        intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                        intent.putExtra(StringContract.IntentStrings.NAME, (user.getName()));
+                        intent.putExtra(StringContract.IntentStrings.SENDER_ID, (user.getUid()));
+                        intent.putExtra(StringContract.IntentStrings.AVATAR, (user.getAvatar()));
+                        intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
+                        intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                        getActivity().startActivity(intent);
+                    }else {
+                        showDialog(success, position);
+                    }
+                } else {
+                    Log.i(TAG, "checkOtherMemberAvailable:  null  ");
+                }
+            } else {
+                Log.i(TAG, "checkOtherMemberAvailable:  null2");
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "checkOtherMemberAvailable: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

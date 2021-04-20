@@ -880,7 +880,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         if (status == 1) {
             userInfo = Login_.userInfoParser(response, "details", getApplicationContext());
-
             Preferences.save(Oauth.CLIENT_ID, userInfo.getClientId());
             Preferences.save(Oauth.CLIENT_SECRET, userInfo.getClientSecret());
 
@@ -1110,6 +1109,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         SharedPreferences UserInfoForUIKitPref =getSharedPreferences("UserInfoForUIKitPref",MODE_PRIVATE);
         SharedPreferences.Editor editor = UserInfoForUIKitPref.edit();
         editor.putString(General.USER_ID, userInfo.getUserId());
+        editor.putString(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
+        editor.putString(General.TIMEZONE, DeviceInfo.getTimeZone());
         editor.apply();
 
         screen.messagelist.Preferences.initialize(getApplicationContext());

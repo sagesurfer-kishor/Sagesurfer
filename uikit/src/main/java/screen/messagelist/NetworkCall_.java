@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -27,6 +28,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.Buffer;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * @author Monika M (monikam@sagesurfer.com)
  * Created on 13/03/2018
@@ -38,11 +41,21 @@ public class NetworkCall_ {
 
     private static final String TAG = NetworkCall_.class.getSimpleName();
     private static RefreshToken refreshToken;
-
+    static SharedPreferences UserInfoForUIKitPref;
+    SharedPreferences.Editor editor;
     public static RequestBody make(HashMap<String, String> map, String url, String tag, Context _context) {
         map.put("IMEI", DeviceInfo.getDeviceId(_context));
         Log.e(TAG, "make: 1" );
         refreshToken = new RefreshToken(_context);
+
+        UserInfoForUIKitPref =_context.getSharedPreferences("UserInfoForUIKitPref",MODE_PRIVATE);
+            /*SharedPreferences.Editor editor = UserInfoForUIKitPref.edit();
+    editor.putString(General.USER_ID, userInfo.getUserId());
+        editor.putString(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
+        editor.putString(General.TIMEZONE, DeviceInfo.getTimeZone());
+        editor.apply();*/
+
+
         Request request = new Request.Builder()
                 .url(url)
                 .post(makeBody(map))
@@ -301,7 +314,9 @@ public class NetworkCall_ {
         String i = OauthPreferences.get(Oauth.EXPIRES_AT);
         try {
             if (System.currentTimeMillis() >= Long.parseLong(OauthPreferences.get(Oauth.EXPIRES_AT))) {
-                token = refreshToken.getRefreshToken(Preferences.get(Oauth.CLIENT_ID), Preferences.get(Oauth.CLIENT_SECRET), Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, ""), _context);
+                token = refreshToken.getRefreshToken(Preferences.get(Oauth.CLIENT_ID), Preferences.get(Oauth.CLIENT_SECRET), 
+                        Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, ""), _context);
+                Log.i(TAG, "getToken: ");
                 if (token.getStatus() == 1) {
                     access_token = token.getAccessToken();
                 } else if (token.getStatus() == 12) {
@@ -349,6 +364,13 @@ public class NetworkCall_ {
         HashMap<String, String> keyMap = KeyMaker_.getKey();
         map.put(General.TOKEN, keyMap.get(General.TOKEN));
         map.put(General.KEY, keyMap.get(General.KEY));
+
+        map.put(General.DOMAIN_CODE, UserInfoForUIKitPref.getString(General.DOMAIN_CODE,null));
+        map.put(General.TIMEZONE, UserInfoForUIKitPref.getString(General.TIMEZONE,null));
+        map.put(General.USER_ID, UserInfoForUIKitPref.getString(General.USER_ID,null));
+        Log.i(TAG, "makeBody: domain code"+UserInfoForUIKitPref.getString(General.DOMAIN_CODE,null));
+        Log.i(TAG, "makeBody: time zone"+UserInfoForUIKitPref.getString(General.TIMEZONE,null));
+        Log.i(TAG, "makeBody: user id"+UserInfoForUIKitPref.getString(General.USER_ID,null));
         //map.put(General.USER_ID,)
         /*map.put(General.USER_ID, Preferences.get(General.USER_ID)); //logged in user id
         map.put(General.TIMEZONE, Preferences.get(General.TIMEZONE));

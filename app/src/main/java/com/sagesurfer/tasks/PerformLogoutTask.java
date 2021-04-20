@@ -102,7 +102,7 @@ public class PerformLogoutTask {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            safeLogout(activity);
+            logoutFromCometchat(activity);
 
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
@@ -113,65 +113,36 @@ public class PerformLogoutTask {
         }
     }
 
-    // reset shared preferences values to logout state
-    private static void safeLogout(Activity activity) {
+    private static void logoutFromCometchat(Activity activity){
+        CometChat.logout(new CometChat.CallbackListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Log.i(TAG, "cometchat logout onSuccess: ");
+                unSubscribeUserFromCometchat(activity);
+            }
 
-        /*cometchat account login for particular user
-         *code added by rahulmsk*/
+            @Override
+            public void onError(CometChatException e) {
+                Log.i(TAG, "cometchat logout failed: " + e.getMessage());
+            }
+        });
+    }
 
+    private static  void unSubscribeUserFromCometchat(Activity activity){
         FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConfig.AppDetails.APP_ID + "_" + CometChatConstants.RECEIVER_TYPE_USER + "_" +
                 Preferences.get(General.COMET_CHAT_ID)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.e(TAG, Preferences.get(General.COMET_CHAT_ID) + " Unsubscribed Success");
-
-                CometChat.logout(new CometChat.CallbackListener<String>() {
-                    @Override
-                    public void onSuccess(String s) {
-                        Log.i(TAG, "cometchat logout onSuccess: ");
-                    }
-
-                    @Override
-                    public void onError(CometChatException e) {
-                        Log.i(TAG, "cometchat logout failed: " + e.getMessage());
-                    }
-                });
+                safeLogout(activity);
             }
         });
+    }
 
 
-        //MessagingService.unsubscribeUserNotification(Preferences.get(General.COMET_CHAT_ID));
-        //MessagingService.unsubscribeGroupNotification(Preferences.get(General.COMET_CHAT_ID));
+    // reset shared preferences values to logout state
+    private static void safeLogout(Activity activity) {
         Preferences.clear();
-
-        /*Preferences.removeKey("regId");
-        Preferences.removeKey(General.PASSWORD);
-        Preferences.removeKey(General.USER_ID);
-        Preferences.removeKey(General.TIMEZONE);
-        Preferences.removeKey(General.NAME);
-        Preferences.removeKey(General.FIRST_NAME);
-        Preferences.removeKey(General.LAST_NAME);
-        Preferences.removeKey(General.USERNAME);
-        Preferences.removeKey(General.EMAIL);
-        Preferences.removeKey(General.ROLE);
-        Preferences.removeKey(General.ROLE_ID);
-        Preferences.removeKey(General.URL_IMAGE);
-        Preferences.removeKey(General.LOCAL_IMAGE);
-        Preferences.removeKey(General.GROUP_ID);
-        Preferences.removeKey(General.GROUP_NAME);
-        Preferences.removeKey(General.IS_REVIEWER);
-        Preferences.removeKey(General.API_KEY);
-        Preferences.removeKey(General.LAST_UPDATED);
-        Preferences.removeKey(General.DOMAIN);
-        Preferences.removeKey(General.DOMAIN_CODE);
-        Preferences.removeKey(General.CHAT_URL);
-        Preferences.removeKey(General.IS_LANDING_QUESTION_FILLED);
-        Preferences.removeKey(General.SHOW_BEHAVIOURAL_FILLED);
-        Preferences.removeKey(General.IS_FORM_SYNC_LANDING_QUESTION);
-        Preferences.removeKey(General.OWNER_ID);*/
-        //screen.messagelist.Preferences.clear();
-
-
         loginPreferences = activity.getSharedPreferences("loginPrefs", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
         loginPrefsEditor.clear();
@@ -190,5 +161,29 @@ public class PerformLogoutTask {
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         activity.startActivity(loginIntent);
         activity.finish();
+
+        /*cometchat account login for particular user
+         *code added by rahulmsk*/
+
+    /*    CometChat.logout(new CometChat.CallbackListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Log.i(TAG, "cometchat logout onSuccess: ");
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.i(TAG, "cometchat logout failed: " + e.getMessage());
+            }
+        });
+
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConfig.AppDetails.APP_ID + "_" + CometChatConstants.RECEIVER_TYPE_USER + "_" +
+                Preferences.get(General.COMET_CHAT_ID)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e(TAG, Preferences.get(General.COMET_CHAT_ID) + " Unsubscribed Success");
+            }
+        });
+*/
     }
 }

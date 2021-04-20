@@ -808,7 +808,7 @@ public class General {
     public static final String FILTER_MESSAGE ="chat_screen" ;
     public static final String IMG = "img";
     public static final String RECEIVER_ID ="receiver_id" ;
-
+    public static final String IS_TEST_USER = "is_test_user";
 
 
     public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {

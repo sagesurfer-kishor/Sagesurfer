@@ -95,8 +95,6 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
                 editor.putString("types", getIntent().getStringExtra(StringContract.IntentStrings.TYPE));
                 editor.commit();
             }
-
-
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.ChatFragment, fragment,"CometChatMessageScreenFragment").commit();
         }

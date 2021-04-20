@@ -60,11 +60,14 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
         if (conversation.getConversationType().equals("user")) {
 //            Log.i(TAG, "onBindViewHolder: user lastMessage " + ((TextMessage) conversation.getLastMessage()).getText().trim());//
    //         Log.i(TAG, "onBindViewHolder: user counter" + conversation.getUnreadMessageCount());
-
             holder.title.setText(((User) conversation.getConversationWith()).getName());
             if (conversation.getLastMessage().getType().equals("text")) {
                 holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
+                String textMessage=((TextMessage) conversation.getLastMessage()).getText();
+
+                if (((TextMessage) conversation.getLastMessage()).getText()!=null ) {
+                    holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
+                }
             }
             Glide.with(mContext).load(((User) conversation.getConversationWith()).getAvatar()).into(holder.imgBan);
             String status = ((User) conversation.getConversationWith()).getStatus();
@@ -89,7 +92,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                 Log.i(TAG, "onBindViewHolder: time"+conversation.getLastMessage().getDeliveredToMeAt());
                 if (conversation.getLastMessage().getType().equals("text")) {
                     holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                    holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
+                    holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText());
                 } else {
                     holder.friend_list_item_statusmessage.setVisibility(View.GONE);
                 }

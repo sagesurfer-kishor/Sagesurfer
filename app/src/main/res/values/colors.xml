@@ -236,5 +236,6 @@
 
     <color name="colorAVButton">#E0E4E0</color>
     <color name="colorAVButtonPressed">#388E3C</color>
+    <color name="highlight_group">#FECED4</color>
 
 </resources>

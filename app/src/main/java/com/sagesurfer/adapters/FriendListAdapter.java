@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
@@ -30,13 +32,20 @@ import com.sagesurfer.constant.General;
 import com.storage.preferences.Preferences;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import constant.StringContract;
+import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
+import screen.messagelist.NetworkCall_;
+import screen.messagelist.Urls_;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.MyViewHolder> implements Filterable {
     private static final String TAG = CometChatFriendsListFragment_.class.getSimpleName();
@@ -99,7 +108,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
         String UID = friendList.get(position).getUid();
 
         /*getting unread count for all users
-        * added by rahul maske*/
+         * added by rahul maske*/
 
         CometChat.getUnreadMessageCountForUser(UID, new CometChat.CallbackListener<HashMap<String, Integer>>() {
             @Override
@@ -107,10 +116,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                 // handle success
                 if (!String.valueOf(stringIntegerHashMap.get(UID)).equalsIgnoreCase("null")) {
                     //this status is used for unread message counter
-                    user.setStatus(""+stringIntegerHashMap.get(UID));
+                    user.setStatus("" + stringIntegerHashMap.get(UID));
                     holder.tv_counter.setVisibility(View.VISIBLE);
-                    holder.tv_counter.setText("" +user.getStatus());
-                }else{
+                    holder.tv_counter.setText("" + user.getStatus());
+                } else {
                     holder.tv_counter.setVisibility(View.GONE);
                 }
             }
@@ -149,7 +158,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                                     @Override
                                     public void onSuccess(HashMap<String, String> resultMap) {
                                         // Handle block users success.
-                                        Log.i(TAG, "onSuccess: "+ screen.messagelist.General.MY_TAG + " uid "+friendList.get(position).getUid());
+                                        Log.i(TAG, "onSuccess: " + screen.messagelist.General.MY_TAG + " uid " + friendList.get(position).getUid());
                                         fragment.insertBlockUserIntoDatabase(friendList.get(position).getUid());
                                         friendList.remove(position);
                                         notifyDataSetChanged();
@@ -187,7 +196,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
         // Performed the click action in the fragment to handle push notification data
         holder.relativeLayout.setOnClickListener(view -> fragment.performAdapterClick(position));
 
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+        /*holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String providerArray = Preferences.get("providers");
@@ -226,7 +235,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                             alert.setTitle("Alert Notification");
                             alert.show();
                         } else {
-                            AlertDialog.Builder builder;
+                            checkProviderAvailableTime(user.getUid(), position);
+                            *//*AlertDialog.Builder builder;
                             builder = new AlertDialog.Builder(mContext);
                             //Setting message manually and performing action on button click
                             builder.setMessage("Harsh pro provider staff is unavailable at present. He is available from 06:19 pm to 07:19 pm. Please call 911 for emergency issues.\n" +
@@ -256,7 +266,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                             AlertDialog alert = builder.create();
                             //Setting the title manually
                             alert.setTitle("Alert Notification");
-                            alert.show();
+                            alert.show();*//*
                         }
 
                     } else {
@@ -267,15 +277,15 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                         intent.putExtra(StringContract.IntentStrings.AVATAR, (friendList.get(position).getAvatar()));
                         intent.putExtra(StringContract.IntentStrings.STATUS, (friendList.get(position).getStatus()));
                         //intent.putExtra(StringContract.IntentStrings.LOGGED_IN_USERID, Preferences.get(General.USER_ID));
-                        Log.e(TAG, General.MY_TEST_TAG+"onClick: USERID = "+Preferences.get(General.USER_ID) );
-                        Log.e(TAG, General.MY_TEST_TAG+"onClick: SenderId = "+friendList.get(position).getUid());
-                        Log.e(TAG, General.MY_TEST_TAG+"onClick: senderName = "+friendList.get(position).getName() );
+                        Log.e(TAG, General.MY_TEST_TAG + "onClick: USERID = " + Preferences.get(General.USER_ID));
+                        Log.e(TAG, General.MY_TEST_TAG + "onClick: SenderId = " + friendList.get(position).getUid());
+                        Log.e(TAG, General.MY_TEST_TAG + "onClick: senderName = " + friendList.get(position).getName());
                         intent.putExtra(StringContract.IntentStrings.TABS, "1");
                         mContext.startActivity(intent);
                     }
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -321,24 +331,101 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
     };
 
     public void changeUnreadCount(String sender) {
-        Log.i(TAG, "changeUnreadCount: "+sender);
+        Log.i(TAG, "changeUnreadCount: " + sender);
         CometChat.getUnreadMessageCountForUser(sender, new CometChat.CallbackListener<HashMap<String, Integer>>() {
             @Override
             public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
                 // handle successl
-                for (User user : friendList ){
-                    if(user.getUid().equals(""+sender)){
+                for (User user : friendList) {
+                    if (user.getUid().equals("" + sender)) {
                         Log.i(TAG, "onSuccess: matched user");
-                        user.setStatus(""+stringIntegerHashMap.get(sender));
+                        user.setStatus("" + stringIntegerHashMap.get(sender));
                     }
                 }
                 notifyDataSetChanged();
-}
+            }
+
             @Override
             public void onError(CometChatException e) {
                 Log.e(TAG, "fetchedUserMessage_onError: " + e.getMessage());
             }
         });
+    }
+
+    private void checkProviderAvailableTime(String receiver_id, int position) {
+        SharedPreferences UserInfoForUIKitPref = mContext.getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+        SharedPreferences domainUrlPref = mContext.getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
+
+        String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
+        HashMap<String, String> requestMap = new HashMap<>();
+
+        requestMap.put(screen.messagelist.General.ACTION, "provider_time_check_in_db");
+        requestMap.put(screen.messagelist.General.USER_ID, "" + UserId);
+        requestMap.put(screen.messagelist.General.RECEIVER_ID, "" + receiver_id);
+
+        RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, mContext);
+
+        Log.i(TAG, "checkProviderAvailableTime: Domain " + DomainURL + url);
+        try {
+            if (requestBody != null) {
+                String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, mContext);
+                if (response != null) {
+                    Log.i(TAG, "checkProviderAvailableTime:  response " + response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray provider_time_check_in_db = jsonObject.getJSONArray("provider_time_check_in_db");
+                    String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
+                    showDialog(success, position);
+                } else {
+                    Log.i(TAG, "checkProviderAvailableTime:  null  ");
+                }
+            } else {
+                Log.i(TAG, "checkProviderAvailableTime:  null2");
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "checkProviderAvailableTime: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void showDialog(String success, int position) {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(mContext);
+        String message;
+        if (success.equals("Success")){
+            message="Are you sure you want chat with provider?";
+        }else if (success.equals("Fail")){
+            message="Are you sure you want chat with provider?";
+        }else{
+            message=success;
+        }
+        builder.setMessage(success)
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(mContext, CometChatMessageListActivity.class);
+                        intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                        intent.putExtra(StringContract.IntentStrings.NAME, (friendList.get(position).getName()));
+                        intent.putExtra(StringContract.IntentStrings.UID, (friendList.get(position).getUid()));
+                        intent.putExtra(StringContract.IntentStrings.AVATAR, (friendList.get(position).getAvatar()));
+                        intent.putExtra(StringContract.IntentStrings.STATUS, (friendList.get(position).getStatus()));
+                        intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                        mContext.startActivity(intent);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        //Creating dialog box
+        AlertDialog alert = builder.create();
+        //Setting the title manually
+        alert.setTitle("Alert Notification");
+        alert.show();
     }
 }
 

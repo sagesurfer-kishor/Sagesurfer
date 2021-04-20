@@ -158,6 +158,8 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                     mExpandableListView.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = groupPosition;
+                Log.i(TAG, "onGroupExpand: team name"+item.getName());
+                teamsChatExpandableListAdapterListener.onTeamClickFetchTeamData( item);
             }
         });
 
@@ -320,6 +322,9 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
 
     public interface TeamsChatExpandableListAdapterListener {
         void onMemberRelativeLayoutClicked(int childPosition, Teams_ team_);
+
+        void onTeamClickFetchTeamData(Teams_ item);
+
     }
 
     @Override

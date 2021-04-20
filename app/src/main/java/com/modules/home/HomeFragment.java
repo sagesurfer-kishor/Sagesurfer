@@ -218,6 +218,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
     private Boolean quesYes, quesNo, quesNa, quesOneYes, quesOneNo, quesOneNa, quesThreeYes, quesTwoNo, quesTwoNa;
     //reset password
     private Dialog dialog;
+    PerformLogoutTask performLogoutTask;
     private Boolean otpVerify = true;
     //Goal popup
     private ArrayList<AssignedGoals> goalArrayList = new ArrayList<>();
@@ -250,7 +251,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getActivity(), GetColor.getHomeIconBackgroundColorColorParse(false)));
-
+        performLogoutTask=new PerformLogoutTask();
         if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
             if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023)) ||
                     Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage025))) {
@@ -693,7 +694,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         closeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PerformLogoutTask.logout(activity);
+                performLogoutTask.logout(activity);
             }
         });
 

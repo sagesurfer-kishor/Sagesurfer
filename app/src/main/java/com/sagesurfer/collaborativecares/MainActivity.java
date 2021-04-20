@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ExpandableListView expandableDrawerListView;
     private Toolbar toolbar;
     Spinner groupStatus;
-
+    private PerformLogoutTask performLogoutTask;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private Intent intent;
     private DrawerListAdapter drawerListAdapter;
@@ -275,6 +275,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SharedPreferences preferencesCheckCurrentActivity;
     private SharedPreferences.Editor editor;
     PopupMenu popup;
+    EditText et_startTime,et_endTime;
+    int StartTimeHour, EndTimeHour, StartTimeMin, EndTimeMin;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"WrongConstant", "RestrictedApi", "SourceLockedOrientationActivity", "NewApi"})
@@ -292,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         editor.putBoolean("IsChatScreen", false);
         editor.putBoolean("IsFriendListingPage", false);
         editor.commit();
-
+        performLogoutTask = new PerformLogoutTask();
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
         if (Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
@@ -607,10 +609,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         View view = inflater.inflate(R.layout.layout_provider_time_slot, null);
         builder.setView(view);
         dialog = builder.create();
-        EditText et_startTime = view.findViewById(R.id.et_startTime);
-        EditText et_endTime = view.findViewById(R.id.et_endTime);
+        et_startTime = view.findViewById(R.id.et_startTime);
+        et_endTime = view.findViewById(R.id.et_endTime);
         Button btn_add = (Button) view.findViewById(R.id.btn_add);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
+
+        fetchPreviousSavedAvailavleSlot("old_time_provider");
 
         et_startTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -626,8 +630,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-
                                 try {
+                                    StartTimeHour = hourOfDay;
+                                    StartTimeMin = minute;
                                     et_startTime.setText(ConvertTimeIn12hr(hourOfDay + ":" + minute));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -651,9 +656,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-
                                 try {
-                                    et_endTime.setText(""+ConvertTimeIn12hr(hourOfDay + ":" + minute));
+                                    EndTimeHour = hourOfDay;
+                                    EndTimeMin = minute;
+                                    et_endTime.setText("" + ConvertTimeIn12hr(hourOfDay + ":" + minute));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
@@ -662,42 +668,58 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 timePickerDialog.show();
             }
         });
-
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // saveProviderSlot("provider_time",)
-                String starthour,startMinute,startType,endhour,endMinute,endType;
+                if (!et_startTime.getText().toString().equals("") || et_startTime.getText() == null) {
+                    if (et_endTime.getText().toString().equals("") || et_endTime.getText() != null) {
 
-                String array[] = et_startTime.getText().toString().split(":");
-                String arrayAmPm[] = array[1].split(" ");
-                starthour=array[0];
-                startMinute=arrayAmPm[0];
-                startType=arrayAmPm[1];
+                        String starthour, startMinute, startType, endhour, endMinute, endType;
+                        String array[] = et_startTime.getText().toString().split(":");
+                        String arrayAmPm[] = array[1].split(" ");
+                        starthour = array[0];
+                        startMinute = arrayAmPm[0];
+                        startType = arrayAmPm[1];
 
-                Log.i(TAG, "onClick: start hour "+array[0]);
-                Log.i(TAG, "onClick: start minute "+arrayAmPm[0]);
-                Log.i(TAG, "onClick:start timeType "+arrayAmPm[1]);
+                        String array2[] = et_endTime.getText().toString().split(":");
+                        String arrayAmPm2[] = array2[1].split(" ");
+                        endhour = array2[0];
+                        endMinute = arrayAmPm2[0];
+                        endType = arrayAmPm2[1];
 
-                String array2[] = et_endTime.getText().toString().split(":");
-                Log.i(TAG, "onClick: end hour "+array2[0]);
-
-                String arrayAmPm2[] = array2[1].split(" ");
-                Log.i(TAG, "onClick: end minute "+arrayAmPm2[0]);
-                Log.i(TAG, "onClick: end timeType "+arrayAmPm2[1]);
-
-                endhour=array2[0];
-                endMinute=arrayAmPm2[0];
-                endType=arrayAmPm2[1];
-
-                if (array[0].equals("0")){
-                    starthour="1";
+                       /* if (array[0].equals("0")) {
+                            starthour = "1";
+                        }
+                        if (array2[0].equals("0")) {
+                            endhour = "1";
+                        }
+*/
+                        if (StartTimeHour <= EndTimeHour) {
+                            if (StartTimeHour == EndTimeHour) {
+                                if (StartTimeMin != EndTimeMin) {
+                                    // save data
+                                    saveProviderSlot(starthour, startMinute, startType, endhour, endMinute, endType, "provider_time");
+                                    dialog.dismiss();
+                                } else {
+                                    //et_endTime.setError("Invalid end time");
+                                    Toast.makeText(MainActivity.this, "Invalid end time", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                saveProviderSlot(starthour, startMinute, startType, endhour, endMinute, endType, "provider_time");
+                                dialog.dismiss();
+                            }
+                        } else {
+                            Toast.makeText(MainActivity.this, "Invalid end time", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        //et_endTime.setError("Field required");
+                        Toast.makeText(MainActivity.this, "End time required", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Start time required", Toast.LENGTH_SHORT).show();
                 }
-                if (array2[0].equals("0")){
-                    endhour="1";
-                }
-               saveProviderSlot(starthour,startMinute,startType,endhour,endMinute,endType,"provider_time");
-                dialog.dismiss();
             }
         });
 
@@ -714,11 +736,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     public String ConvertTimeIn12hr(String time) throws ParseException {
 
-            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-            final Date dateObj = sdf.parse(time);
-            Log.i(TAG, "ConvertTimeIn12hr: dateObj" + dateObj);
-            Log.i(TAG, "ConvertTimeIn12hr: new SimpleDateFormat " + new SimpleDateFormat("K:mm a").format(dateObj));
-            return new SimpleDateFormat("K:mm a").format(dateObj);
+        final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
+        final Date dateObj = sdf.parse(time);
+        Log.i(TAG, "ConvertTimeIn12hr: dateObj" + dateObj);
+        Log.i(TAG, "ConvertTimeIn12hr: new SimpleDateFormat " + new SimpleDateFormat("K:mm a").format(dateObj));
+        return new SimpleDateFormat("K:mm a").format(dateObj);
     }
 
     private void saveProviderSlot(String starthour, String startMinute, String startType, String endhour, String endMinute, String endType, String action) {
@@ -732,25 +754,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         requestMap.put(General.TOTIMES, endType);
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
-
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this);
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this);
                 if (response != null) {
-                    Log.e("data", response);
-                    try {
+                    Log.e(" saveProviderSlot data", response);
+                    //{"provider_time":[{"status":1,"msg":"update successfully."}]}
 
-                        JSONObject injectedObject = new JSONObject(response);
-                        JSONArray data = new JSONArray(injectedObject.getJSONArray("provider_time"));
-                        for (int i=0;i<data.length();i++){
-                            JSONObject object=data.getJSONObject(i);
-                            Log.i(TAG, "saveProviderSlot: "+data.getJSONObject(i).get("msg"));
-                            Toast.makeText(MainActivity.this, ""+object.getString("msg"), Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    JSONObject injectedObject = new JSONObject(response);
+                    JSONArray array= injectedObject.getJSONArray("provider_time");
+                    Log.i(TAG, "saveProviderSlot: "+array.getJSONObject(0).getString("msg"));
+                    Toast.makeText(getApplicationContext(), ""+array.getJSONObject(0).getString("msg"), Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -758,6 +773,39 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+    private void fetchPreviousSavedAvailavleSlot(String action) {
+
+        /*action=old_time_provider
+            user_id=//login_user_id
+            Return parameter
+            from_date=//return form date
+            to_date=//return to date */
+
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, action);
+        requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
+        Log.i(TAG, "fetchPreviousSavedAvailavleSlot: userId "+Preferences.get(General.USER_ID));
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this);
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, this);
+                if (response != null) {
+                    Log.e(TAG,"fetchPreviousSavedAvailavleSlot "+ response);
+                    //{"provider_time":[{"status":1,"msg":"update successfully."}]}
+
+                    JSONObject injectedObject = new JSONObject(response);
+                    JSONArray array= injectedObject.getJSONArray("old_time_provider");
+                    Log.i(TAG, "fetchPreviousSavedAvailavleSlot  "+array.getJSONObject(0).getString("msg"));
+                    et_startTime.setText(""+array.getJSONObject(0).getString("from_date"));
+                    et_endTime.setText(""+array.getJSONObject(0).getString("to_date"));
+                    //Toast.makeText(getApplicationContext(), ""+array.getJSONObject(0).getString("msg"), Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /*public void hidePopup(){
         popup.getMenu().getItem(R.id.chatt_icon).setVisible(false);
@@ -775,7 +823,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (response != null) {
                     Log.e("data", response);
                     try {
-
                         JSONObject injectedObject = new JSONObject(response);
                         JSONArray translations = injectedObject.getJSONArray("language_list");
 
@@ -791,9 +838,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                             String names = translation.getString("name");
                             lanList.add(names);
-
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1881,10 +1926,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 SharedPreferences.Editor editor = preferenOpenActivity.edit();
                 if (type.equals("groupMember")) {
                     editor.putBoolean("highlightList", true);
-                    editor.apply();
                 }
                 editor.putBoolean("checkIntent", true);
                 editor.apply();
+                Log.i(TAG, "handleIntent: checkIntent"+preferenOpenActivity.getBoolean("checkIntent",false));
 
                 Fragment fragment = GetFragments.get(9, bundle);
                 fragment.setArguments(bundle);
@@ -2636,7 +2681,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void replaceFragment(int id, String name, Bundle bundle) {
         Logger.error(TAG, "menu_id: " + id, getApplicationContext());
         if (id == 0) {
-            PerformLogoutTask.logout(this);
+            performLogoutTask.logout(this);
             return;
         }
 
@@ -3157,7 +3202,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         alertDialog.show();
     }
-
 
     // show respective filter options menu
     private void showPlannerPopup(View view) {
