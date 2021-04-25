@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="5dp"
+    android:id="@+id/cl_main"
+    android:background="@drawable/message_rounded_border"
+    android:layout_height="80dp">
+
+    <RelativeLayout
+        android:id="@+id/friend_relativelayout_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.cometchat.pro.uikit.Avatar
+            android:id="@+id/friend_list_itemphoto"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_user_male" />
+
+        <ImageView
+            android:id="@+id/friend_list_item_statusicon"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignStart="@+id/friend_list_itemphoto"
+            android:layout_alignTop="@+id/friend_list_itemphoto"
+            android:layout_marginEnd="5dp"
+            android:padding="1dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/friend_list_itemname"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/app_name"
+        android:layout_marginStart="16dp"
+        android:singleLine="true"
+        android:textColor="#212121"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/friend_relativelayout_image"
+        app:layout_constraintTop_toTopOf="@+id/friend_relativelayout_image" />
+
+    <TextView
+        android:id="@+id/friend_ic_counter"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_weight="0.05"
+        android:background="@drawable/primary_circle"
+        android:gravity="center"
+        android:hint=""
+        android:maxLength="2"
+        android:padding="2dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="408dp" />
+
+    <TextView
+        android:id="@+id/friend_list_item_statusmessage"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:layout_marginStart="16dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/friend_relativelayout_image"
+        app:layout_constraintTop_toBottomOf="@+id/friend_list_itemname" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

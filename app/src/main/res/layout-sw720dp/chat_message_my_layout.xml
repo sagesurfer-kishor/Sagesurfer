@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_message_item_my_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_marginLeft="200dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:background="@drawable/chat_b"
+    android:gravity="center"
+    android:minWidth="150dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_message_item_name_layout"
+        android:layout_gravity="start"
+        android:orientation="vertical">
+
+        <com.sagesurfer.sage.emoji.custom.EmojiTextView
+            android:id="@+id/chat_message_item_my_message"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="start|top"
+            android:text="@string/dummy_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/heading_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_message_item_name_layout"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/chat_message_item_my_image"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/vi_image_thumbnail"
+            android:contentDescription="TODO" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chat_message_my_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="-10dp"
+        android:gravity="end"
+        android:maxWidth="150dp"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="@string/dummy_time"
+        android:textColor="@color/white"
+        android:textSize="@dimen/subheading_text_size" />
+</LinearLayout>

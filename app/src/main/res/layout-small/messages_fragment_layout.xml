@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_fragment_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/messages_fragment_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/edit_text_primary"
+        android:gravity="start|top"
+        android:hint="@string/type_here"
+        android:maxHeight="100dp"
+        android:maxLength="250"
+        android:padding="10dp"
+        android:textColor="@color/text_color_primary"
+        android:textSize="@dimen/text_size_14"
+        style="@style/CustomFontStyleSecondary" />
+
+    <Button
+        android:id="@+id/messages_fragment_send"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/post"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_16"
+        style="@style/CustomFontStylePrimary" />
+</LinearLayout>

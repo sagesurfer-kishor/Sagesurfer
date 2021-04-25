@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true"
+    tools:ignore="MissingDefaultResource">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_toolbar_layout" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:background="@drawable/white_rounded_rectangle_gray_border"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/content_type"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/care_upload_content_type"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/ic_bottom_line_down_arrow"
+                        android:gravity="start"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <LinearLayout
+                        android:id="@+id/care_upload_file_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textview_upload_file"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="26dp"
+                                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                                android:gravity="start"
+                                android:paddingStart="3dp"
+                                android:paddingEnd="5dp"
+                                android:paddingBottom="7dp"
+                                android:text="@string/upload_file"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_color_tertiary"
+                                android:textSize="@dimen/text_size_14"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/activity_vertical_margin"
+                                android:gravity="start"
+                                android:text="*"
+                                android:textColor="@color/self_goal_red"
+                                android:textSize="@dimen/text_size_20"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/care_upload_file_button"
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:background="@drawable/primary_rounded_rectangle"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/activity_horizontal_margin"
+                                android:paddingEnd="@dimen/activity_horizontal_margin"
+                                android:text="@string/choose_file"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/care_upload_file_check"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/vi_check_green" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/care_upload_file_name"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:maxLines="1"
+                            android:text="@string/approve"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/care_upload_thumbnail_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/textview_upload_thumbnail"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="@string/upload_thumbnail"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/care_upload_thumbnail_button"
+                                style="@style/CustomFontStylePrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:background="@drawable/primary_rounded_rectangle"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/activity_horizontal_margin"
+                                android:paddingEnd="@dimen/activity_horizontal_margin"
+                                android:text="@string/choose_file"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/care_upload_thumbnail_check"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/vi_check_green" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/care_upload_thumbnail_name"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:maxLines="1"
+                            android:text="@string/app_info"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:background="@drawable/white_rounded_rectangle_gray_border"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/care_upload_website_label"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="@string/website"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textview_validate_website_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/care_upload_website"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:imeOptions="actionNext"
+                        android:maxLines="1"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="@string/title"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/care_upload_title"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/edit_text_primary"
+                        android:imeOptions="actionNext"
+                        android:maxLines="1"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/description"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/care_upload_description"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/edit_text_primary"
+                        android:gravity="start"
+                        android:imeOptions="actionNext"
+                        android:maxLines="1"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="@string/tag"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/care_upload_tag"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/edit_text_primary"
+                        android:gravity="start"
+                        android:imeOptions="actionNext"
+                        android:maxLines="1"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="@string/publish_date"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/care_upload_publish_date"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/ic_bottom_line_down_arrow"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="@string/category"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_14"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/care_upload_category"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toStartOf="@+id/care_upload_add_category"
+                            android:background="@drawable/ic_bottom_line_down_arrow"
+                            android:gravity="start"
+                            android:paddingBottom="5dp"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/care_upload_add_category"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            app:srcCompat="@drawable/vi_add_task_list_p" />
+                    </RelativeLayout>
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/share_with_friends"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/care_upload_friends"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/ic_bottom_line_down_arrow"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/language"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/care_upload_language"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/ic_bottom_line_down_arrow"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/age"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_14"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/care_upload_age"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:background="@drawable/ic_bottom_line_down_arrow"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_16" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

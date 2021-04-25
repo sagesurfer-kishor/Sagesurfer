@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/care_content_type_images"
+        android:title="@string/images"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/care_content_type_videos"
+        android:title="@string/videos"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/care_content_type_text_articles"
+        android:title="@string/text_articles"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/care_content_type_blogs"
+        android:title="@string/blogs"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/care_content_type_podcasts"
+        android:title="@string/podcasts"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/care_content_type_courses"
+        android:title="@string/courses"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/care_content_type_intervention_tools"
+        android:title="@string/intervention_tools"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/care_content_type_webinar"
+        android:title="@string/webinar"
+        app:showAsAction="ifRoom|withText" />
+</menu>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/simple_item_title"
+    style="@style/CustomFontStyleSecondary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:background="@color/textColorWhite"
+    android:gravity="start|center_vertical"
+    android:padding="@dimen/margin_10"
+    android:paddingStart="@dimen/margin_10"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:text="@string/app_name"
+    android:textColor="@color/colorPrimaryDark"
+    android:textSize="@dimen/text_size_18" />

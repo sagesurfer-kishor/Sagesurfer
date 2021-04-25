@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/sos_update_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:fillViewport="false"
+        android:minHeight="@dimen/actionBarSize"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/white"
+        app:tabIndicatorHeight="4dp"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextAppearance="@style/AppTabTextAppearance"
+        app:tabTextColor="@color/item_separator_line"
+        tools:targetApi="lollipop" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:visibility="gone"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="@dimen/margin_6">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@drawable/white_rounded_rectangle_gray_border">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_search"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/imagebutton_search"
+                    android:background="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/action_search"
+                    android:imeOptions="actionSearch"
+                    android:maxLength="30"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/vi_search_gray" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screen_background">
+
+        <FrameLayout
+            android:id="@+id/sos_update_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/sos_update_container"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/fab_add" />
+
+        <FrameLayout
+            android:id="@+id/framelayout_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/sos_update_container"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|right"
+            android:visibility="visible">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/sos_update_float"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:src="@android:color/transparent"
+                android:visibility="visible"
+                app:backgroundTint="@color/sos_fab"
+                app:fab_size="normal"
+                tools:ignore="RelativeOverlap" />
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="16dp"
+                android:text="@string/sos"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size" />
+        </FrameLayout>
+    </RelativeLayout>
+</LinearLayout>

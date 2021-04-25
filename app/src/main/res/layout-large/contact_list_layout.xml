@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="@dimen/margin_4">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@drawable/white_rounded_rectangle_gray_border">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_search"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/imagebutton_search"
+                    android:background="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/action_search"
+                    android:imeOptions="actionSearch"
+                    android:maxLength="30"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/vi_search_gray" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <include
+        layout="@layout/list_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cardview_actions"
+        android:layout_toStartOf="@+id/contact_list_side_index_scroll" />
+
+    <!--<android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:layout_toStartOf="@+id/contact_list_side_index_scroll" />-->
+
+    <ScrollView
+        android:id="@+id/contact_list_side_index_scroll"
+        android:layout_width="@dimen/actionBarSize"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cardview_actions"
+        android:layout_alignParentEnd="true"
+        android:background="@color/white"
+        android:scrollbarSize="1dp">
+
+        <LinearLayout
+            android:id="@+id/contact_list_side_index"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_horizontal|top"
+            android:orientation="vertical" />
+    </ScrollView>
+</RelativeLayout>

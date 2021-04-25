@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/linearlayout_received_sos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/white_rounded_rectangle_gray_border"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/blue_rounded_rectangle"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/received_sos_item_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:src="@drawable/ic_user_male" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="0.8"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/received_sos_item_name"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:singleLine="true"
+                            android:text="@string/username"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_20" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/received_sos_item_time"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="@string/date"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <TextView
+                            android:id="@+id/received_sos_item_posted_team"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/received_sos_item_time"
+                            android:gravity="start"
+                            android:singleLine="true"
+                            android:text="@string/team"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_sos"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/linearlayout_location"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imageview_sos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/sos_mobile" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_location"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/linearlayout_status"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imageview_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/vi_daily_planner_location" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_status"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imageview_clear_search_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/vi_check_green" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/received_sos_item_message"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:text="@string/message"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/text_size_20" />
+
+        <LinearLayout
+            android:id="@+id/received_sos_item_button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/received_sos_item_not_attending_button"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/rectangle_bg"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:text="@string/not_attending"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/text_size_18" />
+
+            <TextView
+                android:id="@+id/received_sos_item_attending_button"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/rectangle_bg_one"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:text="@string/attending"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textIsSelectable="false"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/transparent_40" />
+
+
+        <TextView
+            android:id="@+id/received_sos_item_completed_button"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginStart="5dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/complete"
+            android:textAllCaps="true"
+            android:textColor="@color/sos_attending"
+            android:textSize="@dimen/text_size_18"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/my_sos_item_image_one"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/primary_circle"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user_male" />
+
+                <TextView
+                    android:id="@+id/textview_username_one"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:gravity="center"
+                    android:text="@string/username"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/my_sos_item_line_one"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_weight="0.2"
+                android:background="@drawable/red_dotted_line" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/my_sos_item_image_two"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/primary_circle"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user_male" />
+
+                <TextView
+                    android:id="@+id/textview_username_two"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:gravity="center"
+                    android:text="@string/username"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/my_sos_item_line_two"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_weight="0.2"
+                android:background="@drawable/red_dotted_line" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/my_sos_item_image_three"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/primary_circle"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user_male" />
+
+                <TextView
+                    android:id="@+id/textview_username_three"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:gravity="center"
+                    android:text="@string/username"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/my_sos_item_line_three"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_weight="0.2"
+                android:background="@drawable/red_dotted_line" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/my_sos_item_image_four"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/primary_circle"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user_male" />
+
+                <TextView
+                    android:id="@+id/textview_username_four"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:gravity="center"
+                    android:text="@string/username"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+        </LinearLayout>
+        <!--</HorizontalScrollView>-->
+    </LinearLayout><!--</android.support.v7.widget.CardView>-->
+</LinearLayout>

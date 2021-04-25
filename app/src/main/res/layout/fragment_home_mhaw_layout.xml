@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mhaw_background"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_smiley"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:src="@drawable/smile" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/quote_list"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/activity_vertical_margin" />
+
+            <LinearLayout
+                android:id="@+id/linearlayout_header"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:background="@drawable/background_mood_mhaw_home"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_vertical_margin"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textview_greeting"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.1"
+                    android:gravity="center"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:text="Hello..!"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/textview_username"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1.1"
+                    android:gravity="center"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:text="@string/username"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/textview_mood"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_weight="1.1"
+                    android:background="@drawable/cc_av_chat_log_layout"
+                    android:gravity="center"
+                    android:padding="@dimen/margin_10"
+                    android:text="@string/how_are_you_feeling_today"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_home1"
+                android:layout_width="fill_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_home_one"
+                    android:layout_width="110dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/self_goal_bg"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <Button
+                        android:id="@+id/button_home_one"
+                        android:layout_width="14dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="right"
+                        android:layout_margin="6dp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/pink_circle"
+                        android:gravity="center"
+                        android:visibility="invisible" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_home_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:src="@drawable/self_goal_white_home_icon" />
+
+                    <TextView
+                        android:id="@+id/textview_home_one"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="@string/process_outcomes_reports"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_home_two"
+                    android:layout_width="110dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/planner_home_background"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <Button
+                        android:id="@+id/button_home_two"
+                        android:layout_width="14dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="right"
+                        android:layout_margin="6dp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/pink_circle"
+                        android:gravity="center"
+                        android:visibility="invisible" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_home_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:src="@drawable/planner_home_white_icon" />
+
+                    <TextView
+                        android:id="@+id/textview_home_two"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="@string/process_outcomes_reports"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_home_three"
+                    android:layout_width="110dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/chat_home_background"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <Button
+                        android:id="@+id/button_home_three"
+                        android:layout_width="14dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="right"
+                        android:layout_margin="6dp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/pink_circle"
+                        android:gravity="center"
+                        android:visibility="invisible" />
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_home_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:src="@drawable/chat_white_home_icon" />
+
+                    <TextView
+                        android:id="@+id/textview_home_three"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="@string/process_outcomes_reports"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_home2"
+                android:layout_width="fill_parent"
+                android:layout_height="180dp"
+
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_home_four"
+                    android:layout_width="110dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/ream_home_background"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <Button
+                        android:id="@+id/button_home_four"
+                        android:layout_width="14dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="right"
+                        android:layout_margin="6dp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/pink_circle"
+                        android:gravity="center"
+                        android:visibility="invisible" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_home_four"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:src="@drawable/team_white_home_icon" />
+
+                    <TextView
+                        android:id="@+id/textview_home_four"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="@string/process_outcomes_reports"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_home_five"
+                    android:layout_width="110dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/self_goal_report_home_background"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <Button
+                        android:id="@+id/button_home_five"
+                        android:layout_width="14dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="right"
+                        android:layout_margin="6dp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/pink_circle"
+                        android:gravity="center"
+                        android:visibility="invisible" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_home_five"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:src="@drawable/report_white_icon" />
+
+                    <TextView
+                        android:id="@+id/textview_home_five"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="@string/process_outcomes_reports"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_home_six"
+                    android:layout_width="110dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/appointment_home_background"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <Button
+                        android:id="@+id/button_home_six"
+                        android:layout_width="14dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="right"
+                        android:layout_margin="6dp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/pink_circle"
+                        android:gravity="center"
+                        android:visibility="invisible" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_home_six"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:src="@drawable/appointment_white_icon" />
+
+                    <TextView
+                        android:id="@+id/textview_home_six"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="@string/process_outcomes_reports"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/background_home_recent_updates_bg_black"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textview_recent_updates"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="13dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="start"
+                        android:text="@string/recent_update"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <Button
+                        android:id="@+id/counter"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/mhaw_square"
+                        android:text="8"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_10" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_6"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        layout="@layout/home_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

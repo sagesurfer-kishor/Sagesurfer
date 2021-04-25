@@ -1,0 +1,197 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical"
+    tools:context="com.modules.caseload.SummaryGoalsGraphFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearlayout_goals_graph"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <!--<android.support.v7.widget.CardView
+                    android:id="@+id/cardview_moodswing"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@color/white"
+                    android:elevation="12dp"
+                    app:cardCornerRadius="14dp"
+                    android:layout_centerHorizontal="true"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    android:thicknessRatio="1.9">-->
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout_moodswing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:background="@drawable/layout_rounded_shadow_list"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textview_moodswing"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/mood_swings_questionnaire_scores"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_size_18" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="2dp"
+                            android:background="@color/list_divider" />
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_moodswing"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <WebView
+                                android:id="@+id/webview_moodswing"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+                <!--</android.support.v7.widget.CardView>-->
+
+                <!-- <android.support.v7.widget.CardView
+                     android:id="@+id/cardview_goals"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_gravity="center"
+                     android:layout_margin="10dp"
+                     android:layout_weight="0.25"
+                     android:background="@color/white"
+                     android:elevation="12dp"
+                     app:cardCornerRadius="14dp"
+                     android:layout_centerHorizontal="true"
+                     android:innerRadius="0dp"
+                     android:shape="ring"
+                     android:thicknessRatio="1.9">-->
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout_goals"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_rounded_shadow_list"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textview_goals"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/goals"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_size_18" />
+
+                        <!--<android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerview_goals"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollbars="vertical"/>-->
+                        <LinearLayout
+                            android:id="@+id/linearlayout_goals_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="vertical" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <!--</android.support.v7.widget.CardView>-->
+
+                <!--<android.support.v7.widget.CardView
+                    android:id="@+id/cardview_personal_goals"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/white"
+                    android:elevation="12dp"
+                    app:cardCornerRadius="14dp"
+                    android:layout_centerHorizontal="true"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    android:thicknessRatio="1.9">-->
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout_personal_goals"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/layout_rounded_shadow_list"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textview_personal_goals"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/personal_goals"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_size_18" />
+
+                        <!--
+                                                    <android.support.v7.widget.RecyclerView
+                                                        android:id="@+id/recyclerview_personal_goals"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        android:scrollbars="vertical"/>
+                        -->
+                        <LinearLayout
+                            android:id="@+id/linearlayout_personal_goals_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="vertical" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <!--</android.support.v7.widget.CardView>-->
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

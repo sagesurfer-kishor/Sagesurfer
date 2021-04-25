@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#6cb9f1"
+        android:name="Rectangle 1"
+        android:pathData="m0 0h24v24h-24v-24z" />
+    <path
+        android:fillColor="#fff"
+        android:name="Rounded Rectangle 1 copy"
+        android:pathData="m11.172 9.969c-0.355 0 -0.642 0.287 -0.642 0.641c0 0.354 0.287 0.641 0.642 0.641c0.355 0 0.642 -0.287 0.642 -0.641c0 -0.354 -0.287 -0.641 -0.642 -0.641zm-3.142 3.085c0 0 0 0 0 0c0 0 0 0 0 -0zm8.132 0.015c0 0 0 0 0 0h-0zm-0 -3.948v3.948h0c-0.32 -0.231 -2.663 -1.916 -2.747 -1.925c-0 -0 -0.001 -0 -0.001 -0c-0.101 0 -1.661 1.156 -1.661 1.156l1.193 0.867c0 0 0.136 0.172 0.036 0.361c-0.044 0.085 -0.121 0.108 -0.193 0.108c-0.088 0 -0.169 -0.036 -0.169 -0.036c0 0 -2.421 -1.77 -2.674 -1.842c-0.23 0.1 -1.529 1.02 -1.915 1.295c0 -1.714 0 -3.932 0 -3.932zm-8.278 -0.59c-0.212 0 -0.384 0.172 -0.384 0.384v6.264c0 0.212 0.172 0.384 0.384 0.384h8.451c0.212 0 0.384 -0.172 0.384 -0.384v-6.264c0 -0.212 -0.172 -0.384 -0.384 -0.384z" />
+</vector>

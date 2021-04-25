@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    tools:ignore="MissingDefaultResource">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/screen_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/margin_50"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:background="@drawable/white_rounded_rectangle_gray_border"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/margin_60"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="@string/notify_at"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textview_fragmentaddgoalthree_notifyfrequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:background="@drawable/ic_bottom_line_down_arrow"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/select"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+
+
+                <TextView
+                    android:id="@+id/textview_fragmentaddgoalthree_notifyat"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:background="@drawable/ic_bottom_line_down_arrow"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_18" />
+
+                <CheckedTextView
+                    android:id="@+id/checkedtextview_fragmentaddgoalthree_creategoalspecificday"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:checked="true"
+                    android:drawableStart="@drawable/self_goal_check_box"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="@string/share_with_cc"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:padding="7dp"
+                    android:text="@string/default_notification_msg"
+                    android:textColor="@color/self_goal_red"
+                    android:textSize="@dimen/text_size_18" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:orientation="vertical">
+
+                    <!--  <TextView
+                          android:id="@+id/textview_fragmentaddgoalthree_notifyfrequency"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:background="@drawable/ic_bottom_line_down_arrow"
+                          android:hint="@string/select"
+                          android:padding="7dp"
+                          android:textColor="@color/text_color_primary"
+                          android:textSize="@dimen/text_size_18" />-->
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_fragmentaddgoalthree_frequencyweek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <CheckedTextView
+                                android:id="@+id/checkedtextview_fragmentaddgoalthree_weekmon"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:checked="false"
+                                android:clickable="true"
+                                android:drawableStart="@drawable/self_goal_check_box"
+                                android:drawablePadding="10dp"
+                                android:gravity="center"
+                                android:text="@string/mon"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_18" />
+
+                            <CheckedTextView
+                                android:id="@+id/checkedtextview_fragmentaddgoalthree_weektue"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="0.25"
+                                android:checked="false"
+                                android:clickable="true"
+                                android:drawableStart="@drawable/self_goal_check_box"
+                                android:drawablePadding="10dp"
+                                android:gravity="center"
+                                android:text="@string/tue"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_18" />
+
+                            <CheckedTextView
+                                android:id="@+id/checkedtextview_fragmentaddgoalthree_weekwed"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="0.25"
+                                android:checked="false"
+                                android:clickable="true"
+                                android:drawableStart="@drawable/self_goal_check_box"
+                                android:drawablePadding="10dp"
+                                android:gravity="center"
+                                android:text="@string/wed"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_18" />
+
+                            <CheckedTextView
+                                android:id="@+id/checkedtextview_fragmentaddgoalthree_weekthu"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="0.25"
+                                android:checked="false"
+                                android:clickable="true"
+                                android:drawableStart="@drawable/self_goal_check_box"
+                                android:drawablePadding="10dp"
+                                android:gravity="center"
+                                android:text="@string/thu"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_18" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <CheckedTextView
+                                android:id="@+id/checkedtextview_fragmentaddgoalthree_weekfri"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:checked="false"
+                                android:drawableStart="@drawable/self_goal_check_box"
+                                android:drawablePadding="10dp"
+                                android:gravity="center"
+                                android:text="@string/fri"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_18" />
+
+                            <CheckedTextView
+                                android:id="@+id/checkedtextview_fragmentaddgoalthree_weeksat"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="0.25"
+                                android:checked="false"
+                                android:drawableStart="@drawable/self_goal_check_box"
+                                android:drawablePadding="10dp"
+                                android:gravity="center"
+                                android:text="@string/sat"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_18" />
+
+                            <CheckedTextView
+                                android:id="@+id/checkedtextview_fragmentaddgoalthree_weeksun"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="0.25"
+                                android:checked="false"
+                                android:drawableStart="@drawable/self_goal_check_box"
+                                android:drawablePadding="10dp"
+                                android:gravity="center"
+                                android:text="@string/sun"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_18" />
+
+                            <CheckedTextView
+                                android:id="@+id/checkedtextview_fragmentaddgoalthree_dummy"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="0.25"
+                                android:checked="false"
+                                android:drawableStart="@drawable/self_goal_check_box"
+                                android:drawablePadding="10dp"
+                                android:gravity="center"
+                                android:text="@string/sun"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_18"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/relativelayout_fragmentaddgoalthree_milestone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/margin_8"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:paddingStart="3dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingBottom="7dp"
+                                    android:text="@string/milestone"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/text_color_tertiary"
+                                    android:textSize="@dimen/text_size_16" />
+
+                                <EditText
+                                    android:id="@+id/edittext_fragmentaddgoalthree_milestonetext"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="120dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/edit_text_primary"
+                                    android:gravity="start|center_vertical"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="2"
+                                    android:paddingStart="3dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingBottom="7dp"
+                                    android:textColor="@color/text_color_primary"
+                                    android:textColorHint="@color/text_color_tertiary"
+                                    android:textSize="@dimen/text_size_18" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/margin_8"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:paddingStart="3dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingBottom="7dp"
+                                    android:text="@string/date"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/text_color_tertiary"
+                                    android:textSize="@dimen/text_size_16" />
+
+                                <TextView
+                                    android:id="@+id/textview_fragmentaddgoalthree_milestonedate"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_bottom_line_down_arrow"
+                                    android:gravity="start|center"
+                                    android:paddingStart="3dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingBottom="7dp"
+                                    android:textColor="@color/text_color_primary"
+                                    android:textSize="@dimen/text_size_18" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/button_fragmentaddgoalthree_milestoneadd"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:background="@drawable/primary_rounded_rectangle"
+                        android:gravity="center"
+                        android:text="Add"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_fragmentaddgoalthree_milestoneitem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lineralayout_addgoalactivity_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:background="@drawable/white_rounded_rectangle_gray_border"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/margin_10"
+            android:paddingRight="@dimen/margin_10">
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textview_addgoalactivity_bubble_one"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/primary_circle"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:id="@+id/view_addgoalactivity_line_zero"
+                    android:layout_width="40dp"
+                    android:layout_height="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/textview_addgoalactivity_bubble_one"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textview_addgoalactivity_bubble_one"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:gravity="center_horizontal"
+                    android:text="@string/description"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+                <View
+                    android:id="@+id/view_addgoalactivity_line_one"
+                    android:layout_width="40dp"
+                    android:layout_height="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/textview_addgoalactivity_bubble_two"
+                    android:background="@color/colorPrimary" />
+
+                <View
+                    android:id="@+id/view_addgoalactivity_line_two"
+                    android:layout_width="40dp"
+                    android:layout_height="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/textview_addgoalactivity_bubble_two"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/textview_addgoalactivity_bubble_two"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/primary_circle"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textview_addgoalactivity_bubble_two"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:gravity="center_horizontal"
+                    android:text="@string/definition"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+                <View
+                    android:id="@+id/view_addgoalactivity_line_three"
+                    android:layout_width="40dp"
+                    android:layout_height="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/textview_addgoalactivity_bubble_three"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/textview_addgoalactivity_bubble_three"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/primary_circle"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textview_addgoalactivity_bubble_three"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:gravity="center_horizontal"
+                    android:text="@string/milestone"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_16" />
+            </RelativeLayout>
+        </LinearLayout>
+    </FrameLayout>
+</ScrollView>

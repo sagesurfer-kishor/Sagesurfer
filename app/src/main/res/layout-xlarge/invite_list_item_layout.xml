@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/screen_background"
+    android:paddingBottom="0dp"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/margin_10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/layout_rounded_shadow_list">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="top"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/invite_list_item_image"
+                    android:layout_width="@dimen/profile_size"
+                    android:layout_height="@dimen/profile_size"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/user_photo"
+                    android:src="@drawable/ic_user_male" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/invite_list_item_image"
+                    android:background="@color/white"
+                    android:gravity="start"
+                    android:orientation="vertical"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="@dimen/activity_horizontal_margin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/invite_list_item_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:ellipsize="end"
+                            android:gravity="start|center_vertical"
+                            android:maxLines="2"
+                            android:text="@string/action_settings"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_18"
+                            style="@style/CustomFontStylePrimary" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.40"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/invite_list_item_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="@string/accept"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_size_20"
+                                style="@style/CustomFontStyleSecondary" />
+
+                            <TextView
+                                android:id="@+id/invite_list_item_date_tag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:gravity="end"
+                                android:lines="1"
+                                android:text="@string/action_settings"
+                                android:textColor="@color/text_color_tertiary"
+                                android:textSize="@dimen/text_size_14"
+                                style="@style/CustomFontStyleSecondary" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/invite_list_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="1"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_16"
+                style="@style/CustomFontStylePrimary" />
+
+            <TextView
+                android:id="@+id/invite_list_item_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="3"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_16"
+                style="@style/CustomFontStyleSecondary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|end"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/invite_list_item_reject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:text="@string/reject"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16"
+                    style="@style/CustomFontStylePrimary" />
+
+                <TextView
+                    android:id="@+id/invite_list_item_accept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:text="@string/accept"
+                    android:textAllCaps="true"
+                    android:textColor="@color/success_color"
+                    android:textSize="@dimen/text_size_16"
+                    style="@style/CustomFontStylePrimary" />
+            </LinearLayout>
+        </LinearLayout>
+    <!--</android.support.v7.widget.CardView>-->
+</LinearLayout>

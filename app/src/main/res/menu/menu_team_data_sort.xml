@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menusort_alphabetical"
+            android:title="@string/all" />
+        <item
+            android:id="@+id/menusort_my_team"
+            android:title="@string/my_team" />
+        <item
+            android:id="@+id/menusort_joined_team"
+            android:title="@string/joined_team" />
+    </group>
+</menu>

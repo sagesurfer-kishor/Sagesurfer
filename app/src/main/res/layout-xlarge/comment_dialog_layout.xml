@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/attachment_viewer_footer"
+        android:background="@color/transparent"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        tools:targetApi="lollipop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/comment_dialog_back"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:background="@null"
+                android:padding="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/vi_left_arrow_gray" />
+
+            <TextView
+                android:id="@+id/comment_dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start|center_vertical"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:text="@string/comment"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStylePrimary" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/list_background" />
+
+        <ListView
+            android:id="@+id/comment_dialog_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/screen_background"
+            android:divider="@color/screen_background"
+            android:dividerHeight="1dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_background" />
+
+    <RelativeLayout
+        android:id="@+id/attachment_viewer_footer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        tools:targetApi="lollipop">
+
+        <EditText
+            android:id="@+id/comment_dialog_box"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/comment_dialog_send"
+            android:background="@color/white"
+            android:hint="@string/type_here"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:textColor="@color/text_color_primary"
+            android:textColorHint="@color/text_color_tertiary"
+            android:textCursorDrawable="@drawable/primary_cursor"
+            android:textSize="@dimen/text_size_18"
+            style="@style/CustomFontStyleSecondary" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/comment_dialog_send"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="@dimen/actionBarSize"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:padding="@dimen/activity_horizontal_margin"
+            app:srcCompat="@drawable/vi_send_primary" />
+    </RelativeLayout>
+</RelativeLayout>

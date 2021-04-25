@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/margin_50"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:background="@drawable/white_rounded_rectangle_gray_border"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_50">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/goal_name"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_12"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="*"
+                        android:textColor="@color/self_goal_red"
+                        android:textSize="@dimen/text_size_20"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edittext_fragmentaddgoalone_name"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:imeOptions="actionNext"
+                    android:maxLength="25"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="7dp"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="@string/description"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/edittext_fragmentaddgoalone_description"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:gravity="start|top"
+                    android:imeOptions="actionNext"
+                    android:maxLength="1000"
+                    android:minLines="3"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="7dp"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="@string/impact_of_goal"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edittext_fragmentaddgoalone_impact"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:imeOptions="actionNext"
+                    android:maxLength="1000"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="7dp"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="start"
+                android:text="@string/add_image"
+                android:textAllCaps="true"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_12"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:gravity="start"
+                android:text="*"
+                android:textColor="@color/self_goal_red"
+                android:textSize="@dimen/text_size_20"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_fragmentaddgoalone_image"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@color/disable_button_color">
+
+            <ImageView
+                android:id="@+id/imageview_fragmentaddgoalone_uploadimage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/imageview_fragmentaddgoalone_uploadicon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/vi_drawer_uploader" />
+
+            <TextView
+                android:id="@+id/textview_fragmentaddgoalone_uploadtext"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageview_fragmentaddgoalone_uploadicon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/select_image"
+                android:textSize="@dimen/text_size_14" />
+
+            <ImageView
+                android:id="@+id/imageview_fragmentaddgoalone_uploadremove"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:background="@color/transparent_40"
+                android:padding="12dp"
+                android:src="@drawable/vi_cancel_white"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progressbar_fragmentaddgoalone_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lineralayout_addgoalactivity_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:background="@drawable/white_rounded_rectangle_gray_border"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingRight="@dimen/margin_10">
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/textview_addgoalactivity_bubble_one"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/primary_circle"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <View
+                android:id="@+id/view_addgoalactivity_line_zero"
+                android:layout_width="30dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textview_addgoalactivity_bubble_one"
+                android:background="@color/disable_button_color" />
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textview_addgoalactivity_bubble_one"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_4"
+                android:gravity="center_horizontal"
+                android:text="@string/description"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_12" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <View
+                android:id="@+id/view_addgoalactivity_line_one"
+                android:layout_width="30dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/textview_addgoalactivity_bubble_two"
+                android:background="@color/disable_button_color" />
+
+            <View
+                android:id="@+id/view_addgoalactivity_line_two"
+                android:layout_width="30dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textview_addgoalactivity_bubble_two"
+                android:background="@color/disable_button_color" />
+
+            <TextView
+                android:id="@+id/textview_addgoalactivity_bubble_two"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/disable_color_rounded_rectangle"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textview_addgoalactivity_bubble_two"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_4"
+                android:gravity="center_horizontal"
+                android:text="@string/definition"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_12" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <View
+                android:id="@+id/view_addgoalactivity_line_three"
+                android:layout_width="70dp"
+                android:layout_height="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/textview_addgoalactivity_bubble_three"
+                android:background="@color/disable_button_color" />
+
+            <TextView
+                android:id="@+id/textview_addgoalactivity_bubble_three"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/disable_color_rounded_rectangle"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textview_addgoalactivity_bubble_three"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_4"
+                android:gravity="center_horizontal"
+                android:text="@string/milestone"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_12" />
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

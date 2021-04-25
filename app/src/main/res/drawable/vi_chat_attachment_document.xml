@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#ce4398"
+        android:name="Ellipse 1 copy 6"
+        android:pathData="m12 2.915c5.017 0 9.085 4.067 9.085 9.085c0 5.017 -4.067 9.085 -9.085 9.085c-5.017 0 -9.085 -4.067 -9.085 -9.085c0 -5.017 4.067 -9.085 9.085 -9.085z" />
+    <path
+        android:fillColor="#fff"
+        android:name="Forma 1 copy 13"
+        android:pathData="m15.678 7.444c0 -0.15 -0.123 -0.274 -0.271 -0.274c-2.259 0 -4.518 0 -6.777 0c-0.148 0 -0.271 0.125 -0.271 0.274c0 3.049 0 6.099 0 9.148c0 0.15 0.123 0.274 0.271 0.274c2.259 0 4.518 0 6.777 0c0.08 0 0.14 -0.029 0.184 -0.073c0.003 -0.002 0.005 -0.005 0.007 -0.007c0.002 -0.002 0.005 -0.005 0.007 -0.008c0.044 -0.044 0.073 -0.105 0.073 -0.186c0 -3.049 0 -6.099 0 -9.148z" />
+    <path
+        android:fillColor="#ce4398"
+        android:name="Forma 1"
+        android:pathData="m9.64 8.769v0.388h2.043v-0.388zm0 0.776v0.388h2.043v-0.388zm2.746 -0.824v1.939h2.059v-1.939zm-2.746 1.6v0.388h2.043v-0.388zm0 0.776v0.388h4.805v-0.388zm0 0.97v0.388h4.805v-0.388zm0 1.009v0.388h4.805v-0.388zm0 0.97v0.388h4.805v-0.388zm0 0.99v0.388h4.805v-0.388z" />
+</vector>

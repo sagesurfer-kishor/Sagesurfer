@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/file_permission_view"
+        android:title="@string/view"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/file_permission_read"
+        android:title="@string/read"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/file_permission_modify"
+        android:title="@string/modify"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/file_permission_admin"
+        android:title="@string/admin"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/file_permission_forbidden"
+        android:title="@string/forbidden"
+        app:showAsAction="ifRoom|withText" />
+</menu>

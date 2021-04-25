@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="@dimen/margin_4">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@drawable/white_rounded_rectangle_gray_border">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_search"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/imagebutton_search"
+                    android:background="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/action_search"
+                    android:imeOptions="actionSearch"
+                    android:maxLength="30"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/vi_search_gray" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_header"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:background="@drawable/planner_bg"
+        android:elevation="3dp"
+        android:gravity="start"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/margin_10">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_dailyplanner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/profile_size"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/textview_dailyplanner_greet"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="start|center"
+                android:maxLines="1"
+                android:paddingStart="0dp"
+                android:paddingEnd="7dp"
+                android:text="@string/good_morning"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <RelativeLayout
+                android:layout_width="@dimen/profile_size"
+                android:layout_height="@dimen/profile_size">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/invitation_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:background="@color/transparent"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/vi_calendar_invite" />
+
+                <TextView
+                    android:id="@+id/invite_counter"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/calendar_selector_circle"
+                    android:gravity="center"
+                    android:minWidth="18dp"
+                    android:padding="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textview_fragmentdailyplanner_name"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearlayout_dailyplanner"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lines="1"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/margin_6"
+            android:text="@string/first_name"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/textview_dailyplanner_message"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview_fragmentdailyplanner_name"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="A good laugh and a good sleep are the two best cures for anything."
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/dailyplanner_tab_layout"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:elevation="2dp"
+            android:fillViewport="false"
+            android:minHeight="@dimen/actionBarSize"
+            android:textSize="@dimen/text_size_16"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorHeight="4dp"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/AppTabTextAppearance"
+            app:tabTextColor="@color/item_separator_line"
+            tools:targetApi="lollipop" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_header_search"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:background="@drawable/planner_bg"
+        android:elevation="3dp"
+        android:gravity="start"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/margin_10"
+        android:visibility="gone">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/dailyplanner_tab_layout_search"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:elevation="2dp"
+            android:fillViewport="false"
+            android:minHeight="@dimen/actionBarSize"
+            android:textSize="@dimen/text_size_16"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorHeight="4dp"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/AppTabTextAppearance"
+            app:tabTextColor="@color/item_separator_line"
+            tools:targetApi="lollipop" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/lineralayout_month"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/planner_fragment_month_back"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/transparent"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/vi_calendar_back_arrow" />
+
+                <TextView
+                    android:id="@+id/planner_fragment_month_name"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/action_settings"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_16" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/planner_fragment_month_next"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/transparent"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/vi_calendar_next_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@color/screen_background"
+                android:elevation="@dimen/margin_4"
+                android:orientation="vertical">
+
+                <com.sagesurfer.views.ExpandableHeightGridView
+                    android:id="@+id/planner_fragment_grid_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:choiceMode="singleChoice"
+                    android:horizontalSpacing="4dp"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="7"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:scrollbars="none"
+                    android:verticalSpacing="6dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_swiperefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
+            <LinearLayout
+                android:id="@+id/linearlayout_swiperefresh_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/screen_background"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_swiperefresh_error"
+                    android:layout_width="200dp"
+                    android:layout_height="240dp"
+                    app:srcCompat="@drawable/vi_data_not_fount_error" />
+
+                <TextView
+                    android:id="@+id/textview_swiperefresh_error_message"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_record_found"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_18" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

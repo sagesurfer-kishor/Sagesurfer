@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_journal"
+        android:icon="@drawable/vi_mood_journal"
+        android:showAsAction="always"
+        android:title="@string/journal"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_stats"
+        android:icon="@drawable/vi_mood_stats"
+        android:showAsAction="always"
+        android:title="@string/stats"
+        app:showAsAction="always"/>
+</menu>

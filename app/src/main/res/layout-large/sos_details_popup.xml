@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:maxWidth="300dp"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/white_rounded_rectangle"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
+
+        <LinearLayout
+            android:id="@+id/sos_details_pop_container_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/sos_details_pop_image_one"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/primary_circle"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user_male" />
+
+                <View
+                    android:id="@+id/sos_details_pop_vertical_one"
+                    android:layout_width="2.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/warning_text_color"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sos_details_pop_name_one"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="@string/runtime_permissions_txt"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_20" />
+
+                    <TextView
+                        android:id="@+id/sos_details_pop_time_one"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:lines="1"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_18" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/sos_details_pop_message_one"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/runtime_permissions_txt"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sos_details_pop_container_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="80dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/sos_details_pop_image_two"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/primary_circle"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user_male" />
+
+                <View
+                    android:id="@+id/sos_details_pop_vertical_two"
+                    android:layout_width="2.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/warning_text_color"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sos_details_pop_name_two"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="@string/runtime_permissions_txt"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_20" />
+
+                    <TextView
+                        android:id="@+id/sos_details_pop_time_two"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:lines="1"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_18" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/sos_details_pop_message_two"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/runtime_permissions_txt"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sos_details_pop_container_three"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/sos_details_pop_image_three"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/primary_circle"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user_male" />
+
+                <View
+                    android:id="@+id/sos_details_pop_vertical_three"
+                    android:layout_width="2.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/warning_text_color"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sos_details_pop_name_three"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="@string/runtime_permissions_txt"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_20" />
+
+                    <TextView
+                        android:id="@+id/sos_details_pop_time_three"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:lines="1"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_18" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sos_details_pop_message_three"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/runtime_permissions_txt"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sos_details_pop_container_four"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/sos_details_pop_image_four"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/primary_circle"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user_male" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sos_details_pop_name_four"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="@string/runtime_permissions_txt"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_20" />
+
+                    <TextView
+                        android:id="@+id/sos_details_pop_time_four"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:lines="1"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_18" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sos_details_pop_message_four"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/runtime_permissions_txt"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

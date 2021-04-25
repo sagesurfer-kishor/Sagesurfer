@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_mood"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/mood_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.9" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/margin_8"
+        android:weightSum="2.5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomnav_left"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="@color/white"
+                app:elevation="0dp"
+                app:itemIconTint="@color/text_color_secondary"
+                app:itemTextColor="@color/text_color_secondary"
+                app:menu="@menu/menu_mood_journal_stats" />
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_add"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="@drawable/circle_gray_corners"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/imageview_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:src="@drawable/vi_mood_add"
+                        android:visibility="visible" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomnav_right"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="@color/white"
+                app:elevation="0dp"
+                app:itemIconTint="@color/text_color_secondary"
+                app:itemTextColor="@color/text_color_secondary"
+                app:menu="@menu/menu_mood_calender_more" />
+        </LinearLayout>
+    </LinearLayout>
+    <!--
+    app:itemIconTint="@color/colorPrimary"
+            app:itemTextColor="@color/colorPrimary"
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/mood_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:fillViewport="false"
+        android:minHeight="@dimen/actionBarSize"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/white"
+        app:tabIndicatorHeight="4dp"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextAppearance="@style/AppTabTextAppearance"
+        app:tabTextColor="@color/item_separator_line"
+        tools:targetApi="lollipop" />-->
+</LinearLayout>
+
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@color/gray"
+        android:foregroundGravity="top"
+        android:gravity="top">
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottomnav"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:background="null"
+            app:itemIconTint="@color/colorPrimary"
+            app:itemTextColor="@color/colorPrimary"
+            app:menu="@menu/main">
+        </android.support.design.widget.BottomNavigationView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:visibility="gone"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/fab_add" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:src="@drawable/vi_add_gray" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottomnav1"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:background="null"
+            app:itemIconTint="@color/colorPrimary"
+            app:itemTextColor="@color/colorPrimary"
+            app:menu="@menu/main">
+        </android.support.design.widget.BottomNavigationView>
+    </LinearLayout>
+    </LinearLayout>
+    -->

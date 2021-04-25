@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/behavioural_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/submitted_date"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/yes_no_goal_img"
+            android:padding="5dp"
+            android:text="6th Nov, 2019 | 3:49 pm"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:id="@+id/down_arrow"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/down_icon"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/up_arrow"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/up_icon"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/questions_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_tab_pressed"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="start"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:text="Sr."
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@+id/reply_comment"
+                android:gravity="start"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:text="Questions"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_16" />
+
+
+            <TextView
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="start"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:text="Ans."
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_16" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/questions_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/questions__refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.baoyz.swipemenulistview.SwipeMenuListView
+                android:id="@+id/questions__listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:divider="@color/transparent"
+                android:dividerHeight="@dimen/activity_vertical_margin"
+                android:scrollbarStyle="outsideOverlay" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+</LinearLayout>

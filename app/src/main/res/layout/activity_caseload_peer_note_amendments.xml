@@ -1,0 +1,154 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical"
+    tools:context="com.modules.caseload.CaseloadSummaryActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/caseload_peer_note_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
+        android:elevation="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        tools:targetApi="lollipop">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/caseload_peer_note_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:text="@string/add_amendment"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearLayoutFooter"
+            android:layout_marginTop="@dimen/margin_10"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/screen_background"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_error"
+                android:layout_width="200dp"
+                android:layout_height="240dp"
+                app:srcCompat="@drawable/vi_data_not_fount_error" />
+
+            <TextView
+                android:id="@+id/textview_error_message"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_record_found"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutFooter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutFooter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cc_chat_footer_background"
+                android:padding="2dp">
+
+                <ImageButton
+                    android:id="@+id/button_send_amendment"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
+                    android:padding="5dp"
+                    android:rotation="45"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/vi_chat_send"
+                    android:visibility="visible" />
+
+                <FrameLayout
+                    android:id="@+id/framelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/button_send_amendment"
+                    android:layout_toLeftOf="@+id/button_send_amendment">
+
+                    <EditText
+                        android:id="@+id/edit_text_amendment"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toStartOf="@+id/button_send_amendment"
+                        android:layout_toLeftOf="@+id/button_send_amendment"
+                        android:autoLink="web"
+                        android:background="@drawable/cc_rounded_border_edittext"
+                        android:ems="10"
+                        android:hint="Type your amendment"
+                        android:imeOptions="actionSend"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:linksClickable="true"
+                        android:maxLength="600"
+                        android:maxLines="3"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:paddingEnd="33dp"
+                        android:paddingRight="33dp"
+                        android:scrollbars="vertical"
+                        android:textColorHint="#cccccc"
+                        android:textSize="@dimen/text_size_16">
+
+                        <requestFocus />
+                    </EditText>
+                </FrameLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

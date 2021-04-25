@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_goal_view_grid"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:background="@color/screen_background"
+    android:elevation="3dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:targetApi="lollipop">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:orientation="horizontal"
+            tools:ignore="NestedWeights"
+            tools:targetApi="lollipop">
+
+            <TextView
+                android:id="@+id/my_goal_item_caution_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/my_goal_item_icon_one"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/action_settings"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/subheading_text_size" />
+
+            <ImageView
+                android:id="@+id/my_goal_item_icon_one"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/primary_circle"
+                android:padding="4dp"
+                android:src="@drawable/ic_inbox_blue" />
+
+            <TextView
+                android:id="@+id/my_goal_item_name_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/my_goal_item_icon_one"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/action_settings"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/subheading_text_size" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="NestedWeights"
+            tools:targetApi="lollipop">
+
+            <TextView
+                android:id="@+id/my_goal_item_caution_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/my_goal_item_icon_two"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/action_settings"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/subheading_text_size" />
+
+            <ImageView
+                android:id="@+id/my_goal_item_icon_two"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/sos_attended_circle"
+                android:padding="4dp"
+                android:src="@drawable/ic_inbox_blue" />
+
+            <TextView
+                android:id="@+id/my_goal_item_name_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/my_goal_item_icon_two"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/action_settings"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/subheading_text_size" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="NestedWeights">
+
+            <TextView
+                android:id="@+id/my_goal_item_caution_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/my_goal_item_icon_three"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/action_settings"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/subheading_text_size" />
+
+            <ImageView
+                android:id="@+id/my_goal_item_icon_three"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/sos_attended_circle"
+                android:padding="4dp"
+                android:src="@drawable/ic_inbox_blue" />
+
+            <TextView
+                android:id="@+id/my_goal_item_name_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/my_goal_item_icon_three"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/action_settings"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/subheading_text_size" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="NestedWeights">
+
+            <TextView
+                android:id="@+id/my_goal_item_caution_four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/my_goal_item_icon_four"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/action_settings"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/subheading_text_size" />
+
+            <ImageView
+                android:id="@+id/my_goal_item_icon_four"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/primary_circle"
+                android:padding="4dp"
+                android:src="@drawable/ic_inbox_blue" />
+
+            <TextView
+                android:id="@+id/my_goal_item_name_four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/my_goal_item_icon_four"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/action_settings"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/subheading_text_size" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

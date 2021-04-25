@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:TagsEditText="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/create_mail_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_toolbar_layout" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/create_mail_warning"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:gravity="center"
+                    android:text="@string/action_settings"
+                    android:textColor="@color/warning_text_color"
+                    android:textSize="@dimen/text_size_16"
+                    android:textStyle="italic"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="7dp"
+                            android:text="@string/to"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:gravity="start"
+                            android:text="*"
+                            android:textColor="@color/self_goal_red"
+                            android:textSize="@dimen/text_size_20"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <com.sagesurfer.views.TagsEditText
+                        android:id="@+id/create_mail_to"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="visible"
+                        android:textColor="@color/black"
+                        TagsEditText:allowSpaceInTag="true"
+                        TagsEditText:tagsBackground="@drawable/square"
+                        TagsEditText:tagsCloseImagePadding="@dimen/defaultTagsCloseImagePadding"
+                        TagsEditText:tagsCloseImageRight="@drawable/tag_close"
+                        TagsEditText:tagsTextColor="@color/white"
+                        TagsEditText:tagsTextSize="@dimen/defaultTagsTextSize" />
+
+                    <TextView
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="7dp"
+                        android:text="@string/cc"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color_tertiary"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="visible" />
+
+                    <com.sagesurfer.views.TagsEditText
+                        android:id="@+id/create_mail_cc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="visible"
+                        android:textColor="@color/black"
+                        TagsEditText:allowSpaceInTag="true"
+                        TagsEditText:tagsBackground="@drawable/square"
+                        TagsEditText:tagsCloseImagePadding="@dimen/defaultTagsCloseImagePadding"
+                        TagsEditText:tagsCloseImageRight="@drawable/tag_close"
+                        TagsEditText:tagsTextColor="@color/white"
+                        TagsEditText:tagsTextSize="@dimen/defaultTagsTextSize" />
+
+                </LinearLayout>
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="@string/subject"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/create_mail_subject"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:gravity="start"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:maxLength="1000"
+                    android:padding="7dp"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:text="@string/description"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/create_mail_message"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/edit_text_primary"
+                    android:gravity="start"
+                    android:maxLength="3000"
+                    android:padding="7dp"
+                    android:scrollbarSize="1dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    android:id="@+id/create_mail_attachments_tag"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:gravity="start"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:text="@string/attachments"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_16"
+                    android:visibility="gone" />
+
+
+                <LinearLayout
+                    android:id="@+id/create_mail_attachments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

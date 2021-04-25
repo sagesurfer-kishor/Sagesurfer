@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuitem_add_goal_frequency_select"
+        android:title="@string/measurement_frequency"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/menuitem_my_goal_count_day"
+        android:title="@string/weekly"
+        app:showAsAction="ifRoom|withText" />
+</menu>

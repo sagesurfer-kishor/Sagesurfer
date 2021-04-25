@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D8DFE2">
+
+    <LinearLayout
+        android:id="@+id/cardview_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/message_rounded_border"
+        android:padding="5dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/ed_search_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawablePadding="10dp"
+            android:gravity="start|center_vertical"
+            android:hint="search"
+            android:imeOptions="actionSearch"
+            android:maxLength="30"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/grey" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linealayout_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/emergency_layout"
+        android:layout_below="@+id/cardview_actions"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_error_icon"
+            android:layout_width="200dp"
+            android:layout_height="240dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:padding="@dimen/margin_50">
+
+            <TextView
+                android:id="@+id/textview_error_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_10"
+                android:text="@string/no_record_found"
+                android:textColor="@color/color_black"
+                android:textSize="18dp" />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+
+    <ExpandableListView
+        android:id="@+id/expandablelistview_teams"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/emergency_layout"
+        android:layout_below="@+id/cardview_actions"
+        android:layout_gravity="start"
+        android:choiceMode="multipleChoice"
+        android:dividerHeight="0.3dp"
+        android:groupIndicator="@null"
+        android:paddingTop="5dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contacts_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/emergency_layout"
+        android:layout_below="@+id/cardview_actions"
+        android:dividerHeight="1dp"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/emergency_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SageSurfer is not designed to be used for emergencies. If you are experiencing behavioral health or medical emergency, please dial 911."
+            android:textColor="#212121"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

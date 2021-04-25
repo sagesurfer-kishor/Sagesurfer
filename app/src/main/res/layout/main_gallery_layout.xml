@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screen_background">
+
+
+        <LinearLayout
+            android:id="@+id/linealayout_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/count_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/count_album_txt"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="5dp"
+                    android:text="Total Albums (0)"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_size_16"
+                    android:visibility="visible" />
+
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@null"
+                    app:srcCompat="@drawable/vi_search_gray" />
+
+
+            </RelativeLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="@dimen/margin_4">
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_10"
+                        android:background="@drawable/white_rounded_rectangle_gray_border">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edittext_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/imagebutton_search"
+                            android:background="@null"
+                            android:drawablePadding="10dp"
+                            android:gravity="start|center_vertical"
+                            android:hint="@string/action_search"
+                            android:imeOptions="actionSearch"
+                            android:maxLength="30"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorPrimary"
+                            android:textColorHint="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/imagebutton_search"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_toLeftOf="@+id/cancel_txt"
+                            android:background="@null"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            app:srcCompat="@drawable/vi_search_gray" />
+
+                        <TextView
+                            android:id="@+id/cancel_txt"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginRight="10dp"
+                            android:text="Cancel"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_size_16" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linealayout_header"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/blue_rounded_rectangle"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/list_view_label"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:paddingStart="3dp"
+                android:paddingEnd="5dp"
+                android:text="List View"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14"
+                android:visibility="visible" />
+
+
+            <ImageView
+                android:id="@+id/delete_gallery"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/delete_img_gray"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/swipe_refresh_layout_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_layout"
+            android:layout_marginTop="2dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_layout"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/swipe_refresh_recycler_view_error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_layout"
+            android:layout_alignParentStart="true"
+            android:background="@color/screen_background"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/swipe_refresh_recycler_view__error_icon"
+                android:layout_width="200dp"
+                android:layout_height="240dp"
+                app:srcCompat="@drawable/vi_data_not_fount_error" />
+
+            <TextView
+                android:id="@+id/swipe_refresh_recycler_view_error_message"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_record_found"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/swipe_refresh_layout_recycler_view_float"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@color/transparent"
+            android:src="@color/transparent" />
+    </RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

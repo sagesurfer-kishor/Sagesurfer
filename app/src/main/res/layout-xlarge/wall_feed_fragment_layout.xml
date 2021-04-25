@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/wall_feed_fragment_post_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="3dp"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="10dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingBottom="10dp"
+        android:visibility="gone"
+        tools:targetApi="lollipop">
+
+        <ImageView
+            android:id="@+id/wall_feed_fragment_image"
+            android:layout_width="@dimen/profile_size"
+            android:layout_height="@dimen/profile_size"
+            android:contentDescription="@string/user_photo"
+            android:src="@drawable/ic_user_male" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:singleLine="true"
+            android:text="@string/my_thoughts"
+            android:textColor="@color/text_color_primary"
+            android:textSize="@dimen/subheading_text_size" />
+    </LinearLayout>
+
+    <include layout="@layout/list_view_layout" />
+</LinearLayout>

@@ -1,0 +1,48 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/margin_10"
+    android:paddingEnd="@dimen/margin_10"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#D8DFE2"
+
+    tools:context="com.modules.cometchat_7_30.LastConversion.FragmentLastConversation">
+   <LinearLayout
+       android:id="@+id/cardview_actions"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="5dp"
+       android:layout_marginBottom="5dp"
+       android:padding="5dp"
+       android:background="@drawable/message_rounded_border"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       android:visibility="visible">
+   <EditText
+       android:id="@+id/ed_search_friend"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@null"
+       android:drawablePadding="@dimen/margin_10"
+       android:gravity="start|center_vertical"
+       android:hint="search"
+       android:imeOptions="actionSearch"
+       android:maxLength="30"
+       android:padding="10dp"
+       android:singleLine="true"
+       android:textColor="@color/colorPrimary"
+       android:textColorHint="@color/grey" />
+   </LinearLayout>
+
+   <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/rv_last_conversion"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/cardview_actions" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

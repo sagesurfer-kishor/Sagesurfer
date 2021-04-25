@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- this screen is used for chatroom group list option -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_add_member"
+        android:textColor="@color/white"
+        android:id="@+id/btn_add_member"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/text_size_16"
+        android:layout_marginRight="@dimen/text_size_16"
+        android:layout_marginTop="@dimen/text_size_18"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_group_title"
+        android:textColor="@color/white"
+        android:id="@+id/btn_delete_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_add_member"
+        android:layout_marginLeft="@dimen/text_size_16"
+        android:layout_marginRight="@dimen/text_size_16"
+        android:layout_marginTop="@dimen/text_size_10"
+        />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_size_1"
+        android:layout_marginTop="@dimen/text_size_20"
+        android:background="@color/grey_view_seperator"
+        app:layout_constraintTop_toBottomOf="@+id/btn_delete_group" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/group_members"
+        android:textColor="@color/black"
+        android:id="@+id/tv_add_members"
+        android:layout_marginLeft="@dimen/text_size_16"
+        android:layout_marginRight="@dimen/text_size_16"
+        android:layout_marginTop="@dimen/text_size_22"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/group_members"
+        android:textColor="@color/black"
+        android:id="@+id/tv_group_created"
+        android:layout_marginLeft="@dimen/text_size_16"
+        android:layout_marginRight="@dimen/text_size_16"
+        android:layout_marginTop="@dimen/text_size_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_members"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/group_members"
+        android:textColor="@color/black"
+        android:id="@+id/tv_group_owner"
+        android:layout_marginLeft="@dimen/text_size_16"
+        android:layout_marginRight="@dimen/text_size_16"
+        android:layout_marginTop="@dimen/text_size_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_group_created"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

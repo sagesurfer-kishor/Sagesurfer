@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_message_item_my_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_marginStart="50dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:background="@drawable/chat_b"
+    android:gravity="start|bottom"
+    android:orientation="vertical">
+
+
+    <com.sagesurfer.sage.emoji.custom.EmojiTextView
+        android:id="@+id/chat_message_item_my_message"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start|top"
+        android:text="@string/dummy_text"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_14" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/chat_message_item_my_image"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/vi_image_thumbnail"
+            android:contentDescription="TODO" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chat_message_my_time"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:gravity="end|bottom"
+        android:paddingStart="15dp"
+        android:paddingEnd="0dp"
+        android:singleLine="true"
+        android:text="@string/about_us"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_12" />
+</LinearLayout>

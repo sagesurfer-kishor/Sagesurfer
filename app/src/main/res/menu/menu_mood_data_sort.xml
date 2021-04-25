@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group"
+        android:checkableBehavior="single">
+
+        <!--<item
+            android:id="@+id/select_mood"
+            android:title="Select Mood" />
+
+        <item
+            android:id="@+id/happy_mood"
+            android:title="Happy" />
+
+        <item
+            android:id="@+id/anxious_mood"
+            android:title="Anxious" />
+
+        <item
+            android:id="@+id/sad_mood"
+            android:title="Sad" />
+
+        <item
+            android:id="@+id/bored_mood"
+            android:title="Bored" />
+
+        <item
+            android:id="@+id/fearful_mood"
+            android:title="Fearful" />
+
+        <item
+            android:id="@+id/fearful_confused"
+            android:title="Confused" />
+
+        <item
+            android:id="@+id/fearful_frustrated"
+            android:title="Frustrated" />
+
+        <item
+            android:id="@+id/fearful_angry"
+            android:title="Angry" />
+
+        <item
+            android:id="@+id/fearful_excited"
+            android:title="Excited" />-->
+
+
+    </group>
+</menu>

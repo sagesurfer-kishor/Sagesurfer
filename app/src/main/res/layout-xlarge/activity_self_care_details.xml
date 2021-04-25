@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/relativelayout_activityselfcaredetails_footer"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_activityselfcaredetails"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:background="@color/colorPrimary"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                android:contentInsetEnd="0dp"
+                android:contentInsetRight="0dp"
+                android:elevation="0dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                tools:targetApi="lollipop">
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout_activityselfcaredetails_action"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent">
+
+                    <TextView
+                        android:id="@+id/textview_activityselfcaredetails_reject"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/textview_activityselfcaredetails_accept"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:text="@string/reject"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <TextView
+                        android:id="@+id/textview_activityselfcaredetails_accept"
+                        style="@style/CustomFontStylePrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/margin_8"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:text="@string/accept"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_18" />
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_activityselfcaredetails_top"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.45"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/imageview_activityselfcaredetails"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:visibility="gone" />
+
+                <VideoView
+                    android:id="@+id/videoview_activityselfcaredetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+                <FrameLayout
+                    android:id="@+id/framelayout_activityselfcaredetails_youtube"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout_activityselfcaredetails_media_footer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:layout_alignParentBottom="true"
+                    android:background="#30000000"
+                    android:gravity="center_vertical"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_activityselfcaredetails_full_screen"
+                        android:layout_width="@dimen/actionBarSize"
+                        android:layout_height="@dimen/actionBarSize"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:padding="15dp"
+                        app:srcCompat="@drawable/vi_full_screen_icon" />
+                </RelativeLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressbar_activityselfcaredetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutAudioContainer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:layout_alignParentBottom="true"
+                android:background="#20000000"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/imageViewPlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_play_arrow" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewCurrentTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" / " />
+
+                    <TextView
+                        android:id="@+id/textViewTotalTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seek_bar_audio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/linearlayout_time"
+                    android:layout_toEndOf="@id/imageViewPlay" />
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/actionBarSize"
+                android:layout_weight="0.55"
+                android:background="@color/screen_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <TextView
+                            android:id="@+id/textview_activityselfcaredetails_title"
+                            style="@style/CustomFontStylePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|top"
+                            android:text="@string/runtime_permissions_txt"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_18" />
+
+                        <LinearLayout
+                            android:id="@+id/care_details_count_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:gravity="center_vertical|start"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:gravity="center_vertical|start"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/imageview_activityselfcaredetails_like"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:padding="2dp"
+                                    app:srcCompat="@drawable/vi_like_gray" />
+
+                                <TextView
+                                    android:id="@+id/textview_activityselfcaredetails_like_count"
+                                    style="@style/CustomFontStylePrimary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:paddingStart="5dp"
+                                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                                    android:textColor="@color/text_color_primary"
+                                    android:textSize="@dimen/text_size_16" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:gravity="center_vertical|start"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/imageview_activityselfcaredetails_comment"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:padding="2dp"
+                                    app:srcCompat="@drawable/vi_comment_gray" />
+
+                                <TextView
+                                    android:id="@+id/textview_activityselfcaredetails_comment_count"
+                                    style="@style/CustomFontStylePrimary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:paddingStart="5dp"
+                                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                                    android:textColor="@color/text_color_primary"
+                                    android:textSize="@dimen/text_size_16"
+                                    android:visibility="visible" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:gravity="center_vertical|start"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/imageview_activityselfcaredetails_share"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:padding="2dp"
+                                    app:srcCompat="@drawable/vi_share_gray" />
+
+                                <TextView
+                                    android:id="@+id/textview_activityselfcaredetails_share_count"
+                                    style="@style/CustomFontStylePrimary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:paddingStart="5dp"
+                                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                                    android:textColor="@color/text_color_primary"
+                                    android:textSize="@dimen/text_size_16"
+                                    android:visibility="visible" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textview_activityselfcaredetails_shared_with"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/shared_with"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textview_activityselfcaredetails_website_url"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:autoLink="web"
+                            android:text="@string/runtime_permissions_txt"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textview_activityselfcaredetails_description"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/runtime_permissions_txt"
+                            android:textColor="@color/text_color_tertiary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                android:paddingStart="0dp"
+                                android:paddingEnd="3dp"
+                                android:text="@string/category_dash"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_16" />
+
+                            <TextView
+                                android:id="@+id/textview_activityselfcaredetails_category"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:gravity="start"
+                                android:lines="1"
+                                android:text="@string/runtime_permissions_txt"
+                                android:textColor="@color/text_color_tertiary"
+                                android:textSize="@dimen/text_size_16" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/list_selector" />
+
+                        <TextView
+                            android:id="@+id/textview_activityselfcaredetails_comment_tag"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            android:paddingBottom="10dp"
+                            android:text="@string/comments"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_16" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/list_selector" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_activityselfcaredetails_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textview_activityselfcaredetails_warning_footer"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="@string/self_care_reviewer_warning"
+            android:textColor="@color/warning_text_color"
+            android:textSize="@dimen/text_size_18"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_activityselfcaredetails_footer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionBarSize"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/list_background" />
+
+            <EditText
+                android:id="@+id/edittext_activityselfcaredetails_footer_message"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/care_details_footer_send"
+                android:background="@color/transparent"
+                android:gravity="start|center_vertical"
+                android:hint="@string/type_here"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="0dp"
+                android:textColor="@color/text_color_primary"
+                android:textColorHint="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_18" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imageview_activityselfcaredetails_footer_send"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="15dp"
+                android:background="?android:attr/selectableItemBackground"
+                app:srcCompat="@drawable/add_icon" />
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

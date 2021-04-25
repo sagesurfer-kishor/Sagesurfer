@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/linearlayout_activitysinglechatvideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_toolbar_layout" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_activitysinglechatvideo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/video_chat" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

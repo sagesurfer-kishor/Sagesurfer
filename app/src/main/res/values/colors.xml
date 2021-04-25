@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0D79C2</color>
+    <color name="colorSecondary">#757575</color>
+    <color name="colorPrimaryDark">#0c6cad</color>
+    <color name="colorAccent">#0D79C2</color>
+    <color name="colorPrimaryShade">#4ce4f6</color>
+    <color name="colorPrimaryDarker">#074e7e</color>
+    <color name="black">@android:color/black</color>
+    <color name="white">@android:color/white</color>
+    <color name="white1">#FFFFFF</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="colorPrimary_transparent">#950D79C2</color>
+
+    <color name="color_black">#000000</color>
+
+    <color name="transparent_40">#40000000</color>
+    <color name="transparent_80_white">#80ffffff</color>
+
+    <color name="snack_bar_background_color">#ededed</color>
+    <color name="dialog_background_color">#99000000</color>
+    <color name="tab_unselected_text">#78a8d6</color>
+    <color name="text_color_primary">#333333</color>
+    <color name="text_color_secondary">#757575</color>
+    <color name="text_color_tertiary">#a5a5a5</color>
+    <color name="text_color_read">#848484</color>
+    <color name="text_color_unread">#333333</color>
+    <color name="hint_text_color">#848484</color>
+    <color name="success_color">#44bf3a</color>
+    <color name="warning_text_color">#e63333</color>
+    <color name="disable_button_color">#e0e0e0</color>
+    <color name="list_selector">#ededed</color>
+    <color name="list_divider">#9e9e9e</color>
+    <color name="list_background">#f1f3f5</color>
+    <color name="item_separator_line">#d6d6d6</color>
+
+    <color name="sos_delivered">#fe5d5d</color>
+    <color name="sos_not_attending">#ed6014</color>
+    <color name="covid_orange">#FF9800</color>
+    <color name="covid_red">#FF1100</color>
+    <color name="sos_attending">#529839</color>
+    <color name="sos_forward_background">#fadcd3</color>
+    <color name="sos_inprogress_background">#fdf6bd</color>
+    <color name="sos_completed_background">#cbf7bb</color>
+
+    <color name="sos_fab">#f84e4e</color>
+    <color name="sos_call">#c377f3</color>
+    <color name="sos_meet">#ef8361</color>
+    <color name="sos_chat">#5fc6f1</color>
+    <color name="sos_other">#4cbd6e</color>
+    <color name="sos_grey">#abaaaa</color>
+    <!--File colors-->
+    <color name="color_csv">#03c9a8</color>
+    <color name="color_doc">#0069aa</color>
+    <color name="color_gif">#B0EFEA</color>
+    <color name="color_html">#fa9507</color>
+    <color name="color_image">#00afee</color>
+    <color name="color_other">#90c695</color>
+    <color name="color_pdf">#fb6f6f</color>
+    <color name="color_ppt">#f15a25</color>
+    <color name="color_rtf">#6a9a8f</color>
+    <color name="color_tif">#d1527f</color>
+    <color name="color_text">#6d7a8a</color>
+    <color name="color_xls">#3ab54b</color>
+    <color name="color_xml">#01b39b</color>
+    <color name="color_audio">#674172</color>
+    <color name="color_video">#e6b60a</color>
+
+    <!--Task List status-->
+    <color name="task_assigned">#F0E9E9</color>
+    <color name="task_in_progress">#69a5ee</color>
+    <color name="task_on_hold">#e1bf20</color>
+    <color name="task_completed">#45be5c</color>
+    <color name="task_deferred">#c30008</color>
+    <color name="task_hold_decline">#8b0a50</color>
+    <color name="task_non_sage_decline">#27adff</color>
+
+    <color name="poll_vote_1">#bb7fea</color>
+    <color name="poll_vote_2">#73de5a</color>
+    <color name="poll_vote_3">#d8d652</color>
+    <color name="poll_vote_4">#d46c43</color>
+
+    <color name="icon_announcement">#83af28</color>
+    <color name="icon_task">#4c8862</color>
+
+    <color name="calendar_day_color">#eb5683</color>
+    <color name="light_pink">#F63F76</color>
+    <color name="invite_yellow">#efd91b</color>
+
+    <color name="active_crisis">#ec6c6c</color>
+    <color name="episode_crisis">#5490f3</color>
+    <color name="resolved_crisis">#cb6fd3</color>
+
+    <color name="cg_dashboard_box_one">#f2554c</color>
+    <color name="cg_dashboard_box_two">#e8bc77</color>
+    <color name="cg_dashboard_box_three">#4bd872</color>
+    <color name="cg_dashboard_box_four">#1db0ff</color>
+
+    <color name="self_goal_red">#fd6363</color>
+    <color name="self_goal_green">#46be8a</color>
+    <color name="self_goal_orange">#ec9320</color>
+
+    <color name="self_goal_completed">#5dc94b</color>
+    <color name="self_goal_missed">#ed5c5c</color>
+    <color name="self_goal_active">#e6a84e</color>
+    <color name="self_goal_total">#f46dbc</color>
+
+    <color name="online">#19ae0a</color>
+    <color name="busy">#ee2b2b</color>
+    <color name="offline">#6d6e70</color>
+
+    <!--HomeRecentUpdates_Home button gradient background-->
+    <color name="bg_home_menu_one">#6c5ce7</color>
+    <color name="bg_home_menu_two">#00cec9</color>
+    <color name="bg_home_menu_three">#e17055</color>
+    <color name="bg_home_menu_four">#ff7675</color>
+    <color name="bg_home_menu_five">#a29bfe</color>
+    <color name="bg_home_menu_six">#fdcb6e</color>
+
+    <!--Self Goal gradient background-->
+    <color name="bg_dark_self_goal_completed">#078057</color>
+    <color name="bg_light_self_goal_completed">#5adeb1</color>
+    <color name="bg_dark_self_goal_missed">#f45454</color>
+    <color name="bg_light_self_goal_missed">#ed5c5c</color>
+    <color name="bg_dark_self_goal_active">#ba8520</color>
+    <color name="bg_light_self_goal_active">#f0a747</color>
+    <color name="bg_dark_self_goal_total">#289bb4</color>
+    <color name="bg_light_self_goal_total">#63d1ef</color>
+    <color name="screen_background">#eaeef3</color>
+
+    <color name="chip_background">#78b768</color>
+    <color name="chip_background_selected">#9E9E9E</color>
+
+    <color name="text_color_green">#22d369</color>
+    <color name="text_color_pink">#F72851</color>
+    <color name="text_color_yellow">#FFC729</color>
+    <color name="text_color_gray">#8FA2AF</color>
+
+    <!--Daily Planner-->
+    <color name="announcement_icon">#548efa</color>
+    <color name="tasklist_icon">#5b4c45</color>
+    <color name="events_icon">#51d166</color>
+    <color name="selfgoal_icon">#e85f9d</color>
+
+    <!--Mood-->
+    <!--<color name="mood_happy">#4baa29</color>
+    <color name="mood_laugh">#9258d3</color>
+    <color name="mood_cry">#23b89e</color>
+    <color name="mood_sad">#ea9930</color>
+    <color name="mood_worried">#d0428c</color>
+    <color name="mood_angry">#ef4040</color>
+    <color name="mood_activity">#61aaa6</color>-->
+    <color name="mood_happy">#ef85c3</color>
+    <color name="mood_laugh">#ffe759</color>
+    <color name="mood_cry">#599fe7</color>
+    <color name="mood_sad">#2dcc70</color>
+    <color name="mood_worried">#ae90f0</color>
+    <color name="mood_angry">#ed5564</color>
+    <color name="mood_neutral">#fd8d40</color>
+    <color name="mood_excited">#cfe259</color>
+    <color name="mood_confused">#e39b02</color>
+    <color name="mood_frustrated">#ff542c</color>
+    <color name="mood_happy_light">#ffc9e9</color>
+    <color name="mood_laugh_light">#fdf1ac</color>
+    <color name="mood_cry_light">#b7dbff</color>
+    <color name="mood_sad_light">#7ef5b0</color>
+    <color name="mood_worried_light">#dac9ff</color>
+    <color name="mood_bored_light">#66aad3</color>
+    <color name="mood_bored_dark">#4e7993</color>
+    <color name="mood_fearful_light">#b9d394</color>
+    <color name="mood_fearful_dark">#a5bc82</color>
+    <color name="mood_angry_light">#ffbdc4</color>
+    <color name="mood_neutral_light">#ffc69f</color>
+    <color name="mood_excited_light">#ecff9b</color>
+    <color name="mood_activity">#61aaa6</color>
+    <color name="mood_add_progress1">#15ba95</color>
+    <color name="mood_add_progress2">#ff9e10</color>
+    <color name="mood_add_progress3">#f33c3c</color>
+
+    <color name="mood_anxious">#AE90F0</color>
+    <color name="mood_bored">#7DAAC5</color>
+    <color name="mood_fearful">#BFCC88</color>
+
+    <!--Report-->
+    <color name="no_data">#f89ccf</color>
+
+    <!--FMS-->
+    <color name="permission_view">#ad77f0</color>
+    <color name="permission_read">#768ef5</color>
+    <color name="permission_modify">#78b768</color>
+    <color name="permission_admin">#f07575</color>
+
+    <!--Caseload-->
+    <color name="header_strip_pink">#ff9cce</color>
+    <color name="contact_alphabet">#c3c3c3</color>
+
+    <color name="light_grren">#d9ffc2</color>
+    <color name="light_yello">#fdecd1</color>
+    <color name="light_gray">#e0e0e0</color>
+    <color name="my_statusbar_color">#863b9e</color>
+
+
+    <color name="self_goal_color">#5674be</color>
+    <color name="self_care_color">#d938ad</color>
+    <color name="planner_color">#e16104</color>
+    <color name="chat_color">#de2745</color>
+    <color name="teams_color">#0091e5</color>
+    <color name="reports_color">#9b00eb</color>
+    <color name="sky_color">#D2F7F9</color>
+    <color name="goal_hour">#C2E0BD</color>
+    <color name="goal_hour_one">#F0AAAE</color>
+
+    <color name="defaultTagsTextColor">#FFFFFF</color>
+
+    <color name="background_color_black_transparent">#9A0E0D0D</color>
+    <color name="view_color">#D2D2D2</color>
+    <color name="green_color">#05D35D</color>
+
+
+
+    <color name="color_white">#FFF</color>
+
+    <color name="no_background">#00000000</color>
+    <color name="colorBackground">#f8f8f8</color>
+
+    <color name="colorGrey">#7b7b7b</color>
+    <color name="colorDarkGreen">#ECEFF0</color>
+    <color name="colorProfileBackground">#eeeeee</color>
+    <color name="colorLightGrey">#E0E0E0</color>
+
+    <color name="colorDivider">#7f8c8d</color>
+    <color name="colorDividerLight">#D3D3D3</color>
+    <color name="colorFontBlack">#202020</color>
+
+    <color name="background_tab_pressed">#6633B5E5</color>
+
+    <color name="colorAVButton">#E0E4E0</color>
+    <color name="colorAVButtonPressed">#388E3C</color>
+    <color name="highlight_group">#FECED4</color>
+
+</resources>

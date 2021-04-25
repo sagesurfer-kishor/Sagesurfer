@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude
+        domain="database"
+        path="ccc_main" />
+    <!-- Exclude the shared preferences file that contains the GCM registrationId -->
+    <exclude
+        domain="sharedpref"
+        path="oauth.xml" />
+    <exclude
+        domain="sharedpref"
+        path="add_goal.xml" />
+</full-backup-content>

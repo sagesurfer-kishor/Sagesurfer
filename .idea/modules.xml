@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Sagesurfer-rahulmsk.iml" filepath="$PROJECT_DIR$/.idea/modules/Sagesurfer-rahulmsk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Sagesurfer-rahulmsk.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Sagesurfer-rahulmsk.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/circlemenu/Sagesurfer-rahulmsk.circlemenu.iml" filepath="$PROJECT_DIR$/.idea/modules/circlemenu/Sagesurfer-rahulmsk.circlemenu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/emoticonkeyboard/Sagesurfer-rahulmsk.emoticonkeyboard.iml" filepath="$PROJECT_DIR$/.idea/modules/emoticonkeyboard/Sagesurfer-rahulmsk.emoticonkeyboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/uikit/Sagesurfer-rahulmsk.uikit.iml" filepath="$PROJECT_DIR$/.idea/modules/uikit/Sagesurfer-rahulmsk.uikit.iml" />
+    </modules>
+  </component>
+</project>

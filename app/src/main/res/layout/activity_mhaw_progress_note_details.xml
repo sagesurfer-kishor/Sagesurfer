@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
+        android:elevation="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        tools:targetApi="lollipop">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textview_activitytoolbar_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/caseload_peer_note_layout"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:text="@string/note"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <LinearLayout
+                android:id="@+id/caseload_peer_note_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_delete"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/vi_delete_white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_edit"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/vi_self_goal_edit" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_download"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:padding="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_download_white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_add_amendment"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_caseload_amendment" />
+
+                <TextView
+                    android:id="@+id/textview_amendment_count"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingTop="4dp"
+                    android:paddingRight="15dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_comment"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_drawer_chat" />
+
+                <TextView
+                    android:id="@+id/textview_comment_count"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:paddingTop="4dp"
+                    android:paddingRight="15dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:id="@+id/note_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/edittext_rounded_border"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/txt_title_name"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="To test on mobile sagar"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_14" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="Location of service/address"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_location_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="Type of service provided"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_provided_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="HCBS Goal(s) addressed"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_goal_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="HCBS Objective(s) addressed"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_obj_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="Progress made towards Goal(s) and Objective(s)"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_progress_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Reason for travel with client and how support goal (if applicable)"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_reason_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Barriers presented/addressed - describe impact on progress toward Goal(s) and Objective(s)"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_barriers_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Homework assignment for follow up during the next meeting"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_homework_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Next scheduled meeting"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_meeting_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
+                    android:singleLine="false"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="Note Status : "
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:id="@+id/txt_finalize_value"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="Added By"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

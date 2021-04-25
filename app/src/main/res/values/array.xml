@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="mdcolor_400">
+        <item name="red_400" type="color">#e84e40</item>
+        <item name="pink_400" type="color">#ec407a</item>
+        <item name="purple_400" type="color">#ab47bc</item>
+        <item name="deep_purple_400" type="color">#7e57c2</item>
+        <item name="indigo_400" type="color">#5c6bc0</item>
+        <item name="blue_400" type="color">#738ffe</item>
+        <item name="light_blue_400" type="color">#29b6f6</item>
+        <item name="green_400" type="color">#2baf2b</item>
+        <item name="light_green_400" type="color">#9ccc65</item>
+        <item name="yellow_400" type="color">#ffee58</item>
+        <item name="orange_400" type="color">#ffa726</item>
+        <item name="deep_orange_400" type="color">#ff7043</item>
+        <item name="brown_400" type="color">#8d6e63</item>
+        <item name="grey_400" type="color">#bdbdbd</item>
+        <item name="blue_grey_400" type="color">#78909c</item>
+
+        <item name="sos_call" type="color">#e46147</item>
+        <item name="permission_modify" type="color">#78b768</item>
+        <item name="permission_admin" type="color">#f07575</item>
+        <item name="attending_sos_button" type="color">#ec9320</item>
+    </array>
+
+    <string-array name="task_priority">
+        <item>@string/low</item>
+        <item>@string/medium</item>
+        <item>@string/high</item>
+        <item>@string/very_important</item>
+    </string-array>
+
+    <string-array name="add_goal_days_short">
+        <item>@string/mon</item>
+        <item>@string/tue</item>
+        <item>@string/wed</item>
+        <item>@string/thu</item>
+        <item>@string/fri</item>
+        <item>@string/sat</item>
+        <item>@string/sun</item>
+    </string-array>
+
+    <string-array name="add_goal_sequence">
+        <item>@string/first</item>
+        <item>@string/second</item>
+        <item>@string/third</item>
+        <item>@string/fourth</item>
+        <item>@string/last</item>
+    </string-array>
+
+    <string-array name="add_goal_unit">
+        <item>@string/select_unit</item>
+        <item>@string/minute</item>
+        <item>@string/hour</item>
+        <item>@string/daily</item>
+        <item>@string/week</item>
+        <item>@string/other</item>
+    </string-array>
+
+    <string-array name="add_goal_days">
+        <item>@string/sunday</item>
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
+        <item>@string/saturday</item>
+    </string-array>
+
+    <string-array name="types">
+        <item>Client</item>
+        <item>Phone Number</item>
+    </string-array>
+
+    <string-array name="self_care">
+        <item>@string/images</item>
+        <item>@string/videos</item>
+        <item>@string/text_articles</item>
+        <item>@string/blogs</item>
+        <item>@string/podcasts</item>
+        <item>@string/courses</item>
+        <item>@string/intervention_tools</item>
+        <item>@string/webinar</item>
+    </string-array>
+
+    <string-array name="peer_duration">
+        <item>@string/duration</item>
+        <item>@string/zero_mins</item>
+        <item>@string/thirty_mins</item>
+        <item>@string/one_hour</item>
+        <item>@string/one_point_five_hour</item>
+        <item>@string/two_hour</item>
+        <item>@string/two_point_five_hour</item>
+        <item>@string/three_hour</item>
+        <item>@string/three_point_five_hour</item>
+        <item>@string/four_hour</item>
+        <item>@string/four_point_five_hour</item>
+        <item>@string/five_hour</item>
+        <item>@string/five_point_five_hour</item>
+        <item>@string/six_hour</item>
+        <item>@string/six_point_five_hour</item>
+        <item>@string/seven_hour</item>
+        <item>@string/seven_point_five_hour</item>
+        <item>@string/eight_hour</item>
+        <item>@string/eight_point_five_hour</item>
+        <item>@string/nine_hour</item>
+        <item>@string/nine_point_five_hour</item>
+        <item>@string/ten_hour</item>
+        <item>@string/ten_point_five_hour</item>
+        <item>@string/eleven_hour</item>
+        <item>@string/eleven_point_five_hour</item>
+        <item>@string/twelve_hour</item>
+        <item>@string/twelve_point_five_hour</item>
+        <item>@string/thirteen_hour</item>
+        <item>@string/thirteen_point_five_hour</item>
+        <item>@string/fourteen_hour</item>
+        <item>@string/fourteen_point_five_hour</item>
+        <item>@string/fifteen_hour</item>
+        <item>@string/fifteen_point_five_hour</item>
+        <item>@string/sixteen_hour</item>
+        <item>@string/sixteen_point_five_hour</item>
+        <item>@string/seventeen_hour</item>
+        <item>@string/seventeen_point_five_hour</item>
+        <item>@string/eighteen_hour</item>
+        <item>@string/eighteen_point_five_hour</item>
+        <item>@string/nineteen_hour</item>
+        <item>@string/nineteen_point_five_hour</item>
+        <item>@string/twenty_hour</item>
+        <item>@string/twenty_point_five_hour</item>
+        <item>@string/twenty_one_hour</item>
+        <item>@string/twenty_one_point_five_hour</item>
+        <item>@string/twenty_two_hour</item>
+        <item>@string/twenty_two_point_five_hour</item>
+        <item>@string/twenty_three_hour</item>
+        <item>@string/twenty_three_point_five_hour</item>
+        <item>@string/twenty_four_hour</item>
+    </string-array>
+
+    <string-array name="peer_type_of_contact">
+        <item>@string/face_to_face_meeting</item>
+        <item>@string/phone_conversation</item>
+        <item>@string/appointment_support</item>
+        <item>@string/community_resource_engagement</item>
+        <item>@string/community_event</item>
+        <item>@string/sagesurfer</item>
+        <item>@string/text</item>
+        <item>@string/email</item>
+    </string-array>
+
+    <string-array name="sos_priority">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </string-array>
+
+    <string-array name="assessment_answer_type">
+        <item>All</item>
+        <item>Answered</item>
+        <item>Not Answered</item>
+    </string-array>
+
+    <string-array name="contact_alphabet_array">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+        <item>O</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+        <item>U</item>
+        <item>V</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
+
+    <!--<string-array name="question">
+        <item>Sudden high fever</item>
+        <item>Diarrhea</item>
+        <item>Headache</item>
+        <item>Skin Problem (e.g. acne &amp; eczema)</item>
+        <item>Muscle And Joint Pain</item>
+        <item>Common Cold</item>
+        <item>Coughing</item>
+    </string-array>
+
+    <string-array name="answer">
+        <item>None</item>
+        <item>Sometimes</item>
+        <item>Regularly</item>
+        <item>Often</item>
+        <item>Almost (Always)</item>
+    </string-array>-->
+
+</resources>

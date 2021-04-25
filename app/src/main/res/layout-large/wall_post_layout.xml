@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/wall_post_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screen_background"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_toolbar_layout" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/wall_post_footer"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin">
+
+                    <EditText
+                        android:id="@+id/wall_post_message_box"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:cursorVisible="true"
+                        android:textColor="@color/black"
+                        android:gravity="start|top"
+                        android:hint="@string/my_thoughts"
+                        android:minHeight="60dp"
+                        android:paddingTop="10dp"
+                        android:textColorHint="@color/text_color_tertiary"
+                        android:textCursorDrawable="@drawable/primary_cursor"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <LinearLayout
+                        android:id="@+id/feed_list_item_attachment_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/wall_post_attachment_one"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/wall_post_image_one_cancel"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:background="#80000000"
+                                android:padding="10dp"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/vi_cancel_white" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/wall_post_attachment_two"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:scaleType="fitXY" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/wall_post_image_two_cancel"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:background="#80000000"
+                                android:padding="10dp"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/vi_cancel_white" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/wall_post_attachment_three"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY" />
+
+                            <TextView
+                                android:id="@+id/wall_post_attachment_count"
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/transparent_40"
+                                android:gravity="center"
+                                android:text="+12"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_16"
+                                android:visibility="gone" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/wall_post_image_three_cancel"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:background="#80000000"
+                                android:padding="10dp"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/vi_cancel_white" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <RelativeLayout
+                android:id="@+id/wall_post_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:elevation="2dp"
+                tools:targetApi="lollipop">
+
+                <include layout="@layout/wall_post_menu_list_footer" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

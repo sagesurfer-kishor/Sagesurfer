@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <FrameLayout
+        android:id="@android:id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="7dp"
+            android:paddingTop="4dp"
+            android:paddingRight="7dp"
+            android:paddingBottom="4dp">
+
+            <TextView
+                android:id="@android:id/text1"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_12" />
+
+            <ImageView
+                android:id="@android:id/closeButton"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="5dp"
+                android:contentDescription="TODO"
+                android:padding="2dp"
+                android:src="@drawable/ic_cancel_white" />
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

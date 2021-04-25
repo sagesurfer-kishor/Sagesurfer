@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_toolbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/actionBarSize"
+    android:background="@color/colorPrimary"
+    android:elevation="4dp"
+    tools:context=".MainActivity"
+    tools:targetApi="lollipop">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/main_toolbar_title"
+            style="@style/CustomFontStylePrimary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/main_toolbar_icon_layout"
+            android:gravity="left|center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_mood_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageview_toolbar_left_arrorw"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:src="@drawable/vi_angle_arrow_left" />
+
+            <TextView
+                android:id="@+id/textview_toolbar_mood_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/month"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <ImageView
+                android:id="@+id/imageview_toolbar_right_arrorw"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:src="@drawable/vi_angle_arrow_right" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="15dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/vc_bell_white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_toolbar_icon_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/main_toolbar_log_book"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="15dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/log_book_white_icon" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/main_toolbar_add"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="15dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_add_white" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/chat_icon"
+                android:layout_width="36dp"
+                android:layout_height="56dp"
+                android:padding="5dp"
+                android:tint="@color/white"
+                android:visibility="visible"
+                app:srcCompat="@drawable/chatt_iconn" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/setting"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:padding="15dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/setting_icon" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/main_filter_add"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:onClick="onAppointmentFilter"
+                android:padding="20dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_filter_filled_tool_symbol_white"
+                tools:ignore="OnClick" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/main_toolbar_search"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="15dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/vi_search_white" />
+
+            <RelativeLayout
+                android:id="@+id/main_toolbar_bell_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/actionBarSize"
+                android:layout_marginRight="@dimen/margin_6"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/main_toolbar_bell"
+                    android:layout_width="30dp"
+                    android:layout_height="@dimen/actionBarSize"
+
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/vc_bell_white" />
+                <TextView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:id="@+id/main_toolbar_bell_counter"
+                    android:background="@drawable/pink_circle"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:textSize="@dimen/text_size_8"/>
+               <!-- <Button
+                    android:id="@+id/main_toolbar_bell_counter"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/pink_circle"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_10"
+                    android:visibility="visible" />-->
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/main_toolbar_menu"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="15dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/vi_home_menu_white" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>

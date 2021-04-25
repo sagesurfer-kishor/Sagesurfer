@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/home_new_bg"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/CustomFontStylePrimary"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/welcome"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="28sp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edittext_login_user_name"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/white_rounded_rectangle"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:hint="@string/username"
+        android:imeOptions="actionNext"
+        android:maxLength="30"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:singleLine="true"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/text_color_tertiary"
+        android:textSize="@dimen/text_size_16" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edittext_login_user_password"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/white_rounded_rectangle"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:hint="@string/password"
+        android:imeOptions="actionNext"
+        android:inputType="textWebPassword"
+        android:maxLength="18"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:singleLine="true"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/text_color_tertiary"
+        android:textSize="@dimen/text_size_16" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edittext_login_server_code"
+        style="@style/CustomFontStyleSecondary"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/white_rounded_rectangle"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:hint="@string/code"
+        android:imeOptions="actionDone"
+        android:maxLength="8"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:singleLine="true"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/text_color_tertiary"
+        android:textSize="@dimen/text_size_16" />
+
+    <CheckBox
+        android:id="@+id/saveLoginCheckBox"
+        style="@style/CustomFontStylePrimary"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:buttonTint="@color/white"
+        android:gravity="start|center_vertical"
+        android:text="@string/remember_me"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_18" />
+
+
+    <Button
+        android:id="@+id/button_login"
+        style="@style/CustomFontStylePrimary"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:alpha="0.7"
+        android:background="@drawable/blue_rounded"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_16" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textview_login_forgot_password"
+        style="@style/CustomFontStylePrimary"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/forgot_password"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_18" />
+
+    <LinearLayout
+        android:id="@+id/register_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="If you are not registered, "
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:id="@+id/registered_new_user"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/click_here"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16" />
+    </LinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_colorFilter="@color/colorPrimary" />
+</LinearLayout>

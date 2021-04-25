@@ -1,0 +1,126 @@
+<LinearLayout
+    android:id="@+id/single_chat_attach_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/single_chat_bottom"
+    android:paddingBottom="30dp"
+    android:background="#85000000"
+    android:gravity="start|bottom"
+    android:orientation="vertical"
+    android:paddingEnd="20dp"
+    android:paddingStart="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:id="@+id/single_chat_attach_document"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/document"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subtitle_text_size" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            app:srcCompat="@drawable/vi_chat_attachment_document" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/single_chat_attach_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text="@string/audio"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subtitle_text_size" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            app:srcCompat="@drawable/vi_chat_attachment_audio" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/single_chat_attach_video"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text="@string/video"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subtitle_text_size"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            app:srcCompat="@drawable/vi_chat_attachment_video" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/single_chat_attach_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text="@string/camera"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subtitle_text_size" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            app:srcCompat="@drawable/vi_chat_attachment_camera" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/single_chat_attach_images"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text="@string/images"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subtitle_text_size"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            app:srcCompat="@drawable/vi_chat_attachment_image" />
+    </LinearLayout>
+</LinearLayout>

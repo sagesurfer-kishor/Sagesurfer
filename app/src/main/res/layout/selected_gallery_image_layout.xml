@@ -1,0 +1,122 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/blue_rounded_border"
+    android:padding="5dp"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/gallery_list_item_card_main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom|start"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/gallery_card_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="Goa Trip"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14" />
+
+
+            <TextView
+                android:id="@+id/gallery_card_name"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/gallery_card_title"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="User Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp">
+
+            <ImageView
+                android:id="@+id/gallery_card_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitXY"
+                android:src="@drawable/login_bg" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/gallery_tick"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/gallery_tick_blank"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/gallery_tick_selected"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_toRightOf="@+id/gallery_tick"
+                    android:src="@drawable/gallery_tick_selected"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="10dp">
+
+                <ImageView
+                    android:id="@+id/heart_img"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/heart_img" />
+
+
+                <TextView
+                    android:id="@+id/heart_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/heart_img"
+                    android:text=""
+                    android:textColor="@color/self_goal_red"
+                    android:textSize="@dimen/text_size_14" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

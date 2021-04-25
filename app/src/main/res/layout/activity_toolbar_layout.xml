@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_toolbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/actionBarSize"
+    android:background="@color/colorPrimary"
+    android:contentInsetStart="0dp"
+    android:contentInsetLeft="0dp"
+    android:contentInsetEnd="0dp"
+    android:contentInsetRight="0dp"
+    android:elevation="0dp"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
+    app:contentInsetStart="0dp"
+    tools:targetApi="lollipop">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/textview_activitytoolbar_post"
+            android:layout_toEndOf="@+id/txt_done"
+            android:gravity="center_vertical|start"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textview_activitytoolbar_title"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:singleLine="false"
+                android:text="@string/app_name"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <com.github.curioustechizen.ago.RelativeTimeTextView
+                android:id="@+id/relativetimetextview_activitytoolbar_subtitle"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-2dp"
+                android:gravity="start"
+                android:text="@string/app_name"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_14"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textview_activitytoolbar_post"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:text="@string/post"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imagebutton_activitytoolbar_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+            app:srcCompat="@drawable/vi_three_white_dots_v" />
+
+        <TextView
+            android:id="@+id/txt_done"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:gravity="center"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:text="Done"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16"
+            android:visibility="gone"
+            app:srcCompat="@drawable/vi_three_white_dots_v" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imagebutton_activity_toolbar_attach"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/imagebutton_activitytoolbar_send"
+            android:background="@null"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+            app:srcCompat="@drawable/vi_attachment_white" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imagebutton_activitytoolbar_send"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+            app:srcCompat="@drawable/vi_send_white" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_toolbar_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imagebutton_toolbar_chat_video"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/vi_chat_videocall_white" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imagebutton_toolbar_chat_audio"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:padding="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/vi_chat_audiocall_white" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imagebutton_toolbar_chat_search"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:padding="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/vi_search_white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_toolbar_self_goal_details"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imagebutton_toolbar_submit"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/vi_check_white" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imagebutton_toolbar_edit"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:padding="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/vi_self_goal_edit" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imagebutton_toolbar_pin"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:padding="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/vi_pin_white" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_toolbar_consent_details"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="end"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/consent_details_download"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/consent_details_full_screen"
+                android:padding="@dimen/margin_10"
+                app:srcCompat="@drawable/vi_download_white" />
+
+            <ImageView
+                android:id="@+id/consent_details_full_screen"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/margin_10"
+                android:visibility="visible"
+                app:srcCompat="@drawable/vi_care_enlarge_white" />
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_toolbar_save"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:padding="15dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/vi_check_white" />
+    </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>

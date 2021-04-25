@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circle="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="RelativeOverlap">
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/circleimageview_icon1"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/cc_status_ofline"
+        android:elevation="2dp"
+        android:src="@drawable/cc_status_ofline"
+        circle:name="@string/username" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/circleimageview_icon2"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/cc_status_ofline"
+        android:elevation="2dp"
+        android:src="@drawable/cc_status_ofline"
+        circle:name="@string/username" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/circleimageview_icon3"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/cc_status_ofline"
+        android:elevation="2dp"
+        android:src="@drawable/cc_status_ofline"
+        circle:name="@string/username" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/circleimageview_icon4"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/cc_status_ofline"
+        android:elevation="2dp"
+        android:src="@drawable/cc_status_ofline"
+        circle:name="@string/username" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/circleimageview_icon5"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/cc_status_ofline"
+        android:elevation="2dp"
+        android:src="@drawable/cc_status_ofline"
+        circle:name="@string/username" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/circleimageview_icon6"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/cc_status_ofline"
+        android:elevation="2dp"
+        android:src="@drawable/cc_status_ofline"
+        circle:name="@string/username" />
+</merge>

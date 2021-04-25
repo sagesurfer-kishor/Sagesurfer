@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/message_details_layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_toolbar_chat" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/warning_text_color">
+
+            <RelativeLayout
+                android:id="@+id/message_details_footer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionBarSize"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:gravity="bottom"
+                android:minHeight="@dimen/actionBarSize">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_toolbar_smiley"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/imagebutton_toolbar_pin"
+                    android:background="@null"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/vi_chat_smiley" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/imagebutton_toolbar_pin"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/message_details_send"
+                    android:background="@null"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    app:srcCompat="@drawable/ic_attachment_24" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/message_details_send"
+                    android:layout_width="@dimen/actionBarSize"
+                    android:layout_height="@dimen/actionBarSize"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@null"
+                    app:srcCompat="@drawable/vi_send_primary" />
+
+                <EditText
+                    android:id="@+id/message_details_message_box"
+                    style="@style/CustomFontStyleSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toStartOf="@+id/imagebutton_toolbar_smiley"
+                    android:background="@color/white"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/type_your_message_here"
+                    android:maxLines="5"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="0dp"
+                    android:textColorHint="@color/text_color_tertiary"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:id="@+id/message_details_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/list_divider" />
+            </RelativeLayout>
+
+            <include
+                layout="@layout/list_view_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/message_details_footer"
+                android:background="@color/screen_background" />
+
+            <include layout="@layout/chat_attachment_option_layout" />
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

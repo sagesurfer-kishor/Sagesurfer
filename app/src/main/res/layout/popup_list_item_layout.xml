@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <RelativeLayout
+            android:id="@+id/relative_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="3dp"
+            android:paddingEnd="5dp">
+
+            <TextView
+                android:id="@+id/txt_question_no"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:gravity="start"
+                android:paddingBottom="7dp"
+                android:tag="1"
+                android:text=""
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size_16" />
+
+
+            <TextView
+                android:id="@+id/txt_question_1"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_toRightOf="@id/txt_question_no"
+                android:gravity="start"
+                android:paddingStart="3dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="7dp"
+                android:tag="1"
+                android:text="Question"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size_16" />
+
+        </RelativeLayout>
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin">
+
+
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:background="@color/text_color_secondary"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</LinearLayout>
+
+

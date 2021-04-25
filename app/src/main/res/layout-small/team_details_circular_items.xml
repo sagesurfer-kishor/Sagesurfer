@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circle="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="RelativeOverlap">
+
+    <LinearLayout
+        android:id="@+id/linearlayout_member1"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_image1"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp">
+
+                <com.sagesurfer.views.CircleGray
+                    android:id="@+id/circle1"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:layout_centerInParent="true" />
+
+                <com.szugyi.circlemenu.view.CircleImageView
+                    android:id="@+id/circleimageview_teamdetails_member1"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:elevation="2dp"
+                    android:src="@drawable/ic_user_male"
+                    circle:name="@string/username" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/member_status_icon1"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/white_circle"
+                android:padding="1dp"
+                android:src="@drawable/offline_circle" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textview_teamdetails_username1"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/textview_teamdetails_role1"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_member2"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_image2"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp">
+
+                <com.sagesurfer.views.CircleGray
+                    android:id="@+id/circle2"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:layout_centerInParent="true" />
+
+                <com.szugyi.circlemenu.view.CircleImageView
+                    android:id="@+id/circleimageview_teamdetails_member2"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:elevation="2dp"
+                    android:src="@drawable/ic_user_male"
+                    circle:name="@string/username" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/member_status_icon2"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/white_circle"
+                android:padding="1dp"
+                android:src="@drawable/offline_circle" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textview_teamdetails_username2"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/textview_teamdetails_role2"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_member3"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:singleLine="true"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_image3"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp">
+
+                <com.sagesurfer.views.CircleGray
+                    android:id="@+id/circle3"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:layout_centerInParent="true" />
+
+                <com.szugyi.circlemenu.view.CircleImageView
+                    android:id="@+id/circleimageview_teamdetails_member3"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:elevation="2dp"
+                    android:src="@drawable/ic_user_male"
+                    circle:name="@string/username" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/member_status_icon3"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/white_circle"
+                android:padding="1dp"
+                android:src="@drawable/offline_circle" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textview_teamdetails_username3"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/textview_teamdetails_role3"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_member4"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_image4"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp">
+
+                <com.sagesurfer.views.CircleGray
+                    android:id="@+id/circle4"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:layout_centerInParent="true" />
+
+                <com.szugyi.circlemenu.view.CircleImageView
+                    android:id="@+id/circleimageview_teamdetails_member4"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:elevation="2dp"
+                    android:src="@drawable/ic_user_male"
+                    circle:name="@string/username" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/member_status_icon4"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/white_circle"
+                android:padding="1dp"
+                android:src="@drawable/offline_circle" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textview_teamdetails_username4"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/textview_teamdetails_role4"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_member5"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_image5"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp">
+
+                <com.sagesurfer.views.CircleGray
+                    android:id="@+id/circle5"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:layout_centerInParent="true" />
+
+                <com.szugyi.circlemenu.view.CircleImageView
+                    android:id="@+id/circleimageview_teamdetails_member5"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:elevation="2dp"
+                    android:src="@drawable/ic_user_male"
+                    circle:name="@string/username" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/member_status_icon5"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/white_circle"
+                android:padding="1dp"
+                android:src="@drawable/offline_circle" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textview_teamdetails_username5"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/textview_teamdetails_role5"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_member6"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_image6"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp">
+
+                <com.sagesurfer.views.CircleGray
+                    android:id="@+id/circle6"
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:layout_centerInParent="true" />
+
+                <com.szugyi.circlemenu.view.CircleImageView
+                    android:id="@+id/circleimageview_teamdetails_member6"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:elevation="2dp"
+                    android:src="@drawable/ic_user_male"
+                    circle:name="@string/username" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/member_status_icon6"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/white_circle"
+                android:padding="1dp"
+                android:src="@drawable/offline_circle" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textview_teamdetails_username6"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/textview_teamdetails_role6"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_10" />
+    </LinearLayout>
+</merge>

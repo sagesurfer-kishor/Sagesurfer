@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screen_background"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_toolbar_layout" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:text="@string/location"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_14" />
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="@dimen/margin_10"
+                    android:layout_gravity="center" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="@string/feedback">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_feedback"
+                        style="@style/CustomFontStyleSecondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_primary"
+                        android:gravity="start|center_vertical"
+                        android:padding="7dp"
+                        android:textColor="@color/text_color_primary"
+                        android:textSize="@dimen/text_size_14" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/button_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/submit"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_crisis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/screen_background"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="@dimen/activity_vertical_margin">
+
+                        <TextView
+                            android:id="@+id/crisis_fragment_last_date"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:gravity="start"
+                            android:lines="1"
+                            android:text="@string/na"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/active_crisis_rounded_rectangle"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <TextView
+                                    android:id="@+id/crisis_fragment_active_crisis"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:text="0"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_20" />
+
+                                <TextView
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:text="@string/active_crisis"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_14" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                                android:layout_weight="1"
+                                android:background="@drawable/episode_crisis_rounded_rectangle"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <TextView
+                                    android:id="@+id/crisis_fragment_crisis_episode"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:text="0"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_20" />
+
+                                <TextView
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:gravity="start"
+                                    android:text="@string/crisis_episode"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_14" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                                android:layout_weight="1"
+                                android:background="@drawable/resolved_crisis_rounded_rectangle"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <TextView
+                                    android:id="@+id/crisis_fragment_crisis_resolved"
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:text="0"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_20" />
+
+                                <TextView
+                                    style="@style/CustomFontStyleSecondary"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:gravity="start"
+                                    android:text="@string/crisis_resolved"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_14" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/crisis_fragment_latest_crisis"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="start"
+                            android:text="@string/na"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <TextView
+                            android:id="@+id/crisis_fragment_frequent_intervention_tag"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="start"
+                            android:text="@string/most_frequently_used_intervention"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <TextView
+                            android:id="@+id/crisis_fragment_frequent_intervention"
+                            style="@style/CustomFontStyleSecondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:text="@string/na"
+                            android:textColor="@color/text_color_primary"
+                            android:textSize="@dimen/text_size_14" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:id="@+id/crisis_intervention_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/actionBarSize"
+                            android:background="@color/white"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            android:paddingEnd="0dp">
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="start|center_vertical"
+                                android:text="@string/intervention"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/actionBarSize"
+                                android:layout_height="@dimen/actionBarSize"
+                                android:layout_alignParentEnd="true"
+                                android:padding="@dimen/activity_vertical_margin"
+                                app:srcCompat="@drawable/vi_right_arrow_gray" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/list_background" />
+
+                        <RelativeLayout
+                            android:id="@+id/crisis_trigger_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/actionBarSize"
+                            android:background="@color/white"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            android:paddingEnd="0dp">
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="start|center_vertical"
+                                android:text="@string/trigger"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/actionBarSize"
+                                android:layout_height="@dimen/actionBarSize"
+                                android:layout_alignParentEnd="true"
+                                android:padding="@dimen/activity_vertical_margin"
+                                app:srcCompat="@drawable/vi_right_arrow_gray" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/list_background" />
+
+                        <RelativeLayout
+                            android:id="@+id/crisis_support_person_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/actionBarSize"
+                            android:background="@color/white"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            android:paddingEnd="0dp">
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="start|center_vertical"
+                                android:text="@string/support_persons"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/actionBarSize"
+                                android:layout_height="@dimen/actionBarSize"
+                                android:layout_alignParentEnd="true"
+                                android:padding="@dimen/activity_vertical_margin"
+                                app:srcCompat="@drawable/vi_right_arrow_gray" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/list_background" />
+
+                        <RelativeLayout
+                            android:id="@+id/crisis_risk_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/actionBarSize"
+                            android:background="@color/white"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            android:paddingEnd="0dp">
+
+                            <TextView
+                                style="@style/CustomFontStyleSecondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="start|center_vertical"
+                                android:text="@string/crisis_risk"
+                                android:textColor="@color/text_color_primary"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/actionBarSize"
+                                android:layout_height="@dimen/actionBarSize"
+                                android:layout_alignParentEnd="true"
+                                android:padding="@dimen/activity_vertical_margin"
+                                app:srcCompat="@drawable/vi_right_arrow_gray" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

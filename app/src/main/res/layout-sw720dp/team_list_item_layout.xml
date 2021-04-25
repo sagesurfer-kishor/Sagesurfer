@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical|start"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <RelativeLayout
+        android:id="@+id/team_list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/team_list_item_image"
+                android:layout_width="@dimen/profile_size"
+                android:layout_height="@dimen/profile_size"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_user_male"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_member_photo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:visibility="gone">
+
+                <com.cometchat.pro.uikit.Avatar
+                    android:id="@+id/member_photo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/ic_user_male" />
+
+                <ImageView
+                    android:id="@+id/member_status_icon"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/white_circle"
+                    android:contentDescription="TODO"
+                    android:padding="1dp"
+                    android:src="@drawable/offline_circle" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/team_list_item_check"
+            android:layout_toEndOf="@+id/linearlayout_image"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/team_list_item_name"
+                    style="@style/CustomFontStylePrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/team_list_item_name_check"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:text="runtime_permissions_txt"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="@dimen/text_size_20" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/team_list_item_name_check"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/vi_check_green" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/team_list_item_role"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:singleLine="true"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_18"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/team_list_item_status"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:singleLine="true"
+                android:text="test"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_18"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/team_list_item_add"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:padding="5dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/vi_add_task_list_p" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/team_list_item_check"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:padding="5dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/vi_check_blue" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/team_list_item_warning"
+        style="@style/CustomFontStylePrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/screen_background"
+        android:drawableStart="@drawable/ic_sad_emoticon_gray"
+        android:gravity="start|center_vertical"
+        android:singleLine="true"
+        android:text="@string/no_result_found"
+        android:textColor="@color/text_color_tertiary"
+        android:textSize="@dimen/text_size_20"
+        android:visibility="gone" />
+</LinearLayout>

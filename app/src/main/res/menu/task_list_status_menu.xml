@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/task_menu_assigned"
+        android:title="@string/assigned"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/task_menu_in_progress"
+        android:title="@string/in_progress"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/task_menu_completed"
+        android:title="@string/completed"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/task_menu_on_hold"
+        android:title="@string/on_hold"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/task_menu_deferred_deactivated"
+        android:title="@string/deferred_deactivated"
+        app:showAsAction="ifRoom|withText" />
+</menu>

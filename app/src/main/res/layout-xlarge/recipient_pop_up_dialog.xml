@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/screen_background">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:elevation="1.5dp"
+        android:orientation="vertical"
+        android:minWidth="500dp"
+        android:padding="@dimen/activity_horizontal_margin"
+        tools:targetApi="lollipop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="start"
+                android:text="@string/from_colon"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStyleSecondary" />
+
+            <TextView
+                android:id="@+id/recipient_pop_up_from"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:gravity="start"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStyleSecondary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="start"
+                android:text="@string/to_colon"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStyleSecondary" />
+
+            <TextView
+                android:id="@+id/recipient_pop_up_to"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:gravity="start"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStyleSecondary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="start"
+                android:text="@string/cc_colon"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStyleSecondary" />
+
+            <TextView
+                android:id="@+id/recipient_pop_up_cc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:gravity="start"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStyleSecondary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:gravity="start"
+                android:text="@string/time_colon"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStyleSecondary" />
+
+            <TextView
+                android:id="@+id/recipient_pop_up_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:gravity="start"
+                android:text="@string/runtime_permissions_txt"
+                android:textColor="@color/text_color_tertiary"
+                android:textSize="@dimen/text_size_20"
+                style="@style/CustomFontStyleSecondary" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

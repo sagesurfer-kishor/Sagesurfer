@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menucaseloadsort_alphabetical"
+            android:title="@string/alphabetical" />
+        <item
+            android:id="@+id/menucaseloadsort_worsening"
+            android:title="@string/worsening" />
+        <item
+            android:id="@+id/menucaseloadsort_lastcontacted"
+            android:title="@string/last_contacted" />
+    </group>
+    <!--<item
+        android:id="@+id/menucaseloadsort_alphabetical"
+        android:title="@string/alphabetical"
+        app:showAsAction="ifRoom|withText"
+        android:checkable="true"/>
+    <item
+        android:id="@+id/menucaseloadsort_worsening"
+        android:title="@string/worsening"
+        app:showAsAction="ifRoom|withText"
+        android:checkable="true"/>
+    <item
+        android:id="@+id/menucaseloadsort_lastcontacted"
+        android:title="@string/last_contacted"
+        app:showAsAction="ifRoom|withText"
+        android:checkable="true"/>-->
+</menu>
