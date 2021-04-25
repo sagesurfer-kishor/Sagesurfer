@@ -1083,5 +1083,18 @@
     <string name="Cancel_Appointment">Cancel</string>
     <string name="from_time">From Time</string>
     <string name="to_time">To Time</string>
+    <string name="sage019">sage019</string>
+    <string name="sage029">sage029</string>
+    <string name="sage033">sage033</string>
+    <string name="sage035">sage035</string>
+    <string name="sage036">sage036</string>
+    <string name="sage054">sage054</string>
+    <string name="sage053">sage053</string>
+    <string name="sage052">sage052</string>
+    <string name="sage051">sage051</string>
+    <string name="sage050">sage050</string>
+    <string name="sage049">sage049</string>
+    <string name="sage048">sage048</string>
+    <string name="sage047">sage047</string>
 
 </resources>

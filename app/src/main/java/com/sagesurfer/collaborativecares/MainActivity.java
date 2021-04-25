@@ -2515,6 +2515,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         notificationUtils.showNotificationMessage(title, message, timestamp, type, resultIntent);
     }
 
+    /**
+     * Because firebase don't have sha1 token not generated current build that provide has my sha1 registered it will work on device
+     */
     private void displayFirebaseRegId() {
         String regId = Preferences.get("regId");
         if (regId == null || regId.equals("")) {
@@ -2785,6 +2788,37 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+    /**
+     * @Author Mahesh
+     * @Condition included all live instance code
+     * @param view
+     * change
+     *     design - sage006
+     *     trial - sage008
+     *     heart and soul - sage015
+     *     operation shockwave - sage019
+     *     peerrespite - sage021
+     *     cspnj - sage022
+     *     werhope - sage023
+     *     tarzana - sage024
+     *     mhaw - sage027
+     *     seven - sage029
+     *     senjam live - sage031
+     *     kingsview- sage033
+     *     heartrecovery- sage035
+     *     designstaging - sage036
+     *
+     * https://designstagingtest.sagesurfer.com/ --> Code : sage047
+     * https://heartandsoulstagingtest.sagesurfer.com/ --> Code : sage048
+     * https://mhawstagingtest.sagesurfer.com/ --> Code : sage049
+     * https://werhopestagingtest.sagesurfer.com/ --> Code : sage050
+     * https://trialstagingtest.sagesurfer.com/ --> Code : sage051
+     * https://tarzanastagingtest.sagesurfer.com/ --> Code : sage052
+     * https://kingsviewstagingtest.sagesurfer.com/ --> Code : sage053
+     * https://shrstagingtest.sagesurfer.com/ --> Code : sage054
+     *
+     */
+
 
     /*toolbar button clicked
      * included help dialog for logbook help*/
@@ -2792,12 +2826,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage025)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage008)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage019)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage029)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage033)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage035)) ||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage036)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage006)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage026)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage027)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage030)) ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031))) {
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031))||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage047))||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage049))||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage050))||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage051))||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage052))||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage053))||
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage054))) {
             if (clickEvent) {
                 helpDialogActivity();
             } else if (showFilterIcon) {

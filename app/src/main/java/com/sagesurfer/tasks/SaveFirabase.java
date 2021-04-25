@@ -16,6 +16,8 @@ import java.util.HashMap;
 
 import okhttp3.RequestBody;
 
+import static com.sagesurfer.constant.General.FIREBASE_ID;
+
 /**
  * @author Kailash Karankal
  */
@@ -25,7 +27,7 @@ public class SaveFirabase {
     public static void save(Context _context, String id, String className, Activity activity) {
         if (Preferences.contains(General.DOMAIN) && Preferences.get(General.DOMAIN) != null) {
             HashMap<String, String> requestMap = new HashMap<>();
-            requestMap.put("firebase_id", id);
+            requestMap.put(FIREBASE_ID, id);
 
             String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_FIREBASE_REGISTER;
             RequestBody requestBody = NetworkCall_.make(requestMap, url, className, _context, activity);
