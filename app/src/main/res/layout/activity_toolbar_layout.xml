@@ -33,9 +33,9 @@
             <TextView
                 android:id="@+id/textview_activitytoolbar_title"
                 style="@style/CustomFontStylePrimary"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="left"
                 android:maxLines="1"
                 android:singleLine="false"
                 android:text="@string/app_name"
@@ -226,6 +226,24 @@
             android:padding="15dp"
             android:visibility="gone"
             app:srcCompat="@drawable/vi_check_white" />
-    </RelativeLayout>
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_menus"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:padding="15dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/menu_box" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_close_menus"
+            android:layout_width="@dimen/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/blue_close" />
+    </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

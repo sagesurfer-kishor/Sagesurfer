@@ -2,7 +2,9 @@ package adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -73,7 +75,6 @@ public class CallHistoryAdapter extends RecyclerView.Adapter<CallHistoryAdapter.
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
         CallHistoryRowBinding callHistoryRowBinding = DataBindingUtil.inflate(layoutInflater, R.layout.call_history_row, parent, false);
-
         return new CallViewHolder(callHistoryRowBinding);
     }
 
@@ -96,6 +97,16 @@ public class CallHistoryAdapter extends RecyclerView.Adapter<CallHistoryAdapter.
         boolean isIncoming=false,isVideo=false,isMissed=false;
         String callMessageText="";
 
+        if (!Utils.isDarkMode(context)){
+            callViewHolder.callHistoryRowBinding.callDateTv.setTextColor(context.getResources().getColor(R.color.primaryTextColor));
+            callViewHolder.callHistoryRowBinding.callInfoTv.setTextColor(context.getResources().getColor(R.color.primaryTextColor));
+            callViewHolder.callHistoryRowBinding.callTimeTv.setTextColor(context.getResources().getColor(R.color.primaryTextColor));
+        }else {
+            callViewHolder.callHistoryRowBinding.callDateTv.setTextColor(context.getResources().getColor(R.color.textColorWhite));
+            callViewHolder.callHistoryRowBinding.callInfoTv.setTextColor(context.getResources().getColor(R.color.textColorWhite));
+            callViewHolder.callHistoryRowBinding.callTimeTv.setTextColor(context.getResources().getColor(R.color.textColorWhite));
+        }
+
         if(call.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
             if (call.getSender().getUid().equals(loggedInUser)) {
                 if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_UNANSWERED)) {
@@ -109,6 +120,7 @@ public class CallHistoryAdapter extends RecyclerView.Adapter<CallHistoryAdapter.
             } else {
                 if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_UNANSWERED)) {
                     callMessageText = context.getResources().getString(R.string.missed_call);
+                    callViewHolder.callHistoryRowBinding.callInfoTv.setTextColor(context.getResources().getColor(R.color.red));
                     isMissed = true;
                 } else if(call.getCallStatus().equals(CometChatConstants.CALL_STATUS_REJECTED)) {
                     callMessageText = context.getResources().getString(R.string.rejected_call);
@@ -273,13 +285,13 @@ public class CallHistoryAdapter extends RecyclerView.Adapter<CallHistoryAdapter.
     }
 
     class CallViewHolder extends RecyclerView.ViewHolder {
-
         CallHistoryRowBinding callHistoryRowBinding;
+        TextView call_info_tv,call_time_tv,call_date_tv;
 
         CallViewHolder(CallHistoryRowBinding callHistoryRowBinding) {
             super(callHistoryRowBinding.getRoot());
             this.callHistoryRowBinding = callHistoryRowBinding;
-        }
 
+        }
     }
 }

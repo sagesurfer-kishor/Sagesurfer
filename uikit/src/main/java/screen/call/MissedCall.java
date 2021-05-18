@@ -37,6 +37,7 @@ import listeners.OnItemClickListener;
 import screen.CometChatCallActivity;
 import screen.CometChatGroupDetailScreenActivity;
 import screen.CometChatUserDetailScreenActivity;
+import screen.messagelist.General;
 import utils.Utils;
 
 /**
@@ -52,7 +53,7 @@ public class MissedCall extends Fragment {
     private CometChatCallList rvCallList;
 
     private LinearLayout noCallView;
-
+    private static final String TAG = "MissedCall";
     private MessagesRequest messagesRequest;
 
     private LinearLayoutManager linearLayoutManager;
@@ -100,6 +101,7 @@ public class MissedCall extends Fragment {
                     intent.putExtra(StringContract.IntentStrings.MEMBER_COUNT,group.getMembersCount());
                     intent.putExtra(StringContract.IntentStrings.GROUP_PASSWORD,group.getPassword());
                     intent.putExtra(StringContract.IntentStrings.GROUP_DESC,group.getDescription());
+                    intent.putExtra(StringContract.IntentStrings.FROM_CALL_LIST,true);
                     startActivity(intent);
                 }
             }
@@ -157,6 +159,7 @@ public class MissedCall extends Fragment {
                     } else {
                         user = (User) call.getCallInitiator();
                     }
+                    Log.i(TAG, General.MY_TAG+" onSuccess: ");
                     Utils.startCallIntent(getContext(), user, CometChatConstants.CALL_TYPE_AUDIO, true, call.getSessionId());
                 } else
                     Utils.startGroupCallIntent(getContext(), ((Group) call.getCallReceiver()), CometChatConstants.CALL_TYPE_AUDIO, true, call.getSessionId());

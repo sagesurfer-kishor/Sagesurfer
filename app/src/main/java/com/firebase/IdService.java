@@ -4,8 +4,7 @@ import android.content.Intent;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
+
 import com.sagesurfer.logger.Logger;
 import com.storage.preferences.Preferences;
 
@@ -21,9 +20,9 @@ import com.storage.preferences.Preferences;
  */
 
 
-public class IdService extends FirebaseInstanceIdService {
+public class IdService /*extends FirebaseInstanceIdService*/ {
 
-    private static final String TAG = IdService.class.getSimpleName();
+   /* private static final String TAG = IdService.class.getSimpleName();
 
     @Override
     public void onTokenRefresh() {
@@ -42,6 +41,6 @@ public class IdService extends FirebaseInstanceIdService {
         Preferences.save("regId_save", false);
         Preferences.initialize(getApplicationContext());
         Preferences.save("regId", token);
-    }
+    }*/
 }
 

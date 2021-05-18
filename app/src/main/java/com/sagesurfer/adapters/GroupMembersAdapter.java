@@ -220,7 +220,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, mContext);
-                Log.e("33333", response);
+                Log.e("blockMember ", response);
                 if (response != null) {
                     Toast.makeText(mContext, "Blocked member successfully", Toast.LENGTH_LONG).show();
                     groupMemberArrayList.remove(position);

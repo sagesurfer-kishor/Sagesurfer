@@ -1422,15 +1422,19 @@ public class NotificationsFragment extends Fragment {
                 String member_Id = userId;
                 Log.i(TAG, "Member_user_id : "+notificationList.get(position).getMember_user_id());
                 RelativeLayout linearLayout = dialog.findViewById(R.id.invition_status);
-
+                Log.i(TAG, "onItemClick: title 2 "+notificationList.get(position).getTitle1());
+                Log.i(TAG, "onItemClick: title  "+notificationList.get(position).getTitle());
+                Log.i(TAG, "onItemClick: title  "+notificationList.get(position).getGroup_type());
                 if (notificationList.get(position).getIs_member().equals("1")) {
+                    linearLayout.setVisibility(View.GONE);
+                }else if(notificationList.get(position).getGroup_type().equals("private")){
                     linearLayout.setVisibility(View.GONE);
                 } else {
                     linearLayout.setVisibility(View.VISIBLE);
                 }
 
                 TextView txtMessage = dialog.findViewById(R.id.txt_friend_request);
-                txtMessage.setText(notificationList.get(position).getTitle());
+                txtMessage.setText(notificationList.get(position).getTitle1());
 
                 TextView gType = dialog.findViewById(R.id.txt_group_type);
 

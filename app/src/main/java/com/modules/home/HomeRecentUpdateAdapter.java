@@ -1,6 +1,7 @@
 package com.modules.home;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.format.DateFormat;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sagesurfer.collaborativecares.R;
@@ -63,7 +65,7 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
             groupName = (TextView) view.findViewById(R.id.textview_groupname);
             vLine = view.findViewById(R.id.v_line);
             mImageViewRecentUpdate = view.findViewById(R.id.image_view);
-            linearLayoutRecentUpdates = (RelativeLayout) view.findViewById(R.id.linearlayout_recentupdates);
+            linearLayoutRecentUpdates = view.findViewById(R.id.linearlayout_recentupdates);
         }
     }
 
@@ -103,12 +105,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
         switch (NotificationTypeDetector.getType(recentUpdates.getType())) {
             case 1://messageboard
                 message = recentUpdates.getAdded_by() + " added new message in " + recentUpdates.getGroup_name();
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_messageboard_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_messageboard));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -116,12 +118,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 break;
             case 2:
                 message = recentUpdates.getAdded_by() + " posted announcement in " + recentUpdates.getGroup_name();
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_announcement_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_announcement));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -129,12 +131,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 break;
             case 3:
                 message = recentUpdates.getAdded_by() + " uploaded file in " + recentUpdates.getGroup_name();
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_uploadfile_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_fms));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -146,12 +148,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 } else {
                     message = recentUpdates.getAdded_by() + " posted team talk for " + recentUpdates.getGroup_name();
                 }
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_teamtalk_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_team_talk));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -159,12 +161,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 break;
             case 9:
                 message = recentUpdates.getAdded_by() + " added poll in " + recentUpdates.getGroup_name();
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+               /* if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_poll_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_poll));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -176,12 +178,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 } else {
                     message = recentUpdates.getAdded_by() + " added Task in " + recentUpdates.getGroup_name();
                 }
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+/*                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_teamtask_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_team_task));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -189,12 +191,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 break;
             case 17://upload_selfcare
                 message = "added new content in your Self care ";
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_selfcare_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_selfcare));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -202,36 +204,36 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 break;
             case 18://comment_selfcare
                 message = "added new comment in your Self care ";
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_selfcare_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_selfcare));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
                 holder.groupName.setText(recentUpdates.getModule());
             case 19://decline_selfcare
                 message = "declined content in your Self care ";
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+               /* if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_selfcare_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_selfcare));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
                 holder.groupName.setText(recentUpdates.getModule());
             case 20://approve_selfcare
                 message = "approved content in your Self care ";
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_selfcare_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_selfcare));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -243,12 +245,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 } else {
                     message = recentUpdates.getAdded_by() + " Added new Event in " + recentUpdates.getGroup_name();
                 }
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_event_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_team_event));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -264,12 +266,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 } else {
                     message = recentUpdates.getAdded_by() + " accepted an event in " + recentUpdates.getGroup_name();
                 }
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+               /* if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_wh_home_banner_event_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_team_event));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));
@@ -281,12 +283,12 @@ public class HomeRecentUpdateAdapter extends RecyclerView.Adapter<HomeRecentUpda
                 } else {
                     message = recentUpdates.getAdded_by() + " rejected an event in " + recentUpdates.getGroup_name();
                 }
-                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
+                /*if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage023)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage026))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage025)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(activity.getResources().getString(R.string.sage027))) {
                     holder.mImageViewRecentUpdate.setImageDrawable(activity.getResources().getDrawable(R.drawable.recent_update_team_event_home));
                 } else {
                     holder.linearLayoutRecentUpdates.setBackground(activity.getResources().getDrawable(R.drawable.recent_update_team_event));
-                }
+                }*/
                 holder.nameText.setText(recentUpdates.getAdded_by());
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.timeStamp.setText(getDate(recentUpdates.getTimestamp()));

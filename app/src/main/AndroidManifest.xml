@@ -566,14 +566,14 @@
 
         <receiver android:name="com.firebase.CallNotificationAction" />
 
-        <service
+        <!--<service
             android:name="com.firebase.IdService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </service>
+        </service>-->
 
 
         <provider

@@ -15,12 +15,15 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent"
+        android:background="@color/textColorWhite"
         tools:context="screen.groupmemberlist.CometChatGroupMemberListScreen">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/add_member_toolbar"
             android:layout_width="match_parent"
             app:title="@string/add_members"
+            android:background="@color/colorPrimaryDark"
+            app:titleTextColor="@color/textColorWhite"
             android:layout_height="wrap_content"/>
 
         <RelativeLayout
@@ -36,8 +39,10 @@
                 android:focusedByDefault="false"
                 android:id="@+id/search_bar"
                 android:hint="@string/search"
+                android:textColorHint="@color/grey"
                 android:imeOptions="actionSearch"
                 android:maxLines="1"
+                android:textColor="@color/primaryTextColor"
                 android:inputType="text"
                 android:drawableStart="@drawable/ic_search_24dp"
                 android:drawablePadding="5dp"

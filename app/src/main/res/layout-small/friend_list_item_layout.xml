@@ -4,7 +4,9 @@
     android:id="@+id/linearlayout_friendlistitem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginStart="@dimen/margin_16"
+    android:layout_marginEnd="@dimen/margin_16"
     android:background="@drawable/message_rounded_border"
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource">
@@ -31,8 +33,10 @@
             android:id="@+id/relativelayout_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:padding="5dp">
+            android:layout_marginStart="16dp"
+            android:padding="5dp"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10">
 
             <com.cometchat.pro.uikit.Avatar
                 android:id="@+id/friend_list_item_photo"
@@ -55,8 +59,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="@dimen/margin_10"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="5dp"
+            android:layout_marginStart="@dimen/margin_12"
             android:layout_toEndOf="@+id/relativelayout_image"
             android:gravity="center_vertical"
             android:orientation="vertical"
@@ -130,6 +136,7 @@
                     android:layout_weight="0.3"
                     android:gravity="end"
                     android:padding="10dp"
+                    android:layout_marginEnd="@dimen/margin_16"
                     android:singleLine="true"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"

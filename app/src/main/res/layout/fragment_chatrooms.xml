@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#D8DFE2">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/cardview_actions"
@@ -17,8 +13,11 @@
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_marginTop="5dp"
             android:layout_marginRight="@dimen/margin_10"
-            android:visibility="gone"
-            android:layout_marginBottom="5dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="2dp"
             android:background="@drawable/message_rounded_border"
             android:padding="5dp">
 
@@ -39,32 +38,41 @@
 
         </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/creatGrp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_actions">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groupsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:paddingTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/groupsList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp" />
-
-            <TextView
-                android:id="@+id/group_list_error"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="no conversation available"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/group_list_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="no conversation available"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
     </LinearLayout>
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/creatGrp"
@@ -72,8 +80,36 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="45dp"
+        android:layout_marginRight="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_16"
         app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add_white" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_total_groupCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:text="adadasdadd"
+        android:textColor="@color/primaryTextColor"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <TextView
+        android:id="@+id/tv_total_groupTypeCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_5"
+        android:text="(Public Grp : 0, Private Grp : 0, Password Grp : 0)"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="@dimen/text_size_12"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/creatGrp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_total_groupCount" />
+</androidx.constraintlayout.widget.ConstraintLayout>

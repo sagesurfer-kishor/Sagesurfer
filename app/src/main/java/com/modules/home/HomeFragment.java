@@ -488,11 +488,9 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
                     JsonObject JsonObjectLike_dislike = jsonObject.getAsJsonObject(action);
                     if (JsonObjectLike_dislike.get(General.STATUS).getAsInt() == 1) {
                         callDismiss();
-
                         Preferences.save(General.SHOW_APPOINTMENT_FILLED, false);
                         Toast.makeText(activity, String.valueOf(JsonObjectLike_dislike.get("msg")), Toast.LENGTH_LONG).show();
                     }
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -975,6 +973,11 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
 
         homeMenuList = Login_.homeMenuParser();
         drawerMenuList = Login_.drawerMenuParser();
+        for (DrawerMenu_ menu_ : drawerMenuList){
+            Log.i(TAG, "onResume: menu name "+menu_.getMenu());
+            Log.i(TAG, "onResume: menu counter "+menu_.getCounter());
+            Log.i(TAG, "onResume: menu Id "+menu_.getId());
+        }
 
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.home));
         mainActivityInterface.setToolbarBackgroundColor();
@@ -992,7 +995,8 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         Button[] buttonViews = {buttonHomeOne, buttonHomeTwo, buttonHomeThree, buttonHomeFour,
                 buttonHomeFive, buttonHomeSix};
 
-        for (int i = 0; i < homeMenuList.size(); i++) {
+        for (int i = 0; i < 6; i++) {
+            //for (int i = 0; i < homeMenuList.size(); i++) {
             if (homeMenuList.get(i).getId() != 0) {
                 color = Color.parseColor("#ffffff"); //The color u want
                 if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
@@ -1021,6 +1025,9 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
                     imageViewArray[i].setColorFilter(color);
                     imageViewArray[i].setImageResource(GetHomeMenuIcon.get(homeMenuList.get(i).getId()));
                     /*}*/
+                } else {
+                    imageViewArray[i].setColorFilter(color);
+                    imageViewArray[i].setImageResource(GetHomeMenuIcon.get(homeMenuList.get(i).getId()));
                 }
                 /*else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage027))) {
                     if (CheckRole.isMhaw(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
@@ -1029,10 +1036,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
                         imageViewArray[i].setImageResource(GetHomeMenuIcon.get(homeMenuList.get(i).getId()));
                     }
                 } */
-                else {
-                    imageViewArray[i].setColorFilter(color);
-                    imageViewArray[i].setImageResource(GetHomeMenuIcon.get(homeMenuList.get(i).getId()));
-                }
+
 
                 String sentence = ChangeCase.toTitleCase(homeMenuList.get(i).getMenu());
                 if (homeMenuList.get(i).getId() == 32) { //Assignment instead of Admin Approval
@@ -1043,7 +1047,6 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
 
                 textViews[i].setText(sentence);
             } else {
-
                 linearLayout[i].setVisibility(View.GONE);
 
             }
@@ -1066,7 +1069,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
             textViewRecentUpdates = (TextView) view.findViewById(R.id.textview_recent_updates);
             countRecentUpdates = view.findViewById(R.id.counter);
             recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-            homeRecentUpdatesAdapter = new HomeRecentUpdateAdapter(activity, recentUpdatesArrayList, this);
+            homeRecentUpdatesAdapter = new HomeRecentUpdateAdapter(getActivity(), recentUpdatesArrayList, this);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity.getApplicationContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setHasFixedSize(true);
@@ -1094,8 +1097,8 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         public void onReceive(Context context, Intent intent) {
             try {
                 homeMenuList = Login_.homeMenuParser();
-                drawerMenuList = Login_.drawerMenuParser();
-                updateHomeMenuList();
+                //drawerMenuList = Login_.drawerMenuParser();
+                //updateHomeMenuList();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1115,7 +1118,6 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
                     buttonViews[i].setVisibility(View.VISIBLE);
                 }
             }
-
         }
     }
 
@@ -1222,7 +1224,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
                     if (recentUpdatesArrayList.size() > 0) {
                         if (recentUpdatesArrayList.get(0).getStatus() == 1) {
                             showError(false, 20);
-                            homeRecentUpdatesAdapter = new HomeRecentUpdateAdapter(activity, recentUpdatesArrayList, this);
+                            homeRecentUpdatesAdapter = new HomeRecentUpdateAdapter(getActivity(), recentUpdatesArrayList, this);
                             recyclerView.setAdapter(homeRecentUpdatesAdapter);
                             countRecentUpdates.setText("" + recentUpdatesArrayList.size());
                         } else {

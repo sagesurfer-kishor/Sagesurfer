@@ -827,6 +827,7 @@ public class General {
     public static final String TOTIMEH = "totimeh";
     public static final String TOTIMEM = "totimem";
     public static final String TOTIMES = "totimes";
+    public static final String IS_TEST_USER = "is_test_user";
 
 
     public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {

@@ -40,11 +40,10 @@ import utils.Utils;
 /**
  * CometChatCallActivity.class is a activity class which is used to laod the incoming and outgoing
  * call screens. It is used to handle the audio and video call.
- *
+ * <p>
  * Created At : 29th March 2020
- *
+ * <p>
  * Modified On : 29th March 2020
- *
  */
 public class CometChatCallActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -106,11 +105,11 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         callActivity = this;
         //if (!active) {
-            handleIntent();
-            setContentView(R.layout.activity_comet_chat_call);
-            initView();
-            setValues();
-       // }
+        setContentView(R.layout.activity_comet_chat_call);
+        handleIntent();
+        initView();
+        setValues();
+        // }
         Log.d(TAG, "onCreate: ");
     }
 
@@ -120,15 +119,14 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      */
     private void handleIntent() {
         Intent intent = getIntent();
-        if (intent.hasExtra(StringContract.IntentStrings.JOIN_ONGOING))
-        {
-            isOngoing = intent.getBooleanExtra(StringContract.IntentStrings.JOIN_ONGOING,false);
+        if (intent.hasExtra(StringContract.IntentStrings.JOIN_ONGOING)) {
+            isOngoing = intent.getBooleanExtra(StringContract.IntentStrings.JOIN_ONGOING, false);
         }
         if (intent.hasExtra(StringContract.IntentStrings.ID)) {
             String id = intent.getStringExtra(StringContract.IntentStrings.ID);
         }
         if (intent.hasExtra(StringContract.IntentStrings.SESSION_ID)) {
-           sessionId = intent.getStringExtra(StringContract.IntentStrings.SESSION_ID);
+            sessionId = intent.getStringExtra(StringContract.IntentStrings.SESSION_ID);
         }
         if (intent.hasExtra(StringContract.IntentStrings.AVATAR)) {
             avatar = intent.getStringExtra(StringContract.IntentStrings.AVATAR);
@@ -137,7 +135,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
         if (intent.hasExtra(StringContract.IntentStrings.NAME)) {
             name = intent.getStringExtra(StringContract.IntentStrings.NAME);
         }
-        if(!isOngoing) {
+        if (!isOngoing) {
             try {
                 isVideo = intent.getAction().equals(CometChatConstants.CALL_TYPE_VIDEO);
 
@@ -145,6 +143,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
 
                 if (isIncoming)
                     setTheme(R.style.TransparentCompat);
+
                 else
                     setTheme(R.style.AppTheme);
             } catch (NullPointerException e) {
@@ -186,11 +185,11 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
         cometChatAudioHelper = new CometChatAudioHelper(this);
         cometChatAudioHelper.initAudio();
         String packageName = getPackageName();
-        notification = Uri.parse("android.resource://" + packageName + "/" +R.raw.incoming_call);
+        notification = Uri.parse("android.resource://" + packageName + "/" + R.raw.incoming_call);
         setCallType(isVideo, isIncoming);
-        if (!Utils.hasPermissions(this, Manifest.permission.RECORD_AUDIO) && !Utils.hasPermissions(this,Manifest.permission.CAMERA))
-        {
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO,Manifest.permission.CAMERA},REQUEST_PERMISSION);
+        if (!Utils.hasPermissions(this, Manifest.permission.RECORD_AUDIO)
+                && !Utils.hasPermissions(this, Manifest.permission.CAMERA)) {
+            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA}, REQUEST_PERMISSION);
         }
     }
 
@@ -198,12 +197,11 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      * This method is used to set the values received from <code>handleIntent()</code>.
      */
     private void setValues() {
-        Log.d(TAG, General.MY_TAG +"setValues: ");
-        if (isOngoing)
-        {
+        Log.d(TAG, General.MY_TAG + "setValues: ");
+        if (isOngoing) {
             cometChatAudioHelper.stop(false);
-            if (CometChat.getActiveCall()!=null)
-                Utils.startCall(this,CometChat.getActiveCall());
+            if (CometChat.getActiveCall() != null)
+                Utils.startCall(this, CometChat.getActiveCall());
             else
                 onBackPressed();
         }
@@ -218,24 +216,23 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      * It also sets the ringtone or calltone based on call type.
      *
      * @param isVideoCall is a boolean, It helps to identify whether call is Audio call or Video Call
-     * @param isIncoming is a boolean, It helps to identify whether call is incoming or outgoing.
-     *
+     * @param isIncoming  is a boolean, It helps to identify whether call is incoming or outgoing.
      * @see CometChatAudioHelper
      */
     public void setCallType(boolean isVideoCall, boolean isIncoming) {
-        Log.d(TAG, General.MY_TAG +"setCallType: ");
+        Log.e(TAG, General.MY_TAG + "setCallType: ");
         AnimUtil.blinkAnimation(tvDots);
-
+        this.isIncoming=isIncoming;
         if (isIncoming) {
             cometChatAudioHelper.startIncomingAudio(notification, true);
             incomingCallView.setVisibility(View.VISIBLE);
             outgoingCallView.setVisibility(View.GONE);
             if (isVideoCall) {
                 callMessage.setText(getResources().getString(R.string.incoming_video_call));
-                callMessage.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_videocam_white_24dp),null,null,null);
+                callMessage.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_videocam_white_24dp), null, null, null);
             } else {
                 callMessage.setText(getResources().getString(R.string.incoming_audio_call));
-                callMessage.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_call_incoming_24dp),null,null,null);
+                callMessage.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_call_incoming_24dp), null, null, null);
             }
         } else {
             callTv.setText(getString(R.string.calling));
@@ -250,7 +247,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
                 hangUp.setImageDrawable(getResources().getDrawable(R.drawable.ic_call_end_white_24dp));
             }
         }
-        if (getSupportActionBar()!=null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().hide();
     }
 
@@ -262,7 +259,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      */
     @Override
     public void onClick(View v) {
-        Log.d(TAG, General.MY_TAG +"onClick: ");
+        Log.e(TAG, General.MY_TAG + "onClick: ");
         int id = v.getId();
         if (id == R.id.call_hang_btn) {
             cometChatAudioHelper.stop(false);
@@ -271,10 +268,10 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
         } else if (id == R.id.accept_incoming) {
             cometChatAudioHelper.stop(false);
             incomingCallView.setVisibility(View.GONE);
-            answerCall(mainView,sessionId);
+            answerCall(mainView, sessionId);
         } else if (id == R.id.decline_incoming) {
             cometChatAudioHelper.stop(true);
-            rejectCall(sessionId,CometChatConstants.CALL_STATUS_REJECTED);
+            rejectCall(sessionId, CometChatConstants.CALL_STATUS_REJECTED);
             finish();
         }
     }
@@ -282,24 +279,24 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     /**
      * When we reject the call this method will invoked
      *
-     * @param sessionId is a String, It is call session Id.
+     * @param sessionId  is a String, It is call session Id.
      * @param callStatus is a String, It the reason for call being rejected.
-     *
      * @see CometChat#rejectCall(String, String, CometChat.CallbackListener)
      * @see Call
      */
     private void rejectCall(String sessionId, String callStatus) {
-        Log.d(TAG, General.MY_TAG +" rejectCall: ");
-        CometChat.rejectCall(sessionId,callStatus, new CometChat.CallbackListener<Call>() {
+        Log.e(TAG, General.MY_TAG + " rejectCall: ");
+        CometChat.rejectCall(sessionId, callStatus, new CometChat.CallbackListener<Call>() {
             @Override
             public void onSuccess(Call call) {
+                Log.e(TAG, General.MY_TAG + " :  Successfully ended call");
                 finish();
             }
 
             @Override
             public void onError(CometChatException e) {
                 finish();
-                Log.e(TAG, General.MY_TAG +" onErrorReject: "+e.getMessage()+" "+e.getCode());
+                Log.e(TAG, General.MY_TAG + " onErrorReject: got error while disconnecting" + e.getMessage() + " " + e.getCode());
                 //Toast.makeText(CometChatCallActivity.this,"Unable to end call",Toast.LENGTH_LONG).show();
             }
         });
@@ -308,26 +305,25 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     /**
      * This method is used to accept the incoming call receievd.
      *
-     * @param mainView is a object of Relativelayout, It is used to load the CallingComponent after
-     *                 the call is accepted.
+     * @param mainView  is a object of Relativelayout, It is used to load the CallingComponent after
+     *                  the call is accepted.
      * @param sessionId is a String, It is sessionId of call.
-     *
      * @see CometChat#acceptCall(String, CometChat.CallbackListener)
      * @see Call
      */
     private void answerCall(RelativeLayout mainView, String sessionId) {
-        Log.d(TAG, General.MY_TAG +" answerCall: ");
+        Log.d(TAG, General.MY_TAG + " answerCall: ");
         CometChat.acceptCall(sessionId, new CometChat.CallbackListener<Call>() {
             @Override
             public void onSuccess(Call call) {
-                Log.e(TAG,General.MY_TAG +" CallMeta"+call.toString());
-                startCall(mainView,call);
+                Log.e(TAG, General.MY_TAG + " on incoming call received " + call.toString());
+                startCall(mainView, call);
             }
 
             @Override
             public void onError(CometChatException e) {
                 finish();
-                Log.e(TAG, General.MY_TAG +"onErrorAccept: "+e.getMessage()+" "+e.getCode());
+                Log.e(TAG, General.MY_TAG + "on icomming call accept error : " + e.getMessage() + " " + e.getCode());
             }
 
         });
@@ -337,15 +333,15 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
      * This method is used to start the call after the call is accepted from both the end.
      * Here we are calling <code>Utils.startCall()</code> as it is being used for other purpose
      * also.
-     * @param mainView is a object of RelativeLayout where the Calling Component will be loaded.
-     * @param call is a object of Call.
      *
+     * @param mainView is a object of RelativeLayout where the Calling Component will be loaded.
+     * @param call     is a object of Call.
      * @see CometChat#startCall(Activity, String, RelativeLayout, CometChat.OngoingCallListener)
      */
-    private void startCall(RelativeLayout mainView,Call call) {
-        Log.d(TAG, General.MY_TAG +" startCall: ");
+    private void startCall(RelativeLayout mainView, Call call) {
+        Log.e(TAG, General.MY_TAG + " startCall: ");
         hangUp.setVisibility(View.GONE);
-        Utils.startCall(CometChatCallActivity.this,call);
+        Utils.startCall(CometChatCallActivity.this, call);
     }
 
     public void startOnGoingCall(Call call) {
@@ -361,6 +357,9 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
+        if (isIncoming) {
+        incomingCallView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:animateLayoutChanges="true"
     android:layout_height="match_parent"
+    android:background="@color/textColorWhite"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <include layout="@layout/thread_screen_toolbar"
         android:id="@+id/chatList_toolbar"
@@ -42,6 +43,7 @@
                     tools:text="@tools:sample/full_names"
                     android:id="@+id/tv_sender_name"
                     android:layout_width="wrap_content"
+                    android:textColor="#000"
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:layout_below="@+id/tv_sender_name"
@@ -49,6 +51,7 @@
                     android:layout_toRightOf="@+id/av_sender"
                     tools:text="@tools:sample/date/ddmmyy"
                     android:id="@+id/tv_message_time"
+                    android:textColor="@color/grey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </RelativeLayout>
@@ -133,39 +136,49 @@
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/message_layout"
+                android:background="#000"/>
             <RelativeLayout
                 android:padding="8dp"
-                android:layout_margin="8dp"
                 android:layout_below="@+id/message_layout"
                 android:id="@+id/thread_action"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/thread_reply_count"
                     android:layout_marginBottom="8dp"
-                    tools:text="2 Replies"
+                    tools:text="0 Replies"
+                    android:textColor="@color/primaryTextColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/ic_forward_option"
                     android:layout_marginRight="16dp"
                     android:clickable="true"
                     android:foreground="?selectableItemBackground"
                     android:layout_toLeftOf="@+id/ic_more_option"
-                    android:tint="@color/primaryTextColor"
                     android:src="@drawable/ic_baseline_forward_24"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <ImageView
+                    android:layout_height="wrap_content"/>-->
+               <!-- <ImageView
                     android:id="@+id/ic_more_option"
                     android:clickable="true"
                     android:foreground="?selectableItemBackground"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_baseline_more_vert_24"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"/>-->
 
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/thread_action"
+                android:background="#000"/>
             <LinearLayout
                 android:elevation="8dp"
                 android:id="@+id/no_reply_layout"
@@ -192,6 +205,7 @@
                 android:id="@+id/rv_message_list"
                 android:descendantFocusability="blocksDescendants"
                 android:clipToPadding="false"
+                android:layout_marginTop="5dp"
                 android:layout_below="@+id/thread_action"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

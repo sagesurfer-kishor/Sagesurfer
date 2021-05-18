@@ -86,6 +86,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -118,6 +119,7 @@ import screen.CometChatForwardMessageScreenActivity;
 import screen.CometChatGroupDetailScreenActivity;
 import screen.CometChatUserDetailScreenActivity;
 import screen.Cometchat_log;
+import screen.GroupDetailsScreen.FragmentGroupDetailScreen;
 import screen.MessageActionFragment;
 import screen.threadconversation.CometChatThreadMessageActivity;
 import utils.Extensions;
@@ -144,7 +146,6 @@ import static android.view.View.GONE;
  * <p>
  * Modified on  - 16th January 2020
  */
-
 public class CometChatMessageScreen extends Fragment implements View.OnClickListener,
         OnMessageLongClick, MessageActionCloseListener, ICometChatMessageScreen {
     private static final String TAG = "CometChatMessageScreen";
@@ -160,10 +161,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     SharedPreferences sharedPreferencesSessionId;
     SharedPreferences.Editor spSessionEditor;
     String Message;
+    Fragment fragment = new FragmentGroupDetailScreen();
     /**
      * <b>Avatar</b> is a UI Kit Component which is used to display user and group avatars.
      */
-
     private Avatar userAvatar;
     private Context context;
     private StickyHeaderDecoration stickyHeaderDecoration;
@@ -231,12 +232,13 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     private String StickerURL;
     SharedPreferences preferenCheckIntent;
     SharedPreferences.Editor editorCheckIntent;
-    Double ChatGroupId;
+    String ChatGroupId;
     String ChatType = "Text";
     String Group_id, group_all_members_id, receiverMail, allMembersString;
 
-    public CometChatMessageScreen() {
+    public CometChatMessageScreen() throws ClassNotFoundException {
         // Required empty public constructor
+
     }
 
     @Override
@@ -256,17 +258,21 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         /*this is creted to remove highlighted group
          * added by rahul maske
          * */
+
         /*preferenOpenActivity
         = getActivity().getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
         editorOpenAct = preferenOpenActivity.edit();
         editorOpenAct.putBoolean("CheckIntent", false);
         editorOpenAct.apply();*/
+
         preferenCheckIntent = getActivity().getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
         editorCheckIntent = preferenCheckIntent.edit();
         editorCheckIntent.putBoolean("highlightList", false);
         editorCheckIntent.putBoolean("checkIntent", false);
         editorCheckIntent.putBoolean("checkedHighlightedGroup", true);
         editorCheckIntent.apply();
+
+
     }
 
     /**
@@ -275,21 +281,24 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     public void handleArguments() {
         if (getArguments() != null) {
             SenderId = getArguments().getString(StringContract.IntentStrings.SENDER_ID);
-            /*Log.e(TAG, ": " + getArguments().getString(StringContract.IntentStrings.UID));
-            Log.e(TAG, "Team Name: " + getArguments().getString(StringContract.IntentStrings.NAME));
-            Log.e(TAG, "Team Tabs: " + getArguments().getString(StringContract.IntentStrings.TABS));
-            Log.e(TAG, "Team Type: " + getArguments().getString(StringContract.IntentStrings.TYPE));
-            Log.e(TAG, "Team team_Ids:" + getArguments().getString("teamId"));*/
-            Log.e(TAG, "Team team_Id:" + teamId);
-            Log.e(TAG, "receiverId:" + receiverId);
             avatarUrl = getArguments().getString(StringContract.IntentStrings.AVATAR);
             status = getArguments().getString(StringContract.IntentStrings.STATUS);
             name = getArguments().getString(StringContract.IntentStrings.NAME);
+            if (status == null) {
+                status = "";
+            }
+
             type = getArguments().getString(StringContract.IntentStrings.TYPE);
             tabs = getArguments().getString(StringContract.IntentStrings.TABS);
-            Log.e(TAG, "tabs:" + tabs);
-            team_Ids = getArguments().getString("teamId");
 
+            Log.e(TAG, "tabs:" + tabs);
+            SharedPreferences tabsPreferences = getActivity().getSharedPreferences("tabsPreferences", MODE_PRIVATE);
+            SharedPreferences.Editor editortabsPreferences = tabsPreferences.edit();
+            editortabsPreferences.putString("tabs", tabs);
+            editortabsPreferences.apply();
+
+            team_Ids = getArguments().getString("teamId");
+            Log.i(TAG, "handleArguments: team_ids"+team_Ids);
 
             if (type != null && type.equals(CometChatConstants.RECEIVER_TYPE_GROUP)) {
                 SenderId = getArguments().getString(StringContract.IntentStrings.GUID);
@@ -298,23 +307,25 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 groupDesc = getArguments().getString(StringContract.IntentStrings.GROUP_DESC);
                 groupPassword = getArguments().getString(StringContract.IntentStrings.GROUP_PASSWORD);
                 groupType = getArguments().getString(StringContract.IntentStrings.GROUP_TYPE);
+
                 if (getArguments().containsKey(StringContract.IntentStrings.ALL_MEMBERS_STRING)) {
                     group_all_members_id = getArguments().getString(StringContract.IntentStrings.ALL_MEMBERS_STRING);
                 }
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("IDS", SenderId);
-                Log.i(TAG, "handleArguments: " + SenderId);
+                Log.i(TAG, "handleArguments: 1 userId" + SenderId + " groupId " + Group_id);
+                Log.i(TAG, "handleArguments: 2 team_Ids" + team_Ids + " tabs  " + tabs);
                 editor.commit();
             }
             if (tabs.equals("1")) {
                 comet_chat_type = 1;
-                ChatGroupId = Double.valueOf(0);
+                ChatGroupId = "0";
             } else if (tabs.equals("2")) {
                 comet_chat_type = 2;
-                ChatGroupId = Double.parseDouble(Group_id);
+                ChatGroupId = Group_id;
             } else if (tabs.equals("3") || tabs.equals("4")) {
                 comet_chat_type = 3;
-                ChatGroupId = Double.valueOf(0);
+                ChatGroupId = "" + 0;
             }
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("IDS", SenderId);
@@ -453,7 +464,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             public void onClick(View v) {
                 ChatType = "Audio";
                 //private void saveChatLogToTheServer(String ChatType, String Message, int chat_group_id, int chat_message_id) {
-                saveChatLogToTheServer(ChatType, "", ChatGroupId, 0);
+                //saveChatLogToTheServer(ChatType, "", ChatGroupId, 0);
                 checkOnGoingCall(CometChatConstants.CALL_TYPE_AUDIO);
             }
         });
@@ -551,7 +562,11 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 spSessionEditor.putString("sessionId", "" + call.getSessionId());
                 spSessionEditor.putBoolean("onGoingCall", false);
                 spSessionEditor.commit();
-                Log.i(TAG, "onSuccess: sessionId " + sharedPreferencesSessionId.getString("sessionId", null));
+                SharedPreferences spCallScreenFlag = context.getSharedPreferences(" call_popup_preferences ", MODE_PRIVATE);
+                SharedPreferences.Editor spEditorCallScreenFlag = spCallScreenFlag.edit();
+                spEditorCallScreenFlag.putBoolean("openCallPopup", true);
+                spEditorCallScreenFlag.apply();
+                Log.i(TAG, General.MY_TAG + " onSuccess: sessionId " + sharedPreferencesSessionId.getString("sessionId", null));
                 Utils.startCallIntent(context, ((User) call.getCallReceiver()), call.getType(), true, call.getSessionId());
                 //LogInfo named class is created for sending call log that class will send to startCallIntent
             }
@@ -1449,7 +1464,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         });
     }
 
-
     public List<BaseMessage> filterBaseMessages(List<BaseMessage> baseMessages) {
         List<BaseMessage> tempList = new ArrayList<>();
         int editAction = 0;
@@ -1518,299 +1532,72 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         }
                         //implementation 'com.cometchat:pro-android-chat-sdk:2.3.1'
                     } else if (baseMessage.getCategory().equals("message")) {
-                        /*int team_log;
-                        try {
-                            team_log = metadata.getInt("team_logs_id");
-                            if (team_log == 0) {
-                                if (baseMessage.getType().equals("text")) {
-                                    try {bmmm,,,,...vvbb
-                                        *//*cometchat code changed for getting data from cometchat side
-                         * updated by rahul*//*
-                                        if (metadata.has("message-translation_languages")) {
-                                            //JSONObject messageTranslationObject = metadata.getJSONObject("message-translation");
-                                            JSONArray translations = metadata.getJSONArray("message-translation_languages");
-                                            HashMap<String, String> translationsMap = new HashMap<String, String>();
-                                            for (int i = 0; i < translations.length(); i++) {
-                                                JSONObject translation = translations.getJSONObject(i);
-                                                Log.i(TAG, "filterBaseMessages: translatedMessage " + translation.getString("message_translated"));
-                                                String translatedText = translation.getString("message_translated");
-                                                String translatedLanguage = translation.getString("language_translated");
-                                                translationsMap.put(translatedLanguage, translatedText);
-                                                if (translatedLanguage.equals(currentLang)) {
-                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                                                        ((TextMessage) baseMessage).setText(translatedText);
-                                                        Log.i(TAG, "filterBaseMessages: case 1 translated text "+translatedText);
-                                                    }
-                                                }
-                                            }
-                                        }
-
-
-                                        Log.e(TAG, "filterBaseMessages: message" + baseMessage.toString());
-                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                            Action action = ((Action) baseMessage);
-                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                            } else {
-
-                                                tempList.add(baseMessage);
-                                            }
-                                        } else {
-                                            tempList.add(baseMessage);
-                                        }
-                                        // }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-
-                    // run code commenting to make chages for language tran
-                    *//*else if (baseMessage.getCategory().equals("message")) {
-                        int team_log;
-                        try {
-                            team_log = metadata.getInt("team_logs_id");
-                            if (team_log == 0) {
-                                if (baseMessage.getType().equals("text")) {
-                                    try {
-                                        *//**//*cometchat code changed for getting data from cometchat side
-                         * updated by rahul*//**//*
-                                        if (metadata.has("message-translation_languages")) {
-                                            //JSONObject messageTranslationObject = metadata.getJSONObject("message-translation");
-                                            JSONArray translations = metadata.getJSONArray("message-translation_languages");
-                                            HashMap<String, String> translationsMap = new HashMap<String, String>();
-                                            for (int i = 0; i < translations.length(); i++) {
-                                                JSONObject translation = translations.getJSONObject(i);
-                                                Log.i(TAG, "filterBaseMessages: translatedMessage " + translation.getString("message_translated"));
-                                                String translatedText = translation.getString("message_translated");
-                                                String translatedLanguage = translation.getString("language_translated");
-                                                translationsMap.put(translatedLanguage, translatedText);
-                                                if (translatedLanguage.equals(currentLang)) {
-                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                                                        ((TextMessage) baseMessage).setText(translatedText);
-                                                        Log.i(TAG, "filterBaseMessages: case 1 translated text "+translatedText);
-                                                    }
-                                                }
-                                            }
-                                        }
-
-
-                                        Log.e(TAG, "filterBaseMessages: message" + baseMessage.toString());
-                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                            Action action = ((Action) baseMessage);
-                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                            } else {
-
-                                                tempList.add(baseMessage);
-                                            }
-                                        } else {
-                                            tempList.add(baseMessage);
-                                        }
-                                        // }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }*//* else if (baseMessage.getType().equals("image")) {
-                                    Log.e(TAG, "filterBaseMessages: base message category " + baseMessage.getCategory());
-                                    Log.e(TAG, "filterBaseMessages: image" + baseMessage.toString());
-                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-
-                                        Action action = ((Action) baseMessage);
-                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                        } else {
-                                            tempList.add(baseMessage);
-                                        }
-                                    } else {
-                                        tempList.add(baseMessage);
-                                    }
-                                } else if (baseMessage.getType().equals("file")) {
-                                    Log.e(TAG, "filterBaseMessages: file" + baseMessage.toString());
-                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                        Action action = ((Action) baseMessage);
-                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                        } else {
-                                            tempList.add(baseMessage);
-                                        }
-                                    } else {
-                                        tempList.add(baseMessage);
-                                    }
-                                } else if (baseMessage.getType().equals("audio")) {
-                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                        Action action = ((Action) baseMessage);
-                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                        } else {
-                                            tempList.add(baseMessage);
-                                        }
-                                    } else {
-                                        tempList.add(baseMessage);
-                                    }
-                                } else if (baseMessage.getType().equals("video")) {
-                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                        Action action = ((Action) baseMessage);
-                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                        } else {
-                                            tempList.add(baseMessage);
-                                        }
-                                    } else {
-                                        tempList.add(baseMessage);
-                                    }
-                                } else {
-                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                        Action action = ((Action) baseMessage);
-                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                        } else {
-                                            tempList.add(baseMessage);
-                                        }
-                                    } else {
-                                        tempList.add(baseMessage);
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }*/
-
-                        Log.i(TAG, "filterBaseMessages: action category " + baseMessage.getCategory());
                         String team_log;
-                        Log.i(TAG, "filterBaseMessages: delated at" + baseMessage.getDeletedAt());
-
-                         /*   if (baseMessage.getEditedAt() != 0) {*/
-                                /*try {
-                                    long id = baseMessage.getId();
-                                    String textMessage = ((TextMessage) baseMessage).getText();
-                                    String currentLang = sp.getString("currentLang", null);
-                                    Log.i(TAG, "filterBaseMessages: edited message block  message id " + id);
-                                    Log.i(TAG, "filterBaseMessages: edited message block  message text " + textMessage);
-                                    Log.i(TAG, "filterBaseMessages: edited message block  message current lang " + currentLang);
-                                    //Log.i(TAG, "filterBaseMessages: ");
-                                    JSONObject body = new JSONObject();
-                                    JSONArray languages = new JSONArray();
-                                    languages.put(currentLang);
-                                    body.put("msgId", id);
-                                    body.put("languages", languages);
-                                    body.put("text", textMessage);
-
-                                    CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
-                                            new CometChat.CallbackListener<JSONObject>() {
-                                                @Override
-                                                public void onSuccess(JSONObject jsonObject) {
-                                                    // Result of translations
-                                                    try {
-                                                        String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
-                                                        Log.i(TAG, "onSuccess: response" + messageTranslatedString);
-
-                                                        BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
-                                                        ;
-                                                        messageList.add(baseMessage1);
-
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onError(CometChatException e) {
-                                                    // Some error occured
-                                                    Log.i(TAG, "onError: " + e.getMessage());
-                                                }
-                                            });
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }*/
-
-/*                        if (baseMessage.getEditedAt() != 0) {
-                            try {
-                                JSONObject body = new JSONObject();
-                                JSONArray languages = new JSONArray();
-                                languages.put(sp.getString("currentLang", currentLang));
-                                body.put("msgId", baseMessage.getId());
-                                body.put("languages", languages);
-                                body.put("text", "" + ((TextMessage) baseMessage).getText());
-                                CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
-                                        new CometChat.CallbackListener<JSONObject>() {
-                                            @Override
-                                            public void onSuccess(JSONObject jsonObject) {
-                                                Log.i(TAG, "onSuccess: message-translation " + jsonObject);
-                                                BaseMessage baseMessage1 = createMetadataForEditedMessage(baseMessage, jsonObject);
-                                                        try {
-                                                            if (baseMessage1.getMetadata().has("@injected")) {
-                                                                JSONObject injectedObject = baseMessage1.getMetadata().getJSONObject("@injected");
-                                                                if (injectedObject.has("extensions")) {
-                                                                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
-                                                                    if (extensionsObject.has("message-translation")) {
-                                                                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
-                                                                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
-                                                                        HashMap<String, String> translationsMap = new HashMap<String, String>();
-                                                                        for (int i = 0; i < translations.length(); i++) {
-                                                                            JSONObject translation = translations.getJSONObject(i);
-                                                                            String translatedText = translation.getString("message_translated");
-                                                                            String translatedLanguage = translation.getString("language_translated");
-                                                                            translationsMap.put(translatedLanguage, translatedText);
-                                                                            Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
-                                                                            if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
-                                                                                if (baseMessage1.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                                                                                    ((TextMessage) baseMessage1).setText(translatedText);
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    Log.e(TAG, "filterBaseMessages: 1.2" + baseMessage1.toString());
-                                                                    if (baseMessage1.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                                                        Action action = ((Action) baseMessage1);
-                                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                                                        } else {
-                                                                            tempList.add(baseMessage1);
-                                                                        }
-                                                                    } else {
-                                                                        tempList.add(baseMessage1);
-                                                                    }
-                                                                }
-                                                            }
-                                                        } catch (Exception e) {
-                                                            e.printStackTrace();
-                                                        }
-
-                                            }
-                                            @Override
-                                            public void onError(CometChatException e) {
-                                                Log.i(TAG, "onError: " + e.getMessage());
-                                            }
-                                        });
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }*//*
-                        }*/
-                           /* }
-                            else*/
+//                        Log.i(TAG, "filterBaseMessages: Reply at checking " + baseMessage.getMetadata() + " message " + ((TextMessage) baseMessage).getText());
                         if (metadata != null || baseMessage.getDeletedAt() != 0) {
                             try {
                                 if (metadata != null) {
                                     team_log = metadata.getString("team_logs_id");
-                                    Log.i(TAG, "filterBaseMessages: " + team_log);
                                 } else {
                                     team_log = "0";
                                 }
                                 if (team_log.equals("0") || baseMessage.getDeletedAt() != 0) {
-                                    Log.i(TAG, "filterBaseMessages: messageId " + baseMessage.getId());
                                     if (baseMessage.getType().equals("text")) {
-                                        Log.i(TAG, "filterBaseMessages: " + baseMessage.getType());
+                                        if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                            /*Here we are marking message as deleted so that user can check that it is deleted */
+//                                            Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            } else {
+                                                //                                             Log.i(TAG, "filterBaseMessages: edited at block 1");
+                                                try {
+                                                    long id = baseMessage.getId();
+                                                    String textMessage = ((TextMessage) baseMessage).getText();
+                                                    String currentLang = sp.getString("currentLang", null);
+                                                    JSONObject body = new JSONObject();
+                                                    JSONArray languages = new JSONArray();
+                                                    languages.put(currentLang);
+                                                    body.put("msgId", id);
+                                                    body.put("languages", languages);
+                                                    body.put("text", textMessage);
+                                                    Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                                    // Do something after 5s = 5000ms
+                                                    CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                            new CometChat.CallbackListener<JSONObject>() {
+                                                                @Override
+                                                                public void onSuccess(JSONObject jsonObject) {
+                                                                    try {
+                                                                        Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                                                        JSONObject meta = baseMessage.getMetadata();
+                                                                        meta.accumulate("values", jsonObject);
+                                                                        String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
 
-                                        /*This code is use to check if the text message is reply message from ios or normal message
-                                         * if it is replied msg and send from ios then we change metadata to display the text message
-                                         * code is written by rahul maske
-                                         */
+                                                                        // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                        //baseMessage.setMetadata(meta);
 
-                                        if (metadata != null && baseMessage.getEditedAt() !=0){
-                                            Log.e(TAG, "filterBaseMessages: 1.3");
+                                                                        ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                        baseMessage.setMetadata(meta);
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+
+                                                                @Override
+                                                                public void onError(CometChatException e) {
+                                                                    // Some error occured
+                                                                    Log.i(TAG, "onError: " + e.getMessage());
+                                                                    Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                                }
+                                                            });
+
+
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
                                             if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                                 Action action = ((Action) baseMessage);
                                                 if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -1820,11 +1607,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                                     tempList.add(baseMessage);
                                                 }
                                             } else {
+                                                //                                          Log.i(TAG, "filterBaseMessages: edited at block 5");
                                                 tempList.add(baseMessage);
                                             }
-                                        } else if (metadata != null && baseMessage.getEditedAt() == 0) {
-                                            Log.i(TAG, "filterBaseMessages: metadata != null");
-                                            if (metadata.has("type")) {
+
+                                        } else if (metadata != null || baseMessage.getReadAt() != 0) {
+                                            /*This code is use to check if the text message is reply message from ios or normal message
+                                             * if it is replied msg and send from ios then we change metadata to display the text message
+                                             * code is written by rahul maske
+                                             */
+
+                                            /*if (metadata.has("type")) {
                                                 Log.i(TAG, "filterBaseMessages: has type ");
                                                 JSONObject customMetadata = new JSONObject();
                                                 JSONObject reply = new JSONObject();
@@ -1845,55 +1638,59 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                                 baseMessage.setMetadata(customMetadata);
                                                 //tempList.add(baseMessage);
                                                 //customMetadata.put("reply", );
-                                            } else {
-                                                //if (metadata != null) {
-                                                if (metadata.has("@injected")) {
-                                                    JSONObject injectedObject = metadata.getJSONObject("@injected");
-                                                    if (injectedObject.has("extensions")) {
-                                                        JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
-                                                        if (extensionsObject.has("message-translation")) {
-                                                            JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
-                                                            JSONArray translations = messageTranslationObject.getJSONArray("translations");
-                                                            HashMap<String, String> translationsMap = new HashMap<String, String>();
-                                                            for (int i = 0; i < translations.length(); i++) {
-                                                                JSONObject translation = translations.getJSONObject(i);
-                                                                String translatedText = translation.getString("message_translated");
-                                                                String translatedLanguage = translation.getString("language_translated");
-                                                                translationsMap.put(translatedLanguage, translatedText);
-                                                                Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
+                                            } else {*///////////////
+                                            //if (metadata != null) {
+                                            if (metadata.has("@injected")) {
+                                                JSONObject injectedObject = metadata.getJSONObject("@injected");
+                                                if (injectedObject.has("extensions")) {
+                                                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                    if (extensionsObject.has("message-translation")) {
+                                                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                        HashMap<String, String> translationsMap = new HashMap<String, String>();
+                                                        for (int i = 0; i < translations.length(); i++) {
+                                                            JSONObject translation = translations.getJSONObject(i);
+                                                            String translatedText = translation.getString("message_translated");
+                                                            String translatedLanguage = translation.getString("language_translated");
+                                                            translationsMap.put(translatedLanguage, translatedText);
+                                                            Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
+
+                                                            if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
                                                                 if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
                                                                     if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                                                                         ((TextMessage) baseMessage).setText(translatedText);
                                                                     }
                                                                 }
-                                                            }
-                                                        }
-
-                                                        Log.e(TAG, "filterBaseMessages: 1.2" + baseMessage.toString());
-                                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                                            Action action = ((Action) baseMessage);
-                                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                                                tempList.add(baseMessage);
                                                             } else {
-                                                                tempList.add(baseMessage);
+                                                                ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
                                                             }
-                                                        } else {
-                                                            tempList.add(baseMessage);
+
                                                         }
                                                     }
-                                                } else {
-                                                    Log.e(TAG, "if metadata has no @injected object");
+
                                                     if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                                         Action action = ((Action) baseMessage);
-                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
                                                             tempList.add(baseMessage);
                                                         } else {
                                                             tempList.add(baseMessage);
                                                         }
                                                     } else {
+
                                                         tempList.add(baseMessage);
                                                     }
+                                                }
+                                            } else {
+                                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                    Action action = ((Action) baseMessage);
+                                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                        tempList.add(baseMessage);
+                                                    } else {
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                } else {
+                                                    tempList.add(baseMessage);
                                                 }
                                             }
                                         } else {
@@ -1905,12 +1702,12 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                                     tempList.add(baseMessage);
                                                 } else {
                                                     tempList.add(baseMessage);
+
                                                 }
                                             } else {
                                                 tempList.add(baseMessage);
                                             }
                                         }
-                                        /* }*/
 
                                     } else if (baseMessage.getType().equals("image")) {
 
@@ -1918,7 +1715,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
                                                     action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-
 
                                             } else {
                                                 tempList.add(baseMessage);
@@ -1999,8 +1795,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                             tempList.add(baseMessage);
                                         }
                                     } else {
-
-
                                         tempList.add(baseMessage);
                                     }
                                 } else if (baseMessage.getType().equals("video")) {
@@ -2076,13 +1870,22 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         }
                     } else if (baseMessage.getCategory().equals("message")) {
                         if (baseMessage.getType().equals("text")) {
-
                             /*This code is use to check if the text message is reply message from ios or normal message
                              * if it is replied msg and send from ios then we change metadata to display the text message
                              * code is written by rahul maske */
                             if (metadata != null) {
                                 if (metadata.has("type")) {
-                                    try {
+                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                        Action action = ((Action) baseMessage);
+                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                   /* try {
                                         JSONObject customMetadata = new JSONObject();
                                         JSONObject reply = new JSONObject();
                                         reply.put("name", baseMessage.getSender().getName());
@@ -2108,6 +1911,74 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                         Log.i(TAG, "filterBaseMessages: iosReply message " + baseMessage.getMetadata().getString("message"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
+                                    }*/
+                                } else if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                    /*Here we are marking message as deleted so that user can check that it is deleted */
+                                    try {
+                                        Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                        if (metadata.has("deleted_one_to_one")) {
+                                            if (metadata.getString("deleted_one_to_one").equals("1")) {
+                                                baseMessage.setDeletedAt(12345);
+                                            }
+                                        } else {
+                                            Log.i(TAG, "filterBaseMessages: edited at block 1");
+
+                                            long id = baseMessage.getId();
+                                            String textMessage = ((TextMessage) baseMessage).getText();
+                                            String currentLang = sp.getString("currentLang", null);
+                                            JSONObject body = new JSONObject();
+                                            JSONArray languages = new JSONArray();
+                                            languages.put(currentLang);
+                                            body.put("msgId", id);
+                                            body.put("languages", languages);
+                                            body.put("text", textMessage);
+                                            Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                            // Do something after 5s = 5000ms
+                                            CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                    new CometChat.CallbackListener<JSONObject>() {
+                                                        @Override
+                                                        public void onSuccess(JSONObject jsonObject) {
+                                                            try {
+                                                                Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                                                JSONObject meta = baseMessage.getMetadata();
+                                                                meta.accumulate("values", jsonObject);
+                                                                String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                //baseMessage.setMetadata(meta);
+
+                                                                ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                baseMessage.setMetadata(meta);
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onError(CometChatException e) {
+                                                            // Some error occured
+                                                            Log.i(TAG, "onError: " + e.getMessage());
+                                                            Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                        }
+                                                    });
+
+
+                                        }
+
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                tempList.add(baseMessage);
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                            tempList.add(baseMessage);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                 } else {
                                     try {
@@ -2124,11 +1995,21 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                                     String translatedText = translation.getString("message_translated");
                                                     String translatedLanguage = translation.getString("language_translated");
                                                     translationsMap.put(translatedLanguage, translatedText);
-                                                    if (translatedLanguage.equals(currentLang)) {
+                                                    /*if (translatedLanguage.equals(currentLang)) {
                                                         if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                                                             ((TextMessage) baseMessage).setText(translatedText);
                                                             Log.i(TAG, "filterBaseMessages: case 2 translated text " + translatedText);
                                                         }
+                                                    }*/
+
+                                                    if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                            if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                ((TextMessage) baseMessage).setText(translatedText);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
                                                     }
                                                 }
                                             }
@@ -2239,7 +2120,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         try {
                             team_log = metadata.getString("team_logs_id");
                             String ids[] = team_log.split(Pattern.quote("_"));
-                            Log.e("tabs", String.valueOf(ids.length));
+                            Log.e("tabs case 3", String.valueOf(ids.length));
 
                             if (ids.length == 3 || ids.length == 4) {
 
@@ -2293,92 +2174,210 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                             }
                             team_log = metadata.getString("team_logs_id");
                             String ids[] = team_log.split(Pattern.quote("_"));
-                            Log.i(TAG, "filterBaseMessages: team_logs_id" + team_log);
-                            Log.e("tabs", String.valueOf(ids.length));
+
+                            Log.e("tabs case 3", String.valueOf(ids.length));
 
                             if (ids.length == 3 || ids.length == 4) {
                                 String[] parts = team_log.split("_-");
                                 String part2 = parts[1]; // 034556
-                                Log.i(TAG, "filterBaseMessages: part 2" + part2);
-                                Log.i(TAG, "filterBaseMessages: team_Ids" + team_Ids);
+
                                 if (team_Ids.equals(part2)) {
-                                    Log.i(TAG, "filterBaseMessages:upper part 1 team_ids " + team_Ids);
+
                                     if (baseMessage.getType().equals("text")) {
-                                        Log.i(TAG, "filterBaseMessages: text");
-                                        /*This code is use to check if the text message is reply message from ios or normal message
-                                         * if it is replied msg and send from ios then we change metadata to display the text message
-                                         * code is written by rahul maske */
-                                        if (metadata.has("type")) {
-                                            try {
-                                                JSONObject customMetadata = new JSONObject();
-                                                JSONObject reply = new JSONObject();
-                                                reply.put("name", baseMessage.getSender().getName());
-                                                reply.put("type", baseMessage.getType());
-                                                reply.put("avatar", baseMessage.getSender().getAvatar());
-                                                reply.put("message", baseMessage.getMetadata().getString("message"));
-                                                customMetadata.put("reply", reply);
-
-                                                customMetadata.put("readByMeAt", baseMessage.getReadAt());
-                                                customMetadata.put("deliveredToMeAt", baseMessage.getDeliveredToMeAt());
-                                                customMetadata.put("deletedAt", baseMessage.getDeletedAt());
-                                                customMetadata.put("editedAt", baseMessage.getEditedAt());
-                                                customMetadata.put("deletedBy", baseMessage.getDeletedBy());
-                                                customMetadata.put("editedBy", baseMessage.getEditedBy());
-                                                customMetadata.put("updatedAt", baseMessage.getUpdatedAt());
-                                                //readByMeAt=0, deliveredToMeAt=0, deletedAt=0, editedAt=0, deletedBy='null',
-                                                // editedBy='null', updatedAt=1616823540
-                                                baseMessage.setMetadata(customMetadata);
-                                                tempList.add(baseMessage);
-                                                Log.i(TAG, "filterBaseMessages: iosReply name" + baseMessage.getSender().getName());
-                                                Log.i(TAG, "filterBaseMessages: iosReply type " + baseMessage.getType());
-                                                Log.i(TAG, "filterBaseMessages: iosReply avtar " + baseMessage.getSender().getAvatar());
-                                                Log.i(TAG, "filterBaseMessages: iosReply message " + baseMessage.getMetadata().getString("message"));
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
+                                        if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                            /*Here we are marking message as deleted so that user can check that it is deleted */
+                                            if (metadata.getString("deleted_one_to_one").equals("1")) {
+                                                baseMessage.setDeletedAt(12345);
                                             }
-                                        } else {
-                                            try {
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    tempList.add(baseMessage);
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else if (metadata != null && baseMessage.getEditedAt() == 0) {
+                                            /*This code is use to check if the text message is reply message from ios or normal message
+                                             * if it is replied msg and send from ios then we change metadata to display the text message
+                                             * code is written by rahul maske */
+                                            if (metadata.has("type")) {
+                                                /*try {
+                                                    JSONObject customMetadata = new JSONObject();
+                                                    JSONObject reply = new JSONObject();
+                                                    reply.put("name", baseMessage.getSender().getName());
+                                                    reply.put("type", baseMessage.getType());
+                                                    reply.put("avatar", baseMessage.getSender().getAvatar());
+                                                    reply.put("message", baseMessage.getMetadata().getString("message"));
+                                                    customMetadata.put("reply", reply);
 
-                                                JSONObject injectedObject = metadata.getJSONObject("@injected");
-                                                if (injectedObject.has("extensions")) {
-                                                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
-                                                    if (extensionsObject.has("message-translation")) {
-                                                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
-                                                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
-                                                        HashMap<String, String> translationsMap = new HashMap<String, String>();
+                                                    customMetadata.put("readByMeAt", baseMessage.getReadAt());
+                                                    customMetadata.put("deliveredToMeAt", baseMessage.getDeliveredToMeAt());
+                                                    customMetadata.put("deletedAt", baseMessage.getDeletedAt());
+                                                    customMetadata.put("editedAt", baseMessage.getEditedAt());
+                                                    customMetadata.put("deletedBy", baseMessage.getDeletedBy());
+                                                    customMetadata.put("editedBy", baseMessage.getEditedBy());
+                                                    customMetadata.put("updatedAt", baseMessage.getUpdatedAt());
+                                                    //readByMeAt=0, deliveredToMeAt=0, deletedAt=0, editedAt=0, deletedBy='null',
+                                                    // editedBy='null', updatedAt=1616823540
+                                                    baseMessage.setMetadata(customMetadata);
+                                                    tempList.add(baseMessage);
+                                                    Log.i(TAG, "filterBaseMessages: iosReply name" + baseMessage.getSender().getName());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply type " + baseMessage.getType());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply avtar " + baseMessage.getSender().getAvatar());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply message " + baseMessage.getMetadata().getString("message"));
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }*/
 
-                                                        for (int i = 0; i < translations.length(); i++) {
-                                                            JSONObject translation = translations.getJSONObject(i);
-                                                            String translatedText = translation.getString("message_translated");
-                                                            String translatedLanguage = translation.getString("language_translated");
-                                                            translationsMap.put(translatedLanguage, translatedText);
-                                                            if (translatedLanguage.equals(currentLang)) {
-                                                                if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                                                                    ((TextMessage) baseMessage).setText(translatedText);
-                                                                    Log.i(TAG, "filterBaseMessages: case 3 translated text " + translatedText);
+
+                                                Log.e(TAG, "filterBaseMessages: 3.2" + baseMessage.toString());
+                                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                    Action action = ((Action) baseMessage);
+                                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    } else {
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            }
+                                            if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                                /*Here we are marking message as deleted so that user can check that it is deleted */
+                                                try {
+                                                    Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                                    if (metadata.has("deleted_one_to_one")) {
+                                                        if (metadata.getString("deleted_one_to_one").equals("1")) {
+                                                            baseMessage.setDeletedAt(12345);
+                                                        }
+                                                    } else {
+                                                        Log.i(TAG, "filterBaseMessages: edited at block 1");
+
+                                                        long id = baseMessage.getId();
+                                                        String textMessage = ((TextMessage) baseMessage).getText();
+                                                        String currentLang = sp.getString("currentLang", null);
+                                                        JSONObject body = new JSONObject();
+                                                        JSONArray languages = new JSONArray();
+                                                        languages.put(currentLang);
+                                                        body.put("msgId", id);
+                                                        body.put("languages", languages);
+                                                        body.put("text", textMessage);
+                                                        Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                                        // Do something after 5s = 5000ms
+                                                        CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                                new CometChat.CallbackListener<JSONObject>() {
+                                                                    @Override
+                                                                    public void onSuccess(JSONObject jsonObject) {
+                                                                        try {
+                                                                            Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                                                            JSONObject meta = baseMessage.getMetadata();
+                                                                            meta.accumulate("values", jsonObject);
+                                                                            String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                            // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                            //baseMessage.setMetadata(meta);
+
+                                                                            ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                            baseMessage.setMetadata(meta);
+                                                                        } catch (JSONException e) {
+                                                                            e.printStackTrace();
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onError(CometChatException e) {
+                                                                        // Some error occured
+                                                                        Log.i(TAG, "onError: " + e.getMessage());
+                                                                        Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                                    }
+                                                                });
+
+
+                                                    }
+
+                                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                        Action action = ((Action) baseMessage);
+                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                            tempList.add(baseMessage);
+                                                        } else {
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    } else {
+                                                        Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            } else {
+                                                try {
+
+                                                    JSONObject injectedObject = metadata.getJSONObject("@injected");
+                                                    if (injectedObject.has("extensions")) {
+                                                        JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                        if (extensionsObject.has("message-translation")) {
+                                                            JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                            JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                            HashMap<String, String> translationsMap = new HashMap<String, String>();
+
+                                                            for (int i = 0; i < translations.length(); i++) {
+                                                                JSONObject translation = translations.getJSONObject(i);
+                                                                String translatedText = translation.getString("message_translated");
+                                                                String translatedLanguage = translation.getString("language_translated");
+                                                                translationsMap.put(translatedLanguage, translatedText);
+                                                                /*if (translatedLanguage.equals(currentLang)) {
+                                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                        ((TextMessage) baseMessage).setText(translatedText);
+                                                                        Log.i(TAG, "filterBaseMessages: case 3 translated text " + translatedText);
+                                                                    }
+                                                                }*/
+                                                                if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                                    if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                                        if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                            ((TextMessage) baseMessage).setText(translatedText);
+                                                                        }
+                                                                    }
+                                                                } else {
+                                                                    ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
                                                                 }
                                                             }
                                                         }
                                                     }
+
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
                                                 }
-
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
                                             }
-                                        }
 
-                                        Log.e(TAG, "filterBaseMessages: 3.2" + baseMessage.toString());
-                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                            Action action = ((Action) baseMessage);
-                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            Log.e(TAG, "filterBaseMessages: 3.2" + baseMessage.toString());
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
                                             } else {
                                                 tempList.add(baseMessage);
                                             }
                                         } else {
-                                            tempList.add(baseMessage);
+                                            Log.e(TAG, "filterBaseMessages: 3.2" + baseMessage.toString());
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
                                         }
-
 
                                     } else if (baseMessage.getType().equals("image")) {
 
@@ -2581,74 +2580,195 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
                                 if (team_Ids.equals(part2)) {
                                     if (baseMessage.getType().equals("text")) {
-                                        /*This code is use to check if the text message is reply message from ios or normal message
-                                         * if it is replied msg and send from ios then we change metadata to display the text message
-                                         * code is written by rahul maske 27-03-2021*/
-                                        if (metadata.has("type")) {
-                                            try {
-                                                JSONObject customMetadata = new JSONObject();
-                                                JSONObject reply = new JSONObject();
-                                                reply.put("name", baseMessage.getSender().getName());
-                                                reply.put("type", baseMessage.getType());
-                                                reply.put("avatar", baseMessage.getSender().getAvatar());
-                                                reply.put("message", baseMessage.getMetadata().getString("message"));
-                                                customMetadata.put("reply", reply);
-                                                customMetadata.put("readByMeAt", baseMessage.getReadAt());
-                                                customMetadata.put("deliveredToMeAt", baseMessage.getDeliveredToMeAt());
-                                                customMetadata.put("deletedAt", baseMessage.getDeletedAt());
-                                                customMetadata.put("editedAt", baseMessage.getEditedAt());
-                                                customMetadata.put("deletedBy", baseMessage.getDeletedBy());
-                                                customMetadata.put("editedBy", baseMessage.getEditedBy());
-                                                customMetadata.put("updatedAt", baseMessage.getUpdatedAt());
-                                                //readByMeAt=0, deliveredToMeAt=0, deletedAt=0, editedAt=0, deletedBy='null',
-                                                // editedBy='null', updatedAt=1616823540
-                                                baseMessage.setMetadata(customMetadata);
-                                                tempList.add(baseMessage);
-                                                Log.i(TAG, "filterBaseMessages: iosReply name" + baseMessage.getSender().getName());
-                                                Log.i(TAG, "filterBaseMessages: iosReply type " + baseMessage.getType());
-                                                Log.i(TAG, "filterBaseMessages: iosReply avtar " + baseMessage.getSender().getAvatar());
-                                                Log.i(TAG, "filterBaseMessages: iosReply message " + baseMessage.getMetadata().getString("message"));
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
+                                        if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                            Log.e(TAG, "filterBaseMessages: 1.3");
+                                            Log.i(TAG, "deleted_one_to_one" + metadata.getString("deleted_one_to_one"));
+                                            /*Here we are marking message as deleted so that user can check that it is deleted */
+                                            if (metadata.getString("deleted_one_to_one").equals("1")) {
+                                                baseMessage.setDeletedAt(12345);
                                             }
-                                        } else {
-                                            try {
-                                                JSONObject injectedObject = metadata.getJSONObject("@injected");
-                                                if (injectedObject.has("extensions")) {
-                                                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
-                                                    if (extensionsObject.has("message-translation")) {
-                                                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
-                                                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
-                                                        HashMap<String, String> translationsMap = new HashMap<String, String>();
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    tempList.add(baseMessage);
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else if (metadata != null && baseMessage.getEditedAt() == 0) {
+                                            /*This code is use to check if the text message is reply message from ios or normal message
+                                             * if it is replied msg and send from ios then we change metadata to display the text message
+                                             * code is written by rahul maske 27-03-2021*/
+                                            if (metadata.has("type")) {
+                                                /*try {
+                                                    JSONObject customMetadata = new JSONObject();
+                                                    JSONObject reply = new JSONObject();
+                                                    reply.put("name", baseMessage.getSender().getName());
+                                                    reply.put("type", baseMessage.getType());
+                                                    reply.put("avatar", baseMessage.getSender().getAvatar());
+                                                    reply.put("message", baseMessage.getMetadata().getString("message"));
+                                                    customMetadata.put("reply", reply);
+                                                    customMetadata.put("readByMeAt", baseMessage.getReadAt());
+                                                    customMetadata.put("deliveredToMeAt", baseMessage.getDeliveredToMeAt());
+                                                    customMetadata.put("deletedAt", baseMessage.getDeletedAt());
+                                                    customMetadata.put("editedAt", baseMessage.getEditedAt());
+                                                    customMetadata.put("deletedBy", baseMessage.getDeletedBy());
+                                                    customMetadata.put("editedBy", baseMessage.getEditedBy());
+                                                    customMetadata.put("updatedAt", baseMessage.getUpdatedAt());
+                                                    //readByMeAt=0, deliveredToMeAt=0, deletedAt=0, editedAt=0, deletedBy='null',
+                                                    // editedBy='null', updatedAt=1616823540
+                                                    baseMessage.setMetadata(customMetadata);
+                                                    tempList.add(baseMessage);
+                                                    Log.i(TAG, "filterBaseMessages: iosReply name" + baseMessage.getSender().getName());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply type " + baseMessage.getType());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply avtar " + baseMessage.getSender().getAvatar());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply message " + baseMessage.getMetadata().getString("message"));
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }*/
+                                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                    Action action = ((Action) baseMessage);
+                                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                        tempList.add(baseMessage);
+                                                    } else {
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                } else {
+                                                    Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                                    tempList.add(baseMessage);
+                                                }
+                                            }
+                                            if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                                /*Here we are marking message as deleted so that user can check that it is deleted */
+                                                try {
+                                                    Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                                    if (metadata.has("deleted_one_to_one")) {
+                                                        if (metadata.getString("deleted_one_to_one").equals("1")) {
+                                                            baseMessage.setDeletedAt(12345);
+                                                        }
+                                                    } else {
+                                                        Log.i(TAG, "filterBaseMessages: edited at block 1");
 
-                                                        for (int i = 0; i < translations.length(); i++) {
-                                                            JSONObject translation = translations.getJSONObject(i);
-                                                            String translatedText = translation.getString("message_translated");
-                                                            String translatedLanguage = translation.getString("language_translated");
-                                                            translationsMap.put(translatedLanguage, translatedText);
-                                                            if (translatedLanguage.equals(currentLang)) {
-                                                                if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                                                                    ((TextMessage) baseMessage).setText(translatedText);
-                                                                    Log.i(TAG, "filterBaseMessages: case 4 translated text " + translatedText);
+                                                        long id = baseMessage.getId();
+                                                        String textMessage = ((TextMessage) baseMessage).getText();
+                                                        String currentLang = sp.getString("currentLang", null);
+                                                        JSONObject body = new JSONObject();
+                                                        JSONArray languages = new JSONArray();
+                                                        languages.put(currentLang);
+                                                        body.put("languages", languages);
+                                                        body.put("text", textMessage);
+                                                        Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                                        // Do something after 5s = 5000ms
+                                                        CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                                new CometChat.CallbackListener<JSONObject>() {
+                                                                    @Override
+                                                                    public void onSuccess(JSONObject jsonObject) {
+                                                                        try {
+                                                                            Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                                                            JSONObject meta = baseMessage.getMetadata();
+                                                                            meta.accumulate("values", jsonObject);
+                                                                            String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                            // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                            //baseMessage.setMetadata(meta);
+
+                                                                            ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                            baseMessage.setMetadata(meta);
+                                                                        } catch (JSONException e) {
+                                                                            e.printStackTrace();
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onError(CometChatException e) {
+                                                                        // Some error occured
+                                                                        Log.i(TAG, "onError: " + e.getMessage());
+                                                                        Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                                    }
+                                                                });
+
+
+                                                    }
+
+                                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                        Action action = ((Action) baseMessage);
+                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                            tempList.add(baseMessage);
+                                                        } else {
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    } else {
+                                                        Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            } else {
+                                                try {
+                                                    JSONObject injectedObject = metadata.getJSONObject("@injected");
+                                                    if (injectedObject.has("extensions")) {
+                                                        JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                        if (extensionsObject.has("message-translation")) {
+                                                            JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                            JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                            HashMap<String, String> translationsMap = new HashMap<String, String>();
+
+                                                            for (int i = 0; i < translations.length(); i++) {
+                                                                JSONObject translation = translations.getJSONObject(i);
+                                                                String translatedText = translation.getString("message_translated");
+                                                                String translatedLanguage = translation.getString("language_translated");
+                                                                translationsMap.put(translatedLanguage, translatedText);
+                                                                /*if (translatedLanguage.equals(currentLang)) {
+                                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                        ((TextMessage) baseMessage).setText(translatedText);
+                                                                        Log.i(TAG, "filterBaseMessages: case 4 translated text " + translatedText);
+                                                                    }
+                                                                }*/
+                                                                if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                                    if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                                        if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                            ((TextMessage) baseMessage).setText(translatedText);
+                                                                        }
+                                                                    }
+                                                                } else {
+                                                                    ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
                                                                 }
                                                             }
                                                         }
                                                     }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
                                                 }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
                                             }
-                                        }
-                                        Log.e(TAG, "filterBaseMessages: 4.2" + baseMessage.toString());
-                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                            Action action = ((Action) baseMessage);
-                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            Log.e(TAG, "filterBaseMessages: 4.2" + baseMessage.toString());
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
                                             } else {
                                                 tempList.add(baseMessage);
                                             }
                                         } else {
-                                            tempList.add(baseMessage);
+                                            Log.e(TAG, "filterBaseMessages: 3.2" + baseMessage.toString());
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
                                         }
                                     } else if (baseMessage.getType().equals("image")) {
 
@@ -2813,7 +2933,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         scrollToBottom();
     }
 
-
     /**
      * This method is used to initialize the message adapter if it is empty else it helps
      * to update the message list in adapter.
@@ -2824,7 +2943,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         if (messageAdapter == null) {
             messageAdapter = new MessageAdapter(getActivity(), messageList, CometChatMessageScreen.class.getName());
             rvChatListView.setAdapter(messageAdapter);
-
             stickyHeaderDecoration = new StickyHeaderDecoration(messageAdapter);
             rvChatListView.addItemDecoration(stickyHeaderDecoration, 0);
             scrollToBottom();
@@ -3135,8 +3253,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             //Friend chat
             case "1":
                 try {
-
-
                     group_all_members_id = "";
                     receiverMail = "onetoone_mail";
                     jsonObject.put("team_logs_id", 0);
@@ -3149,10 +3265,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
             //group
             case "2":
-
                 try {
-
-
                     receiverMail = "group_mail";
                     jsonObject.put("message_translation_languages", languageArray);
                     Log.i(TAG, "sendMessage: Hello its tab 2 sending msg");
@@ -3162,11 +3275,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 break;
 
             case "3":
-                team_logs_id = receiverId + "_-" + teamId + "_-" + 3; //+"_sage036"
+                team_logs_id = receiverId + "_-" + teamId + "_-" + 3;                                                       //+"_sage036"
                 try {
+                    Log.i(TAG, "sendMessage: ");
                     group_all_members_id = "";
-
-
                     receiverMail = "myandjointeam";
                     jsonObject.put("team_logs_id", team_logs_id);
                     jsonObject.put("message_translation_languages", languageArray);
@@ -3181,8 +3293,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 team_logs_id = receiverId + "_-" + teamId + "_-" + 4;                                                              //+"_sage036"
                 try {
                     group_all_members_id = "";
-
-
                     receiverMail = "myandjointeam";
                     jsonObject.put("team_logs_id", team_logs_id);
                     jsonObject.put("message_translation_languages", languageArray);
@@ -3194,15 +3304,24 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         }
 
         textMessage.setMetadata(jsonObject);
-        Log.e("Metadata", textMessage.toString());
+
         CometChat.sendMessage(textMessage, new CometChat.CallbackListener<TextMessage>() {
             @Override
             public void onSuccess(TextMessage textMessage) {
-                //BaseMessage baseMessage = (BaseMessage) textMessage;
-                saveChatLogToTheServer("Text", message, ChatGroupId, textMessage.getId());                   //team_Ids,comet_chat_type,group_all_members_id,receiverMail
+
+
+                Thread threadSaveChatLogToServer = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        saveChatLogToTheServer("Text", message, ChatGroupId, textMessage.getId());                   //team_Ids,comet_chat_type,group_all_members_id,receiverMail
+                    }
+                });
+                threadSaveChatLogToServer.start();
+
                 JSONObject metadata = textMessage.getMetadata();
                 /*here we are getting translated sent message and showing that message in selected language
-                 * code is added by rahul maske*/
+                 * code is added by rahul maske */
                 if (metadata != null) {
                     JSONObject injectedObject = null;
                     try {
@@ -3221,10 +3340,15 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                     String translatedLanguage = translation.getString("language_translated");
                                     translationsMap.put(translatedLanguage, translatedText);
                                     Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
-                                    if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
-                                        if (textMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                                            ((TextMessage) textMessage).setText(translatedText);
+                                    if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                            if (textMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                ((TextMessage) textMessage).setText(translatedText);
+                                            }
                                         }
+
+                                    } else {
+                                        ((TextMessage) textMessage).setText(((TextMessage) textMessage).getText());
                                     }
                                 }
                             }
@@ -3385,12 +3509,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 break;
 
             //group
             case "2":
-
                 try {
                     jsonObject.put("message_translation_languages", languageArray);
                     Log.i(TAG, "sendMessage: Hello its tab 2 sending msg");
@@ -3440,14 +3562,16 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                 new CometChat.CallbackListener<JSONObject>() {
                                     @Override
                                     public void onSuccess(JSONObject jsonObject) {
-                                        Log.i(TAG, "onSuccess: message-translation " + jsonObject);
+                                        Log.e(TAG, "onSuccess: message-translation " + jsonObject);
+                                        //baseMessage.setMetadata(.);
+
                                         BaseMessage baseMessage2 = createMetadataForEditedMessage(baseMessage1, jsonObject);
-                                        messageAdapter.setEditedMessage(baseMessage2);
+                                        messageAdapter.setEditedMessage(baseMessage, baseMessage2);
                                     }
 
                                     @Override
                                     public void onError(CometChatException e) {
-                                        Log.i(TAG, "onError: " + e.getMessage());
+                                        Log.e(TAG, "onError: " + e.getMessage());
                                     }
                                 });
                     } catch (JSONException e) {
@@ -3516,7 +3640,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     public BaseMessage createMetadataForEditedMessageNew(BaseMessage baseMessage1, JSONObject
             jsonObject) {
         try {
-           // String team_logs_id = baseMessage1.getMetadata().getString("team_logs_id");
+            // String team_logs_id = baseMessage1.getMetadata().getString("team_logs_id");
             long readByMeAt = baseMessage1.getReadByMeAt();
             long deliveredToMeAt = baseMessage1.getDeliveredToMeAt();
             long deletedAt = baseMessage1.getDeletedAt();
@@ -3536,7 +3660,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 injected.put("extensions", extensions);
 
                 metadata.put("@injected", injected);
-               // metadata.put("team_logs_id", team_logs_id);
+                // metadata.put("team_logs_id", team_logs_id);
                 metadata.put("readByMeAt", readByMeAt);
                 metadata.put("deliveredToMeAt", deliveredToMeAt);
                 metadata.put("deletedAt", deletedAt);
@@ -3557,7 +3681,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     }
 
 
-
     /**
      * This method is used to send reply message by link previous message with new message.
      *
@@ -3575,26 +3698,26 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
             JSONObject jsonObject = new JSONObject();
             JSONObject replyObject = new JSONObject();
-
+            replyObject.put("type", "reply");
             if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_TEXT);
+//                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_TEXT);
                 replyObject.put("message", ((TextMessage) baseMessage).getText());
             } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_IMAGE)) {
-                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_IMAGE);
+//                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_IMAGE);
                 replyObject.put("message", "image");
             } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_VIDEO)) {
-                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_VIDEO);
+//                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_VIDEO);
                 replyObject.put("message", "video");
             } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_FILE)) {
-                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_FILE);
+//                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_FILE);
                 replyObject.put("message", "file");
             } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_AUDIO)) {
-                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_AUDIO);
+                // replyObject.put("type", CometChatConstants.MESSAGE_TYPE_AUDIO);
                 replyObject.put("message", "audio");
             }
             replyObject.put("name", baseMessage.getSender().getName());
             replyObject.put("avatar", baseMessage.getSender().getAvatar());
-            jsonObject.put("reply", replyObject);
+            // jsonObject.put("reply", replyObject);
 
             JSONArray languageArray = new JSONArray();
             languageArray.put("en");
@@ -3610,36 +3733,32 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             languageArray.put("vi");
             languageArray.put("ur");
 
+            replyObject.put("message_translation_languages", languageArray);
+
             switch (tabs) {
                 case "1":
                     try {
-                        jsonObject.put("team_logs_id", 0);
-                        jsonObject.put("message_translation_languages", languageArray);
+                        replyObject.put("team_logs_id", 0);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    textMessage.setMetadata(jsonObject);
                     break;
 
                 case "2":
-                    try {
-                        jsonObject.put("message_translation_languages", languageArray);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    textMessage.setMetadata(jsonObject);
+
+                    //textMessage.setMetadata(jsonObject);
                     break;
 
                 case "3":
                     if (receiverId != null && teamId != null) {
                         team_logs_id = receiverId + "_-" + teamId + "_-" + 3;
                         try {
-                            jsonObject.put("team_logs_id", team_logs_id);
-                            jsonObject.put("message_translation_languages", languageArray);
+                            replyObject.put("team_logs_id", team_logs_id);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        textMessage.setMetadata(jsonObject);
+                        //textMessage.setMetadata(jsonObject);
                     }
                     break;
 
@@ -3647,26 +3766,27 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     if (receiverId != null && teamId != null) {
                         team_logs_id = receiverId + "_-" + teamId + "_-" + 4;
                         try {
-                            jsonObject.put("team_logs_id", team_logs_id);
-                            jsonObject.put("message_translation_languages", languageArray);
+                            replyObject.put("team_logs_id", team_logs_id);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        textMessage.setMetadata(jsonObject);
+                        // textMessage.setMetadata(jsonObject);
                     }
                     break;
             }
 
+            textMessage.setMetadata(replyObject);
             sendTypingIndicator(true);
             CometChat.sendMessage(textMessage, new CometChat.CallbackListener<TextMessage>() {
                 @Override
                 public void onSuccess(TextMessage textMessage) {
                     if (messageAdapter != null) {
                         MediaUtils.playSendSound(context, R.raw.outgoing_message);
-                        Log.i(TAG, "onSuccess: replied message response is " + textMessage);
+                        Log.e(TAG, "onSuccess: replied message response is " + textMessage);
                         filterTextMessage(textMessage, "");
                         //messageAdapter.addMessage(textMessage);
-                        //scrollToBottom();
+                        scrollToBottom();
                     }
                 }
 
@@ -3825,31 +3945,54 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         CometChat.addMessageListener(TAG, new CometChat.MessageListener() {
             @Override
             public void onTextMessageReceived(TextMessage message) {
-                try {
-                    /*Log.e(TAG, "onTextMessageReceived: " + message.toString());
-                    Log.i(TAG, "onTextMessageReceived: receiverType " + message.getReceiverType());
-                    Log.i(TAG, "onTextMessageReceived: receiverUid " + message.getReceiverUid());
-                    Log.i(TAG, "onTextMessageReceived: currentGID " + Id);*/
-                    Log.i(TAG, "onTextMessageReceived: threaded" + message.getReceiverType() + " BaseMessage " + message.toString());
-                    if (message.getReceiverType().equalsIgnoreCase("group")
-                            && message.getReceiverUid().equalsIgnoreCase(SenderId)) {
-                        onMessageReceived(message);
-                    } else if (message.getReceiverType().equalsIgnoreCase("user")) {
+                /* try {*/
+                Log.i(TAG, "onTextMessageReceived: message parent id" + message.getParentMessageId());
+                Log.i(TAG, "onTextMessageReceived: message id" + message.getId());
+                if (message.getParentMessageId() != 0 && message.getEditedAt() == 0) {
+                    Log.i(TAG, "onTextMessageReceived: thread block and message size" + messageList.size());
+                    messageAdapter.setReplyMessage(message);
+                } else if (message.getReceiverType().equalsIgnoreCase("group")
+                        && message.getReceiverUid().equalsIgnoreCase(SenderId)) {
 
-                        if (message.getMetadata().getString("team_logs_id").equalsIgnoreCase("0")) {
-                            onMessageReceived(message);
-                            //Log.e(TAG, "onTextMessageReceived: Friends");
-                        } else {
-                            //Log.e(TAG, "onTextMessageReceived: Team");
-                            onMessageReceived(message);
-                        }
+                    Log.i(TAG, "onTextMessageReceived: group2");
+                    onMessageReceived(message);
+
+                } else if (message.getReceiverType().equalsIgnoreCase("user")) {
+                        /*if (message.getMetadata().getString("team_logs_id").equalsIgnoreCase("0")) {
+                            if (message.getParentMessageId() != 0 && message.getEditedAt() == 0) {
+                                Log.i(TAG, "onTextMessageReceived: ");
+                                for (int i = 0; i < messageList.size(); i++)
+                                    if (messageList.get(i).getId() == message.getParentMessageId()) {
+                                        int count = messageList.get(i).getReplyCount();
+                                        messageList.get(i).setReplyCount(count + 1);
+                                        Log.i(TAG, "onTextMessageReceived: user1");
+                                    }
+                            } else {*/
+                    Log.i(TAG, "onTextMessageReceived: user2");
+                    onMessageReceived(message);
+                    /* }*/
+                } else {
+                    //Log.e(TAG, "onTextMessageReceived: Team");
+                    if (message.getParentMessageId() != 0 && message.getEditedAt() == 0) {
+                                /*for (int i = 0; i < messageList.size(); i++){
+                                    if (messageList.get(i).getId() == message.getParentMessageId()) {
+                                        int count = messageList.get(i).getReplyCount();
+                                        messageList.get(i).setReplyCount(count + 1);
+                                        Log.i(TAG, "onTextMessageReceived: group else");
+                                    }
+                                }
+                            } else {*/
+                        Log.i(TAG, "onTextMessageReceived: else2");
+                        onMessageReceived(message);
+                        /* }*/
+                    }
                        /* if(message.getParentMessageId() == ) {
                             Log.d(TAG,"Text Message Received for active thread");
                         }*/
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+             /*   } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
             }
 
             @Override
@@ -3894,7 +4037,16 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             @Override
             public void onMessageEdited(BaseMessage message) {
                 Log.d(TAG, "onMessageEdited: " + message.toString());
-                updateMessage(message);
+
+                if (message.getMetadata().has("deleted_one_to_one")) {
+                    message.setDeletedAt(12324);
+                    messageAdapter.setUpdatedMessage(message);
+                    Log.i(TAG, "onMessageEdited: 1");
+                } else {
+                    Log.i(TAG, "onMessageEdited: 2");
+                    updateMessage(message);
+                }
+
             }
 
             @Override
@@ -3992,7 +4144,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             case "1":
                 int team_log;
                 try {
-
                     if (metadata.has("team_logs_id")) {
                         team_log = metadata.getInt("team_logs_id");
                         if (team_log == 0) {
@@ -4020,7 +4171,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 break;
 
             case "2":
-                Log.i(TAG, "onMessageReceived: groupcase ");
+                Log.i(TAG, "onMessageReceived: case 2 ");
                 try {
                     if (!metadata.has("team_logs_id")) {
                         if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
@@ -4040,6 +4191,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 String logss;
                 try {
                     logss = metadata.getString("team_logs_id");
+                    Log.i(TAG, "onMessageReceived: case 3 ");
                     Log.e(TAG, "onMessageReceived: logss" + logss);
                     if (!logss.isEmpty() && !logss.equals("0")) {
                         if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
@@ -4065,6 +4217,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             case "4":
                 String logs;
                 try {
+                    Log.i(TAG, "onMessageReceived: case 4 ");
                     logs = metadata.getString("team_logs_id");
                     Log.e(TAG, "onMessageReceived: " + logs);
                     if (!logs.isEmpty() && !logs.equals("0")) {
@@ -4175,8 +4328,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 if ((messageAdapter.getItemCount() - 1) - ((LinearLayoutManager) rvChatListView.getLayoutManager()).findLastVisibleItemPosition() < 5)
                     scrollToBottom();
             } else {
-
                 messageList.add(message);
+
                 initMessageAdapter(messageList);
             }
         } /*else {
@@ -4185,7 +4338,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         }*/
     }
 
-    public void filterTextMessage(BaseMessage message, String string) {
+    public void filterTextMessage(@NotNull BaseMessage message, String string) {
         JSONObject metadata = message.getMetadata();
         if (message.getType().equals("text")) {
             try {
@@ -4204,11 +4357,21 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                 String translatedLanguage = translation.getString("language_translated");
                                 translationsMap.put(translatedLanguage, translatedText);
                                 Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
-                                if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                /*if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
                                     if (message.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                                         ((TextMessage) message).setText(translatedText);
                                     }
+                                }*/
+                                if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                    if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                        if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                            ((TextMessage) baseMessage).setText(translatedText);
+                                        }
+                                    }
+                                } else {
+                                    ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
                                 }
+
                             }
                         }
                         if (messageAdapter != null) {
@@ -4401,9 +4564,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 intent.putExtra(StringContract.IntentStrings.GROUP_PASSWORD, groupPassword);
                 startActivity(intent);
 
-               /*Intent intent = new Intent(getContext(), CometChatGroupDetailScreenActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(StringContract.IntentStrings.GUID, SenderId);
+                //Intent intent = new Intent(getContext(), CometChatGroupDetailScreenActivity.class);
+                Log.i(TAG, "onClick: group toolbar " + Group_id);
+               /* Bundle bundle = new Bundle();
+                bundle.putString(StringContract.IntentStrings.GUID, Group_id);
                 bundle.putString(StringContract.IntentStrings.NAME, name);
                 bundle.putString(StringContract.IntentStrings.AVATAR, avatarUrl);
                 bundle.putString(StringContract.IntentStrings.TYPE, type);
@@ -4412,7 +4576,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 bundle.putString(StringContract.IntentStrings.GROUP_OWNER, groupOwnerId);
                 bundle.putString(StringContract.IntentStrings.MEMBER_COUNT, ""+ memberCount);
                 bundle.putString(StringContract.IntentStrings.GROUP_DESC, groupDesc);
-                bundle.putString(StringContract.IntentStrings.GROUP_PASSWORD, groupPassword);*/
+                bundle.putString(StringContract.IntentStrings.GROUP_PASSWORD, groupPassword);
+                fragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ChatFragment, fragment,"FragmentGroupDetailScreen").commit();*/
             }
         }
     }
@@ -4482,6 +4648,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
     public void startThreadActivity() {
         Log.i(TAG, "startThreadActivity: tabs" + tabs);
+        Log.i(TAG, "startThreadActivity: clicked ");
         Intent intent = new Intent(getContext(), CometChatThreadMessageActivity.class);
         intent.putExtra(StringContract.IntentStrings.CONVERSATION_NAME, name);
         intent.putExtra(StringContract.IntentStrings.NAME, baseMessage.getSender().getName());
@@ -4514,7 +4681,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
     @Override
     public void setLongMessageClick(List<BaseMessage> baseMessagesList) {
-        Log.e(TAG, "setLongMessageClick: " + baseMessagesList);
+        Log.e(TAG, "setLongMessageClick: " + baseMessagesList + " tabs " + tabs);
         isReply = false;
         isEdit = false;
         messageActionFragment = new MessageActionFragment();
@@ -4526,7 +4693,16 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         boolean replyVisible = true;
         boolean editVisible = true;
         boolean deleteVisible = true;
-        boolean forwardVisible = true;
+        boolean forwardVisible;
+
+        if (tabs.equals("1") || tabs.equals("2")) {
+            forwardVisible = true;
+            Log.i(TAG, "setLongMessageClick: 1 " + forwardVisible);
+        } else {
+            forwardVisible = false;
+            Log.i(TAG, "setLongMessageClick: 2 " + forwardVisible);
+        }
+
         List<BaseMessage> textMessageList = new ArrayList<>();
         List<BaseMessage> mediaMessageList = new ArrayList<>();
         for (BaseMessage baseMessage : baseMessagesList) {
@@ -4548,10 +4724,22 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     if (basemessage.getSender().getUid().equals(CometChat.getLoggedInUser().getUid())) {
                         deleteVisible = true;
                         editVisible = true;
-                        forwardVisible = true;
+                        if (tabs.equals("1") || tabs.equals("2")) {
+                            forwardVisible = true;
+                            Log.i(TAG, "setLongMessageClick: 3 " + forwardVisible);
+                        } else {
+                            forwardVisible = false;
+                            Log.i(TAG, "setLongMessageClick: 4 " + forwardVisible);
+                        }
                     } else {
                         editVisible = false;
-                        forwardVisible = true;
+                        if (tabs.equals("1") || tabs.equals("2")) {
+                            forwardVisible = true;
+                            Log.i(TAG, "setLongMessageClick: 5 " + forwardVisible);
+                        } else {
+                            forwardVisible = false;
+                            Log.i(TAG, "setLongMessageClick: 6 " + forwardVisible);
+                        }
                         if (loggedInUserScope != null && (loggedInUserScope.equals(CometChatConstants.SCOPE_ADMIN) || loggedInUserScope.equals(CometChatConstants.SCOPE_MODERATOR))) {
                             deleteVisible = true;
                         } else {
@@ -4575,20 +4763,33 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     if (basemessage.getSender().getUid().equals(CometChat.getLoggedInUser().getUid())) {
                         deleteVisible = true;
                         editVisible = false;
-                        forwardVisible = true;
+                        if (tabs.equals("1") || tabs.equals("2")) {
+                            Log.i(TAG, "setLongMessageClick: 7 " + forwardVisible);
+                            forwardVisible = true;
+                        } else {
+                            forwardVisible = false;
+                            Log.i(TAG, "setLongMessageClick: 8 " + forwardVisible);
+                        }
                     } else {
                         if (loggedInUserScope != null && (loggedInUserScope.equals(CometChatConstants.SCOPE_ADMIN) || loggedInUserScope.equals(CometChatConstants.SCOPE_MODERATOR))) {
                             deleteVisible = true;
                         } else {
                             deleteVisible = false;
                         }
-                        forwardVisible = true;
+                        if (tabs.equals("1") || tabs.equals("2")) {
+                            Log.i(TAG, "setLongMessageClick: 9 " + forwardVisible);
+                            forwardVisible = true;
+                        } else {
+                            forwardVisible = false;
+                            Log.i(TAG, "setLongMessageClick: 10 " + forwardVisible);
+                        }
                         editVisible = false;
                     }
                 }
             }
         }
         baseMessages = baseMessagesList;
+        Log.i(TAG, "setLongMessageClick: forwardVisible final" + forwardVisible);
         Bundle bundle = new Bundle();
         bundle.putBoolean("copyVisible", copyVisible);
         bundle.putBoolean("threadVisible", threadVisible);
@@ -4603,11 +4804,14 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         messageActionFragment.setMessageActionListener(new MessageActionFragment.MessageActionListener() {
             @Override
             public void onThreadMessageClick() {
+                Log.i(TAG, "onThreadMessageClick: ");
+                messageActionFragment.dismiss();
                 startThreadActivity();
             }
 
             @Override
             public void onEditMessageClick() {
+
                 if (baseMessage != null && baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                     isEdit = true;
                     isReply = false;
@@ -4616,17 +4820,20 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     composeBox.ivMic.setVisibility(GONE);
                     composeBox.ivSend.setVisibility(View.VISIBLE);
                     editMessageLayout.setVisibility(View.VISIBLE);
+
                     //baseMessage.getId()
                     try {
+                        /*when user long press on message and then select edit
+                         * 1. we will convert that message in english and show it in composbox edittext so that user can edit that message
+                         * 2. and when we send message then edit message will called and then message will edited
+                         * code added by rahul maske */
                         JSONObject body = new JSONObject();
                         JSONArray languages = new JSONArray();
                         languages.put("en");
-
                         body.put("msgId", baseMessage.getId());
-
                         body.put("languages", languages);
-
                         body.put("text", "" + ((TextMessage) baseMessage).getText());
+
                         CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
                                 new CometChat.CallbackListener<JSONObject>() {
                                     @Override
@@ -4636,7 +4843,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                         try {
                                             String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
                                             Log.i(TAG, "onSuccess: translated string  " + messageTranslatedString);
-                                            //composeBox.etComposeBox.setText(((TextMessage) baseMessage).getText());
+
                                             composeBox.etComposeBox.setText(messageTranslatedString);
                                             if (messageAdapter != null) {
                                                 messageAdapter.setSelectedMessage(baseMessage.getId());
@@ -4652,10 +4859,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                         // Some error occured
                                     }
                                 });
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 
@@ -4675,11 +4882,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
             @Override
             public void onDeleteMessageClick() {
-                deleteMessage(baseMessage);
+                //deleteMessage(baseMessage);
+                if (tabs.equals("2")) {
+                    deleteMessage(baseMessage);
+                } else {
+                    onDeleteClickForFriendAndTeams("");
+                }
                 if (messageAdapter != null) {
                    /* if (type=="group"){
                         baseMessage.get
                     }*/
+
                     messageAdapter.clearLongClickSelectedItem();
                     messageAdapter.notifyDataSetChanged();
                 }
@@ -4834,8 +5047,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     public void saveImage(Bitmap imageBitmap, String ImageName) {
         FileOutputStream foStream;
         try {
-
-
             //creating new code for storing image
             String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/sagesurfer";
             File dir = new File(fullPath);
@@ -4956,47 +5167,22 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
      * From friend, group, team data will send data with there info
      *created by rahul maske
      * */
-    private void saveChatLogToTheServer(String ChatType, String Message, Double chat_group_id,
+    private void saveChatLogToTheServer(String ChatType, String Message, String chat_group_id,
                                         int chat_message_id) {
         String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
         HashMap<String, String> requestMap = new HashMap<>();
-        /*  phase3\mobile_cometchat.php
-            from_chat=                                 // from whom chat start
-            to_chat=                                    // to chat
-            chat_type=                                 //Text ,Audio,Video
-            direction=                                   //1
-            message=                                  // actual message
-            chat_group_id=                         //One to one 0,my team and join 0 and group chat -> actual group, id of chart group group_id
-            chat_message_id=                    // message id of chat
-            private_group_id=                    //my team or join team group id
-            read_chat=                               // 0 always
-            comet_chat_type=                    // One to one 1,Comet chat group 2,private 3
-            group_all_members_id            // comma seperated group member ids
-            receiverMail                            //Team=> myandjointeam, Friends =>onetoone_mail, group=>group_mail
-            lastconversion_sttaus            //  */
-        //team_Ids,comet_chat_type,group_all_members_id,receiverMail
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(General.USER_ID, null);
 
         String DomainURL = domainUrlPref.getString(General.DOMAIN, null);
-
-        Log.i(TAG, "saveChatLogToTheServer: userId" + UserId);
-        Log.i(TAG, "saveChatLogToTheServer: domainURL" + DomainURL + url);
-        Log.i(TAG, "saveChatLogToTheServer: TO_CHAT" + SenderId);
-        Log.i(TAG, "saveChatLogToTheServer: CHAT_TYPE" + ChatType);
-        Log.i(TAG, "saveChatLogToTheServer: message" + Message);
-        Log.i(TAG, "saveChatLogToTheServer: CHAT_GROUP_ID" + chat_group_id);
-        Log.i(TAG, "saveChatLogToTheServer: PRIVATE_GROUP_ID" + team_Ids);
-        Log.i(TAG, "saveChatLogToTheServer: cometchatType" + comet_chat_type);
-        Log.i(TAG, "saveChatLogToTheServer: GROUP_ALL_MEMBERS_ID_" + group_all_members_id);
-        Log.i(TAG, "saveChatLogToTheServer: receiverMail" + receiverMail);
-        Log.i(TAG, "saveChatLogToTheServer: LAST_CONVERSATION_STATUS" + "online");
-        Log.i(TAG, "saveChatLogToTheServer: messageId " + chat_message_id);
-
         if (tabs.equals("1") || tabs.equals("2")) {
-            team_Ids = "";
+            team_Ids = "No Id";
         }
+        Log.i(TAG, "saveChatLogToTheServer: From_chat " + UserId +" To_chat "+SenderId +" CHAT_TYPE "+ChatType
+        +" MESSAGE "+Message +" chat_group_id "+chat_group_id +" team_Ids "+team_Ids +" comet_chat_type "+comet_chat_type
+        +" chat_message_id "+chat_message_id +" group_all_members_id "+group_all_members_id +" receiverMail "+receiverMail +" LAST_CONVERSATION_STATUS "+status);
+
         requestMap.put(General.ACTION, "cometchat_log");
         requestMap.put(General.FROM_CHAT, UserId);
         requestMap.put(General.TO_CHAT, SenderId);
@@ -5010,18 +5196,15 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         requestMap.put(General.CHAT_MSG_ID, "" + chat_message_id);
         requestMap.put(General.GROUP_ALL_MEMBERS_ID_, group_all_members_id);
         requestMap.put(General.RECEIVE_MAIL, receiverMail);
-        requestMap.put(General.LAST_CONVERSATION_STATUS, "online");
-        requestMap.put("read_chat", "0");
+        requestMap.put(General.LAST_CONVERSATION_STATUS, status);
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
-        // Log.e(TAG, "saveChatLogToTheServer: request body " + requestBody);
+        //Log.e(TAG, "saveChatLogToTheServer: request body " + requestBody);
         try {
             if (requestBody != null) {
                 String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
                 if (response != null) {
                     Log.i(TAG, "saveChatLogToTheServerRequest:  response " + response);
                 }
-            } else {
-                Log.i(TAG, "saveChatLogToTheServerRequest:  null");
             }
         } catch (Exception e) {
             Log.i(TAG, "saveChatLogToTheServerRequest: " + e.getMessage());
@@ -5039,7 +5222,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         }
         String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
         HashMap<String, String> requestMap = new HashMap<>();
-
         requestMap.put(General.ACTION, "cometchat_outlog");
         requestMap.put(General.MISSED_CALL, "");
         requestMap.put(General.COMET_CHAT_TYPE, "" + comet_chat_type);
@@ -5065,5 +5247,115 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             Log.i(TAG, "logOutEnrtyCometchat: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /*delete message method created for friend, team and */
+    public void onDeleteClickForFriendAndTeams(String message) {
+        isEdit = false;
+        TextMessage textMessage;
+        JSONObject jsonObject = new JSONObject();
+
+        if (baseMessage.getReceiverType().equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
+            textMessage = new TextMessage(baseMessage.getReceiverUid(), message, CometChatConstants.RECEIVER_TYPE_USER);
+        else
+            textMessage = new TextMessage(baseMessage.getReceiverUid(), message, CometChatConstants.RECEIVER_TYPE_GROUP);
+        sendTypingIndicator(true);
+
+        textMessage.setId(baseMessage.getId());
+        JSONArray languageArray = new JSONArray();
+        languageArray.put("en");
+        languageArray.put("hi");
+        languageArray.put("ar");
+        languageArray.put("ko");
+        languageArray.put("de");
+        languageArray.put("fr");
+        languageArray.put("fr-CA");
+        languageArray.put("es");
+        languageArray.put("ru");
+        languageArray.put("pt");
+        languageArray.put("vi");
+        languageArray.put("ur");
+
+        switch (tabs) {
+            //Friend chat
+            case "1":
+                try {
+                    jsonObject.put("team_logs_id", 0);
+                    jsonObject.put("deleted_one_to_one", 0);
+                    jsonObject.put("message_translation_languages", languageArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "3":
+                team_logs_id = receiverId + "_-" + teamId + "_-" + 3; //+"_sage036"
+                try {
+                    jsonObject.put("team_logs_id", team_logs_id);
+                    jsonObject.put("deleted_one_to_one", 1);
+                    jsonObject.put("message_translation_languages", languageArray);
+                    Log.i(TAG, "sendMessage: TeamId " + teamId);
+                    Log.i(TAG, "sendMessage: Hello its tab3 sending msg " + team_logs_id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "4":
+                team_logs_id = receiverId + "_-" + teamId + "_-" + 4; //+"_sage036"
+                try {
+                    jsonObject.put("team_logs_id", team_logs_id);
+                    jsonObject.put("deleted_one_to_one", 1);
+                    jsonObject.put("message_translation_languages", languageArray);
+                    Log.i(TAG, "sendMessage: Hello its tab4 sending msg" + team_logs_id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        Log.i(TAG, "editMessage:  metadata" + jsonObject);
+        textMessage.setMetadata(jsonObject);
+        CometChat.editMessage(textMessage, new CometChat.CallbackListener<BaseMessage>() {
+            @Override
+            public void onSuccess(BaseMessage baseMessage1) {
+                Log.e(TAG, "onSuccess: edited message" + baseMessage1.toString());
+                if (messageAdapter != null) {
+                    try {
+                        JSONObject body = new JSONObject();
+                        JSONArray languages = new JSONArray();
+                        languages.put(sp.getString("currentLang", currentLang));
+                        body.put("msgId", baseMessage1.getId());
+                        body.put("languages", languages);
+                        body.put("text", "" + message);
+
+                        baseMessage1.setDeletedAt(12324);
+                        messageAdapter.setUpdatedMessage(baseMessage1);
+
+
+                        /*CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                new CometChat.CallbackListener<JSONObject>() {
+                                    @Override
+                                    public void onSuccess(JSONObject jsonObject) {
+                                        Log.i(TAG, "onSuccess: message-translation " + jsonObject);
+                                        baseMessage.setDeletedAt(12324);
+                                        messageAdapter.setUpdatedMessage(baseMessage);
+                                    }
+                                    @Override
+                                    public void onError(CometChatException e) {
+                                        Log.i(TAG, "onError: " + e.getMessage());
+                                    }
+                                });*/
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //messageAdapter.setUpdatedMessage(message);
+                }
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.d(TAG, "onError: " + e.getMessage());
+            }
+        });
     }
 }

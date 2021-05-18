@@ -5,11 +5,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -46,9 +49,9 @@ public class PostcardListFragment extends Fragment implements PostcardListAdapte
     private static final String TAG = PostcardListFragment.class.getSimpleName();
     private ArrayList<Postcard_> mailArrayList;
     private String folder = "inbox";
-
+    private PostcardListAdapter mAdapter;
     private RecyclerView recyclerView;
-
+    private EditText ed_search_mail;
     private Activity activity;
     private MainActivityInterface mainActivityInterface;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -90,10 +93,27 @@ public class PostcardListFragment extends Fragment implements PostcardListAdapte
         }
 
         recyclerView = (RecyclerView) view.findViewById(R.id.swipe_refresh_layout_recycler_view);
+        ed_search_mail = (EditText) view.findViewById(R.id.ed_search_mail);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
+        ed_search_mail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                searchMail(s.toString());
             }
         });
 
@@ -129,6 +149,12 @@ public class PostcardListFragment extends Fragment implements PostcardListAdapte
         getMails(activity);
     }
 
+    private void searchMail(String search) {
+        if (mAdapter != null) {
+            mAdapter.getFilter().filter(search);
+        }
+    }
+
     public void getMails(Activity activity) {
         int status = 12;
         HashMap<String, String> requestMap = new HashMap<>();
@@ -149,7 +175,7 @@ public class PostcardListFragment extends Fragment implements PostcardListAdapte
                         postcard_.setStatus(status);
                         mailArrayList.add(postcard_);
                     }
-                    PostcardListAdapter mAdapter = new PostcardListAdapter(this.activity.getApplicationContext(), mailArrayList, this);
+                    mAdapter = new PostcardListAdapter(this.activity.getApplicationContext(), mailArrayList, this);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.activity.getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -45,7 +45,15 @@ import listeners.OnMessageLongClick;
 public class CometChatMessageListActivity extends AppCompatActivity implements MessageAdapter.OnMessageLongClick {
     private static final String TAG = "CometChatMessageListAct";
     private OnMessageLongClick messageLongClick;
-    Fragment fragment = new CometChatMessageScreen();
+    Fragment fragment;
+    {
+        try {
+            fragment = new CometChatMessageScreen();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     FloatingActionButton btnAdd;
     SharedPreferences sp;
     SharedPreferences preferencesCheckCurrentActivity;
@@ -57,7 +65,9 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
         EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
         EmojiCompat.init(config);
         setContentView(R.layout.activity_cometchat_message_list);
+
         sp = getSharedPreferences("login", MODE_PRIVATE);
+        Log.i(TAG, "onCreate: tabs -> "+getIntent().getStringExtra(StringContract.IntentStrings.TABS));
 
         if (getIntent() != null) {
             Bundle bundle = new Bundle();
@@ -78,11 +88,10 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
                 editor.putString("UserIds", getIntent().getStringExtra(StringContract.IntentStrings.UID));
                 editor.putString("types", getIntent().getStringExtra(StringContract.IntentStrings.TYPE));
                 editor.commit();
-
             } else {
                 bundle.putString(StringContract.IntentStrings.GUID, getIntent().getStringExtra(StringContract.IntentStrings.GUID));
                 bundle.putString(StringContract.IntentStrings.GROUP_OWNER, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_OWNER));
-                bundle.putInt(StringContract.IntentStrings.MEMBER_COUNT, getIntent().getIntExtra(StringContract.IntentStrings.MEMBER_COUNT, 0));
+                //bundle.putInt(StringContract.IntentStrings.MEMBER_COUNT, getIntent().getIntExtra(StringContract.IntentStrings.MEMBER_COUNT, 0));
                 bundle.putString(StringContract.IntentStrings.GROUP_TYPE, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_TYPE));
                 bundle.putString(StringContract.IntentStrings.GROUP_DESC, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_DESC));
                 bundle.putString(StringContract.IntentStrings.GROUP_PASSWORD, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_PASSWORD));
@@ -106,7 +115,6 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: ");
-
     }
 
     @Override

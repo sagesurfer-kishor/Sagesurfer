@@ -67,11 +67,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-
         UserListRowBinding userListRowBinding = DataBindingUtil.inflate(layoutInflater, R.layout.user_list_row, parent, false);
-
         return new UserViewHolder(userListRowBinding);
     }
 
@@ -85,7 +82,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
      */
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder userViewHolder, int i) {
-
         final User user = userArrayList.get(i);
         User user1 = i + 1 < userArrayList.size()? userArrayList.get(i + 1) : null;
 
@@ -106,6 +102,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         } else {
             userViewHolder.userListRowBinding.avUser.setAvatar(user.getAvatar());
         }
+
         if(Utils.isDarkMode(context)) {
             userViewHolder.userListRowBinding.txtUserName.setTextColor(context.getResources().getColor(R.color.textColorWhite));
             userViewHolder.userListRowBinding.tvSeprator.setBackgroundColor(context.getResources().getColor(R.color.grey));

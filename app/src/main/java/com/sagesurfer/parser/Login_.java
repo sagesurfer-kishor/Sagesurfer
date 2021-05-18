@@ -46,7 +46,7 @@ public class Login_ {
             Preferences.save("faq", GetJson_.getObject(response, "faq").toString());
             Preferences.save("terms_condtions", GetJson_.getObject(response, "terms_condtions").toString());
             Preferences.save("aboutus", GetJson_.getObject(response, "aboutus").toString());
-
+            Log.i(TAG, "userInfoParser: "+GetJson_.getArray(response, "drawer").toString());
 
             if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
                 //Senjam don't have landing questions

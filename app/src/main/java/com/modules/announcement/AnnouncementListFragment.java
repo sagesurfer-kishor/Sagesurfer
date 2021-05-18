@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,6 +124,7 @@ public class AnnouncementListFragment extends Fragment implements View.OnClickLi
             fab.setVisibility(View.GONE);
         }
         getHeight(fab);
+        Log.i(TAG, "onCreateView: announcement");
         return view;
     }
 
@@ -134,7 +136,7 @@ public class AnnouncementListFragment extends Fragment implements View.OnClickLi
         fab.setBackgroundTintList(ColorStateList.valueOf(GetColor.getHomeIconBackgroundColorColorParse(true)));
         showError(false, 1);
         getAnnouncement();
-
+        Log.i(TAG, "onCreateView: announcement2");
         try{
             ((TeamDetailsActivity) getActivity()).inviteButtonSetVisibility();
         }catch (Exception e){

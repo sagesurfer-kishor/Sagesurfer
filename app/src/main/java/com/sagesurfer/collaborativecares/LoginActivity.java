@@ -48,8 +48,10 @@ import com.cometchat.pro.models.User;
 import com.firebase.MessagingService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+/*
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+*/
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -88,6 +90,7 @@ import com.sagesurfer.tasks.PerformServerTask;
 import com.sagesurfer.validator.LoginValidator;
 import com.storage.preferences.Preferences;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,7 +116,6 @@ import okhttp3.Response;
  */
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, AuthorizationCallbacks, TokenCallbacks {
-
     private static final String TAG = LoginActivity.class.getSimpleName();
     @BindView(R.id.edittext_login_user_name)
     EditText editTextUserName;
@@ -613,9 +615,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int status = 12;
         int roleId = 0;
         String response = null;
+        Log.i(TAG, "doLogin: entered ------------------->");
         try {
             response = new PerformLoginTask(user_name, password, start_time, this).execute().get();
-            Log.e("Login", "" + response);
+            Log.e("doLogin : ", "Login response " + response);
 
             /*JSONObject jsonObject=new JSONObject(response);
             if(jsonObject.has("drawer")){
@@ -1018,12 +1021,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //Fetching server list from web for checking if valid server code entered or not on login
+
     private void getServers() {
         String response = null;
         try {
             response = new PerformServerTask(this).execute(getApplicationContext()).get();
-            //Log.e(TAG, "getServers: "+response.toString() );
-        } catch (InterruptedException | ExecutionException e) {
+            Log.e(TAG, "getServers: "+response.toString() );
+           JSONObject jsonObject=new JSONObject(response);
+           JSONArray jsonArray=jsonObject.getJSONArray("instances");
+           for(int i=0; i<jsonArray.length(); i ++){
+               Log.i(TAG, "getServers: Instance "+jsonArray.get(i));
+           }
+        } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "getServers: catch" + e.getMessage());
         }
@@ -1033,8 +1042,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (serverList.size() > 0) {
                 toggleLogin(true);
             } else {
-                ShowSnack.buttonWarning(buttonLogin,    this.getResources()
-                        .getString(R.string.servers_unavailable), getApplicationContext());
+                ShowSnack.buttonWarning(buttonLogin,    this.getResources().getString(R.string.servers_unavailable), getApplicationContext());
             }
         } else {
             ShowSnack.buttonWarning(buttonLogin, Warnings.AUTHENTICATION_FAILED, getApplicationContext());
@@ -1043,6 +1051,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //onSuccessful oAuth token generation, store user details and move to HomeRecentUpdates_ page
     private void moveNext() {
+        SharedPreferences loginSessionCheck =getSharedPreferences("loginSessionCheck",MODE_PRIVATE);
+        SharedPreferences.Editor editor = loginSessionCheck.edit();
+        editor.putString(General.IS_LOGIN, "1");
+        editor.apply();
         Preferences.save(General.IS_LOGIN, 1);
         MakeDirectory.makeDirectories();
         saveData();
@@ -1145,6 +1157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Preferences.save(General.COUNTRY_ID, userInfo.getCountry());
         Preferences.save(General.BIRTDATE, userInfo.getDob());
         Preferences.save(General.USER_COMETCHAT_ID, userInfo.getComet_chat_id());
+
 
         if (userInfo.getRole().equalsIgnoreCase("care coordinator")) {
             Preferences.save(General.IS_CC, 1);

@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_background"
     android:fitsSystemWindows="true"
     tools:ignore="MissingDefaultResource">
+    <include
+        android:id="@+id/activity_toolbar_layout"
+        layout="@layout/activity_toolbar_layout" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@color/screen_background"
-        android:orientation="vertical">
-
-        <include layout="@layout/activity_toolbar_layout" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_toolbar_layout">
 
         <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -54,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <!--center Layout -->
             <FrameLayout
                 android:id="@+id/framelayout_circlularimages"
                 android:layout_width="match_parent"
@@ -63,7 +67,7 @@
                 android:clipChildren="false"
                 android:orientation="vertical"
                 android:visibility="visible">
-
+                <!--background image main-->
                 <ImageView
                     android:id="@+id/team_details_circular_banner"
                     android:layout_width="match_parent"
@@ -80,27 +84,27 @@
 
                     <RelativeLayout
                         android:id="@+id/relativelayout_image0"
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:gravity="center">
 
                         <RelativeLayout
                             android:id="@+id/relativelayout_image"
-                            android:layout_width="43dp"
-                            android:layout_height="43dp">
+                            android:layout_width="61dp"
+                            android:layout_height="61dp">
 
                             <com.sagesurfer.views.CircleGray
                                 android:id="@+id/circle0"
-                                android:layout_width="43dp"
-                                android:layout_height="43dp"
+                                android:layout_width="57dp"
+                                android:layout_height="57dp"
                                 android:layout_centerInParent="true" />
 
                             <com.szugyi.circlemenu.view.CircleImageView
                                 android:id="@+id/circleimageview_teamdetails_member0"
                                 android:name="@string/calendar"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:layout_centerInParent="true"
                                 android:layout_gravity="center"
                                 android:background="@drawable/circle"
@@ -112,13 +116,13 @@
 
                         <ImageView
                             android:id="@+id/member_status_icon0"
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginEnd="5dp"
+                            android:layout_marginEnd="7dp"
+                            android:layout_marginBottom="6dp"
                             android:background="@drawable/white_circle"
-                            android:padding="1dp"
                             android:src="@drawable/offline_circle" />
                     </RelativeLayout>
 
@@ -148,8 +152,8 @@
 
                 <com.szugyi.circlemenu.view.CircleLayout
                     android:id="@+id/circle_layout_dots"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_gravity="center"
                     android:visibility="visible"
                     app:isRotating="false">
@@ -387,7 +391,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:background="@color/screen_background"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="match_parent"
@@ -1047,4 +1052,107 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu_yellow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu_backgroundColor="#9000"
+        app:menu_fab_size="mini"
+        app:menu_labels_margin="@dimen/margin_20"
+        fab:menu_animationDelayPerItem="0"
+        fab:menu_colorNormal="@color/colorPrimary"
+        fab:menu_colorPressed="@color/colorPrimary"
+        fab:menu_colorRipple="@color/colorPrimary"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_hideAnimation="@anim/jump_to_down"
+
+        fab:menu_labels_showAnimation="@anim/jump_from_down"
+        fab:menu_labels_singleLine="true"
+        fab:menu_labels_style="@style/MenuLabelsStyle"
+        fab:menu_openDirection="down">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_poll"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/elections_icon"
+            fab:fab_label="@string/poll" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_message_board"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:src="@drawable/email_icon"
+            fab:fab_label="@string/message_board" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_announcement"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/megaphone_icon"
+            fab:fab_label="@string/announcements" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_team_talk"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/talk_icon"
+            fab:fab_label="@string/team_talk" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_gallary"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/gallery_icon"
+            fab:fab_label="@string/gallery" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_file_share"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/share_icon"
+            fab:fab_label="@string/file_share" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_events"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/events_icon"
+            fab:fab_label="@string/events" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_task_list"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tasklist_icon"
+            fab:fab_label="@string/task_list" />
+    </com.github.clans.fab.FloatingActionMenu>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_team_menus"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#9000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_toolbar_layout" />
+</androidx.constraintlayout.widget.ConstraintLayout>

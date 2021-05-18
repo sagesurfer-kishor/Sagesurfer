@@ -125,9 +125,9 @@ public class GetColor {
     }
 
     public static int getHomeIconBackgroundDrawable(int iconNumber) {
-        int color;
+        int color=Color.parseColor("#ffffff");
         //int iconNumber = Integer.parseInt(Preferences.get(General.HOME_ICON_NUMBER));
-        if (iconNumber == 0) {
+       /* if (iconNumber == 0) {
             color = Color.parseColor("#0D79C2"); //R.color.colorPrimary
         } else if (iconNumber == 1) {
             color = Color.parseColor("#6c5ce7"); //R.color.bg_home_menu_one
@@ -143,7 +143,7 @@ public class GetColor {
             color = Color.parseColor("#fdcb6e"); //R.color.bg_home_menu_six
         } else {
             color = Color.parseColor("#0D79C2"); //R.color.colorPrimary
-        }
+        }*/
         return color;
     }
 }

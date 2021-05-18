@@ -12,35 +12,35 @@ import com.storage.preferences.Preferences;
  * This class returns drawer menu icon based on menu id
  */
 
-public class GetDrawerIcon {
+public class   GetDrawerIcon {
     public static int get(int id) {
         switch (id) {
             case 0:
-                return R.drawable.logout_drawer_icon;
+                return R.drawable.logout_side;
             case 1:
-                return R.drawable.vi_drawer_wall;
+                return R.drawable.side_wall;
             case 2:
-                return R.drawable.vi_drawer_sos;
+                return R.drawable.sos_side;
             case 3:
-                return R.drawable.vi_drawer_message;
+                return R.drawable.side_messages;
             case 4:
                 return R.drawable.vi_drawer_alerts;
             case 5:
                 return R.drawable.vi_drawer_crisisplan;
             case 7:
-                return R.drawable.vi_drawer_assessment;
+                return R.drawable.assess_side;
             case 8:
-                return R.drawable.vi_drawer_teams;
+                return R.drawable.side_team;
             case 9:
                 return R.drawable.vi_home_chat;
             case 10:
-                return R.drawable.vi_drawer_contact;
+                return R.drawable.side_contact;
             case 11:
-                return R.drawable.vi_drawer_consent;
+                return R.drawable.side_con_consent;
             case 12:
-                return R.drawable.vi_drawer_uploader;
+                return R.drawable.side_uploader;
             case 13:
-                return R.drawable.vi_drawer_support;
+                return R.drawable.headset_side;
             case 15:
                 return R.drawable.vi_drawer_announcements;
             case 16:
@@ -56,13 +56,13 @@ public class GetDrawerIcon {
             /*case 21:
                 return R.drawable.vi_drawer_supervisor_messages;*/
             case 28:
-                return R.drawable.vi_drawer_reviewer;
+                return R.drawable.side_reviewer;
             case 34:
-                return R.drawable.mood_drawer_icon;
+                return R.drawable.mood_side;
             case 40:
                 return R.drawable.vi_drawer_dashboard;
             case 50:
-                return R.drawable.vi_drawer_home;
+                return R.drawable.home_side;
             case 51:
                 return R.drawable.mood_drawer_icon;
             case 52:
@@ -91,7 +91,6 @@ public class GetDrawerIcon {
                 }else {
                     return R.drawable.self_care_home_icon;
                 }
-
             case 72:
                 return R.drawable.multiple_user_regi_icon;
             case 73:
@@ -103,11 +102,11 @@ public class GetDrawerIcon {
             case 76:
                 return R.drawable.vi_home_report1;
             case 79:
-                return R.drawable.invite_friend_icon;
+                return R.drawable.invite_friends;
             case 81:
                 return R.drawable.vi_home_appintment;
-            /*case 81:
-                return R.drawable.appointment_black_icon;*/
+            case 82:
+                return R.drawable.vi_home_appintment;
             default:
                 return R.drawable.primary_circle;
         }

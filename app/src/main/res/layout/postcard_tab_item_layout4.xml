@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_tab_icon4"
+        android:layout_width="@dimen/margin_14"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="@dimen/margin_14" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/compose"
+        android:id="@+id/tv_name4"
+        android:layout_marginStart="5dp"
+        android:textSize="@dimen/text_size_12"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_tab_icon4"
+        app:layout_constraintStart_toEndOf="@+id/iv_tab_icon4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="@dimen/margin_14"
+        android:layout_height="@dimen/margin_14"
+        android:text="@string/compose"
+        android:id="@+id/tv_counter4"
+        android:background="@drawable/blue_circle"
+        android:layout_marginStart="3dp"
+        android:textSize="@dimen/text_size_10"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name4"
+        app:layout_constraintStart_toEndOf="@+id/tv_name4"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

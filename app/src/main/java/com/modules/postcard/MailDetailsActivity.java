@@ -89,11 +89,8 @@ public class MailDetailsActivity extends AppCompatActivity implements View.OnCli
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, GetColor.getHomeIconBackgroundColorColorParse(false)));
-
         setContentView(R.layout.mail_details_layout);
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-
         toolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
@@ -141,7 +138,6 @@ public class MailDetailsActivity extends AppCompatActivity implements View.OnCli
     private void setData() {
 
         TextView attachmentTag = (TextView) findViewById(R.id.mail_details_attachment_tag);
-
         TextView nameText = (TextView) findViewById(R.id.mail_details_name);
         TextView toText = (TextView) findViewById(R.id.mail_details_to_list);
         if (action.equalsIgnoreCase("outbox")) {
@@ -480,10 +476,7 @@ public class MailDetailsActivity extends AppCompatActivity implements View.OnCli
             }
             //  Permissions was not granted
             else {
-
                 ShowToast.toast("No permission for " + Manifest.permission.WRITE_EXTERNAL_STORAGE, this);
-
-
             }
         }
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,61 +7,65 @@
     android:layout_centerHorizontal="true"
     android:gravity="center_vertical|start"
     android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingTop="7dp"
+    android:paddingTop="10dp"
     android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingBottom="7dp"
+
     tools:ignore="MissingDefaultResource">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/drawer_list_group_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingTop="@dimen/margin_5"
+        android:paddingBottom="@dimen/margin_5"
         android:padding="5dp"
         app:srcCompat="@drawable/primary_circle" />
 
     <TextView
         android:id="@+id/drawer_list_group_title"
         style="@style/CustomFontStylePrimary"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/drawer_list_group_end_layout"
-        android:layout_toEndOf="@+id/drawer_list_group_icon"
-        android:gravity="start|center_vertical"
         android:padding="5dp"
-        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/margin_10"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:singleLine="true"
-        android:text="@string/runtime_permissions_txt"
+        android:text="@string/cancel"
         android:textColor="@color/text_color_primary"
-        android:textSize="@dimen/text_size_16" />
+        android:textSize="@dimen/text_size_14"
+        app:layout_constraintBottom_toBottomOf="@+id/drawer_list_group_icon"
+        app:layout_constraintEnd_toStartOf="@+id/drawer_list_group_end_layout"
+        app:layout_constraintStart_toEndOf="@+id/drawer_list_group_icon"
+        app:layout_constraintTop_toTopOf="@+id/drawer_list_group_icon"
+        app:layout_constraintVertical_bias="0.25" />
 
     <RelativeLayout
         android:id="@+id/drawer_list_group_end_layout"
-        android:layout_width="45dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:background="@color/transparent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/margin_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/drawer_list_group_counter"
-            style="@style/CustomFontStylePrimary"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
+            style="@style/CustomFontStyleSecondary"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/counter_rounded_rectangle"
-            android:gravity="center"
+
             android:maxWidth="30dp"
             android:minWidth="25dp"
             android:padding="1dp"
-            android:text="99+"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_14"
+            android:textSize="@dimen/text_size_12"
             android:visibility="visible" />
 
         <ImageView
@@ -74,4 +78,12 @@
             android:src="@drawable/ic_solid_arrow_r"
             android:visibility="gone" />
     </RelativeLayout>
-</RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:id="@+id/view_separator"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

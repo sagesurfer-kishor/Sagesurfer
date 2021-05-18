@@ -8,32 +8,32 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_member1"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/relativelayout_image1"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
+            android:layout_width="@dimen/circular_layout1"
+            android:layout_height="@dimen/circular_layout1"
             android:layout_gravity="center"
             android:gravity="center">
 
             <RelativeLayout
-                android:layout_width="43dp"
-                android:layout_height="43dp">
+                android:layout_width="@dimen/circular_layout2"
+                android:layout_height="@dimen/circular_layout2">
 
                 <com.sagesurfer.views.CircleGray
                     android:id="@+id/circle1"
-                    android:layout_width="43dp"
-                    android:layout_height="43dp"
+                    android:layout_width="@dimen/circular_layout3"
+                    android:layout_height="@dimen/circular_layout3"
                     android:layout_centerInParent="true" />
 
                 <com.szugyi.circlemenu.view.CircleImageView
                     android:id="@+id/circleimageview_teamdetails_member1"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/circular_layout4"
+                    android:layout_height="@dimen/circular_layout4"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:background="@drawable/circle"
@@ -44,11 +44,12 @@
 
             <ImageView
                 android:id="@+id/member_status_icon1"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/circular_layout5"
+                android:layout_height="@dimen/circular_layout5"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="@dimen/circular_image_marginEnd"
+                android:layout_marginBottom="@dimen/circular_image_marginBottom"
                 android:background="@drawable/white_circle"
                 android:padding="1dp"
                 android:src="@drawable/offline_circle" />
@@ -79,31 +80,32 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_member2"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
+        android:visibility="visible"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/relativelayout_image2"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
+            android:layout_width="@dimen/circular_layout1"
+            android:layout_height="@dimen/circular_layout1"
             android:layout_gravity="center"
             android:gravity="center">
 
             <RelativeLayout
-                android:layout_width="43dp"
-                android:layout_height="43dp">
+                android:layout_width="@dimen/circular_layout2"
+                android:layout_height="@dimen/circular_layout2">
 
                 <com.sagesurfer.views.CircleGray
                     android:id="@+id/circle2"
-                    android:layout_width="43dp"
-                    android:layout_height="43dp"
+                    android:layout_width="@dimen/circular_layout3"
+                    android:layout_height="@dimen/circular_layout3"
                     android:layout_centerInParent="true" />
 
                 <com.szugyi.circlemenu.view.CircleImageView
                     android:id="@+id/circleimageview_teamdetails_member2"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/circular_layout4"
+                    android:layout_height="@dimen/circular_layout4"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:background="@drawable/circle"
@@ -114,11 +116,12 @@
 
             <ImageView
                 android:id="@+id/member_status_icon2"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/circular_layout5"
+                android:layout_height="@dimen/circular_layout5"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="@dimen/circular_image_marginEnd"
+                android:layout_marginBottom="@dimen/circular_image_marginBottom"
                 android:background="@drawable/white_circle"
                 android:padding="1dp"
                 android:src="@drawable/offline_circle" />
@@ -148,33 +151,34 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_member3"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:singleLine="true"
+
         android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/relativelayout_image3"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
+            android:layout_width="@dimen/circular_layout1"
+            android:layout_height="@dimen/circular_layout1"
             android:layout_gravity="center"
             android:gravity="center">
 
             <RelativeLayout
-                android:layout_width="43dp"
-                android:layout_height="43dp">
+                android:layout_width="@dimen/circular_layout2"
+                android:layout_height="@dimen/circular_layout2">
 
                 <com.sagesurfer.views.CircleGray
                     android:id="@+id/circle3"
-                    android:layout_width="43dp"
-                    android:layout_height="43dp"
+                    android:layout_width="@dimen/circular_layout3"
+                    android:layout_height="@dimen/circular_layout3"
                     android:layout_centerInParent="true" />
 
                 <com.szugyi.circlemenu.view.CircleImageView
                     android:id="@+id/circleimageview_teamdetails_member3"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/circular_layout4"
+                    android:layout_height="@dimen/circular_layout4"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:background="@drawable/circle"
@@ -185,13 +189,14 @@
 
             <ImageView
                 android:id="@+id/member_status_icon3"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/circular_layout5"
+                android:layout_height="@dimen/circular_layout5"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="5dp"
                 android:background="@drawable/white_circle"
                 android:padding="1dp"
+                android:layout_marginEnd="@dimen/circular_image_marginEnd"
+                android:layout_marginBottom="@dimen/circular_image_marginBottom"
                 android:src="@drawable/offline_circle" />
         </RelativeLayout>
 
@@ -219,32 +224,32 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_member4"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/relativelayout_image4"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
+            android:layout_width="@dimen/circular_layout1"
+            android:layout_height="@dimen/circular_layout1"
             android:layout_gravity="center"
             android:gravity="center">
 
             <RelativeLayout
-                android:layout_width="43dp"
-                android:layout_height="43dp">
+                android:layout_width="@dimen/circular_layout2"
+                android:layout_height="@dimen/circular_layout2">
 
                 <com.sagesurfer.views.CircleGray
                     android:id="@+id/circle4"
-                    android:layout_width="43dp"
-                    android:layout_height="43dp"
+                    android:layout_width="@dimen/circular_layout3"
+                    android:layout_height="@dimen/circular_layout3"
                     android:layout_centerInParent="true" />
 
                 <com.szugyi.circlemenu.view.CircleImageView
                     android:id="@+id/circleimageview_teamdetails_member4"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/circular_layout4"
+                    android:layout_height="@dimen/circular_layout4"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:background="@drawable/circle"
@@ -255,13 +260,14 @@
 
             <ImageView
                 android:id="@+id/member_status_icon4"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/circular_layout5"
+                android:layout_height="@dimen/circular_layout5"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="@dimen/circular_image_marginEnd"
                 android:background="@drawable/white_circle"
                 android:padding="1dp"
+                android:layout_marginBottom="@dimen/circular_image_marginBottom"
                 android:src="@drawable/offline_circle" />
         </RelativeLayout>
 
@@ -289,32 +295,32 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_member5"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/relativelayout_image5"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
+            android:layout_width="@dimen/circular_layout1"
+            android:layout_height="@dimen/circular_layout1"
             android:layout_gravity="center"
             android:gravity="center">
 
             <RelativeLayout
-                android:layout_width="43dp"
-                android:layout_height="43dp">
+                android:layout_width="@dimen/circular_layout2"
+                android:layout_height="@dimen/circular_layout2">
 
                 <com.sagesurfer.views.CircleGray
                     android:id="@+id/circle5"
-                    android:layout_width="43dp"
-                    android:layout_height="43dp"
+                    android:layout_width="@dimen/circular_layout3"
+                    android:layout_height="@dimen/circular_layout3"
                     android:layout_centerInParent="true" />
 
                 <com.szugyi.circlemenu.view.CircleImageView
                     android:id="@+id/circleimageview_teamdetails_member5"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/circular_layout4"
+                    android:layout_height="@dimen/circular_layout4"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:background="@drawable/circle"
@@ -325,13 +331,14 @@
 
             <ImageView
                 android:id="@+id/member_status_icon5"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/circular_layout5"
+                android:layout_height="@dimen/circular_layout5"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="@dimen/circular_image_marginEnd"
                 android:background="@drawable/white_circle"
                 android:padding="1dp"
+                android:layout_marginBottom="@dimen/circular_image_marginBottom"
                 android:src="@drawable/offline_circle" />
         </RelativeLayout>
 
@@ -359,32 +366,32 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_member6"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/relativelayout_image6"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
+            android:layout_width="@dimen/circular_layout1"
+            android:layout_height="@dimen/circular_layout1"
             android:layout_gravity="center"
             android:gravity="center">
 
             <RelativeLayout
-                android:layout_width="43dp"
-                android:layout_height="43dp">
+                android:layout_width="@dimen/circular_layout2"
+                android:layout_height="@dimen/circular_layout2">
 
                 <com.sagesurfer.views.CircleGray
                     android:id="@+id/circle6"
-                    android:layout_width="43dp"
-                    android:layout_height="43dp"
+                    android:layout_width="@dimen/circular_layout3"
+                    android:layout_height="@dimen/circular_layout3"
                     android:layout_centerInParent="true" />
 
                 <com.szugyi.circlemenu.view.CircleImageView
                     android:id="@+id/circleimageview_teamdetails_member6"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/circular_layout4"
+                    android:layout_height="@dimen/circular_layout4"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:background="@drawable/circle"
@@ -395,13 +402,14 @@
 
             <ImageView
                 android:id="@+id/member_status_icon6"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/circular_layout5"
+                android:layout_height="@dimen/circular_layout5"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="@dimen/circular_image_marginEnd"
                 android:background="@drawable/white_circle"
                 android:padding="1dp"
+                android:layout_marginBottom="@dimen/circular_image_marginBottom"
                 android:src="@drawable/offline_circle" />
         </RelativeLayout>
 

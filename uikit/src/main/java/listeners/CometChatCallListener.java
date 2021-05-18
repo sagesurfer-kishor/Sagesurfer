@@ -16,6 +16,7 @@ import com.cometchat.pro.models.User;
 import screen.CometChatCallActivity;
 import screen.CometChatStartCallActivity;
 import screen.messagelist.General;
+import screen.messagelist.Preferences;
 import utils.Utils;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -41,17 +42,27 @@ public class CometChatCallListener {
     /*this listner is call when user get call*/
     public static void addCallListener(String TAG, Context context) {
         isInitialized = true;
+
         CometChat.addCallListener(TAG, new CometChat.CallListener() {
             @Override
             public void onIncomingCallReceived(Call call) {
                 /*this method is called when user get call in his phone but before accepted it calls..*/
                 if (CometChat.getActiveCall() == null) {
+                    Log.i(TAG, General.MY_TAG + " onIncomingCallReceived: ");
+                    /*This spCallScreenFlag preferences is create for opening call receiving popup only once because it is opening call receving popup 3 times */
+
+                    SharedPreferences spCallScreenFlag = context.getSharedPreferences(" call_popup_preferences ", MODE_PRIVATE);
+                    SharedPreferences.Editor spEditorCallScreenFlag = spCallScreenFlag.edit();
+                    spEditorCallScreenFlag.putBoolean("openCallPopup", true);
+                    spEditorCallScreenFlag.apply();
+
+                    Log.i(TAG, General.MY_TAG+" onIncomingCallReceived: openCallPopup " + spCallScreenFlag.getBoolean("openCallPopup", false));
+
                     if (call.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                         /*here we are opening the call receive popup so that user can accept the call..*/
-                        Log.i(TAG, General.MY_TAG +" onIncomingCallReceived: initiater "+(User) call.getCallInitiator());
-                        Log.i(TAG, General.MY_TAG +" onIncomingCallReceived: type "+call.getType());
-                        Log.i(TAG, General.MY_TAG +" onIncomingCallReceived: sessionId "+call.getSessionId());
-
+                        Log.i(TAG, General.MY_TAG + " onIncomingCallReceived: initiater " + (User) call.getCallInitiator());
+                        Log.i(TAG, General.MY_TAG + " onIncomingCallReceived: type " + call.getType());
+                        Log.i(TAG, General.MY_TAG + " onIncomingCallReceived: sessionId " + call.getSessionId());
                         Utils.startCallIntent(context, (User) call.getCallInitiator(), call.getType(),
                                 false, call.getSessionId());
                     } else {
@@ -62,12 +73,12 @@ public class CometChatCallListener {
                     CometChat.rejectCall(call.getSessionId(), CometChatConstants.CALL_STATUS_BUSY, new CometChat.CallbackListener<Call>() {
                         @Override
                         public void onSuccess(Call call) {
-                            Log.i(TAG, General.MY_TAG +" onSuccess: rejectCall");
+                            Log.i(TAG, General.MY_TAG + " onSuccess: rejectCall");
                         }
 
                         @Override
                         public void onError(CometChatException e) {
-                            Toast.makeText(context, General.MY_TAG +" Error:" + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, General.MY_TAG + " Error:" + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -81,18 +92,19 @@ public class CometChatCallListener {
                 String myCallGeneratedSession = sharedPreferencesSessionId.getString("sessionId", null);
                 SharedPreferences.Editor spSessionEditor = sharedPreferencesSessionId.edit();
 
-                if (!sharedPreferencesSessionId.getBoolean("onGoingCall",false)) {
-                    Log.i(TAG, "onOutgoingCallAccepted: onGoingCall condition");
-                        //call.getSessionId()
-                        if (CometChatCallActivity.callActivity != null) {
-                            spSessionEditor.putBoolean("onGoingCall", true);
-                            CometChatCallActivity.cometChatAudioHelper.stop(false);
-                            Utils.startCall(CometChatCallActivity.callActivity, call);
-                        }else {
-                            Log.i(TAG, "onOutgoingCallAccepted: 1");
-                        }
+                if (!sharedPreferencesSessionId.getBoolean("onGoingCall", false)) {
+                    Log.i(TAG, General.MY_TAG + " onOutgoingCallAccepted: onGoingCall condition");
+                    //call.getSessionId()
+                    if (CometChatCallActivity.callActivity != null) {
+                        Log.i(TAG, General.MY_TAG + " onOutgoingCallAccepted: ");
+                        spSessionEditor.putBoolean("onGoingCall", true);
+                        CometChatCallActivity.cometChatAudioHelper.stop(false);
+                        Utils.startCall(CometChatCallActivity.callActivity, call);
+                    } else {
+                        Log.i(TAG, "onOutgoingCallAccepted: 1");
+                    }
 
-                }else {
+                } else {
                     Log.i(TAG, "onOutgoingCallAccepted: 3");
                 }
 
@@ -141,7 +153,7 @@ public class CometChatCallListener {
 
             @Override
             public void onOutgoingCallRejected(Call call) {
-                Log.i(TAG, General.MY_TAG+" onOutgoingCallRejected: ");
+                Log.i(TAG, General.MY_TAG + " onOutgoingCallRejected: ");
                 if (CometChatCallActivity.callActivity != null)
                     CometChatCallActivity.callActivity.finish();
             }
@@ -149,8 +161,8 @@ public class CometChatCallListener {
             @Override
             public void onIncomingCallCancelled(Call call) {
                 if (CometChatCallActivity.callActivity != null)
-                    Log.i(TAG, General.MY_TAG+" onIncomingCallCancelled: "+call);
-                    CometChatCallActivity.callActivity.finish();
+                    Log.i(TAG, General.MY_TAG + " onIncomingCallCancelled: " + call);
+                CometChatCallActivity.callActivity.finish();
             }
         });
     }

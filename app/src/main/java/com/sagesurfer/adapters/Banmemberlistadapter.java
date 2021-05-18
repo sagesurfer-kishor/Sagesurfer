@@ -91,7 +91,7 @@ public class Banmemberlistadapter extends RecyclerView.Adapter<Banmemberlistadap
                 builder = new AlertDialog.Builder(mContext);
 
                 //Setting message manually and performing action on button click
-                builder.setMessage("Do you want to unblock this member?")
+                builder.setMessage("Do you want to unban this member?")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -126,14 +126,15 @@ public class Banmemberlistadapter extends RecyclerView.Adapter<Banmemberlistadap
     }
 
     public void addMemberToGroup(String unblock_member, String GUID, String UID, int position){
-        /*List<GroupMember> userList = new ArrayList<>();
-        userList.add(new GroupMember(reciveverId, CometChatConstants.SCOPE_PARTICIPANT));*/
-        CometChat.addMembersToGroup(GUID, teamList, null, new CometChat.CallbackListener<HashMap<String, String>>() {
+        List<GroupMember> userList = new ArrayList<>();
+        userList.add(new GroupMember(UID, CometChatConstants.SCOPE_PARTICIPANT));
+
+        CometChat.addMembersToGroup(GUID, userList, null, new CometChat.CallbackListener<HashMap<String, String>>() {
             @Override
             public void onSuccess(HashMap<String, String> stringStringHashMap) {
                 Log.e(TAG, "onSuccess: " + teamList + "Group" + GUID);
                 //invite(action, uid, GUID, reciveverId, rec, position);
-                unblockedMember("unblock_member", GUID, UID, position);
+                unblockedMember(unblock_member, GUID, UID, position);
             }
 
             @Override

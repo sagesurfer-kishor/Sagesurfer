@@ -550,7 +550,6 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
                         boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
                         if ((lat_lon_status == 0) || (lat_lon_status == 1 && locationAddressString.length() > 0) || (lat_lon_status == 1 && !statusOfGPS)) {
                             sendSOSClciked = false;
-
                             sendSos(message);
                         }
                     }

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -82,10 +83,16 @@ import constant.StringContract;
 import kotlin.ranges.RangesKt;
 import screen.CometChatCallActivity;
 import screen.CometChatStartCallActivity;
+import screen.messagelist.General;
+import screen.messagelist.Preferences;
+
+import static android.content.Context.MODE_PRIVATE;
+import static org.webrtc.ContextUtils.getApplicationContext;
 
 public class Utils {
 
     private static final String TAG = "Utils";
+
     public static String removeEmojiAndSymbol(String content) {
         String utf8tweet = "";
         try {
@@ -96,16 +103,16 @@ public class Utils {
         }
         Pattern unicodeOutliers = Pattern.compile(
                 "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
-                        Pattern.UNICODE_CASE |
-                                Pattern.CASE_INSENSITIVE);
+                Pattern.UNICODE_CASE |
+                        Pattern.CASE_INSENSITIVE);
         Matcher unicodeOutlierMatcher = unicodeOutliers.matcher(utf8tweet);
         utf8tweet = unicodeOutlierMatcher.replaceAll(" ");
         return utf8tweet;
     }
-    public static boolean isDarkMode(Context context)
-    {
+
+    public static boolean isDarkMode(Context context) {
         int nightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        if (nightMode== Configuration.UI_MODE_NIGHT_YES)
+        if (nightMode == Configuration.UI_MODE_NIGHT_YES)
             return true;
         else
             return false;
@@ -132,7 +139,7 @@ public class Utils {
     }
 
     public static AudioManager getAudioManager(Context context) {
-        return (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+        return (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
 
     public static float dpToPixel(float dp, Resources resources) {
@@ -142,23 +149,24 @@ public class Utils {
     }
 
 
-    public static void initiatecall(Context context,String recieverID,String receiverType,String callType)
-    {
+    public static void initiatecall(Context context, String recieverID, String receiverType, String callType) {
 
-        Call call = new Call(recieverID,receiverType,callType);
+        Call call = new Call(recieverID, receiverType, callType);
         CometChat.initiateCall(call, new CometChat.CallbackListener<Call>() {
             @Override
             public void onSuccess(Call call) {
-                Utils.startCallIntent(context,((User)call.getCallReceiver()),call.getType(),true,call.getSessionId());
+                Log.i(TAG, General.MY_TAG + " onSuccess: ");
+                Utils.startCallIntent(context, ((User) call.getCallReceiver()), call.getType(), true, call.getSessionId());
             }
 
             @Override
             public void onError(CometChatException e) {
-                Log.e(TAG, "onError: "+e.getMessage());
-                Snackbar.make(((Activity)context).getWindow().getDecorView().getRootView(),context.getResources().getString(R.string.call_initiate_error)+":"+e.getMessage(),Snackbar.LENGTH_LONG).show();
+                Log.e(TAG, "onError: " + e.getMessage());
+                Snackbar.make(((Activity) context).getWindow().getDecorView().getRootView(), context.getResources().getString(R.string.call_initiate_error) + ":" + e.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
     }
+
     public static String convertTimeStampToDurationTime(long var0) {
         long var2 = var0 / 1000L;
         long var4 = var2 / 60L % 60L;
@@ -217,8 +225,8 @@ public class Utils {
                 if (lastMessage instanceof TextMessage) {
 
                     if (isLoggedInUser(lastMessage.getSender()))
-                        message = "You: " + (((TextMessage) lastMessage).getText()==null
-                                ?"This message was deleted":((TextMessage) lastMessage).getText());
+                        message = "You: " + (((TextMessage) lastMessage).getText() == null
+                                ? "This message was deleted" : ((TextMessage) lastMessage).getText());
                     else
                         message = lastMessage.getSender().getName() + ": " + ((TextMessage) lastMessage).getText();
 
@@ -261,11 +269,11 @@ public class Utils {
     /**
      * This method is used to convert user to group member. This method is used when we tries to add
      * user in a group or update group member scope.
-     * @param user is object of User
-     * @param isScopeUpdate is boolean which help us to check if scope is updated or not.
-     * @param newScope is a String which contains newScope. If it is empty then user is added as participant.
-     * @return GroupMember
      *
+     * @param user          is object of User
+     * @param isScopeUpdate is boolean which help us to check if scope is updated or not.
+     * @param newScope      is a String which contains newScope. If it is empty then user is added as participant.
+     * @return GroupMember
      * @see User
      * @see GroupMember
      */
@@ -321,9 +329,9 @@ public class Utils {
 
     }
 
-    public static Boolean checkDirExistence(Context context,String type) {
+    public static Boolean checkDirExistence(Context context, String type) {
 
-        File  audioDir = new File(Environment.getExternalStorageDirectory().toString() + "/" +
+        File audioDir = new File(Environment.getExternalStorageDirectory().toString() + "/" +
                 context.getResources().getString(R.string.app_name) + "/" + type + "/");
 
         return audioDir.isDirectory();
@@ -334,7 +342,7 @@ public class Utils {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses != null && addresses.size() > 0){
+            if (addresses != null && addresses.size() > 0) {
                 String address = addresses.get(0).getAddressLine(0);
                 return address;
             }
@@ -344,13 +352,14 @@ public class Utils {
         return null;
     }
 
-    public static void  makeDirectory(Context context,String type) {
+    public static void makeDirectory(Context context, String type) {
 
-        String  audioDir = Environment.getExternalStorageDirectory().toString() + "/" +
+        String audioDir = Environment.getExternalStorageDirectory().toString() + "/" +
                 context.getResources().getString(R.string.app_name) + "/" + type + "/";
 
         createDirectory(audioDir);
     }
+
     public static boolean hasPermissions(Context context, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null
                 && permissions != null) {
@@ -408,7 +417,7 @@ public class Utils {
                 return cursor.getString(column_index);
             }
         } catch (Exception e) {
-            Log.e(TAG,e.getMessage());
+            Log.e(TAG, e.getMessage());
         } finally {
             if (cursor != null)
                 cursor.close();
@@ -539,7 +548,7 @@ public class Utils {
         return dir;
     }
 
-    public static String  getPath(Context context, String folder) {
+    public static String getPath(Context context, String folder) {
 
         return Environment.getExternalStorageDirectory().toString() + "/" +
                 context.getResources().getString(R.string.app_name) + "/" + folder + "/";
@@ -642,37 +651,75 @@ public class Utils {
         tmpOut.copyTo(outputBitmap);
         return outputBitmap;
     }
-    public static void startCallIntent(Context context, User user, String type,
-                                       boolean isOutgoing, @NonNull String sessionId) {
-        Intent videoCallIntent = new Intent(context, CometChatCallActivity.class);
-        videoCallIntent.putExtra(StringContract.IntentStrings.NAME, user.getName());
-        videoCallIntent.putExtra(StringContract.IntentStrings.UID,user.getUid());
-        videoCallIntent.putExtra(StringContract.IntentStrings.SESSION_ID,sessionId);
-        videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, user.getAvatar());
-        videoCallIntent.setAction(type);
-        videoCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (isOutgoing) {
-            videoCallIntent.setType("outgoing");
+
+    /*This method open call popup for user to give receive call or decline call option */
+    public static void startCallIntent(Context context, User user, String type, boolean isOutgoing, @NonNull String sessionId) {
+        Log.i(TAG, General.MY_TAG + " startCallIntent: ");
+        SharedPreferences spCallScreenFlag = context.getSharedPreferences(" call_popup_preferences ", MODE_PRIVATE);
+
+        Log.i(TAG, General.MY_TAG + " startCallIntent: spCallScreen openCallPopup " + spCallScreenFlag.getBoolean("openCallPopup", false));
+        if (spCallScreenFlag.getBoolean("openCallPopup", false)) {
+            SharedPreferences.Editor spEditorCallScreenFlag = spCallScreenFlag.edit();
+            spEditorCallScreenFlag.putBoolean("openCallPopup", false);
+            spEditorCallScreenFlag.apply();
+            Log.i(TAG, General.MY_TAG + " startCallIntent: spCallScreen openCallPopup 2 " + spCallScreenFlag.getBoolean("openCallPopup", false));
+            Intent videoCallIntent = new Intent(context, CometChatCallActivity.class);
+            videoCallIntent.putExtra(StringContract.IntentStrings.NAME, user.getName());
+            videoCallIntent.putExtra(StringContract.IntentStrings.UID, user.getUid());
+            videoCallIntent.putExtra(StringContract.IntentStrings.SESSION_ID, sessionId);
+            videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, user.getAvatar());
+            videoCallIntent.setAction(type);
+            videoCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (isOutgoing) {
+                videoCallIntent.setType("outgoing");
+            } else {
+                videoCallIntent.setType("incoming");
+            }
+            context.startActivity(videoCallIntent);
         }
-        else {
-            videoCallIntent.setType("incoming");
-        }
-        context.startActivity(videoCallIntent);
+
+
+        //SharedPreferences.Editor spEditorCallScreenFlag = spCallScreenFlag.edit();
+        //spEditorCallScreenFlag.putBoolean("openCallPopup", true);
+        //spEditorCallScreenFlag.apply();
+
+        /*if (spCallScreenFlag.getBoolean("openCallPopup",false)) {
+            spEditorCallScreenFlag.putBoolean("onGoingCall", false);
+            spEditorCallScreenFlag.commit();*/
+            /*Intent videoCallIntent = new Intent(context, CometChatCallActivity.class);
+            videoCallIntent.putExtra(StringContract.IntentStrings.NAME, user.getName());
+            videoCallIntent.putExtra(StringContract.IntentStrings.UID, user.getUid());
+            videoCallIntent.putExtra(StringContract.IntentStrings.SESSION_ID, sessionId);
+            videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, user.getAvatar());
+            videoCallIntent.setAction(type);
+            videoCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (isOutgoing) {
+                videoCallIntent.setType("outgoing");
+            } else {
+                videoCallIntent.setType("incoming");
+            }
+            context.startActivity(videoCallIntent);
+       */
     }
-    public static void startGroupCallIntent(Context context, Group group, String type,
-                                            boolean isOutgoing, @NonNull String sessionId) {
+
+    /*  }*/
+    public static void
+
+
+    startGroupCallIntent(Context context, Group group, String type,
+                         boolean isOutgoing, @NonNull String sessionId) {
+        Log.i(TAG, General.MY_TAG + " startGroupCallIntent: ");
         Intent videoCallIntent = new Intent(context, CometChatCallActivity.class);
         videoCallIntent.putExtra(StringContract.IntentStrings.NAME, group.getName());
-        videoCallIntent.putExtra(StringContract.IntentStrings.UID,group.getGuid());
-        videoCallIntent.putExtra(StringContract.IntentStrings.SESSION_ID,sessionId);
+        videoCallIntent.putExtra(StringContract.IntentStrings.UID, group.getGuid());
+        videoCallIntent.putExtra(StringContract.IntentStrings.SESSION_ID, sessionId);
         videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, group.getIcon());
         videoCallIntent.setAction(type);
         videoCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         if (isOutgoing) {
             videoCallIntent.setType("outgoing");
-        }
-        else {
+        } else {
             videoCallIntent.setType("incoming");
         }
         context.startActivity(videoCallIntent);
@@ -681,7 +728,7 @@ public class Utils {
     public static float dpToPx(Context context, float valueInDp) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = valueInDp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        float px = valueInDp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return px;
     }
 
@@ -699,6 +746,7 @@ public class Utils {
             return null;
         }
     }
+
     public static void showCallNotifcation(Context context, Call call) {
         try {
             new Thread(new Runnable() {
@@ -707,21 +755,20 @@ public class Utils {
                     int REQUEST_CODE = 12;
                     int m = (int) ((new Date().getTime()));
                     String GROUP_ID = "group_id";
-                    String receiverName="",callType,receiverAvatar="",receiverUid="";
+                    String receiverName = "", callType, receiverAvatar = "", receiverUid = "";
 
-                    if (call.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER) && call.getSender().getUid().equals(CometChat.getLoggedInUser().getUid()))
-                    {
-                        receiverUid = ((User)call.getCallReceiver()).getUid();
-                        receiverName = ((User)call.getCallReceiver()).getName();
-                        receiverAvatar = ((User)call.getCallReceiver()).getAvatar();
-                    } else if(call.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+                    if (call.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER) && call.getSender().getUid().equals(CometChat.getLoggedInUser().getUid())) {
+                        receiverUid = ((User) call.getCallReceiver()).getUid();
+                        receiverName = ((User) call.getCallReceiver()).getName();
+                        receiverAvatar = ((User) call.getCallReceiver()).getAvatar();
+                    } else if (call.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                         receiverUid = call.getSender().getUid();
                         receiverName = call.getSender().getName();
                         receiverAvatar = call.getSender().getAvatar();
                     } else {
-                        receiverUid = ((Group)call.getReceiver()).getGuid();
-                        receiverName = ((Group)call.getReceiver()).getName();
-                        receiverAvatar = ((Group)call.getReceiver()).getIcon();
+                        receiverUid = ((Group) call.getReceiver()).getGuid();
+                        receiverName = ((Group) call.getReceiver()).getName();
+                        receiverAvatar = ((Group) call.getReceiver()).getIcon();
                     }
                     if (call.getType().equals(CometChatConstants.CALL_TYPE_AUDIO)) {
                         callType = context.getResources().getString(R.string.incoming_audio_call);
@@ -730,6 +777,7 @@ public class Utils {
                     }
 
                     Intent callIntent;
+                    Log.i(TAG, General.MY_TAG + " run: ");
                     callIntent = new Intent(context, CometChatCallActivity.class);
                     callIntent.putExtra(StringContract.IntentStrings.NAME, receiverName);
                     callIntent.putExtra(StringContract.IntentStrings.UID, receiverUid);
@@ -738,7 +786,7 @@ public class Utils {
                     callIntent.setAction(call.getType());
                     callIntent.setType("incoming");
 
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"2")
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "2")
                             .setSmallIcon(R.drawable.cc)
                             .setContentTitle(receiverName)
                             .setContentText(callType)
@@ -751,11 +799,11 @@ public class Utils {
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-                    builder.setGroup(GROUP_ID+"Call");
+                    builder.setGroup(GROUP_ID + "Call");
                     builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
                     builder.addAction(0, "Answers", PendingIntent.getBroadcast(context, REQUEST_CODE, callIntent, PendingIntent.FLAG_UPDATE_CURRENT));
                     builder.addAction(0, "Decline", PendingIntent.getBroadcast(context, 1, callIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-                    notificationManager.notify(05,builder.build());
+                    notificationManager.notify(05, builder.build());
 
                 }
             }).start();
@@ -765,17 +813,18 @@ public class Utils {
     }
 
     public static void startCall(Context context, Call call) {
-        Log.d(TAG, "startCall: ");
+        Log.e(TAG, General.MY_TAG + " startCall: ");
         Intent intent = new Intent(context, CometChatStartCallActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(StringContract.IntentStrings.SESSION_ID,call.getSessionId());
-        ((Activity)context).finish();
+        intent.putExtra(StringContract.IntentStrings.SESSION_ID, call.getSessionId());
+        ((Activity) context).finish();
         context.startActivity(intent);
     }
 
     public static void joinOnGoingCall(Context context) {
-        Intent intent = new Intent(context,CometChatCallActivity.class);
-        intent.putExtra(StringContract.IntentStrings.JOIN_ONGOING,true);
+        Log.i(TAG, General.MY_TAG + " joinOnGoingCall: ");
+        Intent intent = new Intent(context, CometChatCallActivity.class);
+        intent.putExtra(StringContract.IntentStrings.JOIN_ONGOING, true);
         context.startActivity(intent);
     }
 }

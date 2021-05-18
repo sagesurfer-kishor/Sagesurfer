@@ -54,7 +54,6 @@ import okhttp3.RequestBody;
 
 public class SelfGoalReportFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = SelfGoalReportFragment.class.getSimpleName();
-
     @BindView(R.id.linearlayout_selfgoals_spinner)
     LinearLayout linearLayoutSelfGoalsSpinner;
     @BindView(R.id.spinner_selfgoals_report)
@@ -140,12 +139,16 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
             mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.self_goal_report));
             linearLayoutConsumerSpinner.setVisibility(View.GONE);
             fetchAllSelfGoals();
+            Log.i(TAG, "onResume: ");
         } else {
             if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))) {
                 mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.peer_participant_report));
             } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
                 mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.guest_report));
-            } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage026)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage027))) {
+            } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage026))
+                    || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage027))
+                    || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage052))
+                    ||Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage049)) ) {
                 mainActivityInterface.setMainTitle("Client Report");
             } else {
                 mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.consumer_report));
@@ -276,6 +279,7 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
                 boolean isFrancescaLoggedIn = false;
                 int consumerArrayListPosition = 0;
                 String response = NetworkCall_.post(url, requestBody, TAG, activity, activity);
+                Log.i(TAG, "fetchAllConsumers: "+response);
                 if (response != null) {
                     consumerArrayList = new ArrayList<>();
                     Consumers_ consumers = new Consumers_();
@@ -286,7 +290,9 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
                         consumers.setName("Select Guest");
                     } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
                         consumers.setName("Select Student");
-                    } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage026)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage027))) {
+                    } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024)) 
+                            || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage026))
+                            || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage027))) {
                         consumers.setName("Select Client");
                     } else {
                         if (Preferences.get(General.USER_ID).equalsIgnoreCase("853")) {
@@ -340,7 +346,7 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
             }
         }
     }
-
+    /*fethching all the selfgoal list*/
     private void fetchAllSelfGoals() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.GET_PEER_PARTICIPANT_GOAL);
@@ -359,6 +365,7 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
             try {
                 int goalArrayListPosition = 0;
                 String response = NetworkCall_.post(url, requestBody, TAG, activity, activity);
+                Log.i(TAG, "fetchAllSelfGoals: "+response);
                 if (response != null) {
                     goalArrayList = new ArrayList<>();
                     goalArrayList.addAll(SelfGoal_.parseSelfGoal(response, General.GOAL_LIST, activity.getApplicationContext(), TAG));
@@ -423,7 +430,7 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
         requestMap.put(General.GOAL_ID, Preferences.get(General.GOAL_ID));
         requestMap.put(General.HC_ROLE, Preferences.get(General.ROLE_ID));
-
+        requestMap.put(General.GOAL_TYPE, "2");
         String url = Preferences.get(General.DOMAIN) + Urls_.PLATFORM_REPORTS;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, activity, activity);
         if (requestBody != null) {
@@ -522,6 +529,12 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
         requestMap.put(General.ANSWER_TYPE, Preferences.get(General.ANSWER_TYPE));
         requestMap.put(General.ID, Preferences.get(General.ASSESSMENT_ID));
 
+        requestMap.put(General.HC_ROLE, ""+Preferences.get(General.ROLE_ID));
+        Log.i(TAG, "fetchAssessmentFormGraph: consumer id"+Preferences.get(General.CONSUMER_ID)
+                +" Answer type "+Preferences.get(General.ANSWER_TYPE)
+                +" ID"+Preferences.get(General.ASSESSMENT_ID)
+        +"hc_role "+Preferences.get(General.ROLE_ID) );
+
         String url = Preferences.get(General.DOMAIN) + Urls_.PLATFORM_REPORTS;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, activity, activity);
         if (requestBody != null) {
@@ -533,7 +546,8 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
                         .build();
                 url = url + "?" + MakeCall.bodyToString(request_new);
 
-                Log.e(TAG, "Url -> " + url);
+                Log.e(TAG, "Url graph fetch-> " + url);
+                //webViewAssessmentGraph.clearHistory();
                 webViewAssessmentGraph.loadUrl(url);
                 progressBar.setVisibility(View.GONE);
             } catch (Exception e) {

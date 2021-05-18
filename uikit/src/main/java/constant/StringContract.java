@@ -59,6 +59,7 @@ public class StringContract {
         public static final String INCOMING = "incoming";
 
         public static final String FROM_CALL_LIST = "from_call_list" ;
+        public static final String FROM_GROUP_LIST = "from_call_list" ;
 
         public static final String JOIN_ONGOING = "join_ongoing_call";
 

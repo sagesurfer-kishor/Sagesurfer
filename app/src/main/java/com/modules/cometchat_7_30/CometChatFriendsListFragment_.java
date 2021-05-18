@@ -35,6 +35,7 @@ import com.cometchat.pro.core.UsersRequest;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
 
+import com.cometchat.pro.rtc.Constants;
 import com.google.gson.JsonObject;
 import com.sagesurfer.adapters.FriendListAdapter;
 
@@ -46,8 +47,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import constant.StringContract;
 import okhttp3.RequestBody;
@@ -58,6 +61,7 @@ import screen.messagelist.Urls_;
 import utils.FontUtils;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.modules.mood.ConstantMood.context;
 
 /**
  * @author kishor k
@@ -97,6 +101,12 @@ public class CometChatFriendsListFragment_ extends Fragment {
         cardview_actions = view.findViewById(R.id.cardview_actions);
         // friend conversion search action
         Log.i(TAG, "onCreateView: ");
+
+        bm = LocalBroadcastManager.getInstance(requireActivity());
+        IntentFilter actionReceiver = new IntentFilter();
+        actionReceiver.addAction("ActionFriend");
+        bm.registerReceiver(onJsonReceived , actionReceiver);
+
         ed_search_friend.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -129,10 +139,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        bm = LocalBroadcastManager.getInstance(context);
-        IntentFilter actionReceiver = new IntentFilter();
-        actionReceiver.addAction("ActionFriend");
-        bm.registerReceiver(onJsonReceived , actionReceiver);
+
     }
 
     private BroadcastReceiver onJsonReceived = new BroadcastReceiver() {
@@ -140,13 +147,15 @@ public class CometChatFriendsListFragment_ extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
                 String sender = intent.getStringExtra("sender");
-                adapter.changeUnreadCount(sender);
+                if(adapter!=null) {
+                    adapter.changeUnreadCount(sender);
                 /*try {
                     JSONObject data = new JSONObject(json);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }*/
-                Log.i(TAG, "onReceive: broadcast");
+                    Log.i(TAG, "onReceive: broadcast");
+                }
             }
         }
     };
@@ -175,12 +184,13 @@ public class CometChatFriendsListFragment_ extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume: ");
+
         //friendList.clear();
         // get all friend list from comet chat
         getFriendsList();
 
     }
-
+    /*fetching friend list*/
     public void getFriendsList() {
         if (!friendList.isEmpty())
             friendList.clear();
@@ -203,7 +213,9 @@ public class CometChatFriendsListFragment_ extends Fragment {
                     rv_conversionList.setLayoutManager(mLayoutManager);
                     rv_conversionList.setItemAnimator(new DefaultItemAnimator());
                     rv_conversionList.setAdapter(adapter);
+
                     checkIntent();
+
                 }
             }
 
@@ -256,14 +268,16 @@ public class CometChatFriendsListFragment_ extends Fragment {
     // The adapter click operation is brought here to handle push notification click
     public void performAdapterClick(int position) {
         User user = filteredNameList.get(position);
-        String providerArray = Preferences.get("providers");
-        String youth = Preferences.get("youths");
-        Log.i(TAG, "performAdapterClick: 1");
-        if (!youth.isEmpty()) {
-            Log.i(TAG, "performAdapterClick: 2 user id "+user.getUid());
-            if (providerArray.contains(user.getUid())) {
+        String allProvidersString = Preferences.get("providers");
+        //String youth = Preferences.get("youths");
+      /*  if (!youth.isEmpty()) {*/
+
+            String ProviderIds[]=allProvidersString.split(",");
+            Log.i(TAG, "performAdapterClick: provider id from array "+ProviderIds[0]);
+
+            if (Arrays.asList(ProviderIds).contains(user.getUid())) {
                 String status = user.getStatus();
-                if (status.equals("online")) {
+                if (status.equalsIgnoreCase("online")) {
                     Log.i(TAG, "performAdapterClick: 3");
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(getActivity());
@@ -271,7 +285,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
                     builder.setMessage("Are you sure you want chat with provider?")
                             .setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                                    public void onClick(DialogInterface dialog, int id) {
                                     // open comet chat chat form uikit it check provider
                                     Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
                                     intent.putExtra(StringContract.IntentStrings.TYPE, "user");
@@ -329,15 +343,11 @@ public class CometChatFriendsListFragment_ extends Fragment {
                 }
             } else {
                 checkMemberList(user,position );
-
             }
         }
-    }
+  /*  }*/
 
     private void checkMemberList(User user, int position) {
-        /*action=get_admin_set_role
-        user_id=//Login_user_id
-                is_test_user=//send real and test user status*/
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(General.USER_ID, null);
         SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
@@ -347,6 +357,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
         requestMap.put(General.ACTION, "get_admin_set_role");
         requestMap.put(General.IS_TEST_USER, ""+0);
         requestMap.put(General.USER_ID,UserId );
+
         Log.i(TAG, "checkMemberList: User Id "+UserId);
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
         Log.i(TAG, "checkMemberList: Domain "+DomainURL+url);
@@ -357,27 +368,80 @@ public class CometChatFriendsListFragment_ extends Fragment {
                     Log.i(TAG, "checkMemberList:  response " + response);
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray provider_time_check_in_db = jsonObject.getJSONArray("get_admin_set_role");
-                    String success = provider_time_check_in_db.getJSONObject(0).getString("other_user_id");
-                    String arrayMembersId[]=success.split(",");
-                    for (String s : arrayMembersId){
-                        if (s.equals(user.getUid())){
-                            checkOtherMemberAvailable(user,position);
-                        }else{
-                            // open comet chat chat form uikit
-                            Log.i(TAG, "performAdapterClick: Friends");
-                            Log.i(TAG, "performAdapterClick: " + user.getUid());
-                            Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
-                            intent.putExtra(StringContract.IntentStrings.TYPE, "user");
-                            intent.putExtra(StringContract.IntentStrings.NAME, (user.getName()));
-                            intent.putExtra(StringContract.IntentStrings.SENDER_ID, (user.getUid()));
-                            intent.putExtra(StringContract.IntentStrings.AVATAR, (user.getAvatar()));
-                            intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
-                            intent.putExtra(StringContract.IntentStrings.TABS, "1");
-                            getActivity().startActivity(intent);
-                        }
-                    }
-                   /* if(success.contains(",")){
+                    String other_user_id = provider_time_check_in_db.getJSONObject(0).getString("other_user_id");
+                    Log.i(TAG, "checkMemberList: user cometchat id "+user.getUid());
+                   if (!other_user_id.equals("") || other_user_id != null){
+                       String[] arrayMembersId = other_user_id.split(",");
+                       List<String> arrayListMembersId = new ArrayList<>(Arrays.asList(arrayMembersId));
+                       for (String listItem : arrayListMembersId){
+                           Log.i(TAG, "checkMemberList: "+ listItem);
+                           if (listItem.equals(""+user.getUid())){
+                               Log.i(TAG, "checkMemberList: "+user.getUid() + " is "+user.getStatus());
+                               String status=user.getStatus();
+                               if (status.equals("online")){
+                                   Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+                                   intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                                   intent.putExtra(StringContract.IntentStrings.NAME, (user.getName()));
+                                   intent.putExtra(StringContract.IntentStrings.SENDER_ID, (user.getUid()));
+                                   intent.putExtra(StringContract.IntentStrings.AVATAR, (user.getAvatar()));
+                                   intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
+                                   intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                                   getActivity().startActivity(intent);
+                               }else{
+                                   checkOtherMemberAvailable(user, position);
+                               }
+                           }
+                       }
+                   }
+                   /* if (success.equals("") || success!=null) {
+                        List<String> arrayListMembersId = new ArrayList<>();
+                        String[] arrayMembersId = success.split(",");
+                        int iteration = 0;
+                        for (String item : arrayMembersId) {
+                            iteration++;
+                            String[] singleIdSplitArray = item.split("_");
+                            arrayListMembersId.add("" + singleIdSplitArray[0]);
 
+                            if (iteration==arrayMembersId.length){
+                                if(arrayListMembersId.contains(user.getUid())){
+                                    String status = user.getStatus();
+                                    if (status.equals("online")) {
+                                        Log.i(TAG, "checkMemberList: online member");
+                                        Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+                                        intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                                        intent.putExtra(StringContract.IntentStrings.NAME, (user.getName()));
+                                        intent.putExtra(StringContract.IntentStrings.SENDER_ID, (user.getUid()));
+                                        intent.putExtra(StringContract.IntentStrings.AVATAR, (user.getAvatar()));
+                                        intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
+                                        intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                                        getActivity().startActivity(intent);
+                                    } else {
+                                        Log.i(TAG, "checkMemberList: offline member");
+                                        checkOtherMemberAvailable(user, position);
+                                    }
+                                }else{
+                                    Log.i(TAG, "checkMemberList: not in member list");
+                                    Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+                                    intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                                    intent.putExtra(StringContract.IntentStrings.NAME, (user.getName()));
+                                    intent.putExtra(StringContract.IntentStrings.SENDER_ID, (user.getUid()));
+                                    intent.putExtra(StringContract.IntentStrings.AVATAR, (user.getAvatar()));
+                                    intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
+                                    intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                                    getActivity().startActivity(intent);
+                                }
+                            }
+                        }
+                    }else {
+                        Log.i(TAG, "checkMemberList: if empty member list ");
+                        Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+                        intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                        intent.putExtra(StringContract.IntentStrings.NAME, (user.getName()));
+                        intent.putExtra(StringContract.IntentStrings.SENDER_ID, (user.getUid()));
+                        intent.putExtra(StringContract.IntentStrings.AVATAR, (user.getAvatar()));
+                        intent.putExtra(StringContract.IntentStrings.STATUS, (user.getStatus()));
+                        intent.putExtra(StringContract.IntentStrings.TABS, "1");
+                        getActivity().startActivity(intent);
                     }*/
                 }else {
                     Log.i(TAG, "checkMemberList:  null  ");
@@ -456,7 +520,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getActivity());
         String message;
-        if (success.equals("Success") || success.equals("Fail") ){
+        if (success.equalsIgnoreCase("success") || success.equalsIgnoreCase("fail") ){
             message="Are you sure you want chat with provider?";
         }else{
             message=success;
@@ -473,6 +537,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
                         intent.putExtra(StringContract.IntentStrings.STATUS, (friendList.get(position).getStatus()));
                         intent.putExtra(StringContract.IntentStrings.TABS, "1");
                         getActivity().startActivity(intent);
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -513,6 +578,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray provider_time_check_in_db = jsonObject.getJSONArray("other_members_time_check_in_db");
                     String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
+                    Log.i(TAG, "checkOtherMemberAvailable: "+success);
                     if (success.equals("success") || success.equals("fail")){
                         Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
                         intent.putExtra(StringContract.IntentStrings.TYPE, "user");

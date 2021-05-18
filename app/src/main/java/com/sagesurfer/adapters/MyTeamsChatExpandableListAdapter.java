@@ -3,6 +3,7 @@ package com.sagesurfer.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,7 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter implements Filterable {
 
     private static final String TAG = MyTeamsChatExpandableListAdapter.class.getSimpleName();
-
+    Handler handler;
     private LayoutInflater inflater;
     private Context context;
     private ArrayList<Teams_> primaryList = new ArrayList<>();
@@ -197,22 +198,6 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
             convertView = inflater.inflate(R.layout.friend_list_item_layout, null);
             viewHolderMember = new ViewHolderMember();
 
-            /*viewHolderMember.memberRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.team_list_item_layout);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            linearParams.setMargins(30, 0, 0, 0);
-            viewHolderMember.memberRelativeLayout.setLayoutParams(linearParams);
-            viewHolderMember.memberRelativeLayout.requestLayout();
-
-            viewHolderMember.image = (ImageView) convertView.findViewById(R.id.team_list_item_image);
-            viewHolderMember.image.setVisibility(View.GONE);
-            viewHolderMember.relativeLayoutImage = (RelativeLayout) convertView.findViewById(R.id.relativelayout_member_photo);
-            viewHolderMember.relativeLayoutImage.setVisibility(View.VISIBLE);
-            viewHolderMember.memberImage = (RoundedImageView) convertView.findViewById(R.id.member_photo);
-            viewHolderMember.statusImage = (ImageView) convertView.findViewById(R.id.member_status_icon);
-            viewHolderMember.memberNameText = (TextView) convertView.findViewById(R.id.team_list_item_name);
-            viewHolderMember.statusMessageText = (TextView) convertView.findViewById(R.id.team_list_item_status);
-            viewHolderMember.statusMessageText.setVisibility(View.VISIBLE);*/
-
             viewHolderMember.linearLayoutFriendListItem = (LinearLayout) convertView.findViewById(R.id.linearlayout_friendlistitem);
             viewHolderMember.memberRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.team_list_item_layout);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -228,56 +213,48 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
             viewHolderMember.timeText = (RelativeTimeTextView) convertView.findViewById(R.id.friend_list_item_last);
             viewHolderMember.typing = (TextView) convertView.findViewById(R.id.friend_list_item_typing);
             //viewHolderMember.memberCount = (TextView) convertView.findViewById(R.id.memberCount);
-
             convertView.setTag(viewHolderMember);
 
             viewHolderMember.userName.setText(item.getMembersArrayList().get(childPosition).getUsername());
-            /*long time = 0;
-
-            String timeStamp = String.valueOf(teamMemberList.get(childPosition).getLs());
-
-            if (timeStamp == null || timeStamp.length() <= 0 || timeStamp.equalsIgnoreCase("null")) {
-                viewHolderMember.timeText.setText("");
-            } else {
-                time = Long.parseLong(timeStamp);
-            }
-
-            if (time < 1000000000000L) {
-                time *= 1000;
-            }
-
-            if (time > 0) {
-                viewHolderMember.timeText.setReferenceTime(time);
-            }*/
-            Log.i(TAG, "onSuccess: unread messages user id "+teamMemberList.get(childPosition).getId());
-            Log.i(TAG, "onSuccess: unread messages user A cometchat "+teamMemberList.get(childPosition).getA());
-            Log.i(TAG, "onSuccess: unread messages user A cometchat "+item.getMembersArrayList().get(childPosition).getComet_chat_id());
-
-            /*this code is for getting cometchat unread message count for user in list*/
-            CometChat.getUnreadMessageCountForUser(""+item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
+            Runnable runnable=new Runnable() {
+                @Override
+                public void run() {
+                    CometChat.getUnreadMessageCountForUser(""+item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
                         @Override
                         public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                            // handle success
-                            //Log.e("unreadcount", String.valueOf(stringIntegerHashMap.get(item.getUid())));
-                            //al_unreadCountList.add(String.valueOf(stringIntegerHashMap.get(item.getUid())));
-                            viewHolderMember.unreadCount.setVisibility(View.VISIBLE);
-
-                            Log.i(TAG, "onSuccess: unread messages   "+stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
-                            String counter= String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
-                            if (!counter.equalsIgnoreCase("null")){
-                                viewHolderMember.unreadCount.setText(counter);
-                            }else{
-                                viewHolderMember.unreadCount.setVisibility(View.GONE);
-                            }
+                            handler=new Handler();
+                             handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    viewHolderMember.unreadCount.setVisibility(View.VISIBLE);
+                                    //Log.i(TAG, "onSuccess: unread messages   "+stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
+                                    String counter= String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
+                                    if (!counter.equalsIgnoreCase("null")){
+                                        viewHolderMember.unreadCount.setText(counter);
+                                    }else{
+                                        viewHolderMember.unreadCount.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
                         }
 
                         @Override
                         public void onError(CometChatException e) {
-                            viewHolderMember.unreadCount.setVisibility(View.GONE);
-                            Log.i(TAG, "onError: unread messages "+e.getMessage());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    viewHolderMember.unreadCount.setVisibility(View.GONE);
+                                }
+                            });
                         }
 
                     });
+                }
+            };
+
+            Thread thread = new Thread(runnable);
+            thread.start();
+
 
            //viewHolderMember.timeText.setText(timeStamp);
 
@@ -307,6 +284,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                             .transform(new CircleTransform(context)))
                     .into(viewHolderMember.avatar);
 
+            Log.i(TAG, "getChildView: status of user ---> "+teamMemberList.get(childPosition).getStatus());
 
             viewHolderMember.linearLayoutFriendListItem.setOnClickListener(new View.OnClickListener() {
                 @Override

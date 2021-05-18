@@ -40,7 +40,6 @@ import utils.Utils;
  */
 
 public class FragmentMainCallHistory extends Fragment {
-
     private TabAdapter tabAdapter;
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -51,8 +50,8 @@ public class FragmentMainCallHistory extends Fragment {
     private FragmentActivity mContext;
     private MainActivityInterface mainActivityInterface;
     private ShimmerFrameLayout conversationShimmer;
-
     private static final String TAG = "CallList";
+
     public FragmentMainCallHistory() {
     }
 
@@ -60,7 +59,6 @@ public class FragmentMainCallHistory extends Fragment {
     public static FragmentMainCallHistory newInstance(String param1, String param2) {
         FragmentMainCallHistory fragment = new FragmentMainCallHistory();
         Bundle args = new Bundle();
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -101,7 +99,6 @@ public class FragmentMainCallHistory extends Fragment {
                     view.setBackgroundColor(getResources().getColor(com.cometchat.pro.uikit.R.color.colorPrimary));
             tabLayout.setSelectedTabIndicatorColor(getResources().getColor(com.cometchat.pro.uikit.R.color.colorPrimary));
         }
-
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -144,7 +141,7 @@ public class FragmentMainCallHistory extends Fragment {
 
     private void checkDarkMode() {
         if(Utils.isDarkMode(getContext())) {
-//            tvTitle.setTextColor(getResources().getColor(com.cometchat.pro.uikit.R.color.textColorWhite));
+//         tvTitle.setTextColor(getResources().getColor(com.cometchat.pro.uikit.R.color.textColorWhite));
             tabLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(com.cometchat.pro.uikit.R.color.grey)));
             tabLayout.setTabTextColors(getResources().getColor(com.cometchat.pro.uikit.R.color.textColorWhite),getResources().getColor(com.cometchat.pro.uikit.R.color.light_grey));
         } else {

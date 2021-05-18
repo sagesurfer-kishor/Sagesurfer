@@ -45,6 +45,19 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_layout);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initializeCometChat();
+        Preferences.initialize(this);
+
+        new Handler().postDelayed(() -> {
+            if (Preferences.contains(General.IS_LOGIN) &&
+                    Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
+                Log.i(TAG, "onResume: 1");
+                mainIntent();
+            } else {
+                Log.i(TAG, "onResume: 2");
+                loginIntent();
+            }
+        }, 1200);
+
 
     }
 
@@ -57,6 +70,7 @@ public class SplashActivity extends AppCompatActivity {
                 UIKitSettings.setAPIKey(AppConfig.AppDetails.API_KEY);
                 CometChat.setSource("ui-kit","android","java");
                 Log.d(TAG, "Initialization completed successfully");
+
             }
             @Override
             public void onError(CometChatException e) {
@@ -80,15 +94,12 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         logPrint(1);
+    }
 
-        new Handler().postDelayed(() -> {
-            if (Preferences.contains(General.IS_LOGIN) &&
-                    Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
-                mainIntent();
-            } else {
-                loginIntent();
-            }
-        }, 2000);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     private void mainIntent() {
@@ -104,6 +115,7 @@ public class SplashActivity extends AppCompatActivity {
                     || domainCode.equalsIgnoreCase("sage006")
                     || domainCode.equalsIgnoreCase("sage026")
                     || domainCode.equalsIgnoreCase("sage027")
+                    || domainCode.equalsIgnoreCase("sage047")
                     || domainCode.equalsIgnoreCase("sage036")) {
                 Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
                 moveToDashboard();
@@ -162,7 +174,6 @@ public class SplashActivity extends AppCompatActivity {
     private void loginIntent() {
         Preferences.save(General.IS_LANDING_QUESTION_FILLED, true);
         Preferences.save(General.IS_FORM_SYNC_LANDING_QUESTION, false);
-
         Intent mainIntent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(mainIntent);
         finish();

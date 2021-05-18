@@ -57,6 +57,7 @@ import listeners.ClickListener;
 import listeners.OnItemClickListener;
 import listeners.RecyclerTouchListener;
 import listeners.StickyHeaderDecoration;
+import screen.messagelist.General;
 import utils.FontUtils;
 import utils.Utils;
 
@@ -268,6 +269,7 @@ public class CometChatUserCallListScreenActivity extends AppCompatActivity {
         CometChat.initiateCall(call, new CometChat.CallbackListener<Call>() {
             @Override
             public void onSuccess(Call call) {
+                Log.i(TAG, General.MY_TAG+" onSuccess: initiate call");
                 Utils.startCallIntent(CometChatUserCallListScreenActivity.this,((User)call.getCallReceiver()),call.getType(),true,call.getSessionId());
             }
 

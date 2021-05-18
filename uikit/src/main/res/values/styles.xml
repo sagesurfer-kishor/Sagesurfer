@@ -25,4 +25,7 @@
         <item name="android:popupBackground">#ffffff</item>
     </style>
 
+    <style name="MaterialToolbarTitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

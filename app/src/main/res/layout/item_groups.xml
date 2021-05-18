@@ -9,9 +9,10 @@
         android:id="@+id/groupMemberClick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginTop="@dimen/margin_5"
+        android:padding="@dimen/margin_10"
         android:background="@drawable/message_rounded_border"
-        android:padding="5dp">
+        >
 
         <LinearLayout
             android:id="@+id/groupInfo"
@@ -92,10 +93,9 @@
 
             <ImageView
                 android:id="@+id/img_group_item_options"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
-
                 android:src="@drawable/menu_icon"
                 android:textAllCaps="false" />
         </LinearLayout>

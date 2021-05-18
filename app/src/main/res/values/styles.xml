@@ -26,6 +26,21 @@
 
     </style>
 
+    <style name="MenuLabelsStyle">
+
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="MenuButtonsStyle">
+        <item name="fab_size">normal</item>
+        <item name="fab_showAnimation">@anim/jump_from_down</item>
+        <item name="fab_hideAnimation">@anim/jump_to_down</item>
+        <item name="fab_colorNormal">#1fff</item>
+        <item name="fab_colorPressed">@color/grey</item>
+    </style>
 
     <style name="TransparentCompat" parent="AppThemechat">
         <item name="colorPrimary">@color/colorPrimary</item>

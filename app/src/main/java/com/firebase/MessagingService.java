@@ -69,13 +69,6 @@ public class MessagingService extends FirebaseMessagingService {
     JSONObject messageData;
     public static String token;
     private static final int REQUEST_CODE = 12;
-   /* private Context mContext;
-        private Intent intent;
-   public static final String PUSH_CHANNEL = "push_channel";
-    private Random random = new Random();
-    private boolean isText;
-    private int singleNotificationId, bundleNotificationId;*/
-
     private boolean isCall;
     private boolean isChatScreen, IsFriendListingPage, IsGroupListingPage;
     SharedPreferences preferencesCheckCurrentActivity;
@@ -88,7 +81,6 @@ public class MessagingService extends FirebaseMessagingService {
         isChatScreen = preferencesCheckCurrentActivity.getBoolean("IsChatScreen", false);
         IsFriendListingPage = preferencesCheckCurrentActivity.getBoolean("IsFriendListingPage", false);
         IsGroupListingPage = preferencesCheckCurrentActivity.getBoolean("IsGroupListingPage", false);
-
         intentMain = new Intent(this, MainActivity.class);
 
         Log.e("notification received..", remoteMessage.toString());
@@ -119,12 +111,6 @@ public class MessagingService extends FirebaseMessagingService {
             }
         }
 
-/*
-        CometChatMessageScreen myFragment = (CometChatMessageScreen) getSupportFragmentManager().findFragmentByTag("MY_FRAGMENT");
-        if (myFragment != null && myFragment.isVisible()) {
-            // add your code here
-        }
-*/
         //Comet chat messages
         try {
             count++;
@@ -139,9 +125,9 @@ public class MessagingService extends FirebaseMessagingService {
             if (baseMessage instanceof Call) {
                 call = (Call) baseMessage;
                 isCall = true;
-                if (!AppInfo.isAppRunning(getApplicationContext(), "com.sagesurfer.collaborativecares")) {
-                    showNotifcation(baseMessage);
-                }
+                //if (!AppInfo.isAppRunning(getApplicationContext(), "com.sagesurfer.collaborativecares")) {
+                showNotifcation(baseMessage);
+                //}
             } else {
 
                 showNotifcation(baseMessage);
@@ -173,7 +159,7 @@ public class MessagingService extends FirebaseMessagingService {
         });
     }
 
-    public static void subscribeGroupNotification(String GUID) {
+    /*public static void subscribeGroupNotification(String GUID) {
         FirebaseMessaging.getInstance().subscribeToTopic(AppConfig.AppDetails.APP_ID + "_" + CometChatConstants.RECEIVER_TYPE_GROUP + "_" +
                 GUID).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -186,7 +172,7 @@ public class MessagingService extends FirebaseMessagingService {
     public static void unsubscribeGroupNotification(String GUID) {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConfig.AppDetails.APP_ID + "_" + CometChatConstants.RECEIVER_TYPE_GROUP + "_" +
                 GUID);
-    }
+    }*/
 
     @Override
     public void onNewToken(String s) {
@@ -393,14 +379,13 @@ public class MessagingService extends FirebaseMessagingService {
     private PendingIntent getIntent() {
 
         if (Preferences.contains(General.IS_LOGIN) && Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
-            // User is logged in
             try {
-                // Getting team logs id
                 if (!isCall) {
                     if (messageData.has("type")) {
                         /*Here we are redirecting from push to group when user added in group
                          * added by rahul*/
                         String type = messageData.getString("type");
+                        Log.i(TAG, "getIntent: type  " + messageData.getString("type"));
                         if (type.equals("groupMember")) {
                             String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
                             intentMain.putExtra("team_logs_id", team_logs_id);
@@ -409,6 +394,15 @@ public class MessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("receiverType", messageData.optString("receiverType"));
                             intentMain.putExtra("username", "" + json.get("title"));
                             intentMain.putExtra("type", "groupMember");
+                        } else if (type.equals("extension_whiteboard")) {
+                            Log.i(TAG, "getIntent: extension_whiteboard block");
+                            String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
+                            intentMain.putExtra("team_logs_id ", team_logs_id);
+                            intentMain.putExtra("receiver ", messageData.optString("receiver"));
+                            intentMain.putExtra("sender ", messageData.optString("sender"));
+                            intentMain.putExtra("receiverType ", messageData.optString("receiverType"));
+                            intentMain.putExtra("username ", "" + json.get("title"));
+                            intentMain.putExtra("type ", type);
                         } else {
                             String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
                             /*This is a broad cast for refreshing the unread messages*/
@@ -433,7 +427,7 @@ public class MessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("team_logs_id", team_logs_id);
                             intentMain.putExtra("receiver", messageData.optString("receiver"));
                             intentMain.putExtra("sender", messageData.optString("sender"));
-                            intentMain.putExtra("receiverType", ""+messageData.optString("receiverType"));
+                            intentMain.putExtra("receiverType", "" + messageData.optString("receiverType"));
                             intentMain.putExtra("username", "" + json.get("title"));
                             intentMain.putExtra("type", "");
                         }

@@ -43,6 +43,8 @@ import java.util.List;
 
 import okhttp3.RequestBody;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * @author kishor k
  * Created on 13/11/2020
@@ -57,6 +59,7 @@ public class CometChatMainFragment extends Fragment {
     private List<String> unreadCount = new ArrayList<>();
     SharedPreferences sp;
     private Cometchat_log db;
+    String other_user_id;
 
     @Override
     public void onStop() {
@@ -98,8 +101,7 @@ public class CometChatMainFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("My Team"));
         tabLayout.addTab(tabLayout.newTab().setText("Join Team"));
 
-        //Toolbar toolbar=(Toolbar)getActivity().findViewById(R.id.toolbar);
-
+        /*hiding all the menus from toolbar */
         if (getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
             /*if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
@@ -110,7 +112,7 @@ public class CometChatMainFragment extends Fragment {
             mainActivity.showHideBellIcon2(true);
             mainActivity.hidesettingIcon(true);
             mainActivity.showChatIcon(false);
-            //mainActivity.hidePopup();
+
         }
 
         // action bar setting button
@@ -123,9 +125,10 @@ public class CometChatMainFragment extends Fragment {
 
 
         // get all provider
-        getProvider();
+        //getProvider();
+
         // get all youth
-        getYouth();
+        //getYouth();
         // get current language
         getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
         // Checking the intent for navigation from push notification
@@ -243,11 +246,11 @@ public class CometChatMainFragment extends Fragment {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
                 if (response != null) {
-                    Log.e("provider", response);
+                    Log.e(TAG, "getProvider provider response "+response);
 
                     try {
                         JSONObject injectedObject = new JSONObject(response);
-                        Preferences.save("providers", injectedObject.getJSONArray("provider_user_id").toString());
+                        Preferences.save("providers", injectedObject.getJSONArray("provider_user_id").getJSONObject(0).getString("provider_id"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

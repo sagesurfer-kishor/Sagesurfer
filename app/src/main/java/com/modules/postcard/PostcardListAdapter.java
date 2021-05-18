@@ -7,10 +7,13 @@ import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.cometchat.pro.models.Conversation;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.datetime.GetTime;
@@ -35,9 +39,10 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
  * @author Kailash Karankal
  */
 
-public class PostcardListAdapter extends RecyclerView.Adapter<PostcardListAdapter.MyViewHolder> {
+public class PostcardListAdapter extends RecyclerView.Adapter<PostcardListAdapter.MyViewHolder> implements Filterable {
     private final Context mContext;
-    private final List<Postcard_> messages;
+    private  List<Postcard_> al_postcard;
+    private  List<Postcard_> al_full_list;
     private final MessageAdapterListener listener;
     private final SparseBooleanArray selectedItems;
     // array used to perform multiple animation at once
@@ -47,9 +52,10 @@ public class PostcardListAdapter extends RecyclerView.Adapter<PostcardListAdapte
     // dirty fix, find a better solution
     private static int currentSelectedIndex = -1;
 
-    PostcardListAdapter(Context mContext, List<Postcard_> messages, MessageAdapterListener listener) {
+    PostcardListAdapter(Context mContext, List<Postcard_> al_postcard, MessageAdapterListener listener) {
         this.mContext = mContext;
-        this.messages = messages;
+        this.al_postcard = al_postcard;
+        this.al_full_list = al_postcard;
         this.listener = listener;
         selectedItems = new SparseBooleanArray();
         animationItemsIndex = new SparseBooleanArray();
@@ -64,11 +70,11 @@ public class PostcardListAdapter extends RecyclerView.Adapter<PostcardListAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        if (messages.get(position).getStatus() == 1) {
+        if (al_postcard.get(position).getStatus() == 1) {
             holder.warningLayout.setVisibility(View.GONE);
             holder.mainContainer.setVisibility(View.VISIBLE);
 
-            Postcard_ message = messages.get(position);
+            Postcard_ message = al_postcard.get(position);
 
             if (message.getAttachmentArrayList().size() == 0) {
                 holder.mainContainer.setVisibility(View.VISIBLE);
@@ -210,7 +216,7 @@ public class PostcardListAdapter extends RecyclerView.Adapter<PostcardListAdapte
 
     @Override
     public long getItemId(int position) {
-        return messages.get(position).getId();
+        return al_postcard.get(position).getId();
     }
 
     private void applyDrawable(MyViewHolder holder, Postcard_ message) {
@@ -244,7 +250,7 @@ public class PostcardListAdapter extends RecyclerView.Adapter<PostcardListAdapte
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return al_postcard.size();
     }
 
     public void toggleSelection(int pos) {
@@ -278,12 +284,17 @@ public class PostcardListAdapter extends RecyclerView.Adapter<PostcardListAdapte
     }
 
     public void removeData(int position) {
-        messages.remove(position);
+        al_postcard.remove(position);
         resetCurrentIndex();
     }
 
     private void resetCurrentIndex() {
         currentSelectedIndex = -1;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return filterMail;
     }
 
     public interface MessageAdapterListener {
@@ -337,4 +348,42 @@ public class PostcardListAdapter extends RecyclerView.Adapter<PostcardListAdapte
             return true;
         }
     }
+
+    private Filter filterMail = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Postcard_> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0 || constraint.equals("")) {
+                filteredList.addAll(al_full_list);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Postcard_ item : al_postcard) {
+                    if(item.getName().toLowerCase().contains(filterPattern) || item.getSubject().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+/*                    if (item.getName().equals("group")) {
+                        if (((Group) item.getConversationWith()).getName().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
+                        }
+                    } else if (item.getConversationType().equals("user"))
+                        if (((User) item.getConversationWith()).getName().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
+                        }*/
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            al_postcard.clear();
+            al_postcard.addAll((List<Postcard_>) results.values);
+            if (al_postcard.isEmpty()) {
+                Toast.makeText(mContext, "No Result Found", Toast.LENGTH_SHORT).show();
+            }
+            notifyDataSetChanged();
+        }
+    };
 }

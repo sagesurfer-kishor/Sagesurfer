@@ -57,6 +57,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,10 +68,10 @@ import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
 
 import static android.content.Context.MODE_PRIVATE;
-
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class FragmentCometchatGroupsList extends Fragment {
     private static final String TAG = FragmentCometchatGroupsList.class.getSimpleName();
     private final int CONTACTS_LOADER = 1, CONTACTS_SEARCH_LOADER = 2;
@@ -93,16 +94,27 @@ public class FragmentCometchatGroupsList extends Fragment {
     private LinearLayout cardview_actions;
     public ArrayList<GetGroupsCometchat> primaryGroupList = new ArrayList<>();
     public ArrayList<GetGroupsCometchat> searchGroupList = new ArrayList<>();
-    private TextView error;
+    private TextView error, tv_total_groupCount, tv_total_groupTypeCount;
     SharedPreferences preferenOpenActivity;
     SharedPreferences.Editor editor;
     SharedPreferences preferenCheckIntent;
+    ArrayList<Members_> membersArrayList_;
     int iteratorCounter1;
+    int iterationMemberId = 0;
     int providerIdCounter, membersCounter, iteratingCounter, iteratingCounterMemberList, providerOnlineStatusCounter, memberOnlineStatusCounter = 0;
     SharedPreferences.Editor editorCheckIntent;
     String group_member_id, group_provider;
-    boolean checkMembers = true;
+    int gotProviderCount = 0;
+    int gotMemberCount = 0;
+    int membersIterationCounter = 0;
+    int gotMemberCountOnlineStatus = 0;
+    int gotProviderCountOnlineStatus = 0;
+    int membersIterationCounter2 = 0;
+    boolean isCheckMembers = true;
     //public ArrayList<GetGroupsCometchat> groupList = new ArrayList<>();
+    AlertDialog.Builder builder;
+    AlertDialog alert;
+    ArrayList<User> arrayListUsers;
 
     public FragmentCometchatGroupsList() {
         // Required empty public constructor
@@ -130,10 +142,13 @@ public class FragmentCometchatGroupsList extends Fragment {
         recyclerView = view.findViewById(R.id.groupsList);
         createGroup = view.findViewById(R.id.creatGrp);
         edittext_search = view.findViewById(R.id.ed_search_friend);
+        tv_total_groupTypeCount = view.findViewById(R.id.tv_total_groupTypeCount);
+        tv_total_groupCount = view.findViewById(R.id.tv_total_groupCount);
+        tv_total_groupCount = view.findViewById(R.id.tv_total_groupCount);
         error = view.findViewById(R.id.group_list_error);
         cardview_actions = view.findViewById(R.id.cardview_actions);
         Log.i(TAG, "onCreateView: activity name " + getActivity().getClass().getSimpleName());
-
+        arrayListUsers = new ArrayList<>();
         preferenOpenActivity = getActivity().getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
         editor = preferenOpenActivity.edit();
         myGroupMembersWithStatusArrayList = new ArrayList<>();
@@ -144,6 +159,7 @@ public class FragmentCometchatGroupsList extends Fragment {
         editor.putBoolean("IsGroupListingPage", true);
         editor.apply();
         preferenCheckIntent = getActivity().getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
+
         /*
         editorCheckIntent = preferenCheckIntent.edit();
         editorCheckIntent.putBoolean("openActivity", true);
@@ -225,7 +241,6 @@ public class FragmentCometchatGroupsList extends Fragment {
                         password = edPassword.getText().toString().trim();
 
                         if (!TextUtils.isEmpty(creategroup)) {
-
                             // check group type - pubilc, private, password group
                             if (selectedReason.equals(CometChatConstants.GROUP_TYPE_PASSWORD)) {
                                 password = edPassword.getText().toString().trim();
@@ -238,7 +253,6 @@ public class FragmentCometchatGroupsList extends Fragment {
                                     final String groupName = creategroup;
                                     final String groupType = selectedReason;
 
-
                                     Group group = new Group(GUID, groupName, groupType, password);
                                     //  doLogin(view, uid, GUID, groupName);
                                     //creating group in cometchat database
@@ -250,7 +264,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                                             // Toast.makeText(CreateGroupActivity.this, "Group created successfully: " + group.toString(), Toast.LENGTH_SHORT).show();
                                             String UID = Preferences.get(General.USER_ID);
                                             String action = "create_cometchat_group";
-                                            MessagingService.subscribeGroupNotification(GUID);
+                                            //MessagingService.subscribeGroupNotification(GUID);
                                             // add created group in to our db
                                             CreateGroup(action, UID, GUID, groupName, groupType, password);
                                             getGroups();
@@ -283,7 +297,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                                         // Toast.makeText(CreateGroupActivity.this, "Group created successfully: " + group.toString(), Toast.LENGTH_SHORT).show();
                                         String UID = Preferences.get(General.USER_ID);
                                         String action = "create_cometchat_group";
-                                        MessagingService.subscribeGroupNotification(GUID);
+                                        //MessagingService.subscribeGroupNotification(GUID);
 
                                         // add group in our db
                                         CreateGroup(action, UID, GUID, groupName, groupType, password);
@@ -356,43 +370,23 @@ public class FragmentCometchatGroupsList extends Fragment {
                 String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
                 if (response != null) {
                     Log.e("groups", response);
+
                     primaryGroupList = GroupTeam_.parseTeams(response, "get_groups_cometchat", getActivity(), TAG);
+                    for (GetGroupsCometchat item : primaryGroupList){
+                        Log.i(TAG, "getGroups: "+item.getName() +" GroupId "+item.getGroupId() +" isMember "+item.getIs_member());
+                    }
+
                     searchGroupList.clear();
-                    Handler handler = new Handler();
                     searchGroupList.addAll(primaryGroupList);
                     cardview_actions.setVisibility(View.VISIBLE);
                     //getUnreadMessageCountList();
-
+                    getGroupsCount();
+                    tv_total_groupCount.setText("No of Groups : " + searchGroupList.size());
                     groupListAdapter = new GroupsListAdapter(FragmentCometchatGroupsList.this, getContext(), searchGroupList);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(groupListAdapter);
-
-                     /*ArrayList<ModelUserCount> al_unreadCountList = new ArrayList<>();
-                    al_unreadCountList=getUnreadMessageCountList();
-                    if (!al_unreadCountList.isEmpty()){
-                        groupListAdapter = new GroupsListAdapter(FragmentCometchatGroupsList.this, getContext(), searchGroupList, al_unreadCountList);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        recyclerView.setLayoutManager(mLayoutManager);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.setAdapter(groupListAdapter);
-                    }*/
-
-                    /*handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.e(TAG, "run: ");
-                            groupListAdapter = new GroupsListAdapter(FragmentCometchatGroupsList.this, getContext(), searchGroupList, al_unreadCountList);
-                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                            recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            recyclerView.setAdapter(groupListAdapter);
-                        }
-                    }, 4000);*/
-                    //checkIntent();
-
-
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     error.setVisibility(View.VISIBLE);
@@ -400,6 +394,26 @@ public class FragmentCometchatGroupsList extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void getGroupsCount() {
+        int privateCount = 0;
+        int passwordCount = 0;
+        int publicCount = 0;
+        int counter = 0;
+        for (GetGroupsCometchat item : primaryGroupList) {
+            counter++;
+            if (item.getType().equals("public")) {
+                publicCount = publicCount + 1;
+            } else if (item.getType().equals("private")) {
+                privateCount = privateCount + 1;
+            } else if (item.getType().equals("password")) {
+                passwordCount = passwordCount + 1;
+            }
+        }
+        if (counter == primaryGroupList.size()) {
+            tv_total_groupTypeCount.setText("(Public Grp : " + publicCount + ", Private Grp : " + privateCount + ", Password Grp : " + passwordCount + ")");
         }
     }
 
@@ -561,7 +575,6 @@ public class FragmentCometchatGroupsList extends Fragment {
         /*if preferences is true that means user is navigating  from pushnotification and
          *that time we shoud check intent
          * if preferences is false that means user is returning back from chat screen and
-         *
          * */
         if (preferenCheckIntent.getBoolean("checkIntent", false)) {
             checkIntent();
@@ -573,7 +586,7 @@ public class FragmentCometchatGroupsList extends Fragment {
             editor.putBoolean("makeHighlight", false);
             editor.putBoolean("checkedHighlightedGroup", false);
             editor.apply();
-            getGroups();
+            //getGroups();
         }
     }
 
@@ -621,7 +634,13 @@ public class FragmentCometchatGroupsList extends Fragment {
         }
     }
 
-    public void getGroupMembersAndProviders(String GroupId, ArrayList<GetGroupsCometchat> mySearchList, int position, GetGroupsCometchat groupList) {
+    /*In this method we have fetched group memebers and providers string
+     *       1. first check providers are available in list or not if available then check it its status
+     *       2. if status is online then show dialog as do u want to talk with provider
+     *       3. if offline then show offline dialog
+     *       4. if provider is not available in list then check members list
+     *  */
+    public void getGroupMembersAndProviders(String GroupId, ArrayList<GetGroupsCometchat> mySearchList, int position, GetGroupsCometchat group) {
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
         SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
@@ -633,73 +652,151 @@ public class FragmentCometchatGroupsList extends Fragment {
         String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
         requestMap.put(screen.messagelist.General.GROUP_ID, "" + GroupId);
         requestMap.put(screen.messagelist.General.DOMAIN_CODE, DomainCode);
-        Log.i(TAG, "onTeamClickFetchTeamData: User Id " + UserId);
+
+
         RequestBody requestBody = screen.messagelist.NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
-        Log.i(TAG, "onTeamClickFetchTeamData: Domain " + DomainURL + url);
+        Log.i(TAG, screen.messagelist.General.MY_TAG + " onTeamClickFetchTeamData: Domain " + DomainURL + url);
         try {
             if (requestBody != null) {
                 String response = screen.messagelist.NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
+
                 if (response != null) {
 
-                    Log.i(TAG, "getGroupMembersAndProviders :  response " + response);
+                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders :  response " + response);
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray get_team_members_array = jsonObject.getJSONArray("get_group_members_array");
-                    group_member_id = get_team_members_array.getJSONObject(0).getString("group_member_id");
-                    group_provider = get_team_members_array.getJSONObject(0).getString("group_provider");
 
-                    GetGroupsCometchat groupsCometchat = mySearchList.get(position);
-                    ArrayList<Members_> membersArrayList_ = groupsCometchat.getMembersArrayList();
-                    Log.i(TAG, "getGroupMembersAndProviders: membersArrayList_.size() " + membersArrayList_.size());
-                    //"group_member_id":"3067_sage047","group_provider":"3066_sage047,3053_sage047,3058_sage047"}]
+                    if (get_team_members_array.getJSONObject(0).getString("status").equals("1")) {
+                        group_member_id = get_team_members_array.getJSONObject(0).getString("group_member_id");
+                        group_provider = get_team_members_array.getJSONObject(0).getString("group_provider");
+                        Log.i(TAG, "getGroupMembersAndProviders: group_member_id " + group_member_id + " group_provider " + group_provider);
 
-                    for (Members_ members_ : membersArrayList_) {
-                        getUserDetails(members_.getComet_chat_id(), membersArrayList_, groupList, mySearchList, position);
-                    }
+                        GetGroupsCometchat groupsCometchat = mySearchList.get(position);
+                        membersArrayList_ = groupsCometchat.getMembersArrayList();
 
-                    /*  }*/
-
-                   /* for (String providerId : SpiltProvidersArray) {
-                        if (providerId.equals("" + members_.getComet_chat_id())) {
-
-
-                        }
-                    }*/
-                      /*for (Members_ members_ : membersArrayList_) {
-                        iteratingCounter++;
-                        Log.i(TAG, "getGroupMembersAndProviders: " + members_.getComet_chat_id());
                         if (!group_provider.equals("")) {
-                            String[] SpiltProvidersArray = group_provider.split(",");
-                            Log.i(TAG, "getGroupMembersAndProviders: SpiltProvidersArray length " + SpiltProvidersArray.length);
-                           /* for (String providerId : SpiltProvidersArray) {
-                                if (providerId.equals("" + members_.getComet_chat_id())) {
-                                    providerIdCounter++;
-                                    //checkMembers = false;
-                                    getUserDetails(providerId, membersArrayList_.size(), groupList, mySearchList, position);
-                                }
-                            }
-
-                        }
-                    }*/
-                    /*if all the members are checked in providers list and no providers available in list then we will check members*/
-                    /*if (checkMembers) {
-                        if (membersArrayList_.size() == iteratingCounter && providerIdCounter == 0) {
-                            for (Members_ members_ : membersArrayList_) {
-                                iteratingCounterMemberList++;
-                                Log.i(TAG, "getGroupMembersAndProviders: " + members_.getComet_chat_id());
-                                String[] SpiltProvidersArray = group_member_id.split(",");
-                                Log.i(TAG, "getGroupMembersAndProviders: SpiltProvidersArray length " + SpiltProvidersArray.length);
-                                for (String providerId : SpiltProvidersArray) {
-                                    if (providerId.equals("" + members_.getComet_chat_id())) {
-                                        membersCounter++;
-                                        getUserDetails(providerId, membersArrayList_.size(), groupList, mySearchList, position);
+                            String[] arrayProvidersId = group_provider.split(",");
+                            getProvidersDetail(arrayProvidersId);
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    outerLoop:
+                                    for (User user : arrayListUsers) {
+                                        for (Members_ member : membersArrayList_) {
+                                            if (user.getUid().equals(member.getComet_chat_id())) {
+                                                String status = user.getStatus();
+                                                if (status.equalsIgnoreCase("online")) {
+                                                    //show provider online status
+                                                    gotProviderCountOnlineStatus++;
+                                                    if (arrayListUsers.size() == gotProviderCountOnlineStatus) {
+                                                        //show all providers are online
+                                                        String message = "Are you sure want to chat with provider?";
+                                                        showDialog(message, group, searchGroupList, position);
+                                                        arrayListUsers.clear();
+                                                        gotProviderCountOnlineStatus = 0;
+                                                    }
+                                                } else {
+                                                    arrayListUsers.clear();
+                                                    gotProviderCountOnlineStatus = 0;
+                                                    //show some providers are offline
+                                                    String message = "Some clinician staff may not be available. Please call 911 for emergency issues. \nStill you want to leave a message?";
+                                                    showDialog(message, group, searchGroupList, position);
+                                                    break outerLoop;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                            }
+                            }, 1000);
+                        } else if (!group_member_id.equals("")) {
+                            String[] arrayMembers = group_member_id.split(",");
+                            getProvidersDetail(arrayMembers);
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    outerLoop:
+                                    for (User user : arrayListUsers) {
+                                        for (Members_ member : membersArrayList_) {
+                                            if (user.getUid().equals(member.getComet_chat_id())) {
+                                                String status = user.getStatus();
+                                                if (status.equalsIgnoreCase("online")) {
+                                                    //show members online status
+                                                    gotMemberCountOnlineStatus++;
+                                                    if (arrayListUsers.size() == gotMemberCountOnlineStatus) {
+                                                        //show all providers are online
+                                                        prepareToSendGroupChatScreen(group, mySearchList, position);
+                                                        gotMemberCountOnlineStatus = 0;
+                                                        arrayListUsers.clear();
+                                                    }
+                                                } else {
+                                                    //show some members are offline
+                                                    gotMemberCountOnlineStatus = 0;
+                                                    arrayListUsers.clear();
+                                                    String message = "Some group members may not be available to review your message. Please call 911 for emergency issues. \nStill you want to leave a message?";
+                                                    showDialog(message, group, searchGroupList, position);
+                                                    break outerLoop;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }, 1000);
+
+             /*Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: provider array has data");
+                                        List<String> arrayListProviderId = new ArrayList<>();
+                                        String[] arrayProvidersId = group_provider.split(",");
+                                        arrayListProviderId = Arrays.asList(arrayProvidersId);
+                                        membersIterationCounter = 0;
+                                        gotProviderCount = 0;
+                                        for (Members_ member : membersArrayList_) {
+                                            membersIterationCounter++;
+                                            for (String id : arrayListProviderId) {
+                                                Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: provider array id" + id);
+                                                Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: member array id" + member.getComet_chat_id());
+                                                if (id.equals(member.getComet_chat_id())) {
+                                                    gotProviderCount++;
+                                                    getUserDetails2("" + member.getComet_chat_id(), "provider", group, position, mySearchList);
+                                                }
+                                            }
+                                        }*/
+                            //Log.i(TAG, "getGroupMembersAndProviders: member array has data");
+                            /*List<String> arrayListMemberId = new ArrayList<>();
+                            String[] arrayMembersId = group_member_id.split(",");
+                            arrayListMemberId = Arrays.asList(arrayMembersId);
+                            membersIterationCounter2 = 0;
+                            gotMemberCount = 0;
+
+                            for (Members_ member : membersArrayList_) {
+                                membersIterationCounter2++;
+                                Log.i(TAG, "getGroupMembersAndProviders: memberId from mainList " + member.getComet_chat_id());
+                                for (String memberId : arrayListMemberId) {
+                                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: member array id" + memberId + "membersArrayList_ id" + member.getComet_chat_id());
+                                    if (memberId.equals(member.getComet_chat_id())) {
+                                        Log.i(TAG, screen.messagelist.General.MY_TAG + "getGroupMembersAndProviders: matched id ---------->" + memberId);
+                                        gotMemberCount++;
+                                        Log.i(TAG, "getGroupMembersAndProviders: got memberCount" + gotMemberCount);
+                                        getUserDetails2("" + member.getComet_chat_id(), "member", group, position, mySearchList);
+                                    }
+                                }
+                            }*/
+
+                        } else {
+                            Log.i(TAG, "getGroupMembersAndProviders: no provider and members found ");
+                            prepareToSendGroupChatScreen(group, mySearchList, position);
                         }
+                    } else {
+                        prepareToSendGroupChatScreen(group, mySearchList, position);
+                    }
+                    /*for (Members_ members_ : membersArrayList_) {
+                        getUserDetails(members_.getComet_chat_id(), membersArrayList_, group, mySearchList, position);
                     }*/
+
                 } else {
-                    Log.i(TAG, "checkMemberList:  null  ");
+                    Log.i(TAG, "getGroupMembersAndProviders: null response");
                 }
+
             } else {
                 Log.i(TAG, "checkMemberList:  null2");
             }
@@ -709,124 +806,37 @@ public class FragmentCometchatGroupsList extends Fragment {
         }
     }
 
-    public void getUserDetails(String providerId, ArrayList<Members_> membersArrayList_, GetGroupsCometchat groupList, ArrayList<GetGroupsCometchat> mySearchList, int position) {
+    private void getProvidersDetail(String[] arrayData) {
+        Runnable providerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                for (String item : arrayData) {
+                    getUserDetails(item);
+                }
+            }
+        };
+
+        Thread getProviderDataThread = new Thread(providerRunnable);
+        getProviderDataThread.start();
+    }
+
+    public void getUserDetails(String providerId) {
         CometChat.getUser(providerId, new CometChat.CallbackListener<User>() {
             @Override
             public void onSuccess(User user) {
-                Log.d(TAG, "getUserDetails -> user details : " + user.toString());
-                String statuss = user.getStatus();
-                myGroupMembersWithStatusArrayList.add(user);
-                iteratorCounter1++;
-                Log.i(TAG, "onSuccess: " + iteratorCounter1);
-
-                if (membersArrayList_.size() == iteratorCounter1) {
-                    /*for (Members_ members_ : membersArrayList_){*/
-                    for (int i = 0; i < membersArrayList_.size(); i++) {
-                        if (!group_provider.equals("")) {
-                            String[] SpiltProvidersArray = group_provider.split(",");
-                            for (String providerId : SpiltProvidersArray) {
-                                if (providerId.equals("" + membersArrayList_.get(i).getComet_chat_id())) {
-                                    if (myGroupMembersWithStatusArrayList.get(i).getStatus().equals(CometChatConstants.USER_STATUS_ONLINE)) {
-                                        providerIdCounter++;
-                                        Log.i(TAG, "getUserDetails: if provider is online");
-                                        if (SpiltProvidersArray.length == providerIdCounter) {
-                                            String message = "Are you sure want to chat with provider?";
-                                            showDialog(message, groupList, searchGroupList, position);
-                                            iteratorCounter1 = 0;
-                                            providerIdCounter = 0;
-                                            break;
-                                        /*else{
-                                        Log.i(TAG, "getUserDetails: provider not found ");
-                                        iteratorCounter1=0;
-                                        providerIdCounter=0;
-                                        prepareToSendGroupChatScreen(groupList, mySearchList, position);
-                                    }*/
-                                        } else {
-                                            String message = "Some clinician staff may not be available. Please call 911 for emergency issues. <br/> still you want to leave a message?";
-                                            showDialog(message, groupList, searchGroupList, position);
-                                            iteratorCounter1 = 0;
-                                            providerIdCounter = 0;
-                                            Log.i(TAG, "getUserDetails: provider is offline");
-                                            break;
-                                        }
-                                    } else {
-                                        Log.i(TAG, "getUserDetails: provider not found ");
-                                        iteratorCounter1 = 0;
-                                        providerIdCounter = 0;
-                                        prepareToSendGroupChatScreen(groupList, mySearchList, position);
-                                    }
-                                }
-                            }
-                        }/*else{
-                            iteratorCounter1 = 0;
-                            providerIdCounter = 0;
-                            prepareToSendGroupChatScreen(groupList, mySearchList, position);
-                        }*/
-                    }
-                }
+                arrayListUsers.add(user);
             }
 
             @Override
             public void onError(CometChatException e) {
-                Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
+                Log.i(TAG, "onError: getUserDetails");
             }
         });
     }
 
-
-
-    /*public void getUserDetails(String providerId, int size, GetGroupsCometchat groupList, ArrayList<GetGroupsCometchat> mySearchList, int position) {
-        CometChat.getUser(providerId, new CometChat.CallbackListener<User>() {
-            @Override
-            public void onSuccess(User user) {
-                Log.d(TAG, "getUserDetails -> user details : " + user.toString());
-                String statuss = user.getStatus();
-
-                if (statuss.equals("online")) {
-                    Log.i(TAG, "getUserDetails -> status if online -> " + statuss);
-                    providerOnlineStatusCounter++;
-                    //memberOnlineStatusCounter++;
-                    if (size == iteratingCounter) {
-                        if (providerIdCounter == providerOnlineStatusCounter) {
-                            //it means all providers are online
-                            String message = "Are you sure want to chat with provider?";
-                            showDialog(message, groupList, mySearchList, position);
-                        } else {
-                            // some providers are not online
-                            String message = "Some clinician staff may not be available. Please call 911 for emergency issues. <br/> still you want to leave a message?";
-                            showDialog(message, groupList, mySearchList, position);
-
-                        }
-
-                    }*//*else if (size == iteratingCounterMemberList) {
-                        if (membersCounter == memberOnlineStatusCounter) {
-                            //all members are available so directly will send user to group chat screen
-                            prepareToSendGroupChatScreen(groupList, mySearchList, position);
-
-                        } else {
-                            //some members are not available
-                            String message = "Some group members may not be available to review your message. Please call 911 for emergency issues. <br/> still you want to leave a message? ”";
-                            showDialog(message, groupList, mySearchList, position);
-                        }
-                    }*//*
-
-                } else {
-                    Log.i(TAG, "getUserDetails -> status if offline  -> " + statuss);
-
-                }
-
-            }
-
-            @Override
-            public void onError(CometChatException e) {
-                Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
-            }
-        });
-    }*/
-
     private void showDialog(String success, GetGroupsCometchat groupList, ArrayList<GetGroupsCometchat> mySearchList, int position) {
-        AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getActivity());
+        //Creating dialog box
 
         builder.setMessage(success)
                 .setCancelable(false)
@@ -838,32 +848,37 @@ public class FragmentCometchatGroupsList extends Fragment {
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                         dialog.cancel();
                     }
                 });
-
-        //Creating dialog box
-        AlertDialog alert = builder.create();
-        //Setting the title manually
+        alert = builder.create();
         alert.setTitle("Alert Notification");
         alert.show();
     }
 
-    // The adapter click operation is brought here to handle push notification click
+    /*When user clicked on group list  item this method will invoke
+     * added by rahul maske*/
     public void performAdapterClick(int position, ArrayList<GetGroupsCometchat> mySearchList) {
-        GetGroupsCometchat groupList = mySearchList.get(position);
-        String GID = groupList.getGroupId();
+        GetGroupsCometchat group = mySearchList.get(position);
+        String GID = group.getGroupId();
         Log.e("grId", GID);
         /*commented code */
-        getGroupMembersAndProviders(GID, mySearchList, position, groupList);
+        Log.i(TAG, "performAdapterClick: member count " + group.getMembers_count());
+        Log.i(TAG, "performAdapterClick: member list " + group.getMembersArrayList().get(0).getUser_id());
+        if (Integer.parseInt(group.getMembers_count()) > 1) {
+            getGroupMembersAndProviders(GID, mySearchList, position, group);
+        } else {
+            StringBuffer stringBufferIMembersId = new StringBuffer();
+            openActivity(group.getName(), group.getGroupId(), group.getType(), group.getOwner_id(), group.getMembers_count(), "" + group.getPassword(), stringBufferIMembersId);
+        }
     }
 
-    private void prepareToSendGroupChatScreen(GetGroupsCometchat groupList, ArrayList<GetGroupsCometchat> mySearchList, int position) {
+    private void prepareToSendGroupChatScreen(GetGroupsCometchat group, ArrayList<GetGroupsCometchat> mySearchList, int position) {
         editor.putBoolean("makeHighlight", false);
         editor.commit();
+
         StringBuffer sbGroupMemberIds = new StringBuffer("");
-        for (Members_ teamsItem : groupList.getMembersArrayList()) {
+        for (Members_ teamsItem : group.getMembersArrayList()) {
             String s = String.valueOf(teamsItem.getUser_id());
             //l.add(s);
             if (sbGroupMemberIds.length() == 0) {
@@ -872,17 +887,18 @@ public class FragmentCometchatGroupsList extends Fragment {
                 sbGroupMemberIds.append("," + s);
             }
         }
+
         Log.i(TAG, "performAdapterClick: members id " + sbGroupMemberIds);
-        final String gName = groupList.getName();
-        final String groupIds = String.valueOf(groupList.getGroupId());
+        final String gName = group.getName();
+        final String groupIds = String.valueOf(group.getGroupId());
         final String groupType = mySearchList.get(position).getType();
-        final String ownerId = groupList.getOwner_id();
+        final String ownerId = group.getOwner_id();
         String Uid = Preferences.get(General.USER_ID);
-        final String memberCount = groupList.getMembers_count();
-        int isMembers = groupList.getIs_member();
+        final String memberCount = group.getMembers_count();
+        int isMembers = group.getIs_member();
         Log.i(TAG, "performAdapterClick: isMember" + isMembers);
 
-        switch (groupList.getType()) {
+        switch (group.getType()) {
             case "public":
                 if (isMembers == 0) {
                     // compare he is owner of that group or not
@@ -972,7 +988,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                             String pass = editText.getText().toString().trim();
                             if (!TextUtils.isEmpty(pass)) {
 
-                                if (pass.equals(groupList.getPassword())) {
+                                if (pass.equals(group.getPassword())) {
                                     openActivity(gName, groupIds, groupType, ownerId, memberCount, pass, sbGroupMemberIds);
                                     dialog.dismiss();
 
@@ -1007,4 +1023,169 @@ public class FragmentCometchatGroupsList extends Fragment {
         intent.putExtra(StringContract.IntentStrings.ALL_MEMBERS_STRING, "" + groupMembersId);
         getActivity().startActivity(intent);
     }
+
+
+    /*public void getUserDetails2(String providerId, String provider, GetGroupsCometchat group, int position, ArrayList<GetGroupsCometchat> mySearchList) {
+        CometChat.getUser(providerId, new CometChat.CallbackListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                String statuss = user.getStatus();
+                if (statuss.equals("online")) {
+                    if (provider.equals("provider")) {
+                        Log.i(TAG, screen.messagelist.General.MY_TAG + "getUserDetails2 onSuccess: provider id " + providerId + " is online");
+                        gotProviderCountOnlineStatus++;
+                        prepareForDialogProvider(group, position, provider, mySearchList);
+                    } else if (provider.equals("member")) {
+                        //prepareToSendGroupChatScreen(GetGroupsCometchat group, ArrayList<GetGroupsCometchat> mySearchList, int position)
+                        *//*Log.i(TAG, screen.messagelist.General.MY_TAG + "getUserDetails2 onSuccess: member id " + providerId + " is online");
+                        gotMemberCountOnlineStatus++;
+                        prepareForDialogMembers(group, position, provider, mySearchList);*//*
+                        gotMemberCountOnlineStatus++;
+                        Log.i(TAG, "getGroupMembersAndProviders onSuccess: memberOnline" + gotMemberCountOnlineStatus);
+                        prepareForDialogMembers(group, position, provider, mySearchList);
+                    }
+
+                } else {
+                    if (provider.equals("provider")) {
+                        Log.i(TAG, screen.messagelist.General.MY_TAG + " getUserDetails2 onSuccess: provider offline");
+                        prepareForDialogProvider(group, position, provider, mySearchList);
+                    } else if (provider.equals("member")) {
+                       *//* Log.i(TAG, screen.messagelist.General.MY_TAG + " getUserDetails2 onSuccess: member offline");
+                        prepareForDialogMembers(group, position, provider, mySearchList);*//*
+                        //prepareToSendGroupChatScreen(GetGroupsCometchat group, ArrayList<GetGroupsCometchat> mySearchList, int position)
+                        Log.i(TAG, "getGroupMembersAndProviders onSuccess: member offline");
+                        prepareForDialogMembers(group, position, provider, mySearchList);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.d(TAG, screen.messagelist.General.MY_TAG + " getUserDetails User details fetching failed with exception: " + e.getMessage());
+            }
+        });
+    }*/
+
+    /*private void prepareForDialogProvider(GetGroupsCometchat group, int position, String provider, ArrayList<GetGroupsCometchat> mySearchList) {
+        if (membersIterationCounter == membersArrayList_.size()) {
+            Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: gotProviderCount " + gotProviderCount + " gotProviderCountOnlineStatus" + gotProviderCountOnlineStatus);
+            if (gotProviderCount > 0) {
+                Log.i(TAG, "prepareForDialogProvider: gotProviderCount > 0 ");
+                if (gotProviderCount == gotProviderCountOnlineStatus) {
+                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: all providers are online ");
+                    String message = "Are you sure want to chat with provider?";
+                    gotProviderCountOnlineStatus = 0;
+                    gotProviderCount = 0;
+                    membersIterationCounter = 0;
+                    showDialog(message, group, searchGroupList, position);
+                } else {
+                    gotProviderCountOnlineStatus = 0;
+                    gotProviderCount = 0;
+                    membersIterationCounter = 0;
+                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getUserDetails2: some providers are not online ");
+                    String message = "Some clinician staff may not be available. Please call 911 for emergency issues. \nStill you want to leave a message?";
+                    showDialog(message, group, searchGroupList, position);
+                }
+            } else {
+                gotProviderCountOnlineStatus = 0;
+                gotProviderCount = 0;
+                membersIterationCounter = 0;
+                Log.i(TAG, screen.messagelist.General.MY_TAG + " getUserDetails2: some providers are not online ");
+                String message = "Some clinician staff may not be available. Please call 911 for emergency issues. \nStill you want to leave a message?";
+                showDialog(message, group, searchGroupList, position);
+            }
+        }
+    }*/
+
+    /*private void prepareForDialogMembers(GetGroupsCometchat group, int position, String provider, ArrayList<GetGroupsCometchat> mySearchList) {
+        Log.i(TAG, "getGroupMembersAndProviders prepareForDialogMembers: membersIterationCounter2 " + membersIterationCounter2);
+        Log.i(TAG, "getGroupMembersAndProviders prepareForDialogMembers: membersArrayList_ " + membersArrayList_.size());
+        if (membersIterationCounter2 == membersArrayList_.size()) {
+            Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: gotMemberCount " + gotMemberCount + " gotMemberCountOnlineStatus" + gotMemberCountOnlineStatus);
+            if (gotMemberCount > 0) {
+                Log.i(TAG, "getGroupMembersAndProviders prepareForDialogProvider: gotProviderCount > 0 ");
+                if (gotMemberCount == gotMemberCountOnlineStatus) {
+                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: all providers are online ");
+                    gotMemberCountOnlineStatus = 0;
+                    gotMemberCount = 0;
+                    membersIterationCounter2 = 0;
+                    prepareToSendGroupChatScreen(group, mySearchList, position);
+                } else {
+                    gotMemberCountOnlineStatus = 0;
+                    gotMemberCount = 0;
+                    membersIterationCounter2 = 0;
+                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getUserDetails2: some members are not online ");
+                    String message = "Some group members may not be available to review your message. Please call 911 for emergency issues. \nStill you want to leave a message?";
+                    showDialog(message, group, searchGroupList, position);
+                }
+            } else {
+                gotMemberCountOnlineStatus = 0;
+                gotMemberCount = 0;
+                membersIterationCounter2 = 0;
+                Log.i(TAG, screen.messagelist.General.MY_TAG + " getUserDetails2: some members are not online ");
+                String message = "Some group members may not be available to review your message. Please call 911 for emergency issues. \nStill you want to leave a message?";
+                showDialog(message, group, searchGroupList, position);
+            }
+        }
+    }*/
+
+
+    /*public void prepareForDialog(GetGroupsCometchat group, int position, String provider, ArrayList<GetGroupsCometchat> mySearchList) {
+        Log.i(TAG, "getUserDetails:  online");
+        if (provider.equals("provider")) {
+            gotProviderCountOnlineStatus++;
+            if (membersIterationCounter == membersArrayList_.size() && gotProviderCount != 0) {
+                Log.i(TAG, screen.messagelist.General.MY_TAG
+                        + " getGroupMembersAndProviders: gotProviderCount "
+                        + gotProviderCount + " gotProviderCountOnlineStatus"
+                        + gotProviderCountOnlineStatus);
+
+                if (gotMemberCount == gotMemberCountOnlineStatus) {
+                    //show do you want to chat with provider
+                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders: all providers are online ");
+                    String message = "Are you sure want to chat with provider?";
+                    gotProviderCountOnlineStatus = 0;
+                    gotProviderCount = 0;
+                    membersIterationCounter = 0;
+                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getUserDetails2 onSuccess: ");
+                    showDialog(message, group, searchGroupList, position);
+                } else {
+                    gotProviderCountOnlineStatus = 0;
+                    gotProviderCount = 0;
+                    membersIterationCounter = 0;
+                    //Show some clinistion are not available
+                    Log.i(TAG, screen.messagelist.General.MY_TAG + " getUserDetails2: some providers are not online ");
+                    String message = "Some clinician staff may not be available. Please call 911 for emergency issues. \nStill you want to leave a message?";
+                    showDialog(message, group, searchGroupList, position);
+                }
+            }
+
+        } else if (provider.equals("member")) {
+            //prepareToSendGroupChatScreen(GetGroupsCometchat group, ArrayList<GetGroupsCometchat> mySearchList, int position)
+            gotMemberCountOnlineStatus++;
+            Log.i(TAG, "getUserDetails2 onSuccess: gotMemberCount" + gotMemberCount);
+            Log.i(TAG, "getUserDetails2 onSuccess: gotMemberCountOnlineStatus" + gotMemberCountOnlineStatus);
+            if (membersIterationCounter2 == membersArrayList_.size() && gotMemberCount != 0) {
+                if (gotMemberCount == gotMemberCountOnlineStatus) {
+                    *//*direct take to chat screen*//*
+                    gotMemberCountOnlineStatus = 0;
+                    membersIterationCounter2 = 0;
+                    membersIterationCounter = 0;
+                    Log.i(TAG, "getUserDetails2 : all members are online");
+
+                } else {
+                    *//*show some users are not available in group*//*
+                    gotMemberCountOnlineStatus = 0;
+                    gotMemberCount = 0;
+                    membersIterationCounter2 = 0;
+                    membersIterationCounter = 0;
+                    Log.i(TAG, "getUserDetails2: some members are offline");
+                    String message = "Some group members may not be available to review your message. Please call 911 for emergency issues. \nStill you want to leave a message?";
+                    showDialog(message, group, searchGroupList, position);
+                }
+            }
+        }
+    }*/
+
+
 }

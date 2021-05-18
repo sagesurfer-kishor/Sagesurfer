@@ -50,11 +50,10 @@ public class NetworkCall_ {
 
         UserInfoForUIKitPref =_context.getSharedPreferences("UserInfoForUIKitPref",MODE_PRIVATE);
             /*SharedPreferences.Editor editor = UserInfoForUIKitPref.edit();
-    editor.putString(General.USER_ID, userInfo.getUserId());
-        editor.putString(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
-        editor.putString(General.TIMEZONE, DeviceInfo.getTimeZone());
-        editor.apply();*/
-
+            editor.putString(General.USER_ID, userInfo.getUserId());
+            editor.putString(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
+            editor.putString(General.TIMEZONE, DeviceInfo.getTimeZone());
+            editor.apply();*/
 
         Request request = new Request.Builder()
                 .url(url)
@@ -62,7 +61,7 @@ public class NetworkCall_ {
                 .tag(tag)
                 .build();
         String body = bodyToString(request);
-
+        Log.i(TAG, "make: "+body);
         String token = getToken(_context);
         if (token != null) {
             return finalBody(body, token);
@@ -143,7 +142,7 @@ public class NetworkCall_ {
                     .build();
 
             String s = url + "?" + bodyToString(request);
-
+            Log.i(TAG, "doInBackground: "+s);
             try {
                 Response response = client.newCall(request).execute();
                 String res = response.body().string();
@@ -268,10 +267,11 @@ public class NetworkCall_ {
                     .tag(tag)
                     .build();
             String s = url + "?" + bodyToString(request);
-
+            Log.i(TAG, "doInBackground: "+s);
             try {
                 Response response = client.newCall(request).execute();
                 String res = response.body().string();
+                Log.i(TAG, "doInBackground: "+res);
                 if (res.trim().length() > 0) {
                     JSONObject jsonObject = new JSONObject(res);
 
@@ -342,7 +342,6 @@ public class NetworkCall_ {
                 .add("akujs", UrlEncoder_.encrypt(mainBody))
                 .add("d", "a")
                 .add(Oauth.ACCESS_TOKEN, token);
-        Log.i(TAG, "finalBody: "+formBuilder.build());
         return formBuilder.build();
     }
 
@@ -352,8 +351,10 @@ public class NetworkCall_ {
             final Request copy = request.newBuilder().build();
             final Buffer buffer = new Buffer();
             copy.body().writeTo(buffer);
+            Log.i(TAG, "bodyToString: try");
             return buffer.readUtf8();
         } catch (final IOException e) {
+            Log.i(TAG, "bodyToString: catch");
             return "did not work";
         }
     }

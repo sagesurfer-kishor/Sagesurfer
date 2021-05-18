@@ -37,6 +37,7 @@ import listeners.OnItemClickListener;
 import screen.CometChatCallActivity;
 import screen.CometChatGroupDetailScreenActivity;
 import screen.CometChatUserDetailScreenActivity;
+import screen.messagelist.General;
 import utils.Utils;
 
 import static constant.StringContract.Tab.Group;
@@ -54,7 +55,7 @@ public class AllCall extends Fragment {
     private CometChatCallList rvCallList;
 
     private LinearLayout noCallView;
-
+    private static final String TAG = "AllCall";
     private MessagesRequest messagesRequest;
 
     private LinearLayoutManager linearLayoutManager;
@@ -157,6 +158,7 @@ public class AllCall extends Fragment {
                     } else {
                         user = (User) call.getCallInitiator();
                     }
+                    Log.i(TAG, General.MY_TAG+ "  onSuccess: ");
                     Utils.startCallIntent(getContext(), user, CometChatConstants.CALL_TYPE_AUDIO, true, call.getSessionId());
                 } else
                     Utils.startGroupCallIntent(getContext(), ((Group) call.getCallReceiver()), CometChatConstants.CALL_TYPE_AUDIO, true, call.getSessionId());

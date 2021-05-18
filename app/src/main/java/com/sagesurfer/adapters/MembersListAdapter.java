@@ -88,7 +88,6 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
             public void onClick(View view) {
                 AlertDialog.Builder builder;
                 builder = new AlertDialog.Builder(mContext);
-
                 //Setting message manually and performing action on button click
                 builder.setMessage("Do you want to send request to user?")
                         .setCancelable(false)
@@ -122,7 +121,7 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
                                     } else {
                                         Log.i(TAG, "onClick: invite user public or password block 2");
                                         /*if the user is already a friend of the sender then that user will directly add in to the group
-                                        * so this block will add user in group  */
+                                        * so this block will add user in group*/
                                         String action = "invite_public_friend";
                                         String groupid = Preferences.get("gId");
                                         String UserId = Preferences.get(General.USER_ID);
@@ -159,7 +158,7 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
         CometChat.addMembersToGroup(GUID, userList, null, new CometChat.CallbackListener<HashMap<String, String>>() {
             @Override
             public void onSuccess(HashMap<String, String> stringStringHashMap) {
-                Log.e(TAG, "onSuccess: " + userList + "Group" + GUID);
+                Log.e(TAG, "onSuccess: addMemberTogroup cometchat" + userList + "Group" + GUID);
                 invite(action, uid, GUID, reciveverId, rec, position);
             }
             @Override
@@ -190,7 +189,9 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, mContext);
+                //AddMemberInGroupInCometchat(reciver,gId);
                 Log.e("response q", response);
+
                 if (response != null) {
                     Toast.makeText(mContext, "Request send successfully", Toast.LENGTH_LONG).show();
                     groupmemberList.remove(position);
@@ -237,4 +238,22 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
             notifyDataSetChanged();
         }
     };
+
+    public void AddMemberInGroupInCometchat(String reciver, String gId){
+        List<GroupMember> members = new ArrayList<>();
+        members.add(new GroupMember(reciver,CometChatConstants.SCOPE_PARTICIPANT));
+        //members.add(new GroupMember("uid2", CometChatConstants.SCOPE_ADMIN));
+
+        CometChat.addMembersToGroup(gId, members, null, new CometChat.CallbackListener<HashMap<String, String>>(){
+            @Override
+            public void onSuccess(HashMap<String, String> successMap) {
+                Log.d("CometChatActivity","user added in group "+ successMap.toString());
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.i(TAG, "onError: "+e.getMessage());
+            }
+        });
+    }
 }

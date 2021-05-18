@@ -89,7 +89,8 @@
                     android:padding="8dp"
                     android:src="@drawable/ic_call_24dp"
 
-                    android:visibility="gone" />
+                    android:visibility="visible"
+                    app:tint="@color/colorPrimary" />
             </RelativeLayout>
 
             <!--End of User_Detail_Layout-->
@@ -115,9 +116,18 @@
                     android:paddingStart="16dp"
                     android:paddingTop="4dp"
                     android:paddingEnd="16dp"
+                    android:visibility="visible"
+                    android:textColor="@color/primaryTextColor"
                     android:paddingBottom="4dp"
                     android:text="@string/history" />
-
+                <View
+                    android:id="@+id/divider_7"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/light_grey" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/history_rv"
                     android:layout_width="match_parent"
@@ -125,6 +135,7 @@
                     android:paddingStart="16dp"
                     android:paddingTop="4dp"
                     android:paddingEnd="16dp"
+                    android:visibility="visible"
                     android:paddingBottom="4dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -134,6 +145,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"
+                    android:visibility="gone"
                     android:layout_marginBottom="4dp"
                     android:background="@color/light_grey" />
             </LinearLayout>

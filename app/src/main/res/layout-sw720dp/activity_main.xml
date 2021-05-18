@@ -33,15 +33,23 @@
             <ExpandableListView
                 android:id="@+id/drawer_list_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:background="@color/white"
                 android:childDivider="@color/white"
                 android:choiceMode="singleChoice"
                 android:divider="@color/white"
+                android:visibility="gone"
                 android:dividerHeight="10dp"
                 android:groupIndicator="@null"
                 android:paddingTop="5dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rv_drawerMenus"
+                android:paddingBottom="@dimen/margin_20"
+                />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

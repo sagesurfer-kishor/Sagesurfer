@@ -65,6 +65,7 @@ import okhttp3.RequestBody;
 import screen.addmember.CometChatAddMemberScreenActivity;
 import screen.adminAndModeratorList.CometChatAdminModeratorListScreenActivity;
 import screen.banmembers.CometChatBanMemberScreenActivity;
+import screen.messagelist.CometChatMessageListActivity;
 import screen.messagelist.General;
 import screen.messagelist.NetworkCall_;
 import screen.messagelist.Urls_;
@@ -1076,7 +1077,15 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
                             ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
                             ft.replace(R.id.app_bar_main_container, fragment, TAG);
                             ft.commit();*/
-                            
+                            Intent intent = new Intent(CometChatGroupDetailScreenActivity.this, Class.forName("com.sagesurfer.collaborativecares.MainActivity"));
+                            String team_logs_id="";
+                            intent.putExtra("team_logs_id", team_logs_id);
+                            intent.putExtra("receiver", guid);
+                            intent.putExtra("sender", user_id);
+                            intent.putExtra("receiverType", "group");
+                            intent.putExtra("username", user_id);
+                            intent.putExtra("type", "groupMember");
+                            startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

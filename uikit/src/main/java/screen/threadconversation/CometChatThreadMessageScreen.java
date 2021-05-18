@@ -111,7 +111,6 @@ import static android.view.View.VISIBLE;
  * Modified on  - 16th January 2020
  */
 
-
 public class CometChatThreadMessageScreen extends Fragment implements View.OnClickListener,
         OnMessageLongClick, MessageActionCloseListener {
 
@@ -272,12 +271,11 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
     private LinearLayout noReplyMessages;
 
-    private ImageView ivForwardMessage;
+    //
+    // private ImageView ivForwardMessage;
 
     private boolean isParent = true;
-
-    private ImageView ivMoreOption;
-
+    //private ImageView ivMoreOption;
     public CometChatThreadMessageScreen() {
         // Required empty public constructor
     }
@@ -333,14 +331,14 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
      * @param view
      */
     private void initViewComponent(View view) {
-
         setHasOptionsMenu(true);
         nestedScrollView = view.findViewById(R.id.nested_scrollview);
         noReplyMessages = view.findViewById(R.id.no_reply_layout);
-        ivMoreOption = view.findViewById(R.id.ic_more_option);
-        ivMoreOption.setOnClickListener(this);
-        ivForwardMessage = view.findViewById(R.id.ic_forward_option);
-        ivForwardMessage.setOnClickListener(this);
+        //ivMoreOption = view.findViewById(R.id.ic_more_option);
+        //ivMoreOption.setOnClickListener(this);
+       // ivForwardMessage = view.findViewById(R.id.ic_forward_option);
+        //ivForwardMessage.setOnClickListener(this);
+
         textMessage = view.findViewById(R.id.tv_textMessage);
         textMessage.setText(message);
         imageMessage = view.findViewById(R.id.iv_imageMessage);
@@ -351,7 +349,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         fileExtension = view.findViewById(R.id.tvFileExtension);
 
         Glide.with(context).load(message).into(imageMessage);
-
         MediaController mediacontroller = new MediaController(getContext());
         mediacontroller.setAnchorView(videoMessage);
         videoMessage.setMediaController(mediacontroller);
@@ -441,8 +438,8 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (Utils.isDarkMode(context)) {
-            ivMoreOption.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.textColorWhite)));
-            ivForwardMessage.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.textColorWhite)));
+            //ivMoreOption.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.textColorWhite)));
+            // ivForwardMessage.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.textColorWhite)));
             bottomLayout.setBackgroundColor(getResources().getColor(R.color.darkModeBackground));
             toolbar.setBackgroundColor(getResources().getColor(R.color.grey));
             editMessageLayout.setBackground(getResources().getDrawable(R.drawable.left_border_dark));
@@ -451,15 +448,16 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             rvChatListView.setBackgroundColor(getResources().getColor(R.color.darkModeBackground));
             tvName.setTextColor(getResources().getColor(R.color.textColorWhite));
         } else {
-            ivMoreOption.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.primaryTextColor)));
-            ivForwardMessage.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.primaryTextColor)));
+            //ivMoreOption.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.primaryTextColor)));
+            //ivForwardMessage.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.primaryTextColor)));
             bottomLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.textColorWhite)));
-            toolbar.setBackgroundColor(getResources().getColor(R.color.textColorWhite));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             editMessageLayout.setBackground(getResources().getDrawable(R.drawable.left_border));
             replyMessageLayout.setBackground(getResources().getDrawable(R.drawable.left_border));
             composeBox.setBackgroundColor(getResources().getColor(R.color.textColorWhite));
             rvChatListView.setBackgroundColor(getResources().getColor(R.color.textColorWhite));
-            tvName.setTextColor(getResources().getColor(R.color.primaryTextColor));
+            tvName.setTextColor(getResources().getColor(R.color.textColorWhite));
+
         }
 
         KeyBoardUtils.setKeyboardVisibilityListener(getActivity(), (View) rvChatListView.getParent(), keyboardVisible -> {
@@ -614,6 +612,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                     replyMessage(baseMessage, message);
                     replyMessageLayout.setVisibility(GONE);
                 } else if (!message.isEmpty())
+                    Log.i(TAG, "onSendActionClicked: message clicked");
                     sendMessage(message);
             }
 
@@ -1117,6 +1116,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
      */
     private void  sendMessage(String message) {
         String team_logs_id;
+        Log.i(TAG, "sendMessage: block ");
         TextMessage textMessage;
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
             textMessage = new TextMessage(Id, message, CometChatConstants.RECEIVER_TYPE_USER);
@@ -1143,6 +1143,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             //Friend chat
             case "1":
                 try {
+                    Log.i(TAG, "sendMessage: friend chat ");
                     jsonObject.put("team_logs_id", 0);
                     jsonObject.put("message_translation_languages", languageArray);
                 } catch (JSONException e) {
@@ -1188,10 +1189,11 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         textMessage.setParentMessageId(parentId);
         sendTypingIndicator(true);
         textMessage.setMetadata(jsonObject);
+        Log.i(TAG, "sendMessage: metadata set properly ");
         CometChat.sendMessage(textMessage, new CometChat.CallbackListener<TextMessage>() {
             @Override
             public void onSuccess(TextMessage textMessage) {
-                Log.i(TAG, "onSuccess: threadedTextMessageSent "+textMessage);
+                Log.i(TAG, "sendMessage onSuccess: threadedTextMessageSent "+textMessage);
                 noReplyMessages.setVisibility(GONE);
                 isSmartReplyClicked = false;
                 if (messageAdapter != null) {
@@ -1600,7 +1602,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 messageAdapter.clearLongClickSelectedItem();
                 messageAdapter.notifyDataSetChanged();
             }
-        } else if (id == R.id.ic_more_option) {
+        } /*else if (id == R.id.ic_more_option) {
             MessageActionFragment messageActionFragment = new MessageActionFragment();
             Bundle bundle = new Bundle();
             if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT))
@@ -1617,10 +1619,10 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             bundle.putString("type", CometChatThreadMessageActivity.class.getName());
             messageActionFragment.setArguments(bundle);
             showBottomSheet(messageActionFragment);
-        } else if (id == R.id.ic_forward_option) {
+        }*/ /*else if (id == R.id.ic_forward_option) {
             isParent = true;
             startForwardThreadActivity();
-        } else if (id == R.id.iv_message_close) {
+        }*/ else if (id == R.id.iv_message_close) {
             if (messageAdapter != null) {
                 messageAdapter.clearLongClickSelectedItem();
                 messageAdapter.notifyDataSetChanged();
@@ -1730,6 +1732,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 }
             }
         }
+
         baseMessages = baseMessagesList;
         Bundle bundle = new Bundle();
         bundle.putBoolean("copyVisible", copyVisible);
@@ -1842,6 +1845,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     private void startForwardThreadActivity() {
         Intent intent = new Intent(getContext(), CometChatForwardMessageScreenActivity.class);
         intent.putExtra(StringContract.IntentStrings.TYPE, messageType);
+        intent.putExtra(StringContract.IntentStrings.TABS, tabs);
         if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
             intent.putExtra(CometChatConstants.MESSAGE_TYPE_TEXT, message);
             intent.putExtra(StringContract.IntentStrings.TYPE, CometChatConstants.MESSAGE_TYPE_TEXT);
@@ -1876,7 +1880,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         }
         startActivity(intent);
     }
-
 
     private void replyMessage() {
         if (baseMessage != null) {

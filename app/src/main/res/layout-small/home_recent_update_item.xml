@@ -7,9 +7,10 @@
     android:layout_marginLeft="@dimen/activity_vertical_margin"
     android:layout_marginTop="@dimen/margin_10"
     android:layout_marginRight="@dimen/activity_vertical_margin"
-    android:background="@drawable/recent_update_fms"
+    android:background="@color/colorCardBackGround"
     android:orientation="horizontal"
     android:padding="@dimen/margin_10"
+
     tools:ignore="MissingDefaultResource">
 
     <LinearLayout

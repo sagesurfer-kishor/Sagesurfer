@@ -2,6 +2,7 @@ package com.sagesurfer.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.storage.preferences.Preferences;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.LogRecord;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -44,6 +46,7 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
 
     private LayoutInflater inflater;
     private Context context;
+    Handler handler;
     private ArrayList<Teams_> primaryList = new ArrayList<>();
     private ArrayList<Teams_> searchList = new ArrayList<>();
     public final JoinChatExpandableListAdapterListener teamsChatExpandableListAdapterListener;
@@ -61,6 +64,8 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
         this.teamsChatExpandableListAdapterListener = teamsChatExpandableListAdapterListener;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.activity = activity;
+        handler=new Handler();
+
     }
 
     @Override
@@ -253,29 +258,53 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
                             .transform(new CircleTransform(context)))
                     .into(viewHolderMember.avatar);
 
+            // check user is online or offline
+            Log.i(TAG, "getChildView: status of user ---> "+teamMemberList.get(childPosition).getStatus());
+/*            if (teamMemberList.get(childPosition).getStatus().equals("online")) {
+                viewHolderMember.statusImage.setImageResource(R.drawable.online_sta);
+            } else {
+                viewHolderMember.statusImage.setImageResource(R.drawable.offline_sta);
+            }*/
 
-            CometChat.getUnreadMessageCountForUser(item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
+            Runnable runnable=new Runnable() {
                 @Override
-                public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                    // handle success
-                    Log.e("unreadcount", String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id())));
-                    viewHolderMember.unreadCount.setVisibility(View.VISIBLE);
+                public void run() {
 
-                    Log.i(TAG, "onSuccess: unread messages   "+stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
-                    String counter= String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
-                    if (!counter.equalsIgnoreCase("null")){
-                        viewHolderMember.unreadCount.setText(counter);
-                    }else{
-                        viewHolderMember.unreadCount.setVisibility(View.GONE);
-                    }
-                }
+                    CometChat.getUnreadMessageCountForUser(item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
+                        @Override
+                        public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
 
-                @Override
-                public void onError(CometChatException e) {
-                    viewHolderMember.unreadCount.setVisibility(View.GONE);
-                    Log.i(TAG, "onError: unread messages "+e.getMessage());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    viewHolderMember.unreadCount.setVisibility(View.VISIBLE);
+                                    String counter= String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
+                                    if (!counter.equalsIgnoreCase("null")){
+                                        viewHolderMember.unreadCount.setText(counter);
+                                    }else{
+                                        viewHolderMember.unreadCount.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onError(CometChatException e) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    viewHolderMember.unreadCount.setVisibility(View.GONE);
+                                    Log.i(TAG, "onError: unread messages "+e.getMessage());
+                                }
+                            });
+
+                        }
+                    });
                 }
-            });
+            };
+            Thread thread=new Thread(runnable);
+            thread.start();
 
 
             viewHolderMember.linearLayoutFriendListItem.setOnClickListener(new View.OnClickListener() {

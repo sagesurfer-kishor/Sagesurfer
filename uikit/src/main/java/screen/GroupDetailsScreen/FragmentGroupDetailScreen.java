@@ -1,4 +1,4 @@
-package com.modules.cometchat_7_30.GroupDetailsScreen;
+package screen.GroupDetailsScreen;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -36,13 +36,13 @@ import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.GroupMember;
 import com.cometchat.pro.models.User;
 import com.cometchat.pro.uikit.Avatar;
+import com.cometchat.pro.uikit.R;
 import com.cometchat.pro.uikit.SharedMediaView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sagesurfer.collaborativecares.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,11 +57,11 @@ import constant.StringContract;
 import listeners.ClickListener;
 import listeners.RecyclerTouchListener;
 import okhttp3.RequestBody;
-import screen.CometChatGroupDetailScreenActivity;
 import screen.FragmentCometChatGroupList2;
 import screen.addmember.CometChatAddMemberScreenActivity;
 import screen.adminAndModeratorList.CometChatAdminModeratorListScreenActivity;
 import screen.banmembers.CometChatBanMemberScreenActivity;
+import screen.messagelist.CometChatMessageListActivity;
 import screen.messagelist.General;
 import screen.messagelist.NetworkCall_;
 import screen.messagelist.Urls_;
@@ -93,7 +93,7 @@ public class FragmentGroupDetailScreen extends Fragment {
 
     private RecyclerView rvMemberList;
 
-    private String guid, gName, gDesc, gPassword;
+    private String guid, gName, gDesc, gPassword,groupId;
 
     private GroupMembersRequest groupMembersRequest;
 
@@ -157,20 +157,17 @@ public class FragmentGroupDetailScreen extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     private void initComponent() {
-        dividerAdmin = view.findViewById(com.cometchat.pro.uikit.R.id.tv_seperator_admin);
-        dividerModerator = view.findViewById(com.cometchat.pro.uikit.R.id.tv_seperator_moderator);
-        dividerBan = view.findViewById(com.cometchat.pro.uikit.R.id.tv_seperator_ban);
-        divider2 = view.findViewById(com.cometchat.pro.uikit.R.id.tv_seperator_1);
-        groupIcon = view.findViewById(com.cometchat.pro.uikit.R.id.iv_group);
-        tvGroupName = view.findViewById(com.cometchat.pro.uikit.R.id.tv_group_name);
-        tvGroupDesc = view.findViewById(com.cometchat.pro.uikit.R.id.group_description);
-        nested_scrollview = view.findViewById(com.cometchat.pro.uikit.R.id.nested_scrollview);
+        dividerAdmin = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_seperator_admin);
+        dividerModerator = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_seperator_moderator);
+        dividerBan = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_seperator_ban);
+        divider2 = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_seperator_1);
+        groupIcon = this.view.findViewById(com.cometchat.pro.uikit.R.id.iv_group);
+        tvGroupName = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_group_name);
+        tvGroupDesc = this.view.findViewById(com.cometchat.pro.uikit.R.id.group_description);
+        nested_scrollview = this.view.findViewById(com.cometchat.pro.uikit.R.id.nested_scrollview);
 
         tvGroupName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,53 +175,53 @@ public class FragmentGroupDetailScreen extends Fragment {
                 updateGroupDialog();
             }
         });
-        tvMemberCount = view.findViewById(com.cometchat.pro.uikit.R.id.tv_members);
-        tv_adminstrators = view.findViewById(com.cometchat.pro.uikit.R.id.tv_adminstrators);
-        tv_moderators = view.findViewById(com.cometchat.pro.uikit.R.id.tv_moderators);
-        tvAdminCount = view.findViewById(com.cometchat.pro.uikit.R.id.tv_admin_count);
-        tvModeratorCount = view.findViewById(com.cometchat.pro.uikit.R.id.tv_moderator_count);
-        tvBanMemberCount = view.findViewById(com.cometchat.pro.uikit.R.id.tv_ban_count);
-        rvMemberList = view.findViewById(com.cometchat.pro.uikit.R.id.member_list);
-        tvLoadMore = view.findViewById(com.cometchat.pro.uikit.R.id.tv_load_more);
+        tvMemberCount = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_members);
+        tv_adminstrators = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_adminstrators);
+        tv_moderators = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_moderators);
+        tvAdminCount = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_admin_count);
+        tvModeratorCount = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_moderator_count);
+        tvBanMemberCount = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_ban_count);
+        rvMemberList = this.view.findViewById(com.cometchat.pro.uikit.R.id.member_list);
+        tvLoadMore = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_load_more);
         tvLoadMore.setText(String.format(getResources().getString(com.cometchat.pro.uikit.R.string.load_more_members), LIMIT));
-        TextView tvAddMember = view.findViewById(com.cometchat.pro.uikit.R.id.tv_add_member);
-        callBtn = view.findViewById(com.cometchat.pro.uikit.R.id.callBtn_iv);
-        videoCallBtn = view.findViewById(com.cometchat.pro.uikit.R.id.video_callBtn_iv);
-        rlBanMembers = view.findViewById(com.cometchat.pro.uikit.R.id.rlBanView);
+        TextView tvAddMember = this.view.findViewById(com.cometchat.pro.uikit.R.id.tv_add_member);
+        callBtn = this.view.findViewById(com.cometchat.pro.uikit.R.id.callBtn_iv);
+        videoCallBtn = this.view.findViewById(com.cometchat.pro.uikit.R.id.video_callBtn_iv);
+        rlBanMembers = this.view.findViewById(com.cometchat.pro.uikit.R.id.rlBanView);
         rlBanMembers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openBanMemberListScreen();
             }
         });
-        rlAddMemberView = view.findViewById(com.cometchat.pro.uikit.R.id.rl_add_member);
+        rlAddMemberView = this.view.findViewById(com.cometchat.pro.uikit.R.id.rl_add_member);
         rlAddMemberView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addMembers();
             }
         });
-        rlAdminListView = view.findViewById(com.cometchat.pro.uikit.R.id.rlAdminView);
+        rlAdminListView = this.view.findViewById(com.cometchat.pro.uikit.R.id.rlAdminView);
         rlAdminListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openAdminListScreen(false);
             }
         });
-        rlModeratorView = view.findViewById(com.cometchat.pro.uikit.R.id.rlModeratorView);
+        rlModeratorView = this.view.findViewById(com.cometchat.pro.uikit.R.id.rlModeratorView);
         rlModeratorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openAdminListScreen(true);
             }
         });
-        tvDelete = view.findViewById(com.cometchat.pro.uikit.R.id.tv_delete);
-        TextView tvExit = view.findViewById(com.cometchat.pro.uikit.R.id.tv_exit);
+        tvDelete = this.view.findViewById(R.id.tv_delete);
+        TextView tvExit = this.view.findViewById(R.id.tv_exit);
         //toolbar = view.findViewById(com.cometchat.pro.uikit.R.id.groupDetailToolbar);
 
-        tvDelete.setTypeface(fontUtils.getTypeFace(FontUtils.robotoMedium));
-        tvExit.setTypeface(fontUtils.getTypeFace(FontUtils.robotoMedium));
-        tvAddMember.setTypeface(fontUtils.getTypeFace(FontUtils.robotoRegular));
+        //tvDelete.setTypeface(fontUtils.getTypeFace(FontUtils.robotoMedium));
+        //tvExit.setTypeface(fontUtils.getTypeFace(FontUtils.robotoMedium));
+        ///tvAddMember.setTypeface(fontUtils.getTypeFace(FontUtils.robotoRegular));
 
         // setSupportActionBar(toolbar);
 
@@ -236,9 +233,9 @@ public class FragmentGroupDetailScreen extends Fragment {
 //        rvMemberList.setNestedScrollingEnabled(false);
 
         handleIntent();
-        checkDarkMode();
+        //checkDarkMode();
 
-        sharedMediaView = view.findViewById(com.cometchat.pro.uikit.R.id.shared_media_view);
+        sharedMediaView = this.view.findViewById(com.cometchat.pro.uikit.R.id.shared_media_view);
         sharedMediaView.setRecieverId(guid);
         sharedMediaView.setRecieverType(CometChatConstants.RECEIVER_TYPE_GROUP);
         sharedMediaView.reload();
@@ -283,11 +280,13 @@ public class FragmentGroupDetailScreen extends Fragment {
         tvDelete.setOnClickListener(view -> createDialog(getResources().getString(com.cometchat.pro.uikit.R.string.delete_group_title), getResources().getString(com.cometchat.pro.uikit.R.string.delete_group_message),
                 getResources().getString(com.cometchat.pro.uikit.R.string.delete), getResources().getString(com.cometchat.pro.uikit.R.string.cancel), com.cometchat.pro.uikit.R.drawable.ic_delete_24dp));
 
+        getGroupMembers();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_group_detail_screen, container, false);
+        initComponent();
 
         return view;
     }
@@ -515,14 +514,15 @@ public class FragmentGroupDetailScreen extends Fragment {
      * This method is used to handle the intent passed to this activity.
      */
     private void handleIntent() {
-        if (getArguments().containsKey
-                (StringContract.IntentStrings.GUID)) {
+
+        if (getArguments().containsKey(StringContract.IntentStrings.GUID)) {
             guid = getArguments().getString(StringContract.IntentStrings.GUID);
+            groupId = getArguments().getString(StringContract.IntentStrings.GUID);
+            Log.i(TAG, "handleIntent: group id "+guid);
         }
-        if (getArguments().containsKey
-                (StringContract.IntentStrings.MEMBER_SCOPE)) {
-            loggedInUserScope = guid = getArguments().getString
-                    (StringContract.IntentStrings.MEMBER_SCOPE);
+        if (getArguments().containsKey(StringContract.IntentStrings.MEMBER_SCOPE)) {
+            loggedInUserScope = guid = getArguments().getString(StringContract.IntentStrings.MEMBER_SCOPE);
+
             if (loggedInUserScope != null && loggedInUserScope.equals(CometChatConstants.SCOPE_ADMIN)) {
                 rlAddMemberView.setVisibility(View.VISIBLE);
                 rlBanMembers.setVisibility(View.VISIBLE);
@@ -547,10 +547,8 @@ public class FragmentGroupDetailScreen extends Fragment {
             gName = getArguments().getString(StringContract.IntentStrings.NAME);
             tvGroupName.setText(gName);
         }
-        if (getArguments().containsKey
-                (StringContract.IntentStrings.AVATAR)) {
-            String avatar = guid = getArguments().getString
-                    (StringContract.IntentStrings.AVATAR);
+        if (getArguments().containsKey(StringContract.IntentStrings.AVATAR)) {
+            String avatar = guid = getArguments().getString(StringContract.IntentStrings.AVATAR);
             if (avatar != null && !avatar.isEmpty())
                 groupIcon.setAvatar(avatar);
             else
@@ -615,13 +613,14 @@ public class FragmentGroupDetailScreen extends Fragment {
      * @see GroupMember
      */
     private void getGroupMembers() {
+        Log.i(TAG, "getGroupMembers: called "+guid);
         if (groupMembersRequest == null) {
-            groupMembersRequest = new GroupMembersRequest.GroupMembersRequestBuilder(guid).setLimit(LIMIT).build();
+            groupMembersRequest = new GroupMembersRequest.GroupMembersRequestBuilder(groupId).setLimit(LIMIT).build();
         }
         groupMembersRequest.fetchNext(new CometChat.CallbackListener<List<GroupMember>>() {
             @Override
             public void onSuccess(List<GroupMember> groupMembers) {
-                Log.e(TAG, "onSuccess: " + groupMembers.size());
+                Log.e(TAG, "onSuccess: get group members  " + groupMembers.size());
                 if (groupMembers != null && groupMembers.size() != 0) {
                     adminCount = 0;
                     moderatorCount = 0;
@@ -672,8 +671,7 @@ public class FragmentGroupDetailScreen extends Fragment {
      */
     private void createDialog(String title, String message, String positiveText, String negativeText, int drawableRes) {
 
-        MaterialAlertDialogBuilder alert_dialog = new MaterialAlertDialogBuilder(getActivity(),
-                com.cometchat.pro.uikit.R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered);
+        AlertDialog.Builder alert_dialog = new AlertDialog.Builder(getActivity());
         alert_dialog.setTitle(title);
         alert_dialog.setMessage(message);
         alert_dialog.setPositiveButton(positiveText, (dialogInterface, i) -> {
@@ -704,13 +702,13 @@ public class FragmentGroupDetailScreen extends Fragment {
      * @see CometChat#leaveGroup(String, CometChat.CallbackListener)
      */
     private void leaveGroup() {
-        CometChat.leaveGroup(guid, new CometChat.CallbackListener<String>() {
+        CometChat.leaveGroup(groupId, new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
 
                 Log.i(TAG, "onSuccess: leave group");
                 User user = CometChat.getLoggedInUser();
-                leftGroupMembersFromServer(guid, user.getUid());
+                leftGroupMembersFromServer(groupId, user.getUid());
             }
 
             @Override
@@ -756,23 +754,25 @@ public class FragmentGroupDetailScreen extends Fragment {
                     JSONObject responseJsonObj = new JSONObject(response);
                     Log.e(TAG, "leftGroupMembersFromServer : response" + response);
                     JSONArray left_group_members = responseJsonObj.getJSONArray("left_group_members");
-
-                    for (int i = 0; i <= left_group_members.length(); i++) {
                         try {
-                            String msg = left_group_members.getJSONObject(i).getString("msg");
+                            String msg = left_group_members.getJSONObject(0).getString("msg");
                             Toast.makeText(getActivity(), ""+msg, Toast.LENGTH_SHORT).show();
 
-                            /*Fragment fragment = GetFragments.get(id, bundle);
-                            FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();
-                            ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                            /**/
+
+                            Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+                            startActivity(intent);
+                           /* Fragment fragment = GetFragments.get(id, bundle);
+                            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                            //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
                             ft.replace(R.id.app_bar_main_container, fragment, TAG);
                             ft.commit();*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }
-                    navigateToGroupList();
+
+                    //navigateToGroupList();
                 } else {
                     Toast.makeText(getActivity(), "Server error..", Toast.LENGTH_SHORT).show();
                 }

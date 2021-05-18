@@ -368,7 +368,7 @@
     <string name="invitations">Invitations</string>
     <string name="reject">Reject</string>
     <string name="accept">Accept</string>
-    <string name="provider_time_slot">Provider available time slot</string>
+    <string name="provider_time_slot">Set available time slot</string>
     <string name="done">Done</string>
     <string name="now">Now</string>
     <string name="resend">Resend</string>
@@ -904,7 +904,7 @@
     <string name="permission_view">V</string>
 
     <string name="invalid_login">Invalid Login</string>
-    <string name="recent_update">Recent Updates</string>
+    <string name="recent_update">Latest Updates</string>
     <string name="add_image">Add Image</string>
     <string name="date_and_time">Date and Time</string>
     <string name="add_more_option">Add more option</string>
@@ -928,6 +928,8 @@
     <string name="sage025">sage025</string>
     <string name="sage026">sage026</string>   <!--MHAW devlopment-->
     <string name="sage027">sage027</string>   <!--MHAW Live-->
+    <string name="sage049">sage049</string>   <!--MHAW Live-->
+    <string name="sage052">sage052</string>   <!--MHAW Live-->
     <string name="sage028">sage028</string>   <!--MHAW Live-->
 
     <string name="title_home">Home</string>
@@ -1083,5 +1085,6 @@
     <string name="Cancel_Appointment">Cancel</string>
     <string name="from_time">From Time</string>
     <string name="to_time">To Time</string>
+    <string name="channel_description">Sagesurfer channel</string>
 
 </resources>

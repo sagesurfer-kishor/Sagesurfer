@@ -12,9 +12,7 @@ import androidx.multidex.MultiDexApplication;
 import com.cometchat.pro.core.AppSettings;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+
 import com.modules.caseload.observer.AppObserver;
 import com.sagesurfer.directory.DirectoryList;
 import com.sagesurfer.network.AppConfig;
@@ -64,13 +62,13 @@ public class Application extends MultiDexApplication {
 
         CometChatCallListener.addCallListener(TAG, this);
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+       /* FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String deviceToken = instanceIdResult.getToken();
                 Log.e("+++", deviceToken);
             }
-        });
+        });*/
 
     }
 
@@ -139,7 +137,5 @@ public class Application extends MultiDexApplication {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-
     }
-
 }

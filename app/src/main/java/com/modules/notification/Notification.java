@@ -111,7 +111,7 @@ public class Notification {
         this.is_member = is_member;
     }
 
-    @SerializedName("title1")
+    @SerializedName("title2")
     private String title1;
 
     @SerializedName("description1")

@@ -5,11 +5,13 @@
     <item
         android:id="@+id/menu_block_member"
         android:title="Blocked Member"
-        app:showAsAction="never" />
+        android:icon="@drawable/blue_close"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_change_language"
         android:title="Change Language"
-        app:showAsAction="never" />
+        android:icon="@drawable/blue_close"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/chatt_icon"
         android:icon="@drawable/chatt_iconn"
@@ -18,11 +20,12 @@
     <item
         android:id="@+id/set_available_time"
         android:title="Set Available Time"
+        android:visible="false"
         android:icon="@drawable/available_time_icon"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/call_history"
         android:title="Call History"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
         />
 </menu>

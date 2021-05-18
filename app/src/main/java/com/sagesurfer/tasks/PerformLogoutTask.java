@@ -102,8 +102,8 @@ public class PerformLogoutTask {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            logoutFromCometchat(activity);
-
+            //logoutFromCometchat(activity);
+            unSubscribeUserFromCometchat(activity);
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
             }
@@ -114,11 +114,13 @@ public class PerformLogoutTask {
     }
 
     private static void logoutFromCometchat(Activity activity){
+
         CometChat.logout(new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
                 Log.i(TAG, "cometchat logout onSuccess: ");
-                unSubscribeUserFromCometchat(activity);
+                /*safeLogout includes all the preferences and other things and we are clearing after that*/
+                safeLogout(activity);
             }
 
             @Override
@@ -134,7 +136,16 @@ public class PerformLogoutTask {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.e(TAG, Preferences.get(General.COMET_CHAT_ID) + " Unsubscribed Success");
-                safeLogout(activity);
+                logoutFromCometchat(activity);
+            }
+        });
+
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConfig.AppDetails.APP_ID + "_" + CometChatConstants.RECEIVER_TYPE_USER + "_" +
+                Preferences.get(General.COMET_CHAT_ID)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e(TAG, Preferences.get(General.COMET_CHAT_ID) + " Unsubscribed Success");
+                logoutFromCometchat(activity);
             }
         });
     }
@@ -143,15 +154,20 @@ public class PerformLogoutTask {
     // reset shared preferences values to logout state
     private static void safeLogout(Activity activity) {
         Preferences.clear();
-        loginPreferences = activity.getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        /*loginPreferences = activity.getSharedPreferences("loginPrefs", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
         loginPrefsEditor.clear();
-        loginPrefsEditor.apply();
+        loginPrefsEditor.apply();*/
 
         sp = activity.getSharedPreferences("login", MODE_PRIVATE);
         spEditor = sp.edit();
         spEditor.clear();
         spEditor.apply();
+
+        SharedPreferences loginSessionCheck =activity.getSharedPreferences("loginSessionCheck",MODE_PRIVATE);
+        SharedPreferences.Editor editor = loginSessionCheck.edit();
+        editor.putString(General.IS_LOGIN, "0");
+        editor.apply();
 
         Preferences.save(General.IS_LOGIN, 0);
         Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);

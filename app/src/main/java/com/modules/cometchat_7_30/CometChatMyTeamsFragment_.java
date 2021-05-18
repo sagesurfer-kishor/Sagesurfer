@@ -46,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -73,7 +74,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
     private static LinearLayout errorLayout;
     private EditText et_search_friend;
     private LinearLayout ll_cardview_actions;
-    private TextView tv_error;
+    private TextView tv_error,tv_team_count;
     SharedPreferences preferenOpenActivity;
     private AppCompatImageView iv_errorIcon;
     private final int CONTACTS_LOADER = 1, CONTACTS_SEARCH_LOADER = 2;
@@ -99,6 +100,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         et_search_friend = view.findViewById(R.id.ed_search_friend);
         errorLayout = view.findViewById(R.id.linealayout_error);
         tv_error = view.findViewById(R.id.textview_error_message);
+        tv_team_count = view.findViewById(R.id.tv_team_count);
         iv_errorIcon = view.findViewById(R.id.imageview_error_icon);
 
         expandableListView = view.findViewById(R.id.expandablelistview_teams);
@@ -148,13 +150,12 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         //refreshFragment();
         Log.i(TAG, "onResume: ");
         getTeams();
-
-
     }
 
     private void searchUser(String search) {
         Log.e("Seach Functionality", TAG + " getFilter :");
-        teamsListAdapter.getFilter().filter(search);
+        if (teamsListAdapter!=null){
+            teamsListAdapter.getFilter().filter(search);}
     }
 
     private void openChatActivity(String username, String CometchatIdOfSender, int status, String teamId, String memberId) {
@@ -206,6 +207,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
             ll_cardview_actions.setVisibility(View.VISIBLE);
             expandableListView.setVisibility(View.VISIBLE);
             al_search_friend.addAll(al_friends);
+            tv_team_count.setText("No. of Teams : "+al_friends.size());
             teamsListAdapter = new MyTeamsChatExpandableListAdapter(getContext(), al_friends, al_search_friend, this, getActivity());
             expandableListView.setAdapter(teamsListAdapter);
             checkIntent();
@@ -254,54 +256,41 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         }
     }
 
-    /*after clicking on my team member item this method will execute*/
+    /*after clicking on my team member item this method will execute
+    * Here all the data is maintain for members type like provider, member and normal users
+    * added by rahul maske */
     @Override
     public void onMemberRelativeLayoutClicked(int memberPosition, Teams_ team_) {
 
         Preferences.save(General.BANNER_IMG, team_.getBanner());
         Preferences.save(General.TEAM_ID, team_.getId());
         Preferences.save(General.TEAM_NAME, team_.getName());
-        Log.i(TAG, "onMemberRelativeLayoutClicked: 1");
+        Log.i(TAG, "onMemberRelativeLayoutClicked: 1 getComet_chat_id"+team_member_id );
+        Log.i(TAG, "onMemberRelativeLayoutClicked: 1 team_provider"+team_member_id );
 
         String[] ProviderArray = team_provider.split(",");
-        for (String providerId : ProviderArray) {
-            /*If provider*/
-            Log.i(TAG, "onMemberRelativeLayoutClicked: 2 from custom array" + providerId +
-                    " from list clicked" + team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
-            String[] spitId = providerId.split("_");
-            if (spitId[0].equals("" + team_.getMembersArrayList().get(memberPosition).getUser_id())) {
-                Log.i(TAG, "onMemberRelativeLayoutClicked: 3 -" + spitId[0]);
-                getUserDetails(providerId, team_, memberPosition);
-                //if (team_.getMembersArrayList().get(memberPosition).getStatus())
-            } else {
-                /*if not provider check member list*/
-                String[] spitIdMemberList = providerId.split("_");
-                if (spitIdMemberList[0].equals("" + team_.getMembersArrayList().get(memberPosition).getUser_id()))
-                {
-                    //checkMemberList(providerId, team_, memberPosition);
-                    checkOtherMemberAvailable(team_, memberPosition);
-                }else{
-                    final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
-                    final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
-                    final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
+        String[] MemberArray = team_member_id.split(",");
 
-                    openChatActivity(""+username,
-                            ""+CometchatIdOfSender,
-                            status,
-                            ""+String.valueOf(team_.getId()),
-                            "" + CometchatIdOfSender);
-                }
-            }
+        if (Arrays.asList(ProviderArray).contains( team_.getMembersArrayList().get(memberPosition).getComet_chat_id())){
+            //if user is provider
+            getUserDetails(team_.getMembersArrayList().get(memberPosition).getComet_chat_id(), team_, memberPosition,"provider");
+            Log.i(TAG, "onMemberRelativeLayoutClicked: this is provider --> "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+        }else if (Arrays.asList(MemberArray).contains( team_.getMembersArrayList().get(memberPosition).getComet_chat_id())){
+            //if user is member selected by admin dashboard
+            getUserDetails(team_.getMembersArrayList().get(memberPosition).getComet_chat_id(), team_, memberPosition,"member");
+            Log.i(TAG, "onMemberRelativeLayoutClicked: This is member --> "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+        }else{
+            //if user is normal user
+            Log.i(TAG, "onMemberRelativeLayoutClicked: ");
+            final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+            final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
+            final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
+            openChatActivity(""+username,
+                    ""+CometchatIdOfSender,
+                    status,
+                    ""+String.valueOf(team_.getId()),
+                    "" + CometchatIdOfSender);
         }
-        /*final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
-        final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
-        final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
-
-        openChatActivity(""+username,
-                ""+CometchatIdOfSender,
-                status,
-                ""+String.valueOf(team_.getId()),
-                "" + CometchatIdOfSender);*/
     }
 
 
@@ -376,8 +365,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         }
     }
 
-    public void getUserDetails(String providerId, Teams_ team_, int memberPosition) {
-
+    public void getUserDetails(String providerId, Teams_ team_, int memberPosition,String UserType) {
         CometChat.getUser(providerId, new CometChat.CallbackListener<User>() {
             @Override
             public void onSuccess(User user) {
@@ -386,13 +374,27 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
 
                 if (statuss.equals("online")) {
                     Log.i(TAG, "getUserDetails -> status if online -> " + statuss);
-                    showOnlineDialog(team_, memberPosition);
+                    if (UserType.equalsIgnoreCase("provider")) {
+                        showOnlineDialog(team_, memberPosition);
+                    }else{
+                        //Send direct Inside chat screen
+                        final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+                        final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
+                        final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
+                        openChatActivity(""+username,
+                                ""+CometchatIdOfSender,
+                                status,
+                                ""+String.valueOf(team_.getId()),
+                                "" + CometchatIdOfSender);
+                    }
                 } else {
-                    Log.i(TAG, "getUserDetails -> status if offline  -> " + statuss);
-                    checkProviderOrMembersAvailableOnServer(team_, memberPosition);
+                    if (UserType.equalsIgnoreCase("provider")) {
+                        Log.i(TAG, "getUserDetails -> status if offline  -> " + statuss);
+                        checkProviderAvailableTime(team_, memberPosition);
+                    }else{
+                        checkOtherMemberAvailable(team_,memberPosition);
+                    }
                 }
-                //Log.i(TAG, "onMemberRelativeLayoutClicked: member Detail "+team_.getMembersArrayList().get(memberPosition));
-
             }
 
             @Override
@@ -402,7 +404,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         });
     }
 
-    private void checkProviderOrMembersAvailableOnServer(Teams_ team_, int memberPosition) {
+    private void checkProviderAvailableTime(Teams_ team_, int memberPosition) {
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
         SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
@@ -444,7 +446,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getActivity());
         String message;
-        if (success.equals("Success") || success.equals("Fail")) {
+        if (success.equalsIgnoreCase("success") || success.equalsIgnoreCase("fail")) {
             message = "Are you sure you want chat with provider?";
         } else {
             message = success;
@@ -455,13 +457,27 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
                     public void onClick(DialogInterface dialog, int id) {
                         //team_.getMembersArrayList().get(memberPosition).getComet_chat_id()
                         Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
-                        intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+                        Log.i(TAG, "showDialog onClick: FullName "+team_.getMembersArrayList().get(position).getFullname());
+                        Log.i(TAG, "showDialog onClick: Uid "+team_.getMembersArrayList().get(position).getComet_chat_id());
+                        Log.i(TAG, "showDialog onClick: image "+team_.getMembersArrayList().get(position).getPhoto());
+                        Log.i(TAG, "showDialog onClick: status "+team_.getMembersArrayList().get(position).getStatus());
+                       /* intent.putExtra(StringContract.IntentStrings.TYPE, "user");
                         intent.putExtra(StringContract.IntentStrings.NAME, (team_.getMembersArrayList().get(position).getFullname()));
-                        intent.putExtra(StringContract.IntentStrings.UID, (team_.getMembersArrayList().get(position).getUser_id()));
+                        intent.putExtra(StringContract.IntentStrings.UID, (team_.getMembersArrayList().get(position).getComet_chat_id()));
                         intent.putExtra(StringContract.IntentStrings.AVATAR, (team_.getMembersArrayList().get(position).getPhoto()));
                         intent.putExtra(StringContract.IntentStrings.STATUS, (team_.getMembersArrayList().get(position).getStatus()));
-                        intent.putExtra(StringContract.IntentStrings.TABS, "1");
-                        getActivity().startActivity(intent);
+                        intent.putExtra(StringContract.IntentStrings.TABS, "3");
+                        getActivity().startActivity(intent);*/
+                        final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(position).getComet_chat_id());
+                        final String username = team_.getMembersArrayList().get(position).getUsername();
+                        final int status = team_.getMembersArrayList().get(position).getStatus();
+                        Log.i(TAG, "onClick: CometchatIdOfSender "+CometchatIdOfSender +" username "+username +" status "+status+" team_.getId() "
+                                +team_.getId()  +"CometchatIdOfSender "+CometchatIdOfSender);
+                        openChatActivity("" + username,
+                                "" + CometchatIdOfSender,
+                                status,
+                                "" + String.valueOf(team_.getId()),
+                                "" + CometchatIdOfSender);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -490,7 +506,8 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
                         final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
                         final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
                         final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
-
+                        Log.i(TAG, "onClick: CometchatIdOfSender "+CometchatIdOfSender +" username "+username +" status "+status+" team_.getId() "
+                                +team_.getId()  +"CometchatIdOfSender "+CometchatIdOfSender);
                         openChatActivity("" + username,
                                 "" + CometchatIdOfSender,
                                 status,
@@ -626,39 +643,46 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
 
     @Override
     public void onTeamClickFetchTeamData(Teams_ item) {
-        SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
-        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
-        SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
-        String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
-        String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put(screen.messagelist.General.ACTION, "get_team_members_array");
-        requestMap.put(screen.messagelist.General.TEAM_ID, "" + item.getId());
-        requestMap.put(screen.messagelist.General.USER_ID, UserId);
-        Log.i(TAG, "onTeamClickFetchTeamData: User Id " + UserId);
-        RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
-        Log.i(TAG, "onTeamClickFetchTeamData: Domain " + DomainURL + url);
-        try {
-            if (requestBody != null) {
-                String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
-                if (response != null) {
+        Runnable runnableUserArray = new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+                String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+                SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+                String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
+                String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
+                HashMap<String, String> requestMap = new HashMap<>();
+                requestMap.put(screen.messagelist.General.ACTION, "get_team_members_array");
+                requestMap.put(screen.messagelist.General.TEAM_ID, "" + item.getId());
+                requestMap.put(screen.messagelist.General.USER_ID, UserId);
+               // Log.i(TAG, "onTeamClickFetchTeamData: User Id " + UserId);
+                RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
+                Log.i(TAG, "onTeamClickFetchTeamData: Domain " + DomainURL + url);
+                try {
+                    if (requestBody != null) {
+                        String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
+                        if (response != null) {
 
-                    Log.i(TAG, "onTeamClickFetchTeamData:  response " + response);
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray get_team_members_array = jsonObject.getJSONArray("get_team_members_array");
-                    team_member_id = get_team_members_array.getJSONObject(0).getString("team_member_id");
-                    team_provider = get_team_members_array.getJSONObject(0).getString("team_provider");
-
-                } else {
-                    Log.i(TAG, "checkMemberList:  null  ");
+                           // Log.i(TAG, "onTeamClickFetchTeamData:  response " + response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray get_team_members_array = jsonObject.getJSONArray("get_team_members_array");
+                            team_member_id = get_team_members_array.getJSONObject(0).getString("team_member_id");
+                            team_provider = get_team_members_array.getJSONObject(0).getString("team_provider");
+                        } else {
+                           // Log.i(TAG, "checkMemberList:  null  ");
+                        }
+                    } else {
+                        //Log.i(TAG, "checkMemberList:  null2");
+                    }
+                } catch (Exception e) {
+                   // Log.i(TAG, "checkMemberList: " + e.getMessage());
+                    e.printStackTrace();
                 }
-            } else {
-                Log.i(TAG, "checkMemberList:  null2");
+
             }
-        } catch (Exception e) {
-            Log.i(TAG, "checkMemberList: " + e.getMessage());
-            e.printStackTrace();
-        }
+        };
+        Thread thread=new Thread(runnableUserArray);
+        thread.start();
     }
 }
 

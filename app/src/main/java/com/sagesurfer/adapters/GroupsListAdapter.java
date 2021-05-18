@@ -36,10 +36,9 @@ import com.cometchat.pro.core.GroupMembersRequest;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.GroupMember;
-import com.cometchat.pro.models.User;
-import com.firebase.MessagingService;
 import com.modules.cometchat_7_30.FragmentCometchatGroupsList;
 import com.modules.cometchat_7_30.ModelUserCount;
+import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.models.GetAddNewMember;
@@ -56,11 +55,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import constant.StringContract;
 import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * @author kishor k
@@ -73,6 +73,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
     private String GID;
     private RecyclerView recyclerView;
     private TextView error;
+    private AlertDialog alertDialog;
     private ArrayList<GetAddNewMember> getgroupmemberArrayList = new ArrayList<>();
     private final ArrayList<GetGroupsCometchat> searchGroupList;
     private FragmentCometchatGroupsList fragment;
@@ -89,8 +90,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         fragment = fragment_CometchatGroupsList_;
         preferenOpenActivity = mContext.getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
     }
-
-
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView title;
@@ -128,7 +127,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         GetGroupsCometchat group_item = searchGroupList.get(position);
-        final List<String> l = new ArrayList<>();
+        final List<String> list = new ArrayList<>();
+        Log.i(TAG, "onBindViewHolder:  group Name " + group_item.getName() + " isMember " + group_item.getIs_member());
         //final String providerArray = Preferences.get("providers");
         // set group name
         holder.title.setText(group_item.getName());
@@ -160,16 +160,14 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             //holder.group_ic_counter.setVisibility(View.INVISIBLE);
         }*/
 
-
+        /*getting unread message for groups */
         CometChat.getUnreadMessageCountForGroup(group_item.getGroupId(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
             @Override
             public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                Log.e(TAG, "onSuccess: cometchat groupId " + stringIntegerHashMap.get("670270470"));    //getting null values for group
-
                 if (stringIntegerHashMap.get(group_item.getGroupId()) != null) {
 
                     group_item.setStatus(stringIntegerHashMap.get(group_item.getGroupId()));
-                    holder.group_ic_counter.setText("" +group_item.getStatus());
+                    holder.group_ic_counter.setText("" + group_item.getStatus());
                     holder.group_ic_counter.setVisibility(View.VISIBLE);
                 } else {
                     holder.group_ic_counter.setVisibility(View.GONE);
@@ -202,12 +200,11 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         }
 
         String isMember = String.valueOf(group_item.getIs_member());
-
         if (group_item.getOwner_id().equals(Preferences.get(General.USER_ID))) {
             holder.btnselfinvite.setVisibility(View.INVISIBLE);
         }
 
-        if (isMember.equals("1")) {
+        if (!isMember.equals("0") || group_item.getOwner_id().equals("" + Preferences.get(General.USER_ID))) {
             holder.btnselfinvite.setVisibility(View.INVISIBLE);
         }
 
@@ -215,7 +212,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         holder.img_group_item_options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                /* Intent intent = new Intent(mContext, Resourse_Share.class);
                 mContext.startActivity(intent);*/
 
@@ -224,149 +220,142 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                 //Log.e("GroupListAdapter", "onClick: img_group_item_options isMember" );
 
                 /*if (isMember.equals("0")) {*/
-
+                Log.i(TAG, "onClick: group owner " + group_item.getOwner_id() + " isMember " + group_item.getIs_member() + " userId " + Preferences.get(General.USER_ID));
+                //if (isMember.equalsIgnoreCase("1") || group_item.getOwner_id().equalsIgnoreCase(Preferences.get(General.USER_ID)) || ) {
                 final String userId = Preferences.get(General.USER_ID);
 
-                if (group_item.getIs_member() != 0 || userId.equals(group_item.getOwner_id())) {
-                    GID = group_item.getGroupId();
-                    String owner = group_item.getOwner_id();
-                    String groupType = group_item.getType();
-                    Log.e("GroupListAdapter", "onClick: img_group_item_options isMember if true");
-                    Preferences.save("gId", GID);
-                    Preferences.save("owner", owner);
+                GID = group_item.getGroupId();
+                String owner = group_item.getOwner_id();
+                String groupType = group_item.getType();
+                Log.e("GroupListAdapter", "onClick: img_group_item_options isMember if true");
+                Preferences.save("gId", GID);
+                Preferences.save("owner", owner);
+                final Dialog dialog1 = new Dialog(mContext);
+                dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog1.setCancelable(false);
+                dialog1.setContentView(R.layout.group_detail);
 
-                    final Dialog dialog1 = new Dialog(mContext);
-                    dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog1.setCancelable(false);
-                    dialog1.setContentView(R.layout.group_detail);
+                Button btnViewMember = dialog1.findViewById(R.id.btnViewMember);
+                Button btnDeleteGroup = dialog1.findViewById(R.id.btnDeleteGroup);
 
-                    Button btnViewMember = dialog1.findViewById(R.id.btnViewMember);
-                    Button btnDeleteGroup = dialog1.findViewById(R.id.btnDeleteGroup);
+                TextView txtmemberCount = dialog1.findViewById(R.id.txtmemberCount);
+                TextView txtcreatedDated = dialog1.findViewById(R.id.txtcreatedDated);
+                TextView txtowner = dialog1.findViewById(R.id.txtowner);
 
-                    TextView txtmemberCount = dialog1.findViewById(R.id.txtmemberCount);
-                    TextView txtcreatedDated = dialog1.findViewById(R.id.txtcreatedDated);
-                    TextView txtowner = dialog1.findViewById(R.id.txtowner);
-
-                    txtowner.setText(group_item.getOwner());
-                    txtmemberCount.setText(group_item.getMembers_count());
+                txtowner.setText(group_item.getOwner());
+                txtmemberCount.setText(group_item.getMembers_count());
 
               /*  SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 String dateString = formatter.format(new Date(Long.parseLong(teamList.get(position).getCreated())));  */
 
-                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-                    cal.setTimeInMillis(Long.parseLong(group_item.getCreated()) * 1000);
-                    String date = DateFormat.format("dd-MM-yyyy", cal).toString();
-                    txtcreatedDated.setText(date);
+                Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                cal.setTimeInMillis(Long.parseLong(group_item.getCreated()) * 1000);
+                String date = DateFormat.format("dd-MM-yyyy", cal).toString();
+                txtcreatedDated.setText(date);
 
-                    ImageView btnClose = dialog1.findViewById(R.id.imgDismiss);
-                    btnClose.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dialog1.dismiss();
-                        }
-                    });
-
-                    btnViewMember.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dialogViewMembers(groupType);
-                            dialog1.dismiss();
-                        }
-                    });
-
-                    if (group_item.getOwner_id().equals(Preferences.get(General.USER_ID))) {
-                        btnDeleteGroup.setVisibility(View.VISIBLE);
-                    } else {
-                        btnDeleteGroup.setVisibility(View.GONE);
+                ImageView btnClose = dialog1.findViewById(R.id.imgDismiss);
+                btnClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog1.dismiss();
                     }
+                });
 
-                    //delete group call
-                    btnDeleteGroup.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            GID = group_item.getGroupId();
-                            final String GUID = String.valueOf(GID);
-                            AlertDialog.Builder builder;
-                            builder = new AlertDialog.Builder(mContext);
-                            //Setting message manually and performing action on button click
-                            builder.setMessage("Do you want to delete this group?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
+                btnViewMember.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        /*It will open dialog for all group members list and add new members and */
+                        dialogViewMembers(groupType);
+                        dialog1.dismiss();
+                    }
+                });
 
-                                            // delete group from comet chat first
-                                            CometChat.deleteGroup(GUID, new CometChat.CallbackListener<String>() {
-                                                @Override
-                                                public void onSuccess(String successMessage) {
-                                                    Log.d(TAG, "Group deleted successfully: ");
+                if (group_item.getOwner_id().equals(Preferences.get(General.USER_ID))) {
+                    btnDeleteGroup.setVisibility(View.VISIBLE);
+                } else {
+                    btnDeleteGroup.setVisibility(View.GONE);
+                }
 
-                                                    MessagingService.unsubscribeGroupNotification(GUID);
+                //delete group call
+                btnDeleteGroup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GID = group_item.getGroupId();
+                        final String GUID = String.valueOf(GID);
+                        AlertDialog.Builder builder;
+                        builder = new AlertDialog.Builder(mContext);
+                        //Setting message manually and performing action on button click
+                        builder.setMessage("Do you want to delete this group?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
 
-                                                    // update deleted group in our db
-                                                    DeleteGroup("delete_group", GUID, position);
-                                                    // teamList.remove(position);
-                                                    dialog1.dismiss();
-                                                }
+                                        // delete group from comet chat first
+                                        CometChat.deleteGroup(GUID, new CometChat.CallbackListener<String>() {
+                                            @Override
+                                            public void onSuccess(String successMessage) {
+                                                Log.d(TAG, "Group deleted successfully: ");
 
-                                                @Override
-                                                public void onError(CometChatException e) {
-                                                    Log.d(TAG, "Group delete failed with exception: " + e.getMessage());
-                                                }
-                                            });
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            //  Action for 'NO' Button
-                                            dialog1.cancel();
-                                        }
-                                    });
-                            //Creating dialog box
-                            AlertDialog alert = builder.create();
-                            //Setting the title manually
-                            alert.setTitle("Alert Notification");
-                            alert.show();
+                                                //MessagingService.unsubscribeGroupNotification(GUID);
 
-                        }
-                    });
+                                                // update deleted group in our db
+                                                DeleteGroup("delete_group", GUID, position);
+                                                // teamList.remove(position);
+                                                dialog1.dismiss();
+                                            }
 
-                    dialog1.show();
+                                            @Override
+                                            public void onError(CometChatException e) {
+                                                Log.d(TAG, "Group delete failed with exception: " + e.getMessage());
+                                            }
+                                        });
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //  Action for 'NO' Button
+                                        dialog1.cancel();
+                                    }
+                                });
+                        //Creating dialog box
+                        AlertDialog alert = builder.create();
+                        //Setting the title manually
+                        alert.setTitle("Alert Notification");
+                        alert.show();
+
+                    }
+                });
+
+                dialog1.show();
                 /*}else{
                     Log.e("GroupListAdapter", "onClick: img_group_item_options isMember else Part" );
                     Log.e("GroupListAdapter", "onClick: group type = "+teams_.getType());
                     //addMemberingroup(teams_.getType());
                 }*/
-
-                } else {
-                    AlertDialog.Builder builder;
-                    builder = new AlertDialog.Builder(mContext);
-                    //Setting message manually and performing action on button click
-
-                    builder.setMessage("You are not member of this group. please join this group.")
-                            .setCancelable(false)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-
-                                    // delete group from comet chat first
-
-                                }
-
-                            });
-                    //Creating dialog box
-                    //Creating dialog box
-
-                    //Setting the title manually
-                    AlertDialog alert = builder.create();
-                    alert.setTitle("Alert");
-                    alert.show();
-
-                }
-
-
             }
+                   /* } else {
+                        AlertDialog.Builder builder;
+                        builder = new AlertDialog.Builder(mContext);
+                        //Setting message manually and performing action on button click
+
+                        builder.setMessage("You are not member of this group. please join this group.")
+                                .setCancelable(false)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        // delete group from comet chat first
+
+                                    }
+
+                                });
+                        //Setting the title manually
+                        AlertDialog alert = builder.create();
+                        alert.setTitle("Alert");
+                        alert.show();
+                    }
+                }*/
 
         });
-
 
         // self invite call
         holder.btnselfinvite.setOnClickListener(new View.OnClickListener() {
@@ -555,8 +544,37 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         });*/
 
         //holder.linearLayout.setOnClickListener(view -> fragment.performAdapterClick(position));
-        holder.linearLayout.setOnClickListener(view -> fragment.performAdapterClick(position, searchGroupList));
+        //holder.linearLayout.setOnClickListener(view -> fragment.performAdapterClick(position, searchGroupList));
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences UserInfoForUIKitPref = mContext.getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+                String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+                Log.i(TAG, "onClick: pref id " + Preferences.get(General.USER_ID) + " Comet Chat id " + group_item.getOwner_id());
+                if (!isMember.equalsIgnoreCase("0")
+                        || group_item.getOwner_id().equals(Preferences.get(General.USER_ID))) {
+                    fragment.performAdapterClick(position, searchGroupList);
+                } else {
+                    //Toast.makeText(mContext, "You are not member of this group..", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(mContext);
+                    //Setting message manually and performing action on button click
+                    builder.setMessage("You are not member of this group. please join this group.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // delete group from comet chat first
+                                    alertDialog.dismiss();
+                                }
 
+                            });
+                    //Setting the title manually
+                    alertDialog = builder.create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.show();
+                }
+            }
+        });
     }
 
     //open group chat screen
@@ -576,19 +594,31 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
     }
 
     private void dialogViewMembers(String groupType) {
-        final Dialog dialog = new Dialog(mContext);
+        /* LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_exit, null);
+        builder.setView(view);
+        dialog = builder.create();*/
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = ((MainActivity) mContext).getLayoutInflater();
+        View view = inflater.inflate(R.layout.member_details, null);
+        alertDialogBuilder.setView(view);
+        alertDialog = alertDialogBuilder.create();
+
+
+       /* final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.member_details);
+        dialog.setContentView(R.layout.member_details);*/
 
-        final TextView tv_allMember = dialog.findViewById(R.id.allMemberList);
-        final TextView tv_addMembers = dialog.findViewById(R.id.addNewMemberList);
-        final TextView tv_blockedMember = dialog.findViewById(R.id.blockedMemberList);
+        final TextView tv_allMember = view.findViewById(R.id.allMemberList);
+        final TextView tv_addMembers = view.findViewById(R.id.addNewMemberList);
+        final TextView tv_blockedMember = view.findViewById(R.id.blockedMemberList);
 
-        recyclerView = dialog.findViewById(R.id.detailMemberList);
-        final LinearLayout linearLayout = dialog.findViewById(R.id.lv_search);
-        error = dialog.findViewById(R.id.error);
-        et_search_user = dialog.findViewById(R.id.search_name);
+        recyclerView = view.findViewById(R.id.detailMemberList);
+        final LinearLayout linearLayout = view.findViewById(R.id.lv_search);
+        error = view.findViewById(R.id.error);
+        et_search_user = view.findViewById(R.id.search_name);
 
         tv_allMember.setBackgroundResource(R.color.colorPrimary);
         tv_addMembers.setBackgroundResource(R.color.white);
@@ -598,20 +628,21 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         String groupId = String.valueOf(GID);
         Preferences.save("gId", groupId);
         // get all group member
+        Log.i(TAG, "dialogViewMembers: ");
         getTeamsMember(groupId);
 
         tv_allMember.setBackgroundResource(R.color.colorPrimary);
         tv_addMembers.setBackgroundResource(R.color.white);
         tv_blockedMember.setBackgroundResource(R.color.white);
 
-        ImageView btn_CloseDialog = dialog.findViewById(R.id.btnMemberDismiss);
-        btnSearch = dialog.findViewById(R.id.btnsearch);
+        ImageView btn_CloseDialog = view.findViewById(R.id.btnMemberDismiss);
+        btnSearch = view.findViewById(R.id.btnsearch);
         btnSearch.setVisibility(View.GONE);
 
         btn_CloseDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                alertDialog.dismiss();
             }
         });
 
@@ -644,18 +675,15 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             tv_addMembers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     tv_allMember.setBackgroundResource(R.color.white);
                     tv_addMembers.setBackgroundResource(R.color.colorPrimary);
                     tv_blockedMember.setBackgroundResource(R.color.white);
                     linearLayout.setVisibility(View.VISIBLE);
-
                     String action = "get_add_new_members";
                     String userId = Preferences.get(General.USER_ID);
                     String groupId = String.valueOf(GID);
                     // get all user list from db
-                    getaddMembersTeams(action, userId, groupId, groupType);
-
+                    fetchMembersFromServerToAddInGroup(action, userId, groupId, groupType);
                 }
             });
         }
@@ -691,7 +719,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             }
         });
 
-        dialog.show();
+        alertDialog.show();
     }
 
     private void getTeamsMember(String groupId) {
@@ -728,15 +756,13 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
     }
 
     /*fetching all the members to add in the group where we have add member button option on list.
-     * (Second tab of dialog view members)*/
-    private void getaddMembersTeams(String action, String userId, String groupId, String groupType) {
+     * (Second tab of dialog view members) commented by rahul maske*/
+    private void fetchMembersFromServerToAddInGroup(String action, String userId, String groupId, String groupType) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put(General.USER_ID, userId);
         requestMap.put(General.GROUP_ID, groupId);
-
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
-
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, mContext);
         if (requestBody != null) {
             try {
@@ -752,7 +778,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                     recyclerView.setVisibility(View.VISIBLE);
                     error.setVisibility(View.GONE);
                     btnSearch.setVisibility(View.VISIBLE);
-
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     error.setVisibility(View.VISIBLE);
@@ -764,6 +789,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         }
     }
 
+    /*Here all the ban user for groups we are fetching and showing to list
+     * update and commented by rahul maske*/
     private void getBlockedUserList() {
         BannedGroupMembersRequest bannedGroupMembersRequest;
         String GUID = String.valueOf(GID);
@@ -897,8 +924,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             @Override
             public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
                 Log.e(TAG, "onSuccess: cometchat groupId " + stringIntegerHashMap.get("670270470"));    //getting null values for group
-                for (GetGroupsCometchat group : searchGroupList ){
-                    if(group.getGroupId().equals(""+sender)){
+                for (GetGroupsCometchat group : searchGroupList) {
+                    if (group.getGroupId().equals("" + sender)) {
                         Log.i(TAG, "onSuccess: matched user");
                         group.setStatus(stringIntegerHashMap.get(sender));
                     }

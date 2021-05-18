@@ -54,7 +54,6 @@ import okhttp3.RequestBody;
  */
 
 public class AdminActivityFragment extends Fragment implements View.OnClickListener {
-
     private static final String TAG = AdminActivityFragment.class.getSimpleName();
     private ArrayList<Friends_> usersList;
 

@@ -2,6 +2,7 @@ package com.sagesurfer.oauth;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.sagesurfer.constant.Oauth;
 import com.sagesurfer.models.Token_;
@@ -34,6 +35,11 @@ public class RefreshToken {
     }
 
     public Token_ getRefreshToken(String user_name, String password, String domain, Context _context) {
+        Log.i(TAG, "getRefreshToken: user_name "+user_name);
+        Log.i(TAG, "getRefreshToken: password "+password);
+        Log.i(TAG, "getRefreshToken: domain "+domain);
+        Log.i(TAG, "getRefreshToken: refresh_token "+OauthPreferences.get(Oauth.REFRESH_TOKEN));
+
 
         RequestBody authBody = new FormBody.Builder()
                 .add("client_id", user_name)
@@ -46,6 +52,7 @@ public class RefreshToken {
         try {
             Call_ call_ = new Call_(domain + Urls_.TOKEN, authBody, TAG, _context);
             String json = call_.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR).get();
+
             if (json != null) {
                 JSONObject jsonObject = new JSONObject(json);
                 return JsonParser_.token_(jsonObject);

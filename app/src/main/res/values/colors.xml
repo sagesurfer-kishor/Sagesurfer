@@ -99,6 +99,7 @@
     <color name="self_goal_red">#fd6363</color>
     <color name="self_goal_green">#46be8a</color>
     <color name="self_goal_orange">#ec9320</color>
+    <color name="self_goal_counterBackground">#FECB3D</color>
 
     <color name="self_goal_completed">#5dc94b</color>
     <color name="self_goal_missed">#ed5c5c</color>
@@ -135,6 +136,7 @@
     <color name="text_color_pink">#F72851</color>
     <color name="text_color_yellow">#FFC729</color>
     <color name="text_color_gray">#8FA2AF</color>
+    <color name="text_color_dark_gray">#808080</color>
 
     <!--Daily Planner-->
     <color name="announcement_icon">#548efa</color>
@@ -197,6 +199,7 @@
     <color name="light_grren">#d9ffc2</color>
     <color name="light_yello">#fdecd1</color>
     <color name="light_gray">#e0e0e0</color>
+    <color name="dark_gray">#23524A4A</color>
     <color name="my_statusbar_color">#863b9e</color>
 
 
@@ -237,5 +240,17 @@
     <color name="colorAVButton">#E0E4E0</color>
     <color name="colorAVButtonPressed">#388E3C</color>
     <color name="highlight_group">#FECED4</color>
+    <color name="colorPrimaryLight">#51CAFE</color>
 
+
+    <!--consumer menu items color-->
+    <color name="colorSelfGoal">#9724E3</color>
+    <color name="colorSelfCare">#05C189</color>
+    <color name="colorPlanner">#FC4646</color>
+    <color name="colorChat">#46B9FC</color>
+    <color name="colorTeam">#E324D6</color>
+    <color name="colorReport">#FAB142</color>
+    <color name="colorHomeBackground">#F0F0F0</color>
+    <color name="colorCardBackGround">#FFFDFD</color>
+    <color name="colorTextHeading">#202020</color>
 </resources>

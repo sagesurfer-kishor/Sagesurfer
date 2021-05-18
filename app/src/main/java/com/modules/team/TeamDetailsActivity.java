@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +34,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.Config;
 import com.firebase.NotificationUtils;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -208,6 +208,12 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
     TextView textViewUsername6;
     @BindView(R.id.textview_teamdetails_role6)
     TextView textViewRole6;
+    @BindView(R.id.menu_yellow)
+    FloatingActionMenu floatingActionMenu;
+    @BindView(R.id.rv_team_menus)
+    RecyclerView rv_team_menus;
+
+    AdapterTeamMenu adapterTeamMenu;
 
     private int team_id = 0;
     private Toolbar toolbar;
@@ -226,7 +232,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
     ArrayList<TeamCounters_> teamCountersArrayList = new ArrayList<>();
     private ImageView banner;
     private RelativeLayout relativeLayoutImage0;
-    public AppCompatImageView postButton;
+    public AppCompatImageView postButton,imageview_menus,iv_close_menus;
     private boolean showIcon = false;
 
     @SuppressLint({"RestrictedApi", "SourceLockedOrientationActivity"})
@@ -255,11 +261,22 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                 onBackPressed();
             }
         });
-
         initViews();
 
         titleText = (TextView) findViewById(R.id.textview_activitytoolbar_title);
+        floatingActionMenu = findViewById(R.id.menu_yellow);
+
+        rv_team_menus = findViewById(R.id.rv_team_menus);
+        rv_team_menus.setHasFixedSize(true);
+        rv_team_menus.setLayoutManager(new LinearLayoutManager(this));
+
+        imageview_menus = (AppCompatImageView) findViewById(R.id.iv_menus);
+        iv_close_menus = (AppCompatImageView) findViewById(R.id.iv_close_menus);
+        imageview_menus.setVisibility(View.VISIBLE);
         postButton = (AppCompatImageView) findViewById(R.id.imageview_toolbar_save);
+
+        createMenuList();
+
         postButton.setImageResource(R.drawable.invite_team_member);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,10 +287,43 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
             }
         });
         postButton.setVisibility(View.GONE);
+        imageview_menus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //floatingActionMenu.setVisibility(View.VISIBLE);
+                //floatingActionMenu.open(true);
+                rv_team_menus.setVisibility(View.VISIBLE);
+                imageview_menus.setVisibility(View.GONE);
+                iv_close_menus.setVisibility(View.VISIBLE);
+            }
+        });
+
+        iv_close_menus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rv_team_menus.setVisibility(View.GONE);
+                imageview_menus.setVisibility(View.VISIBLE);
+                iv_close_menus.setVisibility(View.GONE);
+            }
+        });
+
+        floatingActionMenu.setOnMenuButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //floatingActionMenu.open(false);
+               // floatingActionMenu.setVisibility(View.GONE);
+            }
+        });
+       /* floatingActionMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "onClick: perform onclick..");
+                floatingActionMenu.open(false);
+                floatingActionMenu.setVisibility(View.VISIBLE);
+            }
+        });*/
+
         InviteButton();
-
-
-
        /* if (((Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage0 23)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage025))) ||
                 (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024)) ||
@@ -308,6 +358,24 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         };
     }
 
+    private void createMenuList() {
+        ArrayList<ModelTeamMenu> menuArrayList=new ArrayList<>();
+        menuArrayList.add(new ModelTeamMenu("Task List",getResources().getDrawable(R.drawable.tasklist_icon)));
+        menuArrayList.add(new ModelTeamMenu("Events",getResources().getDrawable(R.drawable.events_icon)));
+        menuArrayList.add(new ModelTeamMenu("File Share",getResources().getDrawable(R.drawable.share_icon)));
+        menuArrayList.add(new ModelTeamMenu("Gallery",getResources().getDrawable(R.drawable.gallery_icon)));
+        menuArrayList.add(new ModelTeamMenu("Team Talk",getResources().getDrawable(R.drawable.talk_icon)));
+        menuArrayList.add(new ModelTeamMenu("Announcement",getResources().getDrawable(R.drawable.megaphone_icon)));
+        menuArrayList.add(new ModelTeamMenu("Message Board",getResources().getDrawable(R.drawable.email_icon)));
+        menuArrayList.add(new ModelTeamMenu("Poll",getResources().getDrawable(R.drawable.elections_icon)));
+
+
+        Log.i(TAG, "createMenuList: 1");
+        adapterTeamMenu=new AdapterTeamMenu(this,menuArrayList);
+        rv_team_menus.setAdapter(adapterTeamMenu);
+
+    }
+
     public void initViews() {
         int color = GetColor.getHomeIconBackgroundColorColorParse(true);
 
@@ -319,6 +387,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         circleLayout.setOnCenterClickListener(this); //for center item click in circular layout "circleimageview_teamdetails_member0"
         circleLayout.setOnItemClickListener(this); //for item click in circular layout "circleimageview_teamdetails_member1", etc
         relativeLayoutImage0 = (RelativeLayout) findViewById(R.id.relativelayout_image0);
+
         circle0 = (CircleGray) findViewById(R.id.circle0);
         circle1 = (CircleGray) findViewById(R.id.circle1);
         circle2 = (CircleGray) findViewById(R.id.circle2);
@@ -366,6 +435,8 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         }else {
             Log.e(TAG, "Not found domain code" );
         }*/
+
+
 
         if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015")
                 && CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
@@ -855,12 +926,12 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                                 .into(banner);
                     }
 
-                    Glide.with(getApplicationContext()).load(Uri.parse(al_team.get(0).getBanner()))
+                    /*Glide.with(getApplicationContext()).load(Uri.parse(al_team.get(0).getBanner()))
                             .thumbnail(0.5f)
                             .transition(withCrossFade())
                             .apply(new RequestOptions()
                                     .diskCacheStrategy(DiskCacheStrategy.ALL))
-                            .into(banner);
+                            .into(banner);*/
 
 
                     //team counter parsing
@@ -1087,6 +1158,79 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         onItemClicked(clickIndex, true);
     }
 
+    /**
+     * Method is created for recycler view for menu list after clicking header icon
+     *
+     * @menuItem  from recycler list
+     *  added by rahul maske
+     */
+    public void performOnMenuItemClick(ModelTeamMenu item) {
+        rv_team_menus.setVisibility(View.GONE);
+        imageview_menus.setVisibility(View.GONE);
+        iv_close_menus.setVisibility(View.GONE);
+        linearLayoutTeam.setVisibility(View.GONE);
+
+
+        Preferences.save(General.GROUP_ID, String.valueOf(team_id));
+
+        Fragment fragment = new Fragment();
+        switch (item.getName()){
+            case "Task List":
+                fromFragment = true;
+                fragment = new TeamTaskListFragment();
+                replaceFragment(fragment);
+                break;
+
+            case "Events":
+                fromFragment = true;
+                fragment = new CalendarFragment();
+                replaceFragment(fragment);
+                break;
+
+            case "File Share":
+                fromFragment = true;
+                fragment = new FileSharingListFragment();
+                replaceFragment(fragment);
+                break;
+
+            case "Gallery":
+                fromFragment = true;
+                fragment = new GalleryAlbumsListFragment();
+                replaceFragment(fragment);
+                break;
+
+            case "TeamTalk":
+                fromFragment = true;
+                fragment = new TeamTalkListFragment();
+                replaceFragment(fragment);
+                break;
+
+            /*case R.id.linearlayout_crisisplan:
+                fromFragment = true;
+                fragment = new CrisisFragment();
+                replaceFragment(fragment);
+                break;*/
+
+            case "Message Board":
+                fromFragment = true;
+                fragment = new MessageBoardFragment();
+                replaceFragment(fragment);
+                break;
+
+            case "Announcement":
+                fromFragment = true;
+                fragment = new AnnouncementListFragment();
+                replaceFragment(fragment);
+                break;
+
+            case "Poll":
+                fromFragment = true;
+                fragment = new PollListFragment();
+                replaceFragment(fragment);
+                break;
+        }
+    }
+
     @OnClick({R.id.linearlayout_stats, R.id.linearlayout_tasklist, R.id.linearlayout_events,
             R.id.linearlayout_fileshare, R.id.linearlayout_gallery, R.id.linearlayout_teamtalk,
             R.id.linearlayout_crisisplan, R.id.linearlayout_messageboard, R.id.linearlayout_announcements, R.id.linearlayout_poll})
@@ -1160,6 +1304,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
     }
 
     private void replaceFragment(Fragment fragment) {
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         Fragment oldFragment = fragmentManager.findFragmentByTag(Actions_.GET_PROFILE_DATA);
@@ -1197,7 +1342,6 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
     public void onItemClicked(int position, boolean isFromCircularView) {
         if (cometChatTeamMemberList.get(position).getId() != Integer.parseInt(Preferences.get(General.USER_ID))) {
             final String contactId = String.valueOf(cometChatTeamMemberList.get(position).getId());
-
         }
     }
 
@@ -1205,4 +1349,6 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
     public void inviteButtonSetVisibility() {
         postButton.setVisibility(View.GONE);
     }
+
+
 }

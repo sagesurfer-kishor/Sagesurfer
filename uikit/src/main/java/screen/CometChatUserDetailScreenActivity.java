@@ -3,6 +3,7 @@ package screen;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -113,11 +114,9 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_detail_screen);
         fontUtils= FontUtils.getInstance(this);
         initComponent();
-
     }
 
     private void initComponent() {
-
         historyView = findViewById(R.id.history_view);
         historyRv = findViewById(R.id.history_rv);
         userAvatar = findViewById(R.id.iv_user);
@@ -139,16 +138,10 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         addBtn.setTypeface(fontUtils.getTypeFace(FontUtils.robotoRegular));
-
         tvBlockUser = findViewById(R.id.tv_blockUser);
-
         tvBlockUser.setTypeface(fontUtils.getTypeFace(FontUtils.robotoMedium));
-
         userName.setTypeface(fontUtils.getTypeFace(FontUtils.robotoMedium));
-
-
         handleIntent();
 
 
@@ -250,13 +243,16 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
             }).create().show();
         }
         else {
+            SharedPreferences spCallScreenFlag = getSharedPreferences(" call_popup_preferences ", MODE_PRIVATE);
+            SharedPreferences.Editor spEditorCallScreenFlag = spCallScreenFlag.edit();
+            spEditorCallScreenFlag.putBoolean("openCallPopup", true);
+            spEditorCallScreenFlag.apply();
             Utils.initiatecall(CometChatUserDetailScreenActivity.this,uid,CometChatConstants.RECEIVER_TYPE_USER,callType);
         }
     }
 
 
     private void handleIntent() {
-
         if (getIntent().hasExtra(StringContract.IntentStrings.IS_ADD_MEMBER)) {
             isAddMember = getIntent().getBooleanExtra(StringContract.IntentStrings.IS_ADD_MEMBER, false);
         }
@@ -307,16 +303,21 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
         }
 
         if (isAddMember) {
+            Log.i(TAG, "handleIntent: ");
             addBtn.setText(String.format(getResources().getString(R.string.add_user_to_group),name,groupName));
             historyView.setVisibility(View.GONE);
-        } else {
+        }
+
+        if (getIntent().hasExtra(StringContract.IntentStrings.FROM_CALL_LIST)){
             fetchCallHistory();
             addBtn.setVisibility(View.GONE);
+            historyRv.setVisibility(View.VISIBLE);
+            historyView.setVisibility(View.VISIBLE);
+            Log.i(TAG, "handleIntent: from missed call ");
         }
     }
 
     private void fetchCallHistory() {
-
         if (messageRequest==null)
         {
             messageRequest = new MessagesRequest.MessagesRequestBuilder().setUID(uid).setCategory(CometChatConstants.CATEGORY_CALL).setLimit(30).build();
@@ -370,7 +371,6 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
          if (item.getItemId()==android.R.id.home){
              onBackPressed();
          }
@@ -386,8 +386,8 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
                 Log.e(TAG, "onSuccess: " + uid + "Group" + guid);
                 if(tvBlockUser!=null)
                     Snackbar.make(tvBlockUser,String.format(getResources().getString(R.string.user_added_to_group),userName.getText().toString(), groupName), Snackbar.LENGTH_LONG).show();
-                addBtn.setText(String.format(getResources().getString(R.string.remove_from_group),groupName));
-                isAlreadyAdded = true;
+                    addBtn.setText(String.format(getResources().getString(R.string.remove_from_group),groupName));
+                    isAlreadyAdded = true;
             }
 
             @Override

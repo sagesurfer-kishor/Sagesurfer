@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tab"
+    style="@style/CustomFontStylePrimary"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:drawableTop="@drawable/ic_inbox_blue"
+    android:gravity="center"
+    android:text="12"
+    android:textColor="@drawable/postcard_tab_text_color"
+    android:textSize="10sp"
+    tools:ignore="SmallSp" />
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+    <ImageView
+        android:id="@+id/iv_tab_icon1"
+        android:layout_width="@dimen/margin_14"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="@dimen/margin_14" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/compose"
+        android:id="@+id/tv_name"
+        android:layout_marginStart="5dp"
+        android:textSize="@dimen/text_size_12"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_tab_icon1"
+        app:layout_constraintStart_toEndOf="@+id/iv_tab_icon1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="@dimen/margin_14"
+        android:layout_height="@dimen/margin_14"
+        android:text="@string/compose"
+        android:id="@+id/tv_counter"
+        android:background="@drawable/blue_circle"
+        android:layout_marginStart="3dp"
+        android:textSize="@dimen/text_size_10"
+        android:visibility="gone"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+        app:layout_constraintStart_toEndOf="@+id/tv_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

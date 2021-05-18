@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
@@ -21,6 +22,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -123,6 +126,7 @@ import com.modules.team.TeamDetailsActivity;
 import com.modules.team.TeamPeerStaffListActivity;
 import com.modules.team.TeamPeerSupervisorListActivity;
 import com.sagesurfer.adapters.DrawerListAdapter;
+import com.sagesurfer.adapters.DrawerMenuAdapter;
 import com.sagesurfer.animation.ActivityTransition;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.Broadcast;
@@ -188,12 +192,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.RequestBody;
-import screen.messagelist.CometChatMessageScreen;
 import utils.Utils;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
-import static com.modules.mood.ConstantMood.context;
-
 /**
  * @author Kailash Karankal
  * Created on 13/03/2018
@@ -208,9 +209,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private List<DrawerMenu_> drawerMenuList;
     int mYear, mMonth, mDay, mHour, mMinute;
     private DrawerLayout drawerLayout;
+    String other_user_id;
     private RelativeLayout mainToolBarBellLayout;
     private AppCompatImageView searchButton, addButton, notificationImageView, addFilter, logBookIcon, setting;
-
+    Menu popupMenuItem;
     private TextView notificationCounterButton;
     private ImageView profilePhoto, imageViewToolbarLeftArrow, imageViewToolbarRightArrow;
     private TextView titleText, nameText, roleText, moodTitleText, mTxtQuestionName, mTxtSelectDate, mTxtOneTimeSurveyHeading,
@@ -219,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ExpandableListView expandableDrawerListView;
     private Toolbar toolbar;
     Spinner groupStatus;
+    ImageView navigationHeaderSettingIcon;
     private PerformLogoutTask performLogoutTask;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private Intent intent;
@@ -227,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Spinner spinnerToolbarMood;
     private CustomCalendarAdapter mMaterialCalendarAdapter;
     Handler handlerFirebase = new Handler();
+    DrawerMenuAdapter drawerMenuAdapter;
     private boolean closeWindowEnable, isGroup;
     boolean clickEvent = false, showFilterIcon = false;
     private String hour = "01", minute = "00", unit = "AM";
@@ -269,13 +273,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     ArrayList<String> lanList;
     private ArrayAdapter<String> reasonAdapter;
     SharedPreferences sp;
+    RecyclerView rv_drawerMenus;
     private static final int JOB_ID = 0;
     AppCompatImageView chat_icon, main_toolbar_bell;
     private JobScheduler mScheduler;
     private SharedPreferences preferencesCheckCurrentActivity;
     private SharedPreferences.Editor editor;
     PopupMenu popup;
-    EditText et_startTime,et_endTime;
+    MenuItem menuIteSetAvailability;
+    EditText et_startTime, et_endTime;
     int StartTimeHour, EndTimeHour, StartTimeMin, EndTimeMin;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -297,11 +303,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performLogoutTask = new PerformLogoutTask();
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
+
         if (Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
             setContentView(R.layout.activity_main);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-            try {
+           /* try {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -312,8 +319,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-
+            }*/
+            createNotificationChannel();
             intent = new Intent(this, CounterService.class);
             homeMenuList = new ArrayList<>();
             drawerMenuList = new ArrayList<>();
@@ -356,6 +363,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
             mainToolBarBellLayout = toolbar.findViewById(R.id.main_toolbar_bell_layout);
             drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
                 @Override
                 public void onDrawerStateChanged(int newState) {
@@ -378,11 +386,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
-            circle = (Circle) navigationView.findViewById(R.id.nav_header_circle);
+            //circle = (Circle) navigationView.findViewById(R.id.nav_header_circle);
             profilePhoto = (ImageView) navigationView.findViewById(R.id.nav_header_image);
             roleText = (TextView) navigationView.findViewById(R.id.nav_header_role);
             nameText = (TextView) navigationView.findViewById(R.id.nav_header_name);
+            navigationHeaderSettingIcon = (ImageView) navigationView.findViewById(R.id.nav_settingIcon);
             expandableDrawerListView = (ExpandableListView) navigationView.findViewById(R.id.drawer_list_view);
+            rv_drawerMenus = (RecyclerView) navigationView.findViewById(R.id.rv_drawerMenus);
+            rv_drawerMenus.setHasFixedSize(true);
+            rv_drawerMenus.setLayoutManager(new LinearLayoutManager(this));
+
+            /*Navigation Header Main Setting Icon click listner */
+            navigationHeaderSettingIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i(TAG, "onClick: we reached on setting onclick... ");
+                    drawerLayout.closeDrawer(Gravity.START);
+                    Bundle bundle = new Bundle();
+                    Fragment fragment = GetFragments.get(53, bundle);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                    ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                    ft.commit();
+                }
+            });
 
             linearLayoutMoodToolbar = (LinearLayout) toolbar.findViewById(R.id.linearlayout_mood_toolbar);
             imageViewToolbarLeftArrow = (ImageView) toolbar.findViewById(R.id.imageview_toolbar_left_arrorw);
@@ -402,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // setting button on comet chat screen
             setting = toolbar.findViewById(R.id.setting);
 
-            setting.setVisibility(View.GONE);
+            //setting.setVisibility(View.GONE);
             hidesettingIcon(true);
 
             setting.setOnClickListener(new View.OnClickListener() {
@@ -464,7 +491,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             addFilter = (AppCompatImageView) toolbar.findViewById(R.id.main_filter_add);
             addFilter.setOnClickListener(this);
 
-            setDrawerMenuList();
+            // setDrawerMenuList();
+            setDrawerMenuListByRecyclerview();
 
             Preferences.save(General.HOME_ICON_NUMBER, "0");
             replaceFragment(50, drawerMenuList.get(1).getMenu(), null);
@@ -505,9 +533,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             getAllPopUp();
 
         }
-
-        //handleIntentForPushNotification(getBaseContext(), getIntent());
+        /*This runnable is created for fetching admin given access for the user for set availability */
+        if (!Preferences.get(General.ROLE_ID).equals("28")) {
+            MyRunnableGetRole myRunnable = new MyRunnableGetRole();
+            Thread t = new Thread(myRunnable);
+            t.start();
+        }
     }
+
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.app_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("2", name, importance);
+            channel.setDescription(description);
+            channel.enableVibration(true);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 
     /*created method to get firebase token data in seperate thread
     * created by rahul..
@@ -515,12 +567,47 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     }*/
 
+    /* @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         MenuInflater inflater = getMenuInflater();
+         inflater.inflate(R.menu.menu_setting, menu);
+        // myMenu = menu;
+         MenuItem item = menu.findItem(R.id.menu_block_member);
+         if (item != null) {
+             item.setVisible(false);
+         }
+         return true;
+     }*/
     private void showSettingPopup(View view) {
         popup = new PopupMenu(MainActivity.this, view);
         popup.getMenuInflater().inflate(R.menu.menu_setting, popup.getMenu());
-        Menu popupMenuItem = popup.getMenu();
+        popupMenuItem = popup.getMenu();
+        menuIteSetAvailability = popupMenuItem.findItem(R.id.set_available_time);
+
+        /* if the user id is 28 or admin given access
+         * then set availability option in settings icon will be visible
+         * here we are hiding or showing the option
+         * */
+        if (Preferences.get(General.ROLE_ID).equals("28")) {
+            if (menuIteSetAvailability != null) {
+                menuIteSetAvailability.setVisible(true);
+                Log.i(TAG, "getSetAvailabilityRolesFromServer: 1");
+            }
+        } else if (other_user_id.equals("1")) {
+            if (menuIteSetAvailability != null) {
+                menuIteSetAvailability.setVisible(true);
+                Log.i(TAG, "getSetAvailabilityRolesFromServer: 2");
+            }
+        } else {
+            Log.i(TAG, "getSetAvailabilityRolesFromServer: 3");
+            if (menuIteSetAvailability != null) {
+                menuIteSetAvailability.setVisible(false);
+            }
+        }
+
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
+
                 switch (item.getItemId()) {
                     case R.id.menu_block_member:
                         Intent blockmembers = new Intent(getApplicationContext(), BlockedMembersActivity.class);
@@ -602,6 +689,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         });
         popup.show();
     }
+
+    /*public void hideSetAvailabilityMenu(boolean toggle){
+        if (menuIteSetAvailability != null) {
+            Log.i(TAG, "hideSetAvailabilityMenu: ");
+            menuIteSetAvailability.setVisible(toggle);
+        }
+    }*/
 
     public void openSetAvailabilityDialog() {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
@@ -763,9 +857,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     //{"provider_time":[{"status":1,"msg":"update successfully."}]}
 
                     JSONObject injectedObject = new JSONObject(response);
-                    JSONArray array= injectedObject.getJSONArray("provider_time");
-                    Log.i(TAG, "saveProviderSlot: "+array.getJSONObject(0).getString("msg"));
-                    Toast.makeText(getApplicationContext(), ""+array.getJSONObject(0).getString("msg"), Toast.LENGTH_SHORT).show();
+                    JSONArray array = injectedObject.getJSONArray("provider_time");
+                    Log.i(TAG, "saveProviderSlot: " + array.getJSONObject(0).getString("msg"));
+                    Toast.makeText(getApplicationContext(), "" + array.getJSONObject(0).getString("msg"), Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -784,21 +878,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
-        Log.i(TAG, "fetchPreviousSavedAvailavleSlot: userId "+Preferences.get(General.USER_ID));
+        Log.i(TAG, "fetchPreviousSavedAvailavleSlot: userId " + Preferences.get(General.USER_ID));
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this);
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this);
                 if (response != null) {
-                    Log.e(TAG,"fetchPreviousSavedAvailavleSlot "+ response);
+                    Log.e(TAG, "fetchPreviousSavedAvailavleSlot " + response);
                     //{"provider_time":[{"status":1,"msg":"update successfully."}]}
 
                     JSONObject injectedObject = new JSONObject(response);
-                    JSONArray array= injectedObject.getJSONArray("old_time_provider");
-                    Log.i(TAG, "fetchPreviousSavedAvailavleSlot  "+array.getJSONObject(0).getString("msg"));
-                    et_startTime.setText(""+array.getJSONObject(0).getString("from_date"));
-                    et_endTime.setText(""+array.getJSONObject(0).getString("to_date"));
+                    JSONArray array = injectedObject.getJSONArray("old_time_provider");
+                    Log.i(TAG, "fetchPreviousSavedAvailavleSlot  " + array.getJSONObject(0).getString("msg"));
+                    et_startTime.setText("" + array.getJSONObject(0).getString("from_date"));
+                    et_endTime.setText("" + array.getJSONObject(0).getString("to_date"));
                     //Toast.makeText(getApplicationContext(), ""+array.getJSONObject(0).getString("msg"), Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
@@ -1895,69 +1989,86 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     //For cometchat push notification onclick events
     public void handleIntent(Intent mainIntent) {
         Log.i(TAG, "handleIntent: main activity");
-        if (mainIntent.hasExtra("team_logs_id")) {
-            String team_logs_id = mainIntent.getStringExtra("team_logs_id");
-            String receiver = mainIntent.getStringExtra("receiver");
-            String sender = mainIntent.getStringExtra("sender");
-            String receiverType = mainIntent.getStringExtra("receiverType");
-            String username = mainIntent.getStringExtra("username");
-            String type;
-            if (mainIntent.hasExtra("type")) {
-                type = mainIntent.getStringExtra("type");
-            } else {
-                type = "";
-            }
-            Log.i(TAG, "handleIntent: team_logs_id" + team_logs_id);
-            Log.i(TAG, "handleIntent: receiver" + receiver);
-            Log.i(TAG, "handleIntent: sender" + sender);
-            Log.i(TAG, "handleIntent: receiverType" + receiverType);
-            Log.i(TAG, "handleIntent: username" + username);
+        Log.i(TAG, "handleIntent: " + mainIntent.hasExtra("type"));
+        if (mainIntent.getExtras() != null) {
+            if (mainIntent.hasExtra("team_logs_id")) {
+                String team_logs_id = mainIntent.getStringExtra("team_logs_id");
+                String receiver = mainIntent.getStringExtra("receiver");
+                String sender = mainIntent.getStringExtra("sender");
+                String receiverType = mainIntent.getStringExtra("receiverType");
+                String username = mainIntent.getStringExtra("username");
 
-            if (team_logs_id != null) {
-                Bundle bundle = new Bundle();
-                bundle.putString("team_logs_id", team_logs_id);
-                bundle.putString("receiver", receiver);
-                bundle.putString("sender", sender);
-                bundle.putString("receiverType", receiverType);
-                bundle.putString("username", username);
-                bundle.putString("type", type);
-                /*creating preferences for intent to open chat screen or not*/
-                SharedPreferences preferenOpenActivity = this.getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferenOpenActivity.edit();
-                if (type.equals("groupMember")) {
-                    editor.putBoolean("highlightList", true);
+                /*In some notification we dont receive type so we make it empty string*/
+                String type;
+                if (mainIntent.hasExtra("type")) {
+                    type = mainIntent.getStringExtra("type");
+                } else {
+                    type = "";
                 }
-                editor.putBoolean("checkIntent", true);
-                editor.apply();
-                Log.i(TAG, "handleIntent: checkIntent"+preferenOpenActivity.getBoolean("checkIntent",false));
+                Log.i(TAG, "handleIntent: team_logs_id" + team_logs_id);
+                Log.i(TAG, "handleIntent: receiver" + receiver);
+                Log.i(TAG, "handleIntent: sender" + sender);
+                Log.i(TAG, "handleIntent: receiverType" + receiverType);
+                Log.i(TAG, "handleIntent: username" + username);
+                Log.i(TAG, "handleIntent: type" + type);
 
-                Fragment fragment = GetFragments.get(9, bundle);
-                fragment.setArguments(bundle);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
-                ft.replace(R.id.app_bar_main_container, fragment, TAG);
-                ft.commit();
-            }
-        } else {
-            /*Here we are getting intent  for call redirection*/
-            Log.i(TAG, "handleIntent: else");
-            if (mainIntent.hasExtra("sender")) {
-                String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
-                String uid = mainIntent.getStringExtra("uid");
-                String role = mainIntent.getStringExtra("role");
-                String name = mainIntent.getStringExtra("name");
-                String avatar = mainIntent.getStringExtra("avatar");
-                String status = mainIntent.getStringExtra("status");
-                String callType = mainIntent.getStringExtra("callType");
-                String sessionid = mainIntent.getStringExtra("sessionid");
-                User user = new User();
-                user.setLastActiveAt(Long.parseLong(lastActiveAt));
-                user.setUid(uid);
-                user.setRole(role);
-                user.setName(name);
-                user.setAvatar(avatar);
-                user.setStatus(status);
-                Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);
+                if (team_logs_id != null && !type.equals("extension_whiteboard")) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("team_logs_id", team_logs_id);
+                    bundle.putString("receiver", receiver);
+                    bundle.putString("sender", sender);
+                    bundle.putString("receiverType", receiverType);
+                    bundle.putString("username", username);
+                    bundle.putString("type", type);
+
+                    /*creating preferences for intent to open chat screen or not*/
+                    SharedPreferences preferenOpenActivity = this.getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferenOpenActivity.edit();
+                    if (type.equals("groupMember")) {
+                        editor.putBoolean("highlightList", true);
+                    }
+                    editor.putBoolean("checkIntent", true);
+                    editor.apply();
+                    Log.i(TAG, "handleIntent: checkIntent" + preferenOpenActivity.getBoolean("checkIntent", false));
+                    Fragment fragment = GetFragments.get(9, bundle);
+                    fragment.setArguments(bundle);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                    ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                    ft.commit();
+                }
+            } else {
+                Log.i(TAG, "handleIntent: else");
+                if (mainIntent.hasExtra("sender")) {
+                    /*Here we are getting intent  for call redirection*/
+                    Log.i(TAG, "handleIntent: call block");
+                    String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
+                    String uid = mainIntent.getStringExtra("uid");
+                    String role = mainIntent.getStringExtra("role");
+                    String name = mainIntent.getStringExtra("name");
+                    String avatar = mainIntent.getStringExtra("avatar");
+                    String status = mainIntent.getStringExtra("status");
+                    String callType = mainIntent.getStringExtra("callType");
+                    String sessionid = mainIntent.getStringExtra("sessionid");
+
+                    User user = new User();
+                    user.setLastActiveAt(Long.parseLong(lastActiveAt));
+                    user.setUid(uid);
+                    user.setRole(role);
+                    user.setName(name);
+                    user.setAvatar(avatar);
+                    user.setStatus(status);
+                    Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);
+                } else /*if (mainIntent.hasExtra("type"))*/ {
+                    Log.i(TAG, "handleIntent: whiteboard block");
+                    Bundle bundle = new Bundle();
+                    Fragment fragment = GetFragments.get(82, bundle);
+                    fragment.setArguments(bundle);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                    ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                    ft.commit();
+                }
             }
         }
     }
@@ -2554,7 +2665,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-                updateDrawerList();
+                //updateDrawerList();
                 fetchNotification();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2566,11 +2677,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void updateDrawerList() {
         for (int i = 0; i < drawerMenuList.size(); i++) {
             drawerMenuList.get(i).setCounter(GetCounters.drawer(drawerMenuList.get(i).getId()));
-            if (drawerMenuList.get(i).getSubMenu().size() > 0) {
+            //we dont have sub menus so we have commented this code
+            /*if (drawerMenuList.get(i).getSubMenu().size() > 0) {
                 for (int j = 0; j < drawerMenuList.get(i).getSubMenu().size(); j++) {
                     drawerMenuList.get(i).getSubMenu().get(j).setCounter(GetCounters.drawer(drawerMenuList.get(i).getSubMenu().get(j).getId()));
                 }
-            }
+            }*/
         }
         drawerListAdapter.notifyDataSetChanged();
     }
@@ -2579,7 +2691,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void setHeader() {
         nameText.setText(ChangeCase.toTitleCase(Preferences.get(General.NAME)));
         roleText.setText(ChangeCase.toTitleCase(Preferences.get(General.ROLE)));
-        circle.setPercentage(30);
+        //circle.setPercentage(30);
 
         String profileImage = Preferences.get(General.PROFILE_IMAGE);
         Glide.with(getApplicationContext())
@@ -2594,6 +2706,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     // set all menus with counters in drawer
+    /**
+     * This is drawer menu list here we are showing drower menus and also setting onclick on drawer menu
+     * now this code is working and i am commenting this code because when we are scrolling items some items are not working properly
+     * for this i am creating new method and in that i will use recycler view instead of expandable view
+     * commented by rahul maske
+     */
     private void setDrawerMenuList() {
         if (drawerMenuList == null) {
             drawerMenuList = new ArrayList<>();
@@ -2615,7 +2733,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         for (int i = 0; i < drawerMenuList.size(); i++) {
             childList.put(drawerMenuList.get(i).getMenu(), drawerMenuList.get(i).getSubMenu());
         }
-
+        for (DrawerMenu_ homeMenu_ : drawerMenuList) {
+            Log.i(TAG, "setDrawerMenuList: " + homeMenu_.getMenu());
+        }
         drawerListAdapter = new DrawerListAdapter(getApplicationContext(), drawerMenuList, childList);
         expandableDrawerListView.setAdapter(drawerListAdapter);
 
@@ -2655,15 +2775,42 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
                 parent.setItemChecked(index, true);
                 Preferences.save(General.HOME_ICON_NUMBER, "0");
-                replaceFragment(drawerMenuList.get(groupPosition).getSubMenu()
-                        .get(childPosition).getId(), drawerMenuList.get(groupPosition).getSubMenu()
-                        .get(childPosition).getMenu(), null);
                 setTitle(drawerMenuList.get(groupPosition).getSubMenu().get(childPosition).getMenu());
                 setToolbarBackgroundColor();
+                replaceFragment(drawerMenuList.get(groupPosition).getSubMenu().get(childPosition).getId(), drawerMenuList.get(groupPosition).getSubMenu()
+                        .get(childPosition).getMenu(), null);
+
                 return true;
             }
         });
     }
+
+
+    private void setDrawerMenuListByRecyclerview() {
+        if (drawerMenuList == null) {
+            drawerMenuList = new ArrayList<>();
+        } else if (drawerMenuList.size() > 0) {
+            drawerMenuList.clear();
+        }
+
+        drawerMenuList = Login_.drawerMenuParser();
+        DrawerMenu_ drawerMenu = new DrawerMenu_();
+        drawerMenu.setId(0);
+        drawerMenu.setMenu(getResources().getString(R.string.logout));
+        drawerMenuList.add(drawerMenu);
+        drawerMenuAdapter = new DrawerMenuAdapter(this, drawerMenuList);
+        rv_drawerMenus.setAdapter(drawerMenuAdapter);
+    }
+
+    public void onDrawerMenuItemClickListner(DrawerMenu_ drawerMenu_) {
+        Log.i(TAG, "onDrawerMenuItemClickListner: id "+drawerMenu_.getId() +" name "+drawerMenu_.getMenu());
+        drawerLayout.closeDrawer(Gravity.LEFT);
+        Preferences.save(General.HOME_ICON_NUMBER, "0");
+        setTitle(drawerMenu_.getMenu());
+        setToolbarBackgroundColor();
+        replaceFragment(drawerMenu_.getId(), drawerMenu_.getMenu(), null);
+    }
+
 
     // open emergency contact dialog fragment based on user platform role
     @SuppressLint("CommitTransaction")
@@ -3349,7 +3496,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void setMoodToolbar(int menuId) {
-        //Mood- Set Toolbar
+
         if (menuId == 34 || menuId == 51) {
             //CustomCalendar.getInitialCalendarInfo();
             if (!Preferences.get(General.SELECTED_MOOD_FRAGMENT).equalsIgnoreCase(getResources().getString(R.string.more))) {
@@ -3358,11 +3505,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 int color = Color.parseColor("#ffffff"); //green
                 imageViewToolbarLeftArrow.setColorFilter(color);
                 imageViewToolbarRightArrow.setColorFilter(color);
-
-                mMaterialCalendarAdapter = new CustomCalendarAdapter(this);
+                mMaterialCalendarAdapter = new CustomCalendarAdapter(getApplicationContext());
 
                 if (imageViewToolbarLeftArrow != null) {
-                    imageViewToolbarLeftArrow.setOnClickListener(this);
+                    imageViewToolbarLeftArrow.setOnClickListener(MainActivity.this);
                 }
                 if (moodTitleText != null) {
                     Calendar cal = Calendar.getInstance();
@@ -3372,7 +3518,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                 }
                 if (imageViewToolbarRightArrow != null) {
-                    imageViewToolbarRightArrow.setOnClickListener(this);
+                    imageViewToolbarRightArrow.setOnClickListener(MainActivity.this);
                 }
             } else {
                 titleText.setVisibility(View.VISIBLE);
@@ -3382,6 +3528,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             titleText.setVisibility(View.VISIBLE);
             linearLayoutMoodToolbar.setVisibility(View.GONE);
         }
+
+
     }
 
     public void hidePlusIcon(boolean showHide) {
@@ -3526,5 +3674,55 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         cal.setTimeInMillis(time * 1000);
         String date = DateFormat.format("yyyy-MM-dd", cal).toString();
         return date;
+    }
+
+
+    public class MyRunnableGetRole implements Runnable {
+        @Override
+        public void run() {
+            getSetAvailabilityRolesFromServer();
+        }
+    }
+
+    /* Getting members from server to hide or show set availability time menu icon
+    Create by rahul maske*/
+    private void getSetAvailabilityRolesFromServer() {
+        String url = screen.messagelist.Urls_.MOBILE_COMET_CHAT_TEAMS;
+        String DomainURL = Preferences.get(General.DOMAIN);
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, "get_admin_set_role_new");
+        requestMap.put(General.IS_TEST_USER, "" + 0);
+        requestMap.put(General.USER_ID, "" + Preferences.get(General.USER_ID));
+        Log.i(TAG, "getSetAvailabilityRolesFromServer: uid comechat " + Preferences.get(General.USER_COMETCHAT_ID));
+        Log.i(TAG, "getSetAvailabilityRolesFromServer: uid" + Preferences.get(General.USER_ID));
+        Log.i(TAG, "getSetAvailabilityRolesFromServer: " + Preferences.get(General.DOMAIN));
+        RequestBody requestBody = screen.messagelist.NetworkCall_.make(requestMap, DomainURL + url, TAG, MainActivity.this);
+        Log.i(TAG, "getSetAvailabilityRolesFromServer: Domain " + DomainURL + url);
+        try {
+            if (requestBody != null) {
+                String response = screen.messagelist.NetworkCall_.post(DomainURL + url, requestBody, TAG, MainActivity.this);
+                if (response != null) {
+                    Log.i(TAG, "getSetAvailabilityRolesFromServer:  response " + response);
+                    Log.i(TAG, "getSetAvailabilityRolesFromServer: role " + Preferences.get(General.ROLE_ID));
+                    //{"get_admin_set_role_new":[{"status":1,"msg":"other members set from admin list fetch successfully.","other_user_id":"1"}]}
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray provider_time_check_in_db = jsonObject.getJSONArray("get_admin_set_role_new");
+                    other_user_id = provider_time_check_in_db.getJSONObject(0).getString("other_user_id");
+                    Log.i(TAG, "getSetAvailabilityRolesFromServer: other_user_id" + other_user_id);
+
+                    SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = domainUrlPref.edit();
+                    editor.putString("other_user_id", "" + other_user_id);
+                    editor.apply();
+                } else {
+                    Log.i(TAG, "getSetAvailabilityRolesFromServer:  null  ");
+                }
+            } else {
+                Log.i(TAG, "getSetAvailabilityRolesFromServer:  null2");
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "getSetAvailabilityRolesFromServer: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

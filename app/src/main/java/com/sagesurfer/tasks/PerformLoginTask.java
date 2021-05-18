@@ -67,8 +67,6 @@ public class PerformLoginTask extends AsyncTask<Void, Void, String> {
                     .add("country", activity.getResources().getConfiguration().locale.getCountry())
                     .add("city", "")
                     .build();
-
-
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

@@ -6,7 +6,6 @@
     android:paddingEnd="@dimen/margin_10"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#D8DFE2"
-
     tools:context="com.modules.cometchat_7_30.LastConversion.FragmentLastConversation">
    <LinearLayout
        android:id="@+id/cardview_actions"
@@ -40,9 +39,20 @@
        android:id="@+id/rv_last_conversion"
        android:layout_width="match_parent"
        android:layout_height="0dp"
+       android:layout_marginTop="8dp"
        app:layout_constraintBottom_toBottomOf="parent"
        app:layout_constraintEnd_toEndOf="parent"
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toBottomOf="@+id/cardview_actions" />
 
+   <ProgressBar
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintBottom_toBottomOf="@+id/rv_last_conversion"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       android:visibility="gone"
+       android:id="@+id/progressBarLastConversation"
+       app:layout_constraintTop_toTopOf="@+id/rv_last_conversion"
+       />
 </androidx.constraintlayout.widget.ConstraintLayout>

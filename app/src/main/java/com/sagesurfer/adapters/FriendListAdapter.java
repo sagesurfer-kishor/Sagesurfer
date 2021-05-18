@@ -338,8 +338,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                 // handle successl
                 for (User user : friendList) {
                     if (user.getUid().equals("" + sender)) {
-                        Log.i(TAG, "onSuccess: matched user");
+                        Log.i(TAG, "onSuccess: matched user" );
                         user.setStatus("" + stringIntegerHashMap.get(sender));
+                       
                     }
                 }
                 notifyDataSetChanged();

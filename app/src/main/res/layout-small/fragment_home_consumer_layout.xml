@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_new_bg"
+    android:background="@color/colorHomeBackground"
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource">
 
@@ -20,20 +20,21 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageview_smiley"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/activity_vertical_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_marginRight="@dimen/activity_vertical_margin"
-                android:src="@drawable/smile" />
+                android:src="@drawable/smilyy" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/quote_list"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_marginLeft="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginTop="@dimen/margin_16"
                 android:layout_marginRight="@dimen/activity_vertical_margin" />
 
             <LinearLayout
@@ -108,14 +109,15 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"
-                    android:background="@drawable/background_home_menu_circle"
+                    android:background="@drawable/background_home_menu_selfgoal"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/imageview_home_one"
-                        android:layout_width="30dp"
+                        android:layout_width="35dp"
                         android:layout_height="30dp"
+                        android:tint="@color/white"
                         android:src="@drawable/vi_home_self_goal" />
 
                     <TextView
@@ -147,7 +149,7 @@
                     android:layout_height="100dp"
                     android:layout_marginLeft="@dimen/margin_6"
                     android:layout_weight="1"
-                    android:background="@drawable/background_home_menu_circle"
+                    android:background="@drawable/background_home_menu_selfcare"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -186,7 +188,7 @@
                     android:layout_height="100dp"
                     android:layout_marginLeft="@dimen/margin_6"
                     android:layout_weight="1"
-                    android:background="@drawable/background_home_menu_circle"
+                    android:background="@drawable/background_home_menu_planner"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -233,7 +235,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"
-                    android:background="@drawable/background_home_menu_circle"
+                    android:background="@drawable/background_home_menu_chat"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -272,7 +274,7 @@
                     android:layout_height="100dp"
                     android:layout_marginLeft="@dimen/margin_6"
                     android:layout_weight="1"
-                    android:background="@drawable/background_home_menu_circle"
+                    android:background="@drawable/background_home_menu_team"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -311,7 +313,7 @@
                     android:layout_height="100dp"
                     android:layout_marginLeft="@dimen/margin_6"
                     android:layout_weight="1"
-                    android:background="@drawable/background_home_menu_circle"
+                    android:background="@drawable/background_home_menu_report"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -345,8 +347,8 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -359,23 +361,26 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginRight="12dp"
                     android:layout_marginBottom="16dp"
-                    android:gravity="start"
+                   android:layout_alignParentStart="true"
                     android:text="@string/recent_update"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorTextHeading"
                     android:textSize="@dimen/text_size_18" />
 
                 <Button
                     android:id="@+id/counter"
-                    android:layout_width="22dp"
+                    android:layout_width="35dp"
                     android:layout_height="22dp"
                     android:layout_marginTop="14dp"
                     android:background="@drawable/count_circle"
                     android:text="10"
-                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:layout_marginRight="@dimen/margin_16"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/text_size_10" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"

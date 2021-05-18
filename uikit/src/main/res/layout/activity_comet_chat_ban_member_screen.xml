@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@color/textColorWhite"
     android:layout_height="match_parent"
     tools:context="screen.banmembers.CometChatBanMemberScreenActivity">
     <com.google.android.material.appbar.MaterialToolbar
@@ -11,7 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:navigationIcon="@drawable/ic_close_24dp"
-        app:title="@string/banned_members" />
+        app:title="@string/banned_members"
+        app:titleTextColor="@color/textColorWhite"
+        android:background="@color/colorPrimary"
+        app:titleTextAppearance="@style/MaterialToolbarTitleText"
+        />
     <FrameLayout
         android:id="@+id/ban_member_frame"
         android:layout_width="match_parent"

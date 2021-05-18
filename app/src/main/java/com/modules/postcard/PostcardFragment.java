@@ -1,3 +1,4 @@
+
 package com.modules.postcard;
 
 import android.annotation.SuppressLint;
@@ -6,15 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -53,9 +57,13 @@ public class PostcardFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = PostcardFragment.class.getSimpleName();
     private TabLayout tabLayout;
     private Activity activity;
+    TextView tabName,tabName2,tabName3,tabName4;
+    TextView tv_counter,tv_counter2,tv_counter3,tv_counter4;
+    ImageView iv_tab_icon,iv_tab_icon2,iv_tab_icon3,iv_tab_icon4;
     private MainActivityInterface mainActivityInterface;
     private static String inbox, draft, send, trash;
     private static TextView tabOne, tabTwo, tabThree, tabFour;
+    ConstraintLayout tabOneLayout;
     private ViewPager viewPager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ViewPagerAdapter adapter;
@@ -126,12 +134,40 @@ public class PostcardFragment extends Fragment implements View.OnClickListener {
     //set tab with icon and counter to it
     @SuppressLint("InflateParams")
     private void setupTabIcons() {
-        tabOne = (TextView) LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout, null);
-        tabOne.setText(inbox);
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.xi_postcard_inbox, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
+        //tabOneLayout = (ConstraintLayout) LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout, null);
+        View view =LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout, null);
+        tabName=view.findViewById(R.id.tv_name);
+        iv_tab_icon=view.findViewById(R.id.iv_tab_icon1);
+        tv_counter=view.findViewById(R.id.tv_counter);
+        tabName.setText("Inbox");
+        iv_tab_icon.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.xi_postcard_inbox));
+        tabLayout.getTabAt(0).setCustomView(view);
 
-        tabTwo = (TextView) LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout, null);
+        View view2 =LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout2, null);
+        tabName2=view2.findViewById(R.id.tv_name2);
+        iv_tab_icon2=view2.findViewById(R.id.iv_tab_icon2);
+        tv_counter2=view2.findViewById(R.id.tv_counter2);
+        tabName2.setText("Draft");
+        iv_tab_icon2.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.xi_postcard_draft));
+        tabLayout.getTabAt(1).setCustomView(view2);
+
+        View view3 =LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout3, null);
+        tabName3=view3.findViewById(R.id.tv_name3);
+        iv_tab_icon3=view3.findViewById(R.id.iv_tab_icon3);
+        tv_counter3=view3.findViewById(R.id.tv_counter3);
+        tabName3.setText("Send");
+        iv_tab_icon3.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.xi_postcard_sent));
+        tabLayout.getTabAt(2).setCustomView(view3);
+
+        View view4 =LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout4, null);
+        tabName4=view4.findViewById(R.id.tv_name4);
+        iv_tab_icon4=view4.findViewById(R.id.iv_tab_icon4);
+        tv_counter4=view4.findViewById(R.id.tv_counter4);
+        tabName4.setText("Trash");
+        iv_tab_icon4.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.xi_postcard_trash));
+        tabLayout.getTabAt(3).setCustomView(view4);
+
+        /*tabTwo = (TextView) LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout, null);
         tabTwo.setText(draft);
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.xi_postcard_draft, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
@@ -144,7 +180,7 @@ public class PostcardFragment extends Fragment implements View.OnClickListener {
         tabFour = (TextView) LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.postcard_tab_item_layout, null);
         tabFour.setText(trash);
         tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.xi_postcard_trash, 0, 0);
-        tabLayout.getTabAt(3).setCustomView(tabFour);
+        tabLayout.getTabAt(3).setCustomView(tabFour);*/
     }
 
     //set view page to set multiple postcard options
@@ -208,7 +244,7 @@ public class PostcardFragment extends Fragment implements View.OnClickListener {
         getCounters(activity);
     }
 
-    public static Counters_ getCounters(Context _context) {
+    public  Counters_ getCounters(Context _context) {
         Counters_ counters_ = null;
         Preferences.initialize(_context);
 
@@ -231,31 +267,36 @@ public class PostcardFragment extends Fragment implements View.OnClickListener {
                     send = String.valueOf(counters_.getSent());
                     inbox = String.valueOf(counters_.getPostcard());
                     trash = String.valueOf(counters_.getTrash());
-
+                    Log.i(TAG, "getCounters: draft "+draft +" send "+send +" inbox "+inbox +" trash"+trash);
                     if (inbox.equalsIgnoreCase("0")) {
-                        tabOne.setText("");
+                        //tabOne.setText("");
+                        tv_counter.setVisibility(View.GONE);
                     } else {
-                        tabOne.setText(inbox);
+                        tv_counter.setVisibility(View.VISIBLE);
+                        tv_counter.setText(""+inbox);
                     }
 
                     if (draft.equalsIgnoreCase("0")) {
-                        tabTwo.setText("");
+                        tv_counter2.setVisibility(View.GONE);
                     } else {
-                        tabTwo.setText(draft);
+                        Log.i(TAG, "getCounters: now equal to zero drafts");
+                        tv_counter2.setVisibility(View.VISIBLE);
+                        tv_counter2.setText(""+draft);
                     }
 
                     if (send.equalsIgnoreCase("0")) {
-                        tabThree.setText("");
+                        tv_counter3.setVisibility(View.GONE);
                     } else {
-                        tabThree.setText(send);
+                        tv_counter3.setVisibility(View.VISIBLE);
+                        tv_counter3.setText(""+send);
                     }
 
                     if (trash.equalsIgnoreCase("0")) {
-                        tabFour.setText("");
+                        tv_counter4.setVisibility(View.GONE);
                     } else {
-                        tabFour.setText(trash);
+                        tv_counter4.setVisibility(View.VISIBLE);
+                        tv_counter4.setText(""+trash);
                     }
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
