@@ -298,7 +298,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             editortabsPreferences.apply();
 
             team_Ids = getArguments().getString("teamId");
-            Log.i(TAG, "handleArguments: team_ids"+team_Ids);
+            Log.i(TAG, "handleArguments: team_ids" + team_Ids);
 
             if (type != null && type.equals(CometChatConstants.RECEIVER_TYPE_GROUP)) {
                 SenderId = getArguments().getString(StringContract.IntentStrings.GUID);
@@ -3734,7 +3734,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             languageArray.put("ur");
 
             replyObject.put("message_translation_languages", languageArray);
-
             switch (tabs) {
                 case "1":
                     try {
@@ -4982,10 +4981,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, getActivity());
                 if (response != null) {
-
                     JSONObject responseJsonObj = new JSONObject(response);
                     JSONArray getStickersArray = responseJsonObj.getJSONArray("get_sticker");
-
                     JSONObject stickerData = new JSONObject();
                     Log.e(TAG, "saveStickerToServer : response" + response);
 
@@ -5179,9 +5176,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         if (tabs.equals("1") || tabs.equals("2")) {
             team_Ids = "No Id";
         }
-        Log.i(TAG, "saveChatLogToTheServer: From_chat " + UserId +" To_chat "+SenderId +" CHAT_TYPE "+ChatType
-        +" MESSAGE "+Message +" chat_group_id "+chat_group_id +" team_Ids "+team_Ids +" comet_chat_type "+comet_chat_type
-        +" chat_message_id "+chat_message_id +" group_all_members_id "+group_all_members_id +" receiverMail "+receiverMail +" LAST_CONVERSATION_STATUS "+status);
+        Log.i(TAG, "saveChatLogToTheServer: From_chat " + UserId + " To_chat " + SenderId + " CHAT_TYPE " + ChatType
+                + " MESSAGE " + Message + " chat_group_id " + chat_group_id + " team_Ids " + team_Ids + " comet_chat_type " + comet_chat_type
+                + " chat_message_id " + chat_message_id + " group_all_members_id " + group_all_members_id + " receiverMail " + receiverMail + " LAST_CONVERSATION_STATUS " + status);
 
         requestMap.put(General.ACTION, "cometchat_log");
         requestMap.put(General.FROM_CHAT, UserId);
