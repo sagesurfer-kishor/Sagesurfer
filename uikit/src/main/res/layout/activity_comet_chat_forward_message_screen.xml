@@ -16,12 +16,15 @@
     forward messages-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:background="@color/textColorWhite"
+       >
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/forward_toolbar"
             android:layout_width="match_parent"
             app:title="Forward Message"
+            app:titleTextColor="@color/textColorWhite"
+            android:background="@color/colorPrimary"
             android:layout_height="wrap_content"/>
 
         <!--Search_View - This layout is used to search conversations-->
@@ -31,6 +34,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+
             android:layout_marginBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -41,9 +45,11 @@
                 android:imeOptions="actionSearch"
                 android:maxLines="1"
                 android:inputType="text"
+                android:textColorHint="#5B5555"
                 android:drawableStart="@drawable/ic_search_24dp"
                 android:drawablePadding="5dp"
                 android:padding="8dp"
+                android:textColor="@color/primaryTextColor"
                 android:background="@drawable/search_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -82,6 +88,8 @@
             android:id="@+id/rv_conversation_list"
             android:layout_below="@+id/selected_view"
             android:layout_width="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/user_list_row"
             android:layout_height="match_parent"/>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="@dimen/margin_5"
+    android:background="@drawable/message_rounded_border"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:id="@+id/member_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="2dp"
+        android:gravity="center">
+
+        <com.cometchat.pro.uikit.Avatar
+            android:id="@+id/groupMember_list_item_photo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:contentDescription="TODO"
+            android:src="@drawable/group_member_blue" />
+
+        <ImageView
+            android:id="@+id/memberPhoto"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignStart="@+id/friend_list_item_photo"
+            android:layout_alignTop="@+id/friend_list_item_photo"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="TODO"
+            android:padding="1dp" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/txtmemberName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/member_image"
+        android:hint="Name"
+        android:padding="5dp"
+        android:textColor="#212121"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtInviteMember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        android:text="Add"
+        android:textColor="#22D369"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:layout_toEndOf="@+id/txtInviteMember"
+        android:background="#0000001A"
+        android:padding="2dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txtInviteMember"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
+        android:background="#CCCCCC"
+        android:padding="2dp" />
+
+</RelativeLayout>

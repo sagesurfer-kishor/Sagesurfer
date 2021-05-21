@@ -1231,11 +1231,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             Log.i(TAG, "setTextData: if" + metaData.getString("name"));
                             viewHolder.replyUser.setVisibility(View.VISIBLE);
                             viewHolder.replyUser.setText(metaData.getString("name"));
-                            viewHolder.txtMessage.setText(txtMessage);
+                            //viewHolder.txtMessage.setText(txtMessage);
                         } else {
                             Log.i(TAG, "setTextData: else" + metaData.getString("name"));
                             viewHolder.replyUser.setVisibility(View.GONE);
-                            viewHolder.txtMessage.setText(txtMessage);
+                            //viewHolder.txtMessage.setText(txtMessage);
                         }
                     }
                    /* if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
@@ -1254,10 +1254,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         viewHolder.replyMessage.setText(String.format(context.getResources().getString(R.string.shared_a_file), ""));
                         viewHolder.replyMessage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_insert_drive_file_black_24dp, 0, 0, 0);
                     }*/
+
+                    if (baseMessage.getReplyCount() != 0) {
+                        viewHolder.tvThreadReplyCount.setVisibility(View.VISIBLE);
+                        viewHolder.tvThreadReplyCount.setText(baseMessage.getReplyCount() + " Replies");
+                    } else {
+                        viewHolder.lvReplyAvatar.setVisibility(View.GONE);
+                        viewHolder.tvThreadReplyCount.setVisibility(View.GONE);
+                    }
+
                 } catch (Exception e) {
                     Log.e(TAG, "setTextData: " + e.getMessage());
                 }
-            } else {
+            }
+
 
                 if (baseMessage.getReplyCount() != 0) {
                     try {
@@ -1344,7 +1354,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 try {
                     if (baseMessage.getMetadata().has("type")) {
                         if (baseMessage.getMetadata().getString("type").equalsIgnoreCase("reply")) {
-                            //viewHolder.txtMessage.setText(txtMessage);
+                            viewHolder.txtMessage.setText(txtMessage);
                             Log.i(TAG, "setTextData: has type  "+txtMessage);
                         }
                     } else {
@@ -1444,7 +1454,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                 });
                 viewHolder.itemView.setTag(R.string.message, baseMessage);
-            }
+
         }
     }
 

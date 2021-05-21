@@ -6,6 +6,7 @@
     <color name="primaryTextColor">#000000</color>
 
     <color name="textColorWhite">#FFFFFF</color>
+    <color name="colorMainBackground">#D8DFE2</color>
     <color name="bottom">#FAFAFA</color>
     <color name="secondaryTextColor">#6b000000</color>
     <color name="light_grey">#EEEEEE</color>

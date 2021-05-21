@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
+import com.cometchat.pro.models.User;
 import com.cometchat.pro.uikit.Avatar;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.modules.cometchat_7_30.ModelUserCount;
@@ -216,6 +217,8 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
             convertView.setTag(viewHolderMember);
 
             viewHolderMember.userName.setText(item.getMembersArrayList().get(childPosition).getUsername());
+            Log.i(TAG, "getChildView: user Name "+item.getMembersArrayList().get(childPosition).getUsername());
+            Log.i(TAG, "getChildView: user Status "+item.getMembersArrayList().get(childPosition).getStatus());
             Runnable runnable=new Runnable() {
                 @Override
                 public void run() {
@@ -255,6 +258,17 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
             Thread thread = new Thread(runnable);
             thread.start();
 
+            /*CometChat.getUser(UID, new CometChat.CallbackListener<User>() {
+                @Override
+                public void onSuccess(User user) {
+
+                    Log.d(TAG, "User details fetched for user: " + user.toString());
+                }
+                @Override
+                public void onError(CometChatException e) {
+                    Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
+                }
+            });*/
 
            //viewHolderMember.timeText.setText(timeStamp);
 

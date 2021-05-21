@@ -21,7 +21,6 @@ import screen.messagelist.CometChatMessageListActivity;
 import screen.threadconversation.CometChatThreadMessageActivity;
 
 public class MessageActionFragment extends BottomSheetDialogFragment {
-
     private TextView threadMessage;
     private TextView editMessage;
     private TextView replyMessage;
@@ -29,7 +28,6 @@ public class MessageActionFragment extends BottomSheetDialogFragment {
     private TextView deleteMessage;
     private TextView copyMessage;
     private TextView shareMessage;
-
     private boolean isShareVisible;
     private boolean isThreadVisible;
     private boolean isCopyVisible;

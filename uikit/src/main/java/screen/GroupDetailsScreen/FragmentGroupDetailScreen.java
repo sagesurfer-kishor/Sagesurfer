@@ -39,7 +39,6 @@ import com.cometchat.pro.uikit.Avatar;
 import com.cometchat.pro.uikit.R;
 import com.cometchat.pro.uikit.SharedMediaView;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -639,7 +638,7 @@ public class FragmentGroupDetailScreen extends Fragment {
 //                    tvAdminCount.setText(adminCount+"");
 //                    tvModeratorCount.setText(moderatorCount+"");
                     if (groupMemberAdapter == null) {
-                        groupMemberAdapter = new GroupMemberAdapter(getActivity(), groupMembers, ownerId);
+                        groupMemberAdapter = new GroupMemberAdapter(getActivity(), groupMembers,ownerId);
                         rvMemberList.setAdapter(groupMemberAdapter);
                     } else {
                         groupMemberAdapter.addAll(groupMembers);

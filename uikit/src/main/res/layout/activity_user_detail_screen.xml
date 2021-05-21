@@ -207,8 +207,7 @@
             </LinearLayout>
             <!--End of Action_Layout-->
 
-            <!--Privacy_Support_Layout - This layout provides privacy and
-            support option like block user-->
+            <!--Privacy_Support_Layout - This layout provides privacy and support option like block user-->
             <LinearLayout
                 android:id="@+id/other_layout"
                 android:layout_width="match_parent"
@@ -258,6 +257,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:id="@+id/layout_shared_media"
                 android:orientation="vertical">
 
                 <TextView

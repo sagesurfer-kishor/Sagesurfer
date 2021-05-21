@@ -61,7 +61,7 @@ public class NetworkCall_ {
                 .tag(tag)
                 .build();
         String body = bodyToString(request);
-        Log.i(TAG, "make: "+body);
+        Log.i(TAG, "request body : "+body);
         String token = getToken(_context);
         if (token != null) {
             return finalBody(body, token);

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +23,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,19 +61,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import adapter.Banmemberlistadapter;
 import adapter.GroupMemberAdapter;
+import adapter.GroupMembersAdapter;
+import adapter.MembersListAdapter;
 import constant.StringContract;
 import listeners.ClickListener;
 import listeners.RecyclerTouchListener;
 import okhttp3.RequestBody;
+import screen.Models.GetAddNewMember;
 import screen.addmember.CometChatAddMemberScreenActivity;
 import screen.adminAndModeratorList.CometChatAdminModeratorListScreenActivity;
 import screen.banmembers.CometChatBanMemberScreenActivity;
-import screen.messagelist.CometChatMessageListActivity;
 import screen.messagelist.General;
 import screen.messagelist.NetworkCall_;
+import screen.messagelist.Preferences;
 import screen.messagelist.Urls_;
 import screen.unified.CometChatUnified;
+import secure.GroupTeam_;
 import utils.FontUtils;
 import utils.Utils;
 
@@ -83,11 +92,12 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
     private Avatar groupIcon;
 
     private String groupType;
-
+    private ArrayList<GetAddNewMember> getgroupmemberArrayList = new ArrayList<>();
     private String ownerId;
-
+    private TextView btnSearch;
     private TextView tvGroupName;
-
+    private TextView error;
+    private EditText et_search_user;
     private TextView tvGroupDesc;
 
     private TextView tvAdminCount;
@@ -103,18 +113,18 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
     private String guid, gName, gDesc, gPassword;
 
     private GroupMembersRequest groupMembersRequest;
-
+    private androidx.appcompat.app.AlertDialog alertDialog;
     private GroupMemberAdapter groupMemberAdapter;
 
     private int adminCount;
     private NestedScrollView nested_scrollview;
 
     private int moderatorCount;
-
+    private RecyclerView recyclerView;
     String[] s = new String[0];
 
     private RelativeLayout rlAddMemberView;
-
+    private MembersListAdapter memberListAdapter;
     private RelativeLayout rlAdminListView;
 
     private RelativeLayout rlModeratorView;
@@ -520,13 +530,14 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
      * @see CometChatAddMemberScreenActivity
      */
     public void addMembers() {
-        Intent intent = new Intent(this, CometChatAddMemberScreenActivity.class);
+       /* Intent intent = new Intent(this, CometChatAddMemberScreenActivity.class);
         intent.putExtra(StringContract.IntentStrings.GUID, guid);
         intent.putExtra(StringContract.IntentStrings.GROUP_MEMBER, groupMemberUids);
         intent.putExtra(StringContract.IntentStrings.GROUP_NAME, gName);
         intent.putExtra(StringContract.IntentStrings.MEMBER_SCOPE, loggedInUserScope);
         intent.putExtra(StringContract.IntentStrings.IS_ADD_MEMBER, true);
-        startActivity(intent);
+        startActivity(intent);*/
+        dialogViewMembers(groupType);
     }
 
     /**
@@ -1098,5 +1109,229 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    public void  dialogViewMembers(String groupType) {
+
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(CometChatGroupDetailScreenActivity.this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.member_details, null);
+        alertDialogBuilder.setView(view);
+        alertDialog = alertDialogBuilder.create();
+
+        final TextView tv_allMember = view.findViewById(R.id.allMemberList);
+        final TextView tv_addMembers = view.findViewById(R.id.addNewMemberList);
+        final TextView tv_blockedMember = view.findViewById(R.id.blockedMemberList);
+
+        recyclerView = view.findViewById(R.id.detailMemberList);
+        final LinearLayout linearLayout = view.findViewById(R.id.lv_search);
+
+        error = view.findViewById(R.id.error);
+        et_search_user = view.findViewById(R.id.search_name);
+
+        tv_allMember.setBackgroundResource(R.color.colorPrimary);
+        tv_addMembers.setBackgroundResource(R.color.textColorWhite);
+        tv_blockedMember.setBackgroundResource(R.color.textColorWhite);
+        linearLayout.setVisibility(View.GONE);
+        Preferences.initialize(CometChatGroupDetailScreenActivity.this);
+        String groupId = String.valueOf(guid);
+        Preferences.save("gId", groupId);
+        // get all group member
+        Log.i(TAG, "dialogViewMembers: ");
+        getTeamsMember(groupId);
+
+        tv_allMember.setBackgroundResource(R.color.colorPrimary);
+        tv_addMembers.setBackgroundResource(R.color.textColorWhite);
+        tv_blockedMember.setBackgroundResource(R.color.textColorWhite);
+
+        ImageView btn_CloseDialog = view.findViewById(R.id.btnMemberDismiss);
+        btnSearch = view.findViewById(R.id.btnsearch);
+        btnSearch.setVisibility(View.GONE);
+
+        btn_CloseDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        tv_allMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String groupId = String.valueOf(guid);
+                Preferences.save("gId", groupId);
+
+                //  get all team member for selected group
+                getTeamsMember(groupId);
+
+                tv_allMember.setBackgroundResource(R.color.colorPrimary);
+                tv_addMembers.setBackgroundResource(R.color.textColorWhite);
+                tv_blockedMember.setBackgroundResource(R.color.textColorWhite);
+
+                linearLayout.setVisibility(View.GONE);
+            }
+        });
+
+        String userId = Preferences.get(General.USER_ID);
+        groupId = String.valueOf(guid);
+
+        if (!Preferences.get("owner").equals(userId)) {
+            tv_addMembers.setVisibility(View.GONE);
+            tv_blockedMember.setVisibility(View.GONE);
+        } else {
+            // add member
+            tv_addMembers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    tv_allMember.setBackgroundResource(R.color.textColorWhite);
+                    tv_addMembers.setBackgroundResource(R.color.colorPrimary);
+                    tv_blockedMember.setBackgroundResource(R.color.textColorWhite);
+                    linearLayout.setVisibility(View.VISIBLE);
+                    String action = "get_add_new_members";
+                    String userId = Preferences.get(General.USER_ID);
+                    String groupId = String.valueOf(guid);
+                    // get all user list from db
+                    fetchMembersFromServerToAddInGroup(action, userId, groupId, groupType);
+                }
+            });
+        }
+
+        tv_blockedMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                linearLayout.setVisibility(View.GONE);
+
+                tv_blockedMember.setBackgroundResource(R.color.colorPrimary);
+                tv_allMember.setBackgroundResource(R.color.textColorWhite);
+                tv_addMembers.setBackgroundResource(R.color.textColorWhite);
+
+                // block member list for group
+                getBlockedUserList();
+            }
+        });
+
+        // friend conversion search action
+        et_search_user.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                searchMember(s.toString());
+
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    private void searchMember(String search) {
+        memberListAdapter.getFilter().filter(search);
+    }
+
+
+    private void getTeamsMember(String groupId) {
+        GroupMembersRequest groupMembersRequest = null;
+        String GUID = groupId;
+        int limit = 30;
+
+        groupMembersRequest = new GroupMembersRequest.GroupMembersRequestBuilder(GUID)
+                .setLimit(limit).build();
+        groupMembersRequest.fetchNext(new CometChat.CallbackListener<List<GroupMember>>() {
+            @Override
+            public void onSuccess(List<GroupMember> list) {
+                Log.e(TAG, "Group Member list fetched successfully : " + list.toString());
+                if (list.size() > 0) {
+                    GroupMembersAdapter caseloadListAdapter = new GroupMembersAdapter(CometChatGroupDetailScreenActivity.this, list);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CometChatGroupDetailScreenActivity.this);
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(caseloadListAdapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    error.setVisibility(View.GONE);
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                    error.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.d(TAG, "Group Member list fetching failed with exception: " + e.getMessage());
+            }
+        });
+    }
+
+    /*fetching all the members to add in the group where we have add member button option on list.
+     * (Second tab of dialog view members) commented by rahul maske*/
+    private void fetchMembersFromServerToAddInGroup(String action, String userId, String groupId, String groupType) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, action);
+        requestMap.put(General.USER_ID, userId);
+        requestMap.put(General.GROUP_ID, groupId);
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, CometChatGroupDetailScreenActivity.this);
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, CometChatGroupDetailScreenActivity.this);
+                if (response != null) {
+                    getgroupmemberArrayList = GroupTeam_.parsegroupMember(response, "get_add_new_members", CometChatGroupDetailScreenActivity.this, TAG);
+                    memberListAdapter = new MembersListAdapter(CometChatGroupDetailScreenActivity.this, getgroupmemberArrayList, groupType);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CometChatGroupDetailScreenActivity.this);
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(memberListAdapter);
+
+                    recyclerView.setVisibility(View.VISIBLE);
+                    error.setVisibility(View.GONE);
+                    btnSearch.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                    error.setVisibility(View.VISIBLE);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /*Here all the ban user for groups we are fetching and showing to list
+     * update and commented by rahul maske*/
+    private void getBlockedUserList() {
+        BannedGroupMembersRequest bannedGroupMembersRequest;
+        String GUID = String.valueOf(guid);
+        int limit = 50;
+        bannedGroupMembersRequest = new BannedGroupMembersRequest.BannedGroupMembersRequestBuilder(GUID).setLimit(limit).build();
+        bannedGroupMembersRequest.fetchNext(new CometChat.CallbackListener<List<GroupMember>>() {
+            @Override
+            public void onSuccess(List<GroupMember> list) {
+                if (list.size() > 0) {
+                    //Banmemberlistadapter banmemberadapter = new Banmemberlistadapter(CometChatGroupDetailScreenActivity.this, list);
+                    Banmemberlistadapter banmemberadapter=new Banmemberlistadapter(CometChatGroupDetailScreenActivity.this, list);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CometChatGroupDetailScreenActivity.this);
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(banmemberadapter);
+
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                    error.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.d(TAG, "Banned Group Member list fetching failed with exception: " + e.getMessage());
+            }
+        });
+
     }
 }

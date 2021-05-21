@@ -1,7 +1,3 @@
-package com.sagesurfer.constant;
-
-import com.sagesurfer.collaborativecares.R;
-import com.storage.preferences.Preferences;
 
 /**
  * @author Monika M (monikam@sagesurfer.com)
@@ -12,7 +8,6 @@ import com.storage.preferences.Preferences;
 public class General {
 
     public static final String USER_ID = "user_id";
-    public static final String BLOCK_USER_ID = "block_user_id";
     public static final String CONTENT_TYPE = "content_type";
     public static final String CONTENT_PATH = "content_path";
     public static final String LOG_ID = "log_id";
@@ -830,129 +825,5 @@ public class General {
     public static final String TOTIMES = "totimes";
     public static final String IS_TEST_USER = "is_test_user";
 
-
-    public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {
-
-        boolean hasPermissionOnlyView = false;
-
-        if ((Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025")) &&
-                (Preferences.get(General.ROLE_ID).equals(General.USER_ROLE_WERHOPE_EXECUTIVE_DIRECTOR) || Preferences.get(General.ROLE_ID).equals(General.USER_ROLE_WERHOPE_DIRECTOR_OF_OPERATIONS))) {
-
-            hasPermissionOnlyView = true;
-
-        }
-
-        if ((Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) && (Preferences.get(General.ROLE_ID).equals(General.USERROLE_TRAZANA_ADMIN) ||
-                Preferences.get(General.ROLE_ID).equals(General.USERROLE_TRAZANA_SUPER_ADMIN) || Preferences.get(General.ROLE_ID).equals(General.USERROLE_TRAZANA_SUPERVISOR))) {
-
-            hasPermissionOnlyView = true;
-        }
-
-        if ((Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027")) &&
-                (Preferences.get(General.ROLE_ID).equals(General.UserRoleMHAW_ComplianceAdministrator) || Preferences.get(General.ROLE_ID).equals(General.UserRoleMHAW_ClinicalApplicationsAdministrator))) {
-
-            hasPermissionOnlyView = true;
-
-        }
-
-        return hasPermissionOnlyView;
-    }
-
-    public static boolean isCurruntUserHasPermissionToCreateNewTask() {
-
-        boolean hasPermission = false;
-
-        switch (Preferences.get(General.ROLE_ID)) {
-            case USER_ROLE_CARE_COORDINATOR:
-            case USER_ROLE_CONSUMER_ADULT: {
-                hasPermission = true;
-            }
-            break;
-            case USER_ROLE_MEMBER:
-            case USER_ROLE_NATURAL_SUPPORT:
-            case USER_ROLE_PROVIDER:
-            case USER_ROLE_PARENT_GARDIAN:
-            case USER_ROLE_RESOURCE_CONTACT:
-            case USER_ROLE_COMMUNITY_CONTACT: {
-                hasPermission = false;
-            }
-            break;
-            default:
-                break;
-        }
-
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) {
-            hasPermission = (Preferences.get(General.ROLE_ID) == USERROLE_TRAZANA_CASE_MANAGER) ? true : false;
-        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027")) {
-            //MHAW all user can create event expect CA/CAA
-            hasPermission = true;
-        }
-
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) {
-
-            hasPermission = (isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction()) ? false : hasPermission;
-        }
-
-        return hasPermission;
-
-    }
-
-
-    public static boolean isCurruntUserHasPermissionToCreateEvent(){
-
-        boolean hasPermission = false;
-
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027")){
-            //MHAW all user can create task expect CA/CAA
-            hasPermission = true;
-        }
-
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) {
-
-            hasPermission = (isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction()) ? false : hasPermission;
-        }
-
-        return hasPermission;
-
-    }
-
-    public static boolean isCurruntUserHasPermissionToCreateFMS(){
-
-        boolean hasPermission = true;
-
-
-        /*if([AppManager isCurruntUserLoggedInWerhopeURL] || [AppManager isCurruntUserLoggedInTarzanaURL] || [AppManager isCurruntUserLoggedInMHAW_URL]){
-
-            hasPermission = ([AppManager isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction])?NO:hasPermission;
-        }*/
-
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) {
-
-            hasPermission = (isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction()) ? false : hasPermission;
-        }
-
-
-        return hasPermission;
-    }
-
-    public static boolean isCurruntUserHasPermissionToTeamTalkActions(){
-        boolean hasPermission = true;
-
-
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) {
-
-            hasPermission = (isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction()) ? false : hasPermission;
-        }
-
-        return hasPermission;
-    }
 
 }

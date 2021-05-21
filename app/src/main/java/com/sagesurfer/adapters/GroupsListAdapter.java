@@ -68,7 +68,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.MyViewHolder> implements Filterable {
-    private final Context mContext;
+    private Context mContext;
     private static final String TAG = FragmentCometchatGroupsList.class.getSimpleName();
     private String GID;
     private RecyclerView recyclerView;
@@ -91,6 +91,9 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         preferenOpenActivity = mContext.getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
     }
 
+    public void GroupListAdapter(Context mContext){
+        this.mContext = mContext;
+    }
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView title;
         ImageView img_group_item_options;
@@ -223,7 +226,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                 Log.i(TAG, "onClick: group owner " + group_item.getOwner_id() + " isMember " + group_item.getIs_member() + " userId " + Preferences.get(General.USER_ID));
                 //if (isMember.equalsIgnoreCase("1") || group_item.getOwner_id().equalsIgnoreCase(Preferences.get(General.USER_ID)) || ) {
                 final String userId = Preferences.get(General.USER_ID);
-
                 GID = group_item.getGroupId();
                 String owner = group_item.getOwner_id();
                 String groupType = group_item.getType();
@@ -593,7 +595,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         mContext.startActivity(intent);
     }
 
-    private void dialogViewMembers(String groupType) {
+    public void  dialogViewMembers(String groupType) {
         /* LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_exit, null);
         builder.setView(view);
@@ -604,7 +606,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         View view = inflater.inflate(R.layout.member_details, null);
         alertDialogBuilder.setView(view);
         alertDialog = alertDialogBuilder.create();
-
 
        /* final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -629,7 +630,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         Preferences.save("gId", groupId);
         // get all group member
         Log.i(TAG, "dialogViewMembers: ");
-        getTeamsMember(groupId);
+        getGroupMemberFromServer(groupId);
 
         tv_allMember.setBackgroundResource(R.color.colorPrimary);
         tv_addMembers.setBackgroundResource(R.color.white);
@@ -654,7 +655,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                 Preferences.save("gId", groupId);
 
                 //  get all team member for selected group
-                getTeamsMember(groupId);
+                getGroupMemberFromServer(groupId);
 
                 tv_allMember.setBackgroundResource(R.color.colorPrimary);
                 tv_addMembers.setBackgroundResource(R.color.white);
@@ -722,7 +723,9 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         alertDialog.show();
     }
 
-    private void getTeamsMember(String groupId) {
+    /*fetching all the group members are available in the group from our server
+    * added by rahul maske*/
+    private void getGroupMemberFromServer(String groupId) {
         GroupMembersRequest groupMembersRequest = null;
         String GUID = groupId;
         int limit = 30;

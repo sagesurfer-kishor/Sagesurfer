@@ -128,7 +128,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         fontUtils = FontUtils.getInstance(this);
         handler = new Handler();
         handleIntent();
-
+        Log.i(TAG, "onCreate: CometChatForward");
         init();
     }
 
@@ -166,12 +166,14 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                 handleSendImage(intent); // Handle single image being sent
             }
         }
-
+        Log.i(TAG, "handleIntent: tabs -> "+getIntent().getStringExtra(StringContract.IntentStrings.TABS));
         if (getIntent().hasExtra(StringContract.IntentStrings.TYPE)) {
             messageType = getIntent().getStringExtra(StringContract.IntentStrings.TYPE);
+            Log.i(TAG, "handleIntent: messageType = "+messageType);
         }
         if (getIntent().hasExtra(CometChatConstants.MESSAGE_TYPE_TEXT)) {
             textMessage = getIntent().getStringExtra(CometChatConstants.MESSAGE_TYPE_TEXT);
+            Log.i(TAG, "handleIntent: textMessage = "+textMessage);
         }
         if (getIntent().hasExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_URL)) {
             mediaMessageUrl = getIntent().getStringExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_URL);
@@ -194,6 +196,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra(StringContract.IntentStrings.TABS)) {
             tabs = getIntent().getStringExtra(StringContract.IntentStrings.TABS);
+            Log.i(TAG, "handleIntent: tabs = "+tabs);
         }
 
         /*avatarUrl = getIntent().getStringExtra(""+StringContract.IntentStrings.AVATAR);

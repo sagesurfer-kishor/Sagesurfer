@@ -37,6 +37,7 @@ import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.library.GetErrorResources;
+import com.sagesurfer.models.Members_;
 import com.sagesurfer.models.Teams_;
 import com.sagesurfer.tasks.PerformGetTeamsTask;
 import com.sagesurfer.views.TextWatcherExtended;
@@ -170,7 +171,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("membersIds", CometchatIdOfSender);
         editor.putString("teamIds", teamId);
-        editor.commit();
+        editor.apply();
         Intent intent = new Intent(getContext(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.NAME, username);
         intent.putExtra(StringContract.IntentStrings.UID, CometchatIdOfSender);
@@ -199,6 +200,16 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         }
         al_friends = PerformGetTeamsTask.getMyteam(Actions_.ALL_TEAMS_CHAT, team_type, getActivity(), TAG, false, getActivity());
         Log.i(TAG, "getTeams: teams array " + al_friends);
+
+        for (Teams_ teams_ : al_friends ){
+            ArrayList<Members_> arrayList=teams_.getMembersArrayList();
+            for (Members_ members_ : arrayList){
+
+                Log.i(TAG, "getTeam : user name "+members_.getFullname());
+                Log.i(TAG, "getTeam : user status"+members_.getStatus());
+            }
+        }
+
         if (al_friends.size() == 0) {
             errorLayout.setVisibility(View.VISIBLE);
             expandableListView.setVisibility(View.GONE);

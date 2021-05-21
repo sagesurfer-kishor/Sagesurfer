@@ -154,15 +154,17 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("membersIds", memberId);
         editor.putString("teamIds", teamId);
+        editor.apply();
         Log.e("userName", username);
         Log.i(TAG, "openChatActivity: Username "+username);
         Log.i(TAG, "openChatActivity: UID "+userId);
         Log.i(TAG, "openChatActivity: STATUS "+status);
         Log.i(TAG, "openChatActivity: teamId "+teamId);
+        Log.i(TAG, "openChatActivity: memberId "+memberId);
         Intent intent = new Intent(getContext(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.NAME, username);
         intent.putExtra(StringContract.IntentStrings.UID, userId);
-        intent.putExtra(StringContract.IntentStrings.STATUS, status);
+        intent.putExtra(StringContract.IntentStrings.STATUS, ""+status);
         intent.putExtra(StringContract.IntentStrings.TYPE, "user");
         intent.putExtra(StringContract.IntentStrings.TABS, "4");
         intent.putExtra("teamId", teamId);
@@ -233,6 +235,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
 
         String[] ProviderArray = team_provider.split(",");
         String[] MemberArray = team_member_id.split(",");
+        Log.i(TAG, "onMemberRelativeLayoutClicked: clicked user id "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
         if (Arrays.asList(ProviderArray).contains( team_.getMembersArrayList().get(memberPosition).getComet_chat_id())){
             //if user is provider
             getUserDetails(team_.getMembersArrayList().get(memberPosition).getComet_chat_id(), team_, memberPosition,"provider");
@@ -247,6 +250,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
             final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
             final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
             final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
+
             openChatActivity(""+username,
                     ""+CometchatIdOfSender,
                     status,
@@ -550,7 +554,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                             JSONArray get_team_members_array = jsonObject.getJSONArray("get_team_members_array");
                             team_member_id = get_team_members_array.getJSONObject(0).getString("team_member_id");
                             team_provider = get_team_members_array.getJSONObject(0).getString("team_provider");
-
+                            Log.i(TAG, " run: onTeamClickFetchTeamData team_member_id "+team_member_id+" team_provider "+team_provider);
                         }
                     }
                 } catch (Exception e) {

@@ -11,6 +11,7 @@
     <color name="white1">#FFFFFF</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="colorPrimary_transparent">#950D79C2</color>
+    <color name="colorMainBackground">#D8DFE2</color>
 
     <color name="color_black">#000000</color>
 

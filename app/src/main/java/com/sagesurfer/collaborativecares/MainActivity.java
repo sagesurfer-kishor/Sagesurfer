@@ -210,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     int mYear, mMonth, mDay, mHour, mMinute;
     private DrawerLayout drawerLayout;
     String other_user_id;
+    SharedPreferences domainUrlPref;
     private RelativeLayout mainToolBarBellLayout;
     private AppCompatImageView searchButton, addButton, notificationImageView, addFilter, logBookIcon, setting;
     Menu popupMenuItem;
@@ -593,7 +594,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 menuIteSetAvailability.setVisible(true);
                 Log.i(TAG, "getSetAvailabilityRolesFromServer: 1");
             }
-        } else if (other_user_id.equals("1")) {
+        } else if (domainUrlPref.getString("other_user_id",null).equals("1")) {
             if (menuIteSetAvailability != null) {
                 menuIteSetAvailability.setVisible(true);
                 Log.i(TAG, "getSetAvailabilityRolesFromServer: 2");
@@ -2594,7 +2595,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -3710,7 +3710,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     other_user_id = provider_time_check_in_db.getJSONObject(0).getString("other_user_id");
                     Log.i(TAG, "getSetAvailabilityRolesFromServer: other_user_id" + other_user_id);
 
-                    SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+                    domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = domainUrlPref.edit();
                     editor.putString("other_user_id", "" + other_user_id);
                     editor.apply();

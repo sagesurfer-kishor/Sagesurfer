@@ -243,7 +243,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
     private int parentId;
 
-    private String type,tabs;
+    private String type, tabs;
 
     private String groupOwnerId;
 
@@ -253,7 +253,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
     private VideoView videoMessage;
 
-    private RelativeLayout fileMessage;
+    private RelativeLayout fileMessage, message_layout;
 
     private TextView fileName;
 
@@ -275,6 +275,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     // private ImageView ivForwardMessage;
 
     private boolean isParent = true;
+
     //private ImageView ivMoreOption;
     public CometChatThreadMessageScreen() {
         // Required empty public constructor
@@ -303,7 +304,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             messageType = getArguments().getString(StringContract.IntentStrings.MESSAGE_TYPE);
             messageSentAt = getArguments().getLong(StringContract.IntentStrings.SENTAT);
             tabs = getArguments().getString(StringContract.IntentStrings.TABS);
-            Log.i(TAG, "handleArguments: tabs "+tabs);
+            Log.i(TAG, "handleArguments: tabs " + tabs);
             if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                 message = getArguments().getString(StringContract.IntentStrings.TEXTMESSAGE);
             } else {
@@ -336,10 +337,11 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         noReplyMessages = view.findViewById(R.id.no_reply_layout);
         //ivMoreOption = view.findViewById(R.id.ic_more_option);
         //ivMoreOption.setOnClickListener(this);
-       // ivForwardMessage = view.findViewById(R.id.ic_forward_option);
+        // ivForwardMessage = view.findViewById(R.id.ic_forward_option);
         //ivForwardMessage.setOnClickListener(this);
 
         textMessage = view.findViewById(R.id.tv_textMessage);
+        message_layout = view.findViewById(R.id.message_layout);
         textMessage.setText(message);
         imageMessage = view.findViewById(R.id.iv_imageMessage);
         videoMessage = view.findViewById(R.id.vv_videoMessage);
@@ -360,7 +362,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             fileExtension.setText(messageExtension);
 
         fileSize.setText(Utils.getFileSize(messageSize));
-
+        message_layout.setVisibility(VISIBLE);
         if (messageType.equals(CometChatConstants.MESSAGE_TYPE_IMAGE)) {
             textMessage.setVisibility(GONE);
             imageMessage.setVisibility(View.VISIBLE);
@@ -611,9 +613,9 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 } else if (isReply) {
                     replyMessage(baseMessage, message);
                     replyMessageLayout.setVisibility(GONE);
-                } else if (!message.isEmpty())
+                } else if (!message.isEmpty()){
                     Log.i(TAG, "onSendActionClicked: message clicked");
-                    sendMessage(message);
+                sendMessage(message);}
             }
 
             @Override
@@ -655,10 +657,8 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
         Log.d(TAG, "onRequestPermissionsResult: ");
         switch (requestCode) {
-
             case StringContract.RequestCode.CAMERA:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
-
                     startActivityForResult(MediaUtils.openCamera(getActivity()), StringContract.RequestCode.CAMERA);
                 else
                     showSnackBar(view.findViewById(R.id.message_box), getResources().getString(R.string.grant_camera_permission));
@@ -694,7 +694,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             if (getActivity() != null) {
                 getActivity().onBackPressed();
             }
-
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -739,7 +738,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             messagesRequest = new MessagesRequest.MessagesRequestBuilder().setLimit(LIMIT).setParentMessageId(parentId).hideMessagesFromBlockedUsers(true).build();
         }
         messagesRequest.fetchPrevious(new CometChat.CallbackListener<List<BaseMessage>>() {
-
             @Override
             public void onSuccess(List<BaseMessage> baseMessages) {
                 isInProgress = false;
@@ -750,7 +748,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                     BaseMessage baseMessage = baseMessages.get(baseMessages.size() - 1);
                     markMessageAsRead(baseMessage);
                 }
-
                 if (baseMessages.size() == 0) {
                     stopHideShimmer();
                     isNoMoreMessages = true;
@@ -789,7 +786,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     }
 
     private void getSmartReplyList(BaseMessage baseMessage) {
-
         HashMap<String, JSONObject> extensionList = Extensions.extensionCheck(baseMessage);
         if (extensionList != null && extensionList.containsKey("smartReply")) {
             rvSmartReply.setVisibility(View.VISIBLE);
@@ -1114,7 +1110,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
      * @see TextMessage
      * @see CometChat#sendMessage(TextMessage, CometChat.CallbackListener)
      */
-    private void  sendMessage(String message) {
+    private void sendMessage(String message) {
         String team_logs_id;
         Log.i(TAG, "sendMessage: block ");
         TextMessage textMessage;
@@ -1193,7 +1189,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         CometChat.sendMessage(textMessage, new CometChat.CallbackListener<TextMessage>() {
             @Override
             public void onSuccess(TextMessage textMessage) {
-                Log.i(TAG, "sendMessage onSuccess: threadedTextMessageSent "+textMessage);
+                Log.i(TAG, "sendMessage onSuccess: threadedTextMessageSent " + textMessage);
                 noReplyMessages.setVisibility(GONE);
                 isSmartReplyClicked = false;
                 if (messageAdapter != null) {
@@ -1676,6 +1672,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         boolean replyVisible = false;
         boolean editVisible = true;
         boolean deleteVisible = true;
+
         boolean forwardVisible = true;
         List<BaseMessage> textMessageList = new ArrayList<>();
         List<BaseMessage> mediaMessageList = new ArrayList<>();
@@ -1695,10 +1692,19 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                     if (basemessage.getSender().getUid().equals(CometChat.getLoggedInUser().getUid())) {
                         deleteVisible = true;
                         editVisible = true;
-                        forwardVisible = true;
+                        if (tabs.equalsIgnoreCase("1") || tabs.equalsIgnoreCase("2")) {
+                            forwardVisible = true;
+                        }else{
+                            forwardVisible = false;
+                        }
+
                     } else {
                         editVisible = false;
-                        forwardVisible = true;
+                        if (tabs.equalsIgnoreCase("1") || tabs.equalsIgnoreCase("2")) {
+                            forwardVisible = true;
+                        }else{
+                            forwardVisible = false;
+                        }
                         if (loggedInUserScope != null && (loggedInUserScope.equals(CometChatConstants.SCOPE_ADMIN) || loggedInUserScope.equals(CometChatConstants.SCOPE_MODERATOR))) {
                             deleteVisible = true;
                         } else {
@@ -1719,14 +1725,22 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                     if (basemessage.getSender().getUid().equals(CometChat.getLoggedInUser().getUid())) {
                         deleteVisible = true;
                         editVisible = false;
-                        forwardVisible = true;
+                        if (tabs.equalsIgnoreCase("1") || tabs.equalsIgnoreCase("2")) {
+                            forwardVisible = true;
+                        }else{
+                            forwardVisible = false;
+                        }
                     } else {
                         if (loggedInUserScope != null && (loggedInUserScope.equals(CometChatConstants.SCOPE_ADMIN) || loggedInUserScope.equals(CometChatConstants.SCOPE_MODERATOR))) {
                             deleteVisible = true;
                         } else {
                             deleteVisible = false;
                         }
-                        forwardVisible = true;
+                        if (tabs.equalsIgnoreCase("1") || tabs.equalsIgnoreCase("2")) {
+                            forwardVisible = true;
+                        }else{
+                            forwardVisible = false;
+                        }
                         editVisible = false;
                     }
                 }
@@ -1865,6 +1879,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     private void startForwardMessageActivity() {
         Intent intent = new Intent(getContext(), CometChatForwardMessageScreenActivity.class);
         if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+            intent.putExtra(StringContract.IntentStrings.TABS, tabs);
             intent.putExtra(CometChatConstants.MESSAGE_TYPE_TEXT, ((TextMessage) baseMessage).getText());
             intent.putExtra(StringContract.IntentStrings.TYPE, CometChatConstants.MESSAGE_TYPE_TEXT);
         } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_IMAGE) ||

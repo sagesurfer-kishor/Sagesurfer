@@ -115,7 +115,7 @@ public class CometChatAdminModeratorListScreen extends Fragment {
             toolbar.setTitle(getResources().getString(R.string.administrators));
             addAs.setText(getResources().getString(R.string.add_as_admin));
         }
-        adapter = new GroupMemberAdapter(getContext(), members, null);
+        adapter = new GroupMemberAdapter(getContext(), members,null);
         adminList.setAdapter(adapter);
         if (loggedInUserScope != null && loggedInUserScope.equals(CometChatConstants.SCOPE_ADMIN)) {
             rlAddMember.setVisibility(View.VISIBLE);

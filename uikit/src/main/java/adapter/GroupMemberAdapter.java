@@ -12,14 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.models.GroupMember;
-import com.cometchat.pro.models.TypingIndicator;
 import com.cometchat.pro.uikit.R;
 import com.cometchat.pro.uikit.databinding.UserListRowBinding;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import screen.CometChatGroupDetailScreenActivity;
 import utils.FontUtils;
 import utils.Utils;
 
@@ -57,12 +56,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         fontUtils=FontUtils.getInstance(context);
     }
 
-    /**
-     * It is constructor which takes groupMemberList as parameter and bind it with groupMemberList in adapter.
-     *
-     * @param context is a object of Context.
-     * @param groupMemberList is a list of group member used in this adapter.
-     */
+
     public GroupMemberAdapter(Context context, List<GroupMember> groupMemberList, String groupOwnerId) {
         this.groupMemberList = groupMemberList;
         this.groupOwnerId = groupOwnerId;
@@ -70,6 +64,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         fontUtils=FontUtils.getInstance(context);
 
     }
+
 
     @NonNull
     @Override

@@ -64,6 +64,7 @@
                 <TextView
                     android:id="@+id/tv_textMessage"
                     android:textStyle="bold"
+                    android:textColor="@color/primaryTextColor"
                     tools:text="@string/loremIpsum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

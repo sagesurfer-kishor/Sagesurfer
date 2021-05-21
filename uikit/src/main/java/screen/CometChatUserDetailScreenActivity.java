@@ -90,7 +90,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
     private NestedScrollView nested_scrollview;
 
-    private LinearLayout historyView;
+    private LinearLayout historyView,layout_shared_media;
 
     private RecyclerView historyRv;
 
@@ -103,7 +103,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
     private boolean inProgress;
 
     private boolean fromCallList;
-
+    private LinearLayout preference_layout,other_layout;
     private View divider1,divider2,divider3,divider4;
 
     private List<BaseMessage> callList = new ArrayList<>();
@@ -118,6 +118,7 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
 
     private void initComponent() {
         historyView = findViewById(R.id.history_view);
+        layout_shared_media = findViewById(R.id.layout_shared_media);
         historyRv = findViewById(R.id.history_rv);
         userAvatar = findViewById(R.id.iv_user);
         userName = findViewById(R.id.tv_name);
@@ -135,6 +136,8 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
         divider3 = findViewById(R.id.divider_3);
         divider4 = findViewById(R.id.divider_4);
         nested_scrollview = findViewById(R.id.nested_scrollview);
+        preference_layout = findViewById(R.id.preference_layout);
+        other_layout = findViewById(R.id.other_layout);
 
         setSupportActionBar(toolbar);
          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -313,7 +316,14 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
             addBtn.setVisibility(View.GONE);
             historyRv.setVisibility(View.VISIBLE);
             historyView.setVisibility(View.VISIBLE);
+            preference_layout.setVisibility(View.GONE);
+            layout_shared_media.setVisibility(View.GONE);
+            other_layout.setVisibility(View.GONE);
             Log.i(TAG, "handleIntent: from missed call ");
+        }else{
+            historyRv.setVisibility(View.GONE);
+            historyView.setVisibility(View.GONE);
+            addBtn.setVisibility(View.GONE);
         }
     }
 

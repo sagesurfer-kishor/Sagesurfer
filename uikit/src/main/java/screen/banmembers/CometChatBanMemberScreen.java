@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -24,12 +25,19 @@ import com.cometchat.pro.models.GroupMember;
 import com.cometchat.pro.uikit.R;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import adapter.GroupMemberAdapter;
 import constant.StringContract;
 import listeners.ClickListener;
 import listeners.RecyclerTouchListener;
+import okhttp3.RequestBody;
+import screen.messagelist.General;
+import screen.messagelist.NetworkCall_;
+import screen.messagelist.Preferences;
+import screen.messagelist.Urls_;
 
 public class CometChatBanMemberScreen extends Fragment {
     private BannedGroupMembersRequest bannedGroupMembersRequest;
@@ -40,6 +48,7 @@ public class CometChatBanMemberScreen extends Fragment {
     private RecyclerView bannedMemberRv;
     private int LIMIT = 30;
     private GroupMember groupMember;
+    private static final String TAG = "CometChatBanMemberScree";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,6 +138,8 @@ public class CometChatBanMemberScreen extends Fragment {
                 if (bannedMemberRv!=null)
                     Snackbar.make(bannedMemberRv,String.format(getResources().getString(R.string.member_unbanned_success),groupMember.getName(),gName),Snackbar.LENGTH_LONG).show();
                 groupMemberAdapter.removeGroupMember(groupMember);
+                /*Add member in the current group first then add in the server*/
+                addMemberToGroup("unblock_member", guid, groupMember.getUid());
             }
 
             @Override
@@ -137,5 +148,48 @@ public class CometChatBanMemberScreen extends Fragment {
                     Snackbar.make(bannedMemberRv,String.format(getResources().getString(R.string.unban_error),groupMember.getName()),Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void addMemberToGroup(String unblock_member, String GUID, String UID){
+        List<GroupMember> userList = new ArrayList<>();
+        userList.add(new GroupMember(UID, CometChatConstants.SCOPE_PARTICIPANT));
+
+        CometChat.addMembersToGroup(GUID, userList, null, new CometChat.CallbackListener<HashMap<String, String>>() {
+            @Override
+            public void onSuccess(HashMap<String, String> stringStringHashMap) {
+                //
+                //invite(action, uid, GUID, reciveverId, rec, position);
+                unblockedMember(unblock_member, GUID, UID);
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void unblockedMember(String action, String gId, String uId) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, action);
+        requestMap.put(General.GROUP_ID, gId);
+        requestMap.put(General.USER_ID, uId);
+
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getActivity());
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, getActivity());
+                if (response != null) {
+                    Log.i(TAG, "unblockedMember: success");
+                    Toast.makeText(getActivity(), "unblocked user Successfully", Toast.LENGTH_LONG).show();
+                    //teamList.remove(position);
+                    //notifyDataSetChanged();
+                }
+            } catch (Exception e) {
+                Log.i(TAG, "unblockedMember: onError "+e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_margin="5dp"
+    android:background="@drawable/message_rounded_border"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:id="@+id/group_member_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:padding="5dp">
+
+        <com.cometchat.pro.uikit.Avatar
+            android:id="@+id/groupMember_list_item_photo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:contentDescription="TODO"
+            android:padding="5dp"
+            android:src="@drawable/group_member_blue" />
+
+        <ImageView
+            android:id="@+id/friend_list_item_status_icon"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="TODO"
+            android:padding="1dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@+id/group_member_image"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/txtGroupmemberName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="Name"
+            android:padding="10dp"
+            android:textColor="#212121"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_weight="7"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/Removemember"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:src="@drawable/gro_sha"
+                android:textSize="12sp"
+                />
+
+            <ImageView
+                android:id="@+id/blockedMember"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:src="@drawable/ic_block_24dp"
+                android:textSize="12sp"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/lv_info"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="#CCCCCC" />
+</RelativeLayout>

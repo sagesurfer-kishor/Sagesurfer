@@ -370,12 +370,10 @@ public class FragmentCometchatGroupsList extends Fragment {
                 String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
                 if (response != null) {
                     Log.e("groups", response);
-
                     primaryGroupList = GroupTeam_.parseTeams(response, "get_groups_cometchat", getActivity(), TAG);
                     for (GetGroupsCometchat item : primaryGroupList){
                         Log.i(TAG, "getGroups: "+item.getName() +" GroupId "+item.getGroupId() +" isMember "+item.getIs_member());
                     }
-
                     searchGroupList.clear();
                     searchGroupList.addAll(primaryGroupList);
                     cardview_actions.setVisibility(View.VISIBLE);
@@ -447,7 +445,7 @@ public class FragmentCometchatGroupsList extends Fragment {
                 Log.e(TAG, "getUnreadMessageCountList: checking GID " + item.getGroupId() + "  list size" + primaryGroupList.size());*/
 
             //getUnreadmessagesForParticularGroup
-            CometChat.getUnreadMessageCountForGroup("670270470", new CometChat.CallbackListener<HashMap<String, Integer>>() {
+            CometChat.getUnreadMessageCountForGroup("", new CometChat.CallbackListener<HashMap<String, Integer>>() {
                 @Override
                 public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
                     Log.e(TAG, "onSuccess: cometchat groupId " + stringIntegerHashMap.get("670270470"));    //getting null values for group
@@ -1014,7 +1012,7 @@ public class FragmentCometchatGroupsList extends Fragment {
         intent.putExtra(StringContract.IntentStrings.NAME, name);
         intent.putExtra(StringContract.IntentStrings.GUID, groupId);
         intent.putExtra(StringContract.IntentStrings.GROUP_OWNER, ownerId);
-        intent.putExtra(StringContract.IntentStrings.AVATAR, "https://designstaging.sagesurfer.com/static//avatar/thumb/man.jpg");
+        intent.putExtra(StringContract.IntentStrings.AVATAR, "https://designstagingtest.sagesurfer.com/static/avatar/thumb/man.jpg");
         intent.putExtra(StringContract.IntentStrings.GROUP_TYPE, GroupType);
         intent.putExtra(StringContract.IntentStrings.MEMBER_COUNT, memberCount);
         intent.putExtra(StringContract.IntentStrings.GROUP_DESC, "");
@@ -1129,7 +1127,6 @@ public class FragmentCometchatGroupsList extends Fragment {
         }
     }*/
 
-
     /*public void prepareForDialog(GetGroupsCometchat group, int position, String provider, ArrayList<GetGroupsCometchat> mySearchList) {
         Log.i(TAG, "getUserDetails:  online");
         if (provider.equals("provider")) {
@@ -1186,6 +1183,4 @@ public class FragmentCometchatGroupsList extends Fragment {
             }
         }
     }*/
-
-
 }

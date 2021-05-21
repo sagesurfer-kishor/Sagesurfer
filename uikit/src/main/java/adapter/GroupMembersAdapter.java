@@ -1,4 +1,4 @@
-package com.sagesurfer.adapters;
+package adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,12 +19,8 @@ import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.GroupMember;
 import com.cometchat.pro.uikit.Avatar;
-import com.modules.cometchat_7_30.FragmentCometchatGroupsList;
-import com.sagesurfer.collaborativecares.R;
-import com.sagesurfer.constant.General;
-import com.sagesurfer.network.NetworkCall_;
-import com.sagesurfer.network.Urls_;
-import com.storage.preferences.Preferences;
+import com.cometchat.pro.uikit.R;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,17 +28,21 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import okhttp3.RequestBody;
+import screen.messagelist.General;
+import screen.messagelist.NetworkCall_;
+import screen.messagelist.Preferences;
+import screen.messagelist.Urls_;
 
-class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyViewHolder> {
+public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyViewHolder> {
 
     private final Context mContext;
-    private static final String TAG = FragmentCometchatGroupsList.class.getSimpleName();
-    String adminUid = "";
 
+    String adminUid = "";
+    private static final String TAG = "GroupMembersAdapter";
     RecyclerView recyclerView;
     public List<GroupMember> groupMemberArrayList = new ArrayList<>();
 
-    GroupMembersAdapter(Context mContext, List<GroupMember> groupMemberArrayList) {
+    public GroupMembersAdapter(Context mContext, List<GroupMember> groupMemberArrayList) {
         this.mContext = mContext;
         this.groupMemberArrayList = groupMemberArrayList;
 
@@ -77,7 +77,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group_members, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group_member, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -125,7 +125,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
                             CometChat.banGroupMember(uid, GUID, new CometChat.CallbackListener<String>() {
                                 @Override
                                 public void onSuccess(String successMessage) {
-                                    Log.d(TAG, "Group member banned successfully");
+
                                     String action = "block_member";
                                     String UserId = uid;
 
@@ -212,7 +212,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
 
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
-        requestMap.put(General.BLOCK_USER_ID, userId);
+        requestMap.put(General.USER_ID, userId);
         requestMap.put(General.GROUP_ID, gId);
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
 
@@ -233,7 +233,6 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
     }
 
     private void DeleteMember(String action, String userId, String gId, String memberIds, int position) {
-
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put(General.USER_ID, userId);

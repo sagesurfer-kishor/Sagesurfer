@@ -67,8 +67,6 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
         setContentView(R.layout.activity_cometchat_message_list);
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
-        Log.i(TAG, "onCreate: tabs -> "+getIntent().getStringExtra(StringContract.IntentStrings.TABS));
-
         if (getIntent() != null) {
             Bundle bundle = new Bundle();
             bundle.putString(StringContract.IntentStrings.AVATAR, getIntent().getStringExtra(StringContract.IntentStrings.AVATAR));
@@ -77,6 +75,13 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
             bundle.putString(StringContract.IntentStrings.TIME_ZONE, getIntent().getStringExtra(StringContract.IntentStrings.TYPE));
            // Preferences.save(General.USER_ID,getIntent().getStringExtra(General.USER_ID));
             //checked type is user or group
+
+            Log.i(TAG, "onCreate: tabs -> "+getIntent().getStringExtra(StringContract.IntentStrings.TABS));
+            Log.i(TAG, "onCreate: name -> "+getIntent().getStringExtra(StringContract.IntentStrings.NAME));
+            Log.i(TAG, "onCreate: avtar -> "+getIntent().getStringExtra(StringContract.IntentStrings.AVATAR));
+            Log.i(TAG, "onCreate: type -> "+getIntent().getStringExtra(StringContract.IntentStrings.TYPE));
+
+
             if (getIntent().hasExtra(StringContract.IntentStrings.TYPE) && getIntent().getStringExtra(StringContract.IntentStrings.TYPE).equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                 bundle.putString(StringContract.IntentStrings.SENDER_ID, getIntent().getStringExtra(StringContract.IntentStrings.SENDER_ID));
                 bundle.putString(StringContract.IntentStrings.STATUS, getIntent().getStringExtra(StringContract.IntentStrings.STATUS));
@@ -84,6 +89,7 @@ public class CometChatMessageListActivity extends AppCompatActivity implements M
                 bundle.putString("teamId", getIntent().getStringExtra("teamId"));
 
                 Log.e(TAG, "onCreate: UID"+getIntent().getStringExtra(StringContract.IntentStrings.UID) );
+                Log.e(TAG, "onCreate: teamId"+getIntent().getStringExtra("teamId") );
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("UserIds", getIntent().getStringExtra(StringContract.IntentStrings.UID));
                 editor.putString("types", getIntent().getStringExtra(StringContract.IntentStrings.TYPE));

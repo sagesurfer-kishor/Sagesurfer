@@ -133,9 +133,9 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
                      Id = getIntent().getStringExtra(StringContract.IntentStrings.UID);
              }
              Log.i(TAG, "onCreate: tabs"+getIntent().getStringExtra(StringContract.IntentStrings.TABS));
-             if (getIntent().hasExtra(StringContract.IntentStrings.TABS))
+             if (getIntent().hasExtra(StringContract.IntentStrings.TABS)) {
                  tabs = getIntent().getStringExtra(StringContract.IntentStrings.TABS);
-
+             }
              bundle.putString(StringContract.IntentStrings.ID,Id);
              bundle.putString(StringContract.IntentStrings.CONVERSATION_NAME,conversationName);
              bundle.putString(StringContract.IntentStrings.TYPE,type);

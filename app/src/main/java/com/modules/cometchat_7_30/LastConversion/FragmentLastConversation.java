@@ -37,7 +37,6 @@ import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.Conversation;
 import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.User;
-import com.cometchat.pro.uikit.Avatar;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
@@ -50,7 +49,6 @@ import com.sagesurfer.secure.GroupTeam_;
 import com.storage.preferences.Preferences;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -215,16 +213,16 @@ public class FragmentLastConversation extends Fragment {
         conversationsRequest.fetchNext(new CometChat.CallbackListener<List<Conversation>>() {
             @Override
             public void onSuccess(List<Conversation> conversations) {
-                try {
+
                     for (Conversation conversation : conversations) {
                         if (conversation.getConversationType().equals("user")) {
                             Log.i(TAG, "onSuccess: team_logs_id ---"+conversation);
-                            if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equalsIgnoreCase("0")) {
+                            //if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equalsIgnoreCase("0")) {
                                 conversationList.add(conversation);
                                 Log.i(TAG, "onSuccess: equals to zero" +((User) conversation.getConversationWith()).getName());
-                            } else {
+                            //} else {
                                 Log.i(TAG, "onSuccess: !=0 ---->" + ((User) conversation.getConversationWith()).getName());
-                            }
+                            //}
                         } else if (conversation.getConversationType().equals("group")) {
                             conversationList.add(conversation);
                         }
@@ -251,9 +249,7 @@ public class FragmentLastConversation extends Fragment {
                         });
 
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
             }
 
             @Override
@@ -323,7 +319,8 @@ public class FragmentLastConversation extends Fragment {
             }
         }
     }
-
+    /*In last conversation if user click on any user then this method will invoke
+    * added by rahul maske*/
     public void onUserClickPerform(Conversation conversation) {
         String allProvidersString = Preferences.get("providers");
         String ProviderIds[] = allProvidersString.split(",");
@@ -370,6 +367,9 @@ public class FragmentLastConversation extends Fragment {
         }
     }
 
+    /*This method is to check if the provider is offline and it will check its available time on server
+    * this is for user click event in this class there is group click event is also
+    * */
     private void checkProviderAvailableTime(String receiver_id, Conversation conversation) {
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
@@ -392,7 +392,7 @@ public class FragmentLastConversation extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray provider_time_check_in_db = jsonObject.getJSONArray("provider_time_check_in_db");
                     String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
-                    showDialog(success, conversation);
+                    showDialogForUsers(success, conversation);
                 } else {
                     Log.i(TAG, "checkProviderAvailableTime:  null  ");
                 }
@@ -405,7 +405,9 @@ public class FragmentLastConversation extends Fragment {
         }
     }
 
-    private void showDialog(String success, Conversation conversation) {
+    /*User related functionality
+    *This show message is for user not for user related functionality */
+    private void showDialogForUsers(String success, Conversation conversation) {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getActivity());
         String message;
@@ -441,7 +443,11 @@ public class FragmentLastConversation extends Fragment {
         alert.setTitle("Alert Notification");
         alert.show();
     }
-
+    /* User related functionality
+    *In this method we will get all the members list and we will match that member with clicked member and then if it matched
+    * then that member has set availability time authority
+    * then we will check its status and  if this member is online then we will send directly to the chat screen
+    * else we will check its available from calling checkOtherMemberAvailable() method */
     private void checkMemberList(Conversation conversation) {
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
@@ -501,6 +507,8 @@ public class FragmentLastConversation extends Fragment {
         }
     }
 
+    /* User related functionality need to check
+     * checkOtherMemberAvailable for userclick functionality  */
     private void checkOtherMemberAvailable(Conversation conversation) {
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
@@ -537,7 +545,7 @@ public class FragmentLastConversation extends Fragment {
                         getActivity().startActivity(intent);
                         progressBar.setVisibility(View.GONE);
                     } else {
-                        showDialog(success, conversation);
+                        showDialogForUsers(success, conversation);
                     }
                 } else {
                     Log.i(TAG, "checkOtherMemberAvailable:  null  ");
@@ -678,7 +686,7 @@ public class FragmentLastConversation extends Fragment {
                                                     gotMemberCountOnlineStatus = 0;
                                                     arrayListUsers.clear();
                                                     String message = "Some group members may not be available to review your message. Please call 911 for emergency issues. \nStill you want to leave a message?";
-                                                    showDialog(message, conversation);
+                                                    showDialogGroup(message, group, searchGroupList, conversation);
                                                     //openActivity(gName, groupIds, groupType, ownerId, memberCount, "", sbGroupMemberIds);
                                                     break outerLoop;
                                                 }
@@ -915,4 +923,56 @@ public class FragmentLastConversation extends Fragment {
         intent.putExtra(StringContract.IntentStrings.ALL_MEMBERS_STRING, "" + groupMembersId);
         getActivity().startActivity(intent);
     }
+
+    /*private void showDialogForGroup(String success, Conversation conversation) {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(getActivity());
+        String message;
+        if (success.equalsIgnoreCase("success") || success.equalsIgnoreCase("fail")) {
+            message = "Are you sure you want chat with provider?";
+        } else {
+            message = success;
+        }
+        builder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
+
+                        ((Group) conversation.getConversationWith()).getName()
+                        intent.putExtra(StringContract.IntentStrings.NAME, (((Group) conversation.getConversationWith()).getName()));
+                        intent.putExtra(StringContract.IntentStrings.GUID, (((Group) conversation.getConversationWith()).getGuid()));
+                        intent.putExtra(StringContract.IntentStrings.AVATAR, "https://designstaging.sagesurfer.com/static//avatar/thumb/man.jpg");
+                        intent.putExtra(StringContract.IntentStrings.STATUS, (((User) conversation.getConversationWith()).getStatus()));
+                        intent.putExtra(StringContract.IntentStrings.TABS, "1");
+
+                        intent.putExtra(StringContract.IntentStrings.TYPE, "group");
+                        intent.putExtra(StringContract.IntentStrings.GROUP_OWNER, ((Group) conversation.getConversationWith()).getOwner());
+                        intent.putExtra(StringContract.IntentStrings.AVATAR, "https://designstaging.sagesurfer.com/static//avatar/thumb/man.jpg");
+                        intent.putExtra(StringContract.IntentStrings.GROUP_TYPE, ((Group) conversation.getConversationWith()).getGroupType());
+                        intent.putExtra(StringContract.IntentStrings.MEMBER_COUNT, ((Group) conversation.getConversationWith()).getMembersCount());
+                        intent.putExtra(StringContract.IntentStrings.GROUP_DESC, "");
+                        intent.putExtra(StringContract.IntentStrings.GROUP_PASSWORD, ((Group) conversation.getConversationWith()).getPassword());
+                        intent.putExtra(StringContract.IntentStrings.TABS, "2");
+                        intent.putExtra(StringContract.IntentStrings.ALL_MEMBERS_STRING, "" + groupMembersId);
+
+
+
+
+                        getActivity().startActivity(intent);
+                        dialog.dismiss();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.setTitle("Alert Notification");
+        alert.show();
+    }*/
 }

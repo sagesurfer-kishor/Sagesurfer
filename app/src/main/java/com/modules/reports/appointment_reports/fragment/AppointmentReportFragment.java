@@ -79,7 +79,7 @@ public class AppointmentReportFragment extends Fragment {
     private WebView mWebServiceCount, mWebAppointmentSatisSurvey, mWebAppointmentStatus, mWebAppointmentAttend, mWebSatisfactionSurProgress;
 //    private String strEditText = "";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
@@ -1447,10 +1447,7 @@ public class AppointmentReportFragment extends Fragment {
     }
 
     //===== Webservice Calling END =====//
-
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-
     }
 
 
