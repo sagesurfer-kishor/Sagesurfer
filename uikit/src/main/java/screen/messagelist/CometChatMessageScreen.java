@@ -272,8 +272,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         editorCheckIntent.putBoolean("checkIntent", false);
         editorCheckIntent.putBoolean("checkedHighlightedGroup", true);
         editorCheckIntent.apply();
-
-
     }
 
     /**
@@ -1420,7 +1418,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             @Override
             public void onSuccess(List<BaseMessage> baseMessages) {
                 isInProgress = false;
-                Log.i(TAG, "onSuccess: baseMessages" + baseMessages);
+
+                for (BaseMessage bm : baseMessages){
+                    Log.i(TAG, "onSuccess: baseMessages "+bm);
+                }
                 List<BaseMessage> filteredMessageList = filterBaseMessages(baseMessages);
                 initMessageAdapter(filteredMessageList);
 
@@ -3551,6 +3552,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
             JSONObject jsonObject = new JSONObject();
             JSONObject replyObject = new JSONObject();
+            replyObject.put("replyToMessage",baseMessage);
             replyObject.put("type", "reply");
             if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
 //                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_TEXT);
@@ -3805,7 +3807,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     messageAdapter.setReplyMessage(message);
                 } else if (message.getReceiverType().equalsIgnoreCase("group")
                         && message.getReceiverUid().equalsIgnoreCase(SenderId)) {
-
                     Log.i(TAG, "onTextMessageReceived: group2");
                     onMessageReceived(message);
 
@@ -4002,17 +4003,20 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                             if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                                 if (SenderId != null && SenderId.equalsIgnoreCase(message.getSender().getUid())) {
                                     Log.i(TAG, "onMessageReceived: case 1 ");
-                                    if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
+                                    /*  this code is commenting and it was custom implementation for reply message which was receiving from ios
+                                    *   but later we ask this for cometchat and cometchat provided solution and the we have commented this code
+                                    * commented by rahul maske
+                                    if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*/
                                         //setMessage(message);
                                         filterTextMessage(message, "");
                                         //scrollToBottom();
-                                    }
+                                    //}
                                 } else if (SenderId != null && SenderId.equalsIgnoreCase(message.getReceiverUid())
                                         && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
-                                    if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
+                                    //if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
                                         setMessage(message);
                                         scrollToBottom();
-                                    }
+                                    //}
                                 }
                             }
                         }
@@ -4026,11 +4030,11 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 Log.i(TAG, "onMessageReceived: case 2 ");
                 try {
                     if (!metadata.has("team_logs_id")) {
-                        if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
+                        /*if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*/
                            /* setMessage(message);
                             scrollToBottom();*/
                             filterTextMessage(message, "");
-                        }
+                        /*}*/
                         Log.i(TAG, "onMessageReceived: groupcase setMessage");
                     }
                 } catch (Exception e) {
@@ -4048,16 +4052,16 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     if (!logss.isEmpty() && !logss.equals("0")) {
                         if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                             if (SenderId != null && SenderId.equalsIgnoreCase(message.getSender().getUid())) {
-                                if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
+                                /*if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*/
                                     /*setMessage(message);
                                     scrollToBottom();*/
                                     filterTextMessage(message, "");
-                                }
+                                /*}*/
                             } else if (SenderId != null && SenderId.equalsIgnoreCase(message.getReceiverUid()) && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
-                                if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
+                                /*if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*/
                                     setMessage(message);
                                     scrollToBottom();
-                                }
+                                /*}*/
                             }
                         }
                     }
@@ -4075,17 +4079,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     if (!logs.isEmpty() && !logs.equals("0")) {
                         if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                             if (SenderId != null && SenderId.equalsIgnoreCase(message.getSender().getUid())) {
-                                if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
+                                /*if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*/
                                     /*setMessage(message);
                                     scrollToBottom();*/
                                     filterTextMessage(message, "");
-                                }
+                                /*}*/
                             } else if (SenderId != null && SenderId.equalsIgnoreCase(message.getReceiverUid()) && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
 
-                                if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
+                                /*if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*/
                                     setMessage(message);
                                     scrollToBottom();
-                                }
+                                /*}*/
                             }
                         }
                     }
@@ -4123,10 +4127,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 message.setMetadata(customMetadata);
                 setMessage(message);
                 scrollToBottom();
-                Log.i(TAG, "checkIOSReplyOrNot: iosReply name" + message.getSender().getName());
-                Log.i(TAG, "checkIOSReplyOrNot: iosReply type " + message.getType());
-                Log.i(TAG, "checkIOSReplyOrNot: iosReply avtar " + message.getSender().getAvatar());
-                Log.i(TAG, "checkIOSReplyOrNot: iosReply message " + message.getMetadata().getString("message"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -4202,7 +4202,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                             JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
                             JSONArray translations = messageTranslationObject.getJSONArray("translations");
                             HashMap<String, String> translationsMap = new HashMap<String, String>();
-
                             /*for (int i = 0; i < translations.length(); i++) {
                                 JSONObject translation = translations.getJSONObject(i);
                                 String translatedText = translation.getString("message_translated");
@@ -4750,15 +4749,16 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             @Override
             public void onDeleteMessageClick() {
                 //deleteMessage(baseMessage);
-               /* if (tabs.equals("2")) {
+                if (tabs.equals("2")) {
                     deleteMessage(baseMessage);
                 } else {
                     onDeleteClickForFriendAndTeams("");
                 }
-                if (messageAdapter != null) {
-                   *//* if (type=="group"){
+
+                /*if (messageAdapter != null) {
+                    if (type=="group"){
                         baseMessage.get
-                    }*//*
+                    }
 
                     messageAdapter.clearLongClickSelectedItem();
                     messageAdapter.notifyDataSetChanged();

@@ -1086,5 +1086,8 @@
     <string name="from_time">From Time</string>
     <string name="to_time">To Time</string>
     <string name="channel_description">Sagesurfer channel</string>
+    <string name="Call_History">Call History</string>
+    <string name="set_available_time">Set Available Time</string>
+    <string name="blocked_member">Blocked Member</string>
 
 </resources>

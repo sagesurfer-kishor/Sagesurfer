@@ -86,9 +86,10 @@ public class TeamListFragment extends Fragment implements TeamListAdapter.TeamLi
 
         View view = inflater.inflate(R.layout.swipe_refresh_recycle_view_layout, null);
 
+        Log.i(TAG, "onCreateView: Team list from TeamListFragment");
         activity = getActivity();
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.teams));
-
+        
         cardViewActions = (CardView) view.findViewById(R.id.cardview_actions);
         cardViewActions.setVisibility(View.VISIBLE);
         et_Search = (EditText) view.findViewById(R.id.edittext_search);

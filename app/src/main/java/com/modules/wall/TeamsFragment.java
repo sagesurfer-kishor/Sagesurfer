@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import okhttp3.RequestBody;
 
 /**
  * Created by Kailash Karankal on 5/28/2019.
+ *
  */
 public class TeamsFragment extends Fragment {
 
@@ -60,7 +62,7 @@ public class TeamsFragment extends Fragment {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getActivity(), GetColor.getHomeIconBackgroundColorColorParse(false)));
-
+        Log.i(TAG, "onCreateView: Team list from Fragment");
         View view = inflater.inflate(R.layout.list_view_layout, null);
 
         activity = getActivity();

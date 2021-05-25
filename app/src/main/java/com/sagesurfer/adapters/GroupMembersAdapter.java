@@ -84,7 +84,6 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         GroupMember teams_ = groupMemberArrayList.get(position);
-
         String uId = teams_.getUid().split(Pattern.quote("_"))[0];
         String scope = teams_.getScope();
 
@@ -112,11 +111,16 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
         holder.userAvatar.setAvatar(teams_.getAvatar());
 
         holder.blockuser.setOnClickListener(view -> {
+            Log.i(TAG, "onBindViewHolder: id of the user " + groupMemberArrayList.get(position).getUid());
+            Log.i(TAG, "onBindViewHolder: id of the user " + teams_.getUid());
+            String[] arrayId= teams_.getUid().split("_");
+            Log.i(TAG, "onBindViewHolder: id of the user " + groupMemberArrayList.get(position).getUid());
+            Log.i(TAG, "onBindViewHolder: id of the blocked user " + arrayId[0]);
+            Log.i(TAG, "onBindViewHolder: id of the group id " + Preferences.get("gId"));
             String uid = groupMemberArrayList.get(position).getUid();
             String GUID = Preferences.get("gId");
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(mContext);
-
             //Setting message manually and performing action on button click
             builder.setMessage("Do you want to Ban this member?")
                     .setCancelable(false)
@@ -125,12 +129,9 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
                             CometChat.banGroupMember(uid, GUID, new CometChat.CallbackListener<String>() {
                                 @Override
                                 public void onSuccess(String successMessage) {
-                                    Log.d(TAG, "Group member banned successfully");
+                                    Log.d(TAG, "Group member banned successfully ");
                                     String action = "block_member";
-                                    String UserId = uid;
-
-                                    blockMember(action, UserId, GUID, position);
-
+                                    blockMemberOnServer(action, arrayId[0], GUID, position);
                                     dialog.dismiss();
                                 }
 
@@ -208,12 +209,14 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
         return groupMemberArrayList.size();
     }
 
-    private void blockMember(String action, String userId, String gId, int position) {
-
+    /*  ban member from group and this update we are also storing on server so that we can get right data when we fetch data from server
+    *   first we ban group member from cometchat and then we ban member form server also*/
+    private void blockMemberOnServer(String action, String userId, String gId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put(General.BLOCK_USER_ID, userId);
         requestMap.put(General.GROUP_ID, gId);
+        requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
 
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, mContext);
@@ -222,7 +225,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
                 String response = NetworkCall_.post(url, requestBody, TAG, mContext);
                 Log.e("blockMember ", response);
                 if (response != null) {
-                    Toast.makeText(mContext, "Blocked member successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Member banned successfully", Toast.LENGTH_LONG).show();
                     groupMemberArrayList.remove(position);
                     notifyDataSetChanged();
                 }
@@ -231,9 +234,8 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
             }
         }
     }
-
+    /*Delete functionality for the group created by owner and owner can delete that group*/
     private void DeleteMember(String action, String userId, String gId, String memberIds, int position) {
-
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put(General.USER_ID, userId);
@@ -256,6 +258,5 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
             }
         }
     }
-
 }
 

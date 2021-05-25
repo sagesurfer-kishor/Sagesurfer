@@ -4,28 +4,33 @@
     >
     <item
         android:id="@+id/menu_block_member"
-        android:title="Blocked Member"
+        android:title="@string/blocked_member"
         android:icon="@drawable/blue_close"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/menu_change_language"
-        android:title="Change Language"
+        android:title="@string/change_language"
         android:icon="@drawable/blue_close"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/chatt_icon"
         android:icon="@drawable/chatt_iconn"
-        android:title="Last Conversation"
+        android:title="@string/last_conversation"
         app:showAsAction="always" />
+
     <item
         android:id="@+id/set_available_time"
-        android:title="Set Available Time"
+        android:title="@string/set_available_time"
         android:visible="false"
         android:icon="@drawable/available_time_icon"
         app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/call_history"
-        android:title="Call History"
+        android:title="@string/Call_History"
         app:showAsAction="ifRoom"
         />
+
 </menu>

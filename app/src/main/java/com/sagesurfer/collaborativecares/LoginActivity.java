@@ -1026,7 +1026,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String response = null;
         try {
             response = new PerformServerTask(this).execute(getApplicationContext()).get();
-            Log.e(TAG, "getServers: "+response.toString() );
+//            Log.e(TAG, "getServers: "+response.toString() );
            JSONObject jsonObject=new JSONObject(response);
            JSONArray jsonArray=jsonObject.getJSONArray("instances");
            for(int i=0; i<jsonArray.length(); i ++){

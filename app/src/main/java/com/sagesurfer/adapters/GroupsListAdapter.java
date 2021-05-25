@@ -729,7 +729,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         GroupMembersRequest groupMembersRequest = null;
         String GUID = groupId;
         int limit = 30;
-
         groupMembersRequest = new GroupMembersRequest.GroupMembersRequestBuilder(GUID)
                 .setLimit(limit).build();
         groupMembersRequest.fetchNext(new CometChat.CallbackListener<List<GroupMember>>() {
