@@ -1555,7 +1555,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                     if (baseMessage.getType().equals("text")) {
                                         if (metadata != null && baseMessage.getEditedAt() != 0) {
                                             /*Here we are marking message as deleted so that user can check that it is deleted */
-//                                            Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                            //Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
                                             if (metadata.has("deleted_one_to_one")) {
                                                 if (metadata.getString("deleted_one_to_one").equals("0")) {
                                                     baseMessage.setDeletedAt(12345);
@@ -1720,8 +1720,14 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                         }
 
                                     } else if (baseMessage.getType().equals("image")) {
-
-                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION) || baseMessage.getDeletedAt() != 0) {
+                                        if (baseMessage.getEditedAt()!=0){
+                                             if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                                 tempList.add(baseMessage);
+                                        }
+                                        }else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION) || baseMessage.getDeletedAt() != 0) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
                                                     action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
@@ -1733,7 +1739,13 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                             tempList.add(baseMessage);
                                         }
                                     } else if (baseMessage.getType().equals("file")) {
-                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                        if (baseMessage.getEditedAt()!=0){
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            }
+                                        }else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
                                                     action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
@@ -1745,7 +1757,13 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                             tempList.add(baseMessage);
                                         }
                                     } else if (baseMessage.getType().equals("audio")) {
-                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                        if (baseMessage.getEditedAt()!=0){
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            }
+                                        }else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
                                                     action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
@@ -1756,7 +1774,13 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                             tempList.add(baseMessage);
                                         }
                                     } else if (baseMessage.getType().equals("video")) {
-                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                        if (baseMessage.getEditedAt()!=0){
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            }
+                                        }else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
                                                     action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
@@ -1766,7 +1790,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                         } else {
                                             tempList.add(baseMessage);
                                         }
-                                    } else {
+                                     } else {
                                         if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -1785,9 +1809,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         } else {
                             Log.i(TAG, "filterBaseMessages: message id " + baseMessage.getId());
                         }
-
-
-                    } else if (baseMessage.getCategory().equals("call")) {
+                    }
+                    else if (baseMessage.getCategory().equals("call")) {
                         int team_log;
                         try {
                             // team_log = metadata.getInt("team_logs_id");
@@ -1835,7 +1858,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         }
 
 
-                    } else {
+                    }else {
                         Log.e(TAG, "filterBaseMessages: " + baseMessage.toString());
                         if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                             Action action = ((Action) baseMessage);
@@ -2000,7 +2023,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                             }
 
                         } else if (baseMessage.getType().equals("image")) {
-
+                            if (baseMessage.getEditedAt()!=0){
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }else
                             if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                 Action action = ((Action) baseMessage);
                                 if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2013,7 +2046,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                             }
 
                         } else if (baseMessage.getType().equals("file")) {
-
+                            if (baseMessage.getEditedAt()!=0){
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }else
                             if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                 Action action = ((Action) baseMessage);
                                 if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2025,6 +2068,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                 tempList.add(baseMessage);
                             }
                         } else if (baseMessage.getType().equals("audio")) {
+                            if (baseMessage.getEditedAt()!=0){
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }else
                             if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                 Action action = ((Action) baseMessage);
                                 if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2037,6 +2091,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                             }
 
                         } else if (baseMessage.getType().equals("video")) {
+                            if (baseMessage.getEditedAt()!=0){
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }else
                             if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                 Action action = ((Action) baseMessage);
                                 if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2048,7 +2113,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                 tempList.add(baseMessage);
                             }
                         } else {
-
+                            if (baseMessage.getEditedAt()!=0){
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }else
                             if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                 Action action = ((Action) baseMessage);
                                 if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2139,9 +2214,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                             }
                             team_log = metadata.getString("team_logs_id");
                             String underscoreSplittedArray[] = team_log.split(Pattern.quote("_"));
-
                             Log.e("tabs case 3", String.valueOf(underscoreSplittedArray.length));
-
                             if (underscoreSplittedArray.length == 3 || underscoreSplittedArray.length == 4) {
                                 String[] underscoreDashSplittedArray = team_log.split("_-");
                                 String part2 = underscoreDashSplittedArray[1];
@@ -2265,7 +2338,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                             }
                                         }
                                     } else if (baseMessage.getType().equals("image")) {
-
+                                        if (baseMessage.getEditedAt()!=0){
+                                        if (metadata.has("deleted_one_to_one")) {
+                                            try {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }else
                                         if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2278,7 +2361,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                         }
 
                                     } else if (baseMessage.getType().equals("file")) {
-
+                                        if (baseMessage.getEditedAt()!=0){
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                try {
+                                                    if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                        baseMessage.setDeletedAt(12345);
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }else
                                         if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2290,6 +2383,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                             tempList.add(baseMessage);
                                         }
                                     } else if (baseMessage.getType().equals("audio")) {
+                                        if (baseMessage.getEditedAt()!=0){
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                try {
+                                                    if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                        baseMessage.setDeletedAt(12345);
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }else
                                         if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2302,6 +2406,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                         }
 
                                     } else if (baseMessage.getType().equals("video")) {
+                                        if (baseMessage.getEditedAt()!=0){
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                try {
+                                                    if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                        baseMessage.setDeletedAt(12345);
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }else
                                         if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -2313,7 +2428,17 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                                             tempList.add(baseMessage);
                                         }
                                     } else {
-
+                                        if (baseMessage.getEditedAt()!=0){
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                try {
+                                                    if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                        baseMessage.setDeletedAt(12345);
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }else
                                         if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
                                             Action action = ((Action) baseMessage);
                                             if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
@@ -4780,7 +4905,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             @Override
             public void onDeleteMessageClick() {
                 //deleteMessage(baseMessage);
-                if (tabs.equals("2")) {
+                if (tabs.equals("2")/* || !baseMessage.getType().equals("text")*/) {
                     deleteMessage(baseMessage);
                 } else {
                     onDeleteClickForFriendAndTeams("");
@@ -5231,7 +5356,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         CometChat.editMessage(textMessage, new CometChat.CallbackListener<BaseMessage>() {
             @Override
             public void onSuccess(BaseMessage baseMessage1) {
-                Log.e(TAG, "onSuccess: edited message" + baseMessage1.toString());
+                Log.e(TAG, "onSuccess: onDeleteClickForFriendAndTeams" + baseMessage1.toString());
                 if (messageAdapter != null) {
                     try {
                         JSONObject body = new JSONObject();
@@ -5265,7 +5390,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
             @Override
             public void onError(CometChatException e) {
-                Log.d(TAG, "onError: " + e.getMessage());
+                Log.d(TAG, "onError: onDeleteClickForFriendAndTeams " + e.getMessage());
             }
         });
     }

@@ -54,7 +54,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
         this.conversationList = new ArrayList<>(conversationList);
         this.fullConversationList = new ArrayList<>(conversationList);
         this.al_unreadCountList = al_unreadCountList;
-        currentFragment=fragmentLastConversation;
+        currentFragment = fragmentLastConversation;
         this.fragment = fragment;
     }
 
@@ -69,59 +69,65 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Conversation conversation = conversationList.get(position);
         if (conversation.getConversationType().equals("user")) {
-                Log.i(TAG, "onBindViewHolder: metadata " + conversation.getLastMessage().getMetadata());
-                    holder.title.setText(((User) conversation.getConversationWith()).getName());
-                    if (conversation.getLastMessage().getType().equals("text")) {
-                        holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-
-                        if (((TextMessage) conversation.getLastMessage()).getText() != null) {
-                            holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
-                            holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
-                        }
-                    }else if (conversation.getLastMessage().getType().equalsIgnoreCase("image")
-                            || conversation.getLastMessage().getType().equalsIgnoreCase("file")
-                            || conversation.getLastMessage().getType().equalsIgnoreCase("audio")
-                            || conversation.getLastMessage().getType().equalsIgnoreCase("video")
-                            || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard") ){
-                        String type=(conversation.getLastMessage()).getType();
-                        holder.friend_list_item_statusmessage.setText(""+type);
-                        holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                        holder.messageTime.setText(Utils.getLastMessageDate(( conversation.getLastMessage()).getSentAt()));
-                    }else if(conversation.getLastMessage().getType().equals("call")){
-                        holder.friend_list_item_statusmessage.setText(""+conversation.getLastMessage().getType());
-                        holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                        holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
-                    }
-
-                    String status = ((User) conversation.getConversationWith()).getStatus();
-                   // String UID = ((User) conversation.getConversationWith()).getUid();
-                    int counter = conversation.getUnreadMessageCount();
-                    if (counter != 0) {
-                        holder.tv_counter.setVisibility(View.VISIBLE);
-                        holder.tv_counter.setText("" + counter);
-                    }
-                    if (status.equals("online")) {
-                        holder.activeUser.setImageResource(R.drawable.online_sta);
+            Log.i(TAG, "onBindViewHolder: metadata " + conversation.getLastMessage().getMetadata());
+            holder.title.setText(((User) conversation.getConversationWith()).getName());
+            if (conversation.getLastMessage().getType().equals("text")) {
+                holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                if (((TextMessage) conversation.getLastMessage()).getText() != null) {
+                    if (((TextMessage) conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
+                        holder.friend_list_item_statusmessage.setText("This message was deleted");
+                        holder.messageTime.setVisibility(View.GONE);
                     } else {
-                        holder.activeUser.setImageResource(R.drawable.offline_sta);
+                        holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
+                        holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
                     }
+                }
+            } else if (conversation.getLastMessage().getType().equalsIgnoreCase("image")
+                    || conversation.getLastMessage().getType().equalsIgnoreCase("file")
+                    || conversation.getLastMessage().getType().equalsIgnoreCase("audio")
+                    || conversation.getLastMessage().getType().equalsIgnoreCase("video")
+                    || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard")) {
+                String type = (conversation.getLastMessage()).getType();
+                holder.friend_list_item_statusmessage.setText("" + type);
+                holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+            } else if (conversation.getLastMessage().getType().equals("call")) {
+                holder.friend_list_item_statusmessage.setText("" + conversation.getLastMessage().getType());
+                holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+            }
 
-            if (conversation.getLastMessage().getMetadata().has("team_logs_id")) {
-                try {
-                    if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equalsIgnoreCase("0")
-                           /* || conversation.getLastMessage().getMetadata().getString("team_logs_id") != null*/) {
-                        Glide.with(mContext).load(((User) conversation.getConversationWith()).getAvatar()).into(holder.imgBan);
-                    } else {
-                        String team_logs_id=conversation.getLastMessage().getMetadata().getString("team_logs_id");
-                        String[] array=team_logs_id.split("_-");
-                        if (array[2].equalsIgnoreCase("3")) {
-                            holder.imgBan.setImageResource(R.drawable.team_iconn);
-                        } else if (array[2].equalsIgnoreCase("4")) {
-                            holder.imgBan.setImageResource(R.drawable.team_iconn);
+            String status = ((User) conversation.getConversationWith()).getStatus();
+            // String UID = ((User) conversation.getConversationWith()).getUid();
+            int counter = conversation.getUnreadMessageCount();
+            if (counter != 0) {
+                holder.tv_counter.setVisibility(View.VISIBLE);
+                holder.tv_counter.setText("" + counter);
+            }
+            if (status.equals("online")) {
+                holder.activeUser.setImageResource(R.drawable.online_sta);
+            } else {
+                holder.activeUser.setImageResource(R.drawable.offline_sta);
+            }
+
+            if (conversation.getLastMessage().getMetadata() != null) {
+                if (conversation.getLastMessage().getMetadata().has("team_logs_id")) {
+                    try {
+                        if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equalsIgnoreCase("0")
+                            /* || conversation.getLastMessage().getMetadata().getString("team_logs_id") != null*/) {
+                            Glide.with(mContext).load(((User) conversation.getConversationWith()).getAvatar()).into(holder.imgBan);
+                        } else {
+                            String team_logs_id = conversation.getLastMessage().getMetadata().getString("team_logs_id");
+                            String[] array = team_logs_id.split("_-");
+                            if (array[2].equalsIgnoreCase("3")) {
+                                holder.imgBan.setImageResource(R.drawable.team_iconn);
+                            } else if (array[2].equalsIgnoreCase("4")) {
+                                holder.imgBan.setImageResource(R.drawable.team_iconn);
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -130,24 +136,36 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
             if (conversation.getLastMessage() != null) {
                 Log.i(TAG, "onBindViewHolder: time" + conversation.getLastMessage().getDeliveredToMeAt());
                 if (conversation.getLastMessage().getType().equals("text")) {
-                    holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                    holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText());
-                    holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
-                }else if (conversation.getLastMessage().getType().equalsIgnoreCase("image")
+                    if (((TextMessage) conversation.getLastMessage()).getMetadata() != null) {
+                        if (((TextMessage) conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
+                            holder.friend_list_item_statusmessage.setText("This message was deleted");
+                            holder.messageTime.setVisibility(View.GONE);
+                        } else {
+                            holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                            holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
+                            holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
+                        }
+                    } /*else {
+                        holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                        holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText());
+                        holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
+                    }*/
+
+                } else if (conversation.getLastMessage().getType().equalsIgnoreCase("image")
                         || conversation.getLastMessage().getType().equalsIgnoreCase("file")
                         || conversation.getLastMessage().getType().equalsIgnoreCase("audio")
                         || conversation.getLastMessage().getType().equalsIgnoreCase("video")
-                        || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard") ){
-                    String type=(conversation.getLastMessage()).getType();
-                    holder.friend_list_item_statusmessage.setText(""+type);
+                        || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard")) {
+                    String type = (conversation.getLastMessage()).getType();
+                    holder.friend_list_item_statusmessage.setText("" + type);
                     holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                    holder.messageTime.setText(Utils.getLastMessageDate(( conversation.getLastMessage()).getSentAt()));
-                }else if(conversation.getLastMessage().getType().equals("call")){
-                    holder.friend_list_item_statusmessage.setText(""+conversation.getLastMessage().getType());
+                    holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+                } else if (conversation.getLastMessage().getType().equals("call")) {
+                    holder.friend_list_item_statusmessage.setText("" + conversation.getLastMessage().getType());
                     holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
                     holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
                 }
-            }else{
+            } else {
                 holder.friend_list_item_statusmessage.setText("Chat not initiated yet");
                 holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
             }
@@ -158,14 +176,14 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
             public void onClick(View view) {
                 Log.i(TAG, "onClick: conversation item");
                 try {
-                if (conversation.getConversationType().equals("user")) {
-                    fragment.progressBar.setVisibility(View.VISIBLE);
-                    String allProvidersString = Preferences.get("providers");
-                    Log.i(TAG, "onClick: provider array "+allProvidersString);
+                    if (conversation.getConversationType().equals("user")) {
+                        fragment.progressBar.setVisibility(View.VISIBLE);
+                        String allProvidersString = Preferences.get("providers");
+                        Log.i(TAG, "onClick: provider array " + allProvidersString);
                         fragment.onUserClickPerform(conversation);
-                }else{
-                    fragment.onGroupClickedPerform(conversation);
-                }
+                    } else {
+                        fragment.onGroupClickedPerform(conversation);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

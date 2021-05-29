@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -85,6 +87,7 @@ public class FragmentLastConversation extends Fragment {
     Activity activity;
     AlertDialog.Builder builder;
     AlertDialog alert;
+    String ClickedUserId;
     EditText ed_search_friend;
     ArrayList<User> arrayListUsers;
     int gotProviderCountOnlineStatus, gotMemberCountOnlineStatus;
@@ -95,8 +98,9 @@ public class FragmentLastConversation extends Fragment {
     ArrayList<Members_> membersArrayList_;
     List<String> arrayListProviderId = new ArrayList<>();
     ProgressBar progressBar;
-    String tabs;
+    String tabs, member_ids, provider_ids;
     SharedPreferences sp;
+
     public FragmentLastConversation() {
         // Required empty public constructor
     }
@@ -121,7 +125,6 @@ public class FragmentLastConversation extends Fragment {
                 getProvider();
             }
         };
-
         Thread threadGetProviders = new Thread(runnableGetProviders);
         threadGetProviders.start();
     }
@@ -218,13 +221,7 @@ public class FragmentLastConversation extends Fragment {
             public void onSuccess(List<Conversation> conversations) {
                 for (Conversation conversation : conversations) {
                     if (conversation.getConversationType().equals("user")) {
-                        Log.i(TAG, "onSuccess: team_logs_id ---" + conversation);
-                        //if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equalsIgnoreCase("0")) {
                         conversationList.add(conversation);
-                        Log.i(TAG, "onSuccess: equals to zero" + ((User) conversation.getConversationWith()).getName());
-                        //} else {
-                        Log.i(TAG, "onSuccess: !=0 ---->" + ((User) conversation.getConversationWith()).getName());
-                        //}
                     } else if (conversation.getConversationType().equals("group")) {
                         conversationList.add(conversation);
                     }
@@ -333,26 +330,231 @@ public class FragmentLastConversation extends Fragment {
         if (conversation.getLastMessage().getMetadata().has("team_logs_id")) {
             if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equals("0")) {
                 tabs = "1";
-                Log.i(TAG, "onUserClickPerform: tab 1"+tabs);
+                Log.i(TAG, "onUserClickPerform: tab 1" + tabs);
+                performActionForFriendUser(ProviderIds, conversation);
             } else {
-                String team_logs_id=conversation.getLastMessage().getMetadata().getString("team_logs_id");
-                String[] array=team_logs_id.split("_-");
+                String team_logs_id = conversation.getLastMessage().getMetadata().getString("team_logs_id");
+                String[] array = team_logs_id.split("_-");
                 if (array[2].equalsIgnoreCase("3")) {
                     tabs = "3";
-                    Log.i(TAG, "onUserClickPerform: tab 3"+tabs);
+                    Log.i(TAG, "onUserClickPerform: tab 3" + tabs);
                 } else if (array[2].equalsIgnoreCase("4")) {
                     tabs = "4";
-                    Log.i(TAG, "onUserClickPerform: tab 4"+tabs);
+                    Log.i(TAG, "onUserClickPerform: tab 4" + tabs);
                 }
-
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("membersIds", array[0]);
                 editor.putString("teamIds", array[1]);
                 editor.apply();
+                Log.i(TAG, "onUserClickPerform: Team id is " + array[1]);
+                performActionForTeamUser(array[1], conversation);
             }
         }
+    }
 
-        if (Arrays.asList(ProviderIds).contains(((User) conversation.getConversationWith()).getUid())) {
+    /*If clicked user is from friend then this method will invoke
+     *In this method we are going to get team member details to check user role and
+     * on the basis of that we will show the popup for the user like -> provider's or member's popup
+     * commented by rahul maske*/
+    private void performActionForTeamUser(String team_id, Conversation conversation) {
+        Runnable runnableUserArray = new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+                String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+                SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+                String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
+                String url = screen.messagelist.Urls_.MOBILE_COMET_CHAT_TEAMS;
+                HashMap<String, String> requestMap = new HashMap<>();
+                requestMap.put(screen.messagelist.General.ACTION, "get_team_members_array");
+                requestMap.put(screen.messagelist.General.TEAM_ID, team_id);
+                requestMap.put(screen.messagelist.General.USER_ID, UserId);
+                // Log.i(TAG, "onTeamClickFetchTeamData: User Id " + UserId);
+                RequestBody requestBody = screen.messagelist.NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
+                Log.i(TAG, "onTeamClickFetchTeamData: Domain " + DomainURL + url);
+                try {
+                    if (requestBody != null) {
+                        String response = screen.messagelist.NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
+                        if (response != null) {
+
+                            // Log.i(TAG, "onTeamClickFetchTeamData:  response " + response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray get_team_members_array = jsonObject.getJSONArray("get_team_members_array");
+                            member_ids = get_team_members_array.getJSONObject(0).getString("team_member_id");
+                            provider_ids = get_team_members_array.getJSONObject(0).getString("team_provider");
+                            Log.i(TAG, "run: team_member_ids " + member_ids + " providers_id " + provider_ids);
+                            onLastConversationListUserClicked(conversation, team_id);
+
+                        } else {
+                            // Log.i(TAG, "checkMemberList:  null  ");
+                        }
+                    } else {
+                        //Log.i(TAG, "checkMemberList:  null2");
+                    }
+                } catch (Exception e) {
+                    // Log.i(TAG, "checkMemberList: " + e.getMessage());
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        Thread thread = new Thread(runnableUserArray);
+        thread.start();
+    }
+
+    /*after clicking on my team member item this method will execute
+     * in this method we are fetching all
+     * added by rahul maske
+     *  */
+    public void onLastConversationListUserClicked(Conversation conversation, String team_id) {
+        Preferences.save(General.BANNER_IMG, "");
+        Preferences.save(General.TEAM_ID, team_id);
+        Preferences.save(General.TEAM_NAME, "");
+        ClickedUserId = ((User) conversation.getConversationWith()).getUid();
+        String[] ProviderArray = provider_ids.split(",");
+        String[] MemberArray = member_ids.split(",");
+        //((User) conversation.getConversationWith()).getName()
+        if (Arrays.asList(ProviderArray).contains(ClickedUserId)) {
+            //if user is provider
+            getUserTeamDetails(ClickedUserId, "provider", conversation,team_id);
+            Log.i(TAG, "onMemberRelativeLayoutClicked: this is provider --> " + ((User) conversation.getConversationWith()).getUid());
+        } else if (Arrays.asList(MemberArray).contains(ClickedUserId)) {
+            //if user is member selected by admin dashboard
+            getUserTeamDetails(ClickedUserId, "member", conversation,team_id);
+            Log.i(TAG, "onMemberRelativeLayoutClicked: This is member --> " + ClickedUserId);
+        } else {
+            //if user is normal user
+            Log.i(TAG, "onMemberRelativeLayoutClicked: ");
+            final String CometchatIdOfSender = ClickedUserId;
+            final String username = ((User) conversation.getConversationWith()).getName();
+            final String status =((User) conversation.getConversationWith()).getStatus();
+
+            /*openChatActivityForTeamUser("" + username,
+                    "" + CometchatIdOfSender,
+                    status,
+                    "" + String.valueOf(team_id));*/
+            //Send direct Inside chat screen
+
+            openChatActivityForTeamUser("" + username,
+                    "" + CometchatIdOfSender,
+                    status,
+                    "" + String.valueOf(team_id));
+        }
+    }
+
+    /*team user related method*/
+    public void getUserTeamDetails(String clickedUserId, String userType, Conversation conversation,String teamId) {
+        CometChat.getUser(clickedUserId, new CometChat.CallbackListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                Log.d(TAG, "getUserDetails -> user details : " + user.toString());
+                String statuss = user.getStatus();
+
+                if (statuss.equals("online")) {
+                    Log.i(TAG, "getUserDetails -> status if online -> " + statuss);
+                    if (userType.equalsIgnoreCase("provider")) {
+                        showProviderOnlineDialogForTeam(conversation, clickedUserId,teamId);
+                    } else {
+
+                        //Send direct Inside chat screen
+                        final String CometchatIdOfSender = String.valueOf(clickedUserId);
+                        final String username = ((User) conversation.getConversationWith()).getName();
+                        final String status =((User) conversation.getConversationWith()).getStatus();
+                        openChatActivityForTeamUser("" + username,
+                                "" + CometchatIdOfSender,
+                                status,
+                                "" + String.valueOf(teamId));
+
+                    }
+                } else {
+
+                    if (userType.equalsIgnoreCase("provider")) {
+                        Log.i(TAG, "getUserDetails -> status if offline  -> " + statuss);
+                        checkProviderAvailableTime(clickedUserId, conversation);
+                    } else {
+                        checkOtherMemberAvailable(conversation);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
+            }
+        });
+    }
+
+
+    private void showProviderOnlineDialogForTeam(Conversation conversation, String clickedUserId, String teamId) {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(getActivity());
+        //Setting message manually and performing action on button click
+        builder.setMessage("Are you sure you want chat with provider?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        final String CometchatIdOfSender = String.valueOf(clickedUserId);
+                        final String username = ((User) conversation.getConversationWith()).getName();
+                        final String status =((User) conversation.getConversationWith()).getStatus();
+                        Log.i(TAG, "onClick: CometchatIdOfSender " + CometchatIdOfSender + " username " + username + " status " + status + " team_.getId() "
+                                + "CometchatIdOfSender " + CometchatIdOfSender);
+
+                        openChatActivityForTeamUser("" + username,
+                                "" + CometchatIdOfSender,
+                                status,
+                                "" + String.valueOf(teamId));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Action for 'NO' Button
+                        dialog.cancel();
+                    }
+                });
+        //Creating dialog box
+        AlertDialog alert = builder.create();
+        //Setting the title manually
+        alert.setTitle("Alert Notification");
+        alert.show();
+    }
+
+    private void openChatActivityForTeamUser(String username, String userCometchatId, String status, String teamId) {
+        Handler handler=new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message message) {
+                Log.i(TAG, "handleMessage: "+message.getData());
+                Log.i(TAG, "handleMessage: "+message.getWhen());
+                progressBar.setVisibility(View.GONE);
+            }
+        };
+
+        Message message = handler.obtainMessage(1, teamId);
+        message.sendToTarget();
+
+        SharedPreferences sp = getActivity().getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("membersIds", userCometchatId);
+        editor.putString("teamIds", teamId);
+        editor.apply();
+        Intent intent = new Intent(getContext(), CometChatMessageListActivity.class);
+        intent.putExtra(StringContract.IntentStrings.NAME, username);
+        intent.putExtra(StringContract.IntentStrings.UID, userCometchatId);
+        intent.putExtra(StringContract.IntentStrings.STATUS, status);
+        intent.putExtra(StringContract.IntentStrings.TYPE, "user");
+        intent.putExtra("GID", Preferences.get(General.GROUP_ID));
+        intent.putExtra(StringContract.IntentStrings.TABS, tabs);
+        intent.putExtra("teamId", teamId);
+        intent.putExtra("membersIds", userCometchatId);
+        startActivity(intent);
+    }
+
+
+    /*If clicked user is from friend then this method will invoke
+     * commented by rahul maske*/
+    public void performActionForFriendUser(String[] providerIds, Conversation conversation) {
+        if (Arrays.asList(providerIds).contains(((User) conversation.getConversationWith()).getUid())) {
             Log.i(TAG, "performAdapterClick: 2");
             String status = ((User) conversation.getConversationWith()).getStatus();
             if (status.equalsIgnoreCase("online")) {
@@ -372,11 +574,13 @@ public class FragmentLastConversation extends Fragment {
                                 intent.putExtra(StringContract.IntentStrings.AVATAR, (((User) conversation.getConversationWith()).getAvatar()));
                                 intent.putExtra(StringContract.IntentStrings.STATUS, (((User) conversation.getConversationWith()).getStatus()));
                                 intent.putExtra(StringContract.IntentStrings.TABS, tabs);
-                                if (tabs.equalsIgnoreCase("3") || tabs.equalsIgnoreCase("4")){
-                                    intent.putExtra("teamId", sp.getString("membersIds",null));
-                                    intent.putExtra("membersIds", sp.getString("teamIds",null));
+                                if (tabs.equalsIgnoreCase("3") || tabs.equalsIgnoreCase("4")) {
+                                    intent.putExtra("teamId", sp.getString("membersIds", null));
+                                    intent.putExtra("membersIds", sp.getString("teamIds", null));
                                 }
+                                progressBar.setVisibility(View.GONE);
                                 getActivity().startActivity(intent);
+
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -456,9 +660,9 @@ public class FragmentLastConversation extends Fragment {
                         intent.putExtra(StringContract.IntentStrings.AVATAR, (((User) conversation.getConversationWith()).getAvatar()));
                         intent.putExtra(StringContract.IntentStrings.STATUS, (((User) conversation.getConversationWith()).getStatus()));
                         intent.putExtra(StringContract.IntentStrings.TABS, tabs);
-                        if (tabs.equalsIgnoreCase("3") || tabs.equalsIgnoreCase("4")){
-                            intent.putExtra("teamId", sp.getString("membersIds",null));
-                            intent.putExtra("membersIds", sp.getString("teamIds",null));
+                        if (tabs.equalsIgnoreCase("3") || tabs.equalsIgnoreCase("4")) {
+                            intent.putExtra("teamId", sp.getString("membersIds", null));
+                            intent.putExtra("membersIds", sp.getString("teamIds", null));
                         }
                         getActivity().startActivity(intent);
                         dialog.dismiss();
@@ -521,9 +725,9 @@ public class FragmentLastConversation extends Fragment {
                                     intent.putExtra(StringContract.IntentStrings.AVATAR, (((User) conversation.getConversationWith()).getAvatar()));
                                     intent.putExtra(StringContract.IntentStrings.STATUS, (((User) conversation.getConversationWith()).getStatus()));
                                     intent.putExtra(StringContract.IntentStrings.TABS, tabs);
-                                    if (tabs.equalsIgnoreCase("3") || tabs.equalsIgnoreCase("4")){
-                                        intent.putExtra("teamId", sp.getString("membersIds",null));
-                                        intent.putExtra("membersIds", sp.getString("teamIds",null));
+                                    if (tabs.equalsIgnoreCase("3") || tabs.equalsIgnoreCase("4")) {
+                                        intent.putExtra("teamId", sp.getString("membersIds", null));
+                                        intent.putExtra("membersIds", sp.getString("teamIds", null));
                                     }
                                     getActivity().startActivity(intent);
                                     progressBar.setVisibility(View.GONE);
@@ -567,12 +771,12 @@ public class FragmentLastConversation extends Fragment {
             if (requestBody != null) {
                 String response = screen.messagelist.NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
                 if (response != null) {
-                    Log.i(TAG, "checkOtherMemberAvailable:  response " + response +" tabs "+tabs );
+                    Log.i(TAG, "checkOtherMemberAvailable:  response " + response + " tabs " + tabs);
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray provider_time_check_in_db = jsonObject.getJSONArray("other_members_time_check_in_db");
                     String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
                     Log.i(TAG, "checkOtherMemberAvailable: " + success);
-                    if (success.equals("success") || success.equals("fail")) {
+                    if (success.equalsIgnoreCase("success") || success.equalsIgnoreCase("fail")) {
                         Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
                         intent.putExtra(StringContract.IntentStrings.TYPE, "user");
                         intent.putExtra(StringContract.IntentStrings.NAME, (((User) conversation.getConversationWith()).getName()));
@@ -580,9 +784,9 @@ public class FragmentLastConversation extends Fragment {
                         intent.putExtra(StringContract.IntentStrings.AVATAR, (((User) conversation.getConversationWith()).getAvatar()));
                         intent.putExtra(StringContract.IntentStrings.STATUS, (((User) conversation.getConversationWith()).getStatus()));
                         intent.putExtra(StringContract.IntentStrings.TABS, tabs);
-                        if (tabs.equalsIgnoreCase("3") || tabs.equalsIgnoreCase("4")){
-                            intent.putExtra("teamId", sp.getString("membersIds",null));
-                            intent.putExtra("membersIds", sp.getString("teamIds",null));
+                        if (tabs.equalsIgnoreCase("3") || tabs.equalsIgnoreCase("4")) {
+                            intent.putExtra("teamId", sp.getString("membersIds", null));
+                            intent.putExtra("membersIds", sp.getString("teamIds", null));
                         }
                         getActivity().startActivity(intent);
                         progressBar.setVisibility(View.GONE);
@@ -778,8 +982,8 @@ public class FragmentLastConversation extends Fragment {
         getProviderDataThread.start();
     }
 
-    public void getUserDetails(String providerId) {
-        CometChat.getUser(providerId, new CometChat.CallbackListener<User>() {
+    public void getUserDetails(String uid) {
+        CometChat.getUser(uid, new CometChat.CallbackListener<User>() {
             @Override
             public void onSuccess(User user) {
                 Log.i(TAG, "onSuccess: got members details");
@@ -951,6 +1155,7 @@ public class FragmentLastConversation extends Fragment {
 
     // open chat window on comet chat error
     private void openActivity(String name, String groupId, String ownerId, String GroupType, String memberCount, String GroupPass, StringBuffer groupMembersId) {
+        progressBar.setVisibility(View.GONE);
         Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.TYPE, "group");
         intent.putExtra(StringContract.IntentStrings.NAME, name);

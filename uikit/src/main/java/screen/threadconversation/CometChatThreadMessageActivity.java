@@ -27,8 +27,7 @@ import listeners.MessageActionCloseListener;
 import listeners.OnMessageLongClick;
 
 /**
-
-* Purpose - CometChatMessageListActivity.class is a Activity used to display messages using CometChatMessageScreen.class. It takes
+ * * Purpose - CometChatMessageListActivity.class is a Activity used to display messages using CometChatMessageScreen.class. It takes
             parameter like TYPE to differentiate between User MessageScreen & Group MessageScreen.
 
             It passes parameters like UID (userID) ,AVATAR (userAvatar) ,NAME (userName) ,STATUS (userStatus) to CometChatMessageScreen.class
@@ -39,8 +38,6 @@ import listeners.OnMessageLongClick;
 
             @see CometChatConstants
             @see CometChatThreadMessageScreen
-
-
 */
 
 public class CometChatThreadMessageActivity extends AppCompatActivity implements ThreadAdapter.OnMessageLongClick {

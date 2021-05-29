@@ -281,6 +281,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
 
     /*after clicking on my team member item this method will execute
     * Here all the data is maintain for members type like provider, member and normal users
+    * in this method we are fetching all
     * added by rahul maske */
     @Override
     public void onMemberRelativeLayoutClicked(int memberPosition, Teams_ team_) {
