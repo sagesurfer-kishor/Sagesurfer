@@ -81,6 +81,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
     private final int CONTACTS_LOADER = 1, CONTACTS_SEARCH_LOADER = 2;
     private boolean isSearching = false;
     private String SearchingName;
+    private String tabs="3";
     private CometChatMyTeamsFragment_ cometChat;
     private final int GROUPS_LOADER = 1, GROUPS_SEARCH_LOADER = 2;
     private String team_member_id, team_provider;
@@ -134,6 +135,18 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
                 searchUser(et_search_friend.getText().toString().trim());
             }
         });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long id) {
+                //Toast.makeText(getActivity(), ""+primaryList.get(groupPosition).getMembersArrayList().get(childPosition).getUsername(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChildClick: "+al_friends.get(groupPosition).getMembersArrayList().get(childPosition).getUsername());
+                onMemberRelativeLayoutClicked(childPosition,al_friends.get(groupPosition));
+                return false;
+            }
+        });
+
+
         preferenOpenActivity = getActivity().getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
         //Fetching all teams
         //getTeams();
@@ -178,7 +191,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         intent.putExtra(StringContract.IntentStrings.STATUS, status);
         intent.putExtra(StringContract.IntentStrings.TYPE, "user");
         intent.putExtra("GID", Preferences.get(General.GROUP_ID));
-        intent.putExtra(StringContract.IntentStrings.TABS, "3");
+        intent.putExtra(StringContract.IntentStrings.TABS, tabs);
         intent.putExtra("teamId", teamId);
         intent.putExtra("membersIds", memberId);
         startActivity(intent);
@@ -201,14 +214,13 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         al_friends = PerformGetTeamsTask.getMyteam(Actions_.ALL_TEAMS_CHAT, team_type, getActivity(), TAG, false, getActivity());
         Log.i(TAG, "getTeams: teams array " + al_friends);
 
-        for (Teams_ teams_ : al_friends ){
+        /*for (Teams_ teams_ : al_friends ){
             ArrayList<Members_> arrayList=teams_.getMembersArrayList();
             for (Members_ members_ : arrayList){
-
                 Log.i(TAG, "getTeam : user name "+members_.getFullname());
                 Log.i(TAG, "getTeam : user status"+members_.getStatus());
             }
-        }
+        }*/
 
         if (al_friends.size() == 0) {
             errorLayout.setVisibility(View.VISIBLE);
@@ -296,6 +308,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
             final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
             final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
             final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
+
             openChatActivity(""+username,
                     ""+CometchatIdOfSender,
                     status,
@@ -590,7 +603,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
     //team_logs_id = memberId + "_-" + teamId + "_-" + 4;
 
     /*created this method for redirecting pushnotification message to chat screen
-     * created by rahulmsk */
+     * created by rahul maske */
     private void checkIntent() {
         if (preferenOpenActivity.getBoolean("checkIntent", false)) {
             if (getActivity() != null && getActivity().getIntent().hasExtra("receiverType")) {
@@ -599,6 +612,10 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
                     String team_logs_id = getActivity().getIntent().getStringExtra("team_logs_id");
                     if (team_logs_id != null && !team_logs_id.isEmpty()) {
                         if (team_logs_id.endsWith("4")) {
+                            tabs="4";
+                        }else  if (team_logs_id.endsWith("3")){
+                            tabs="3";
+                        }
                             String ids[] = team_logs_id.split(Pattern.quote("_"));
                             Log.i(TAG, "checkIntent: teamIdIs " + Integer.parseInt(ids[2].substring(1)));
                             Log.i(TAG, "checkIntent: memberId: " + ids[0].substring(0));
@@ -618,7 +635,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
                                 status,
                                 ""+String.valueOf(team_.getId()),
                                 "" + team_.getMembersArrayList().get(memberPosition).getUser_id());*/
-                        }
+                        /*}*/
                     }
 
                     //below code is commented by rahul msk

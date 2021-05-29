@@ -19,6 +19,7 @@ import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
 import com.cometchat.pro.uikit.Settings.UIKitSettings;
+import com.google.firebase.FirebaseApp;
 import com.sagesurfer.constant.Chat;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.directory.MakeDirectory;
@@ -46,7 +47,6 @@ public class SplashActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initializeCometChat();
         Preferences.initialize(this);
-
         new Handler().postDelayed(() -> {
             if (Preferences.contains(General.IS_LOGIN) &&
                     Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {

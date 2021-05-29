@@ -100,6 +100,7 @@ public class AllCall extends Fragment {
                     intent.putExtra(StringContract.IntentStrings.GROUP_DESC,group.getDescription());
                     intent.putExtra(StringContract.IntentStrings.GROUP_PASSWORD,group.getPassword());
                     intent.putExtra(StringContract.IntentStrings.MEMBER_COUNT,group.getMembersCount());
+                    intent.putExtra(StringContract.IntentStrings.FROM_CALL_LIST,true);
                     startActivity(intent);
                 }
             }

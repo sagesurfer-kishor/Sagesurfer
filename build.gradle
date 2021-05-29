@@ -5,12 +5,11 @@ buildscript {
     mavenCentral()
     google()
     jcenter()
-    maven {
+   /* maven {
       url 'https://maven.fabric.io/public'
-    }
+    }*/
   }
   dependencies {
-
     classpath 'com.android.tools.build:gradle:3.5.2'
     classpath 'com.google.gms:google-services:4.3.5'
     // Add the Crashlytics Gradle plugin.
@@ -27,8 +26,8 @@ allprojects {
     google()
     jcenter()
     maven {
-      url "https://dl.bintray.com/cometchat/pro"
-      //url "https://dl.cloudsmith.io/public/cometchat/cometchat-pro-android/maven/"
+      //url "https://dl.bintray.com/cometchat/pro"
+      url "https://dl.cloudsmith.io/public/cometchat/cometchat-pro-android/maven/"
     }
 
   }

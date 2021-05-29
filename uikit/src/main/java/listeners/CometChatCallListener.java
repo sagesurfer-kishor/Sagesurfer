@@ -1,6 +1,5 @@
 package listeners;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -88,7 +87,20 @@ public class CometChatCallListener {
             public void onOutgoingCallAccepted(Call call) {
                 /*code updated by rahul maske and deva for calling session was regenerating and creating new instances
                  * */
-                SharedPreferences sharedPreferencesSessionId = context.getApplicationContext().getSharedPreferences("login", MODE_PRIVATE);
+
+                if (CometChatStartCallActivity.activity == null) {
+                    if (CometChatCallActivity.callActivity != null) {
+                        CometChatCallActivity.cometChatAudioHelper.stop(false);
+                        Utils.startCall(CometChatCallActivity.callActivity, call);
+                    }
+                } else {
+                    CometChatStartCallActivity.activity.finish();
+                    if (CometChatCallActivity.callActivity != null) {
+                        CometChatCallActivity.cometChatAudioHelper.stop(false);
+                        Utils.startCall(CometChatCallActivity.callActivity, call);
+                    }
+
+               /* SharedPreferences sharedPreferencesSessionId = context.getApplicationContext().getSharedPreferences("login", MODE_PRIVATE);
                 String myCallGeneratedSession = sharedPreferencesSessionId.getString("sessionId", null);
                 SharedPreferences.Editor spSessionEditor = sharedPreferencesSessionId.edit();
 
@@ -106,7 +118,7 @@ public class CometChatCallListener {
 
                 } else {
                     Log.i(TAG, "onOutgoingCallAccepted: 3");
-                }
+                }*/
 
                 /*if (call.getSessionId() != myCallGeneratedSession) {
                     developmenenen = 0;
@@ -135,7 +147,7 @@ public class CometChatCallListener {
                             return false;
 }                    */
 
-                //commetchat team suggested code comented because it was not working
+                    //commetchat team suggested code comented because it was not working
                 /*if (CometChat.getActiveCall() == null) {
                     //call.getSessionId()
                     if (CometChatCallActivity.callActivity != null) {
@@ -149,8 +161,8 @@ public class CometChatCallListener {
                         Utils.startCall(CometChatCallActivity.callActivity, call);
                     }
                 }*/
+                }
             }
-
             @Override
             public void onOutgoingCallRejected(Call call) {
                 Log.i(TAG, General.MY_TAG + " onOutgoingCallRejected: ");

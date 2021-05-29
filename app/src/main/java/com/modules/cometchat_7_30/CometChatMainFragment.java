@@ -38,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,7 +60,9 @@ public class CometChatMainFragment extends Fragment {
     private List<String> unreadCount = new ArrayList<>();
     SharedPreferences sp;
     private Cometchat_log db;
-    String other_user_id;
+    String other_user_id, MyTeam, JoinTeam;
+    ArrayList<String> myTeamArrayList = new ArrayList<>();
+    ArrayList<String> joinTeamArrayList = new ArrayList<>();
 
     @Override
     public void onStop() {
@@ -123,7 +126,42 @@ public class CometChatMainFragment extends Fragment {
             }
         });*/
 
+        SharedPreferences preferencesTeamsData = getActivity().getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+        JoinTeam = preferencesTeamsData.getString("JoinTeam", null);
+        MyTeam = preferencesTeamsData.getString("MyTeam", null);
 
+        if (MyTeam!=null ) {
+            String[] joinTeam = MyTeam.split(",");
+            myTeamArrayList.addAll(Arrays.asList(joinTeam));
+        }
+
+        if (JoinTeam != null ) {
+            String[] joinTeam = JoinTeam.split(",");
+            joinTeamArrayList.addAll(Arrays.asList(joinTeam));
+        }
+
+        if (!joinTeamArrayList.isEmpty()) {
+            for (String item : joinTeamArrayList) {
+                Log.i(TAG, "onCreateView: joinTeam arraylist item" + item);
+            }
+        }
+        if (!myTeamArrayList.isEmpty()) {
+            for (String item : myTeamArrayList) {
+                Log.i(TAG, "onCreateView: myTeam arraylist item" + item);
+            }
+        }
+        if (joinTeamArrayList.contains("3721")){
+            Log.i(TAG, "onCreateView: contains 3721");
+        }else if (joinTeamArrayList.contains("3711")){
+            Log.i(TAG, "onCreateView: contains 3711");
+        }else if(joinTeamArrayList.contains("3671")) {
+            Log.i(TAG, "onCreateView: contains 3671");
+        }
+
+        Log.i(TAG, "onCreateView: MyTeamList " + MyTeam + " JoinTeamList " + JoinTeam);
+        /*SharedPreferences.Editor teamDataEditor = preferencesTeamsData.edit();
+        teamDataEditor.putString("JoinTeam", ""+stringBuffer);
+        teamDataEditor.apply();*/
         // get all provider
         //getProvider();
 
@@ -246,7 +284,7 @@ public class CometChatMainFragment extends Fragment {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
                 if (response != null) {
-                    Log.e(TAG, "getProvider provider response "+response);
+                    Log.e(TAG, "getProvider provider response " + response);
 
                     try {
                         JSONObject injectedObject = new JSONObject(response);
@@ -328,8 +366,9 @@ public class CometChatMainFragment extends Fragment {
     }
 
     /*This method is use to check the intent provided by main activity to redirect from firebase push notification
-    * here we will redirect as per team log id tab*/
+     * here we will redirect as per team log id tab*/
     private void checkIntent() {
+        //team_log_ids eg - 3127_sage047_-3708_-4
         Log.i(TAG, "checkIntent: in main now it will redirect");
         if (getArguments() != null) {
             if (getArguments().getString("receiverType") != null) {
@@ -339,12 +378,22 @@ public class CometChatMainFragment extends Fragment {
                     String team_logs_id = getArguments().getString("team_logs_id");
                     if (team_logs_id.equals("0") || team_logs_id.isEmpty()) {
                         tabLayout.getTabAt(0).select();
+                        Log.i(TAG, "checkIntent: This is for friend ");
                     } else {
                         // The index is done opposite for temoporary testing. It has to be fixed later
-                        if (team_logs_id.endsWith("3"))
+                       /* if (team_logs_id.endsWith("3"))
                             tabLayout.getTabAt(3).select();
                         else if (team_logs_id.endsWith("4"))
+                            tabLayout.getTabAt(2).select();*/
+
+                        String[] teamLogArray = team_logs_id.split("_-");
+                        if (myTeamArrayList.contains(teamLogArray[1])){
+                            Log.i(TAG, "checkIntent: myTeam");
                             tabLayout.getTabAt(2).select();
+                        }else if (joinTeamArrayList.contains(teamLogArray[1])){
+                            tabLayout.getTabAt(3).select();
+                            Log.i(TAG, "checkIntent: joinTeam");
+                        }
                     }
                 } else {
                     // tab 2

@@ -92,7 +92,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                         holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
                         holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
                     }
-                    Glide.with(mContext).load(((User) conversation.getConversationWith()).getAvatar()).into(holder.imgBan);
+
                     String status = ((User) conversation.getConversationWith()).getStatus();
                    // String UID = ((User) conversation.getConversationWith()).getUid();
                     int counter = conversation.getUnreadMessageCount();
@@ -105,6 +105,26 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                     } else {
                         holder.activeUser.setImageResource(R.drawable.offline_sta);
                     }
+
+            if (conversation.getLastMessage().getMetadata().has("team_logs_id")) {
+                try {
+                    if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equalsIgnoreCase("0")
+                           /* || conversation.getLastMessage().getMetadata().getString("team_logs_id") != null*/) {
+                        Glide.with(mContext).load(((User) conversation.getConversationWith()).getAvatar()).into(holder.imgBan);
+                    } else {
+                        String team_logs_id=conversation.getLastMessage().getMetadata().getString("team_logs_id");
+                        String[] array=team_logs_id.split("_-");
+                        if (array[2].equalsIgnoreCase("3")) {
+                            holder.imgBan.setImageResource(R.drawable.team_iconn);
+                        } else if (array[2].equalsIgnoreCase("4")) {
+                            holder.imgBan.setImageResource(R.drawable.team_iconn);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
         } else if (conversation.getConversationType().equals("group")) {
             holder.title.setText(((Group) conversation.getConversationWith()).getName());
             if (conversation.getLastMessage() != null) {
@@ -137,14 +157,19 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "onClick: conversation item");
+                try {
                 if (conversation.getConversationType().equals("user")) {
                     fragment.progressBar.setVisibility(View.VISIBLE);
                     String allProvidersString = Preferences.get("providers");
                     Log.i(TAG, "onClick: provider array "+allProvidersString);
-                    fragment.onUserClickPerform(conversation);
+                        fragment.onUserClickPerform(conversation);
                 }else{
                     fragment.onGroupClickedPerform(conversation);
                 }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 /*if (conversation.getConversationType().equals("user")) {
                     Intent intent = new Intent(mContext, CometChatMessageListActivity.class);
                     intent.putExtra(StringContract.IntentStrings.TYPE, "user");

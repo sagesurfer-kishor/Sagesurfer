@@ -174,10 +174,70 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_seperator_moderator"
+                android:id="@+id/tv_moderator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/rlModeratorView"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/light_grey" />
+            <LinearLayout
+                android:id="@+id/history_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlModeratorView"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/history"
+
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="18sp" />
+                <!--<TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:visibility="visible"
+                    android:letterSpacing="0.1"
+                    android:textColor="@color/primaryTextColor"
+                    android:paddingBottom="4dp"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/fourteen"
+                    android:text="@string/history" />-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/history_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="16dp"
+                    android:visibility="visible"
+                    android:paddingBottom="4dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <View
+                    android:id="@+id/divider_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="gone"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/light_grey" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_seperator_moderator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/history_view"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="4dp"
                 android:background="@color/light_grey" />
@@ -212,22 +272,21 @@
                     android:drawableEnd="@drawable/ic_arrow_right_24dp"
                     android:drawablePadding="8dp"
                     android:gravity="center" />
+                <TextView
+                    android:id="@+id/tv_seperator_ban"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/light_grey" />
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tv_seperator_ban"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/rlBanView"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="4dp"
-                android:background="@color/light_grey" />
 
             <TextView
                 android:id="@+id/tv_members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_seperator_ban"
+                android:layout_below="@+id/rlBanView"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
@@ -314,6 +373,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/shared_media_layout1"
                 android:layout_below="@id/tv_seperator_1"
                 android:orientation="vertical">
                 <!--Shared Media - This layout provides media files sent to group-->
@@ -388,6 +448,7 @@
                     android:textStyle="" />
 
             </LinearLayout>
+
 
         </RelativeLayout>
 

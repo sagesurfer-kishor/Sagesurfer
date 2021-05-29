@@ -130,7 +130,6 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
         }
         if (intent.hasExtra(StringContract.IntentStrings.AVATAR)) {
             avatar = intent.getStringExtra(StringContract.IntentStrings.AVATAR);
-
         }
         if (intent.hasExtra(StringContract.IntentStrings.NAME)) {
             name = intent.getStringExtra(StringContract.IntentStrings.NAME);
@@ -205,10 +204,17 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
             else
                 onBackPressed();
         }
-        userTv.setText(name);
-        callerName.setText(name);
-        userAv.setAvatar(avatar);
-        callerAvatar.setAvatar(avatar);
+        if (name != null) {
+            userTv.setText(name);
+            callerName.setText(name);
+            Log.i(TAG, "setValues: avtar image url " + avatar);
+            userAv.setInitials(name);
+            callerAvatar.setInitials(name);
+        }
+        if (avatar!=null) {
+            userAv.setAvatar(avatar);
+            callerAvatar.setAvatar(avatar);
+        }
     }
 
     /**
@@ -222,7 +228,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     public void setCallType(boolean isVideoCall, boolean isIncoming) {
         Log.e(TAG, General.MY_TAG + "setCallType: ");
         AnimUtil.blinkAnimation(tvDots);
-        this.isIncoming=isIncoming;
+        this.isIncoming = isIncoming;
         if (isIncoming) {
             cometChatAudioHelper.startIncomingAudio(notification, true);
             incomingCallView.setVisibility(View.VISIBLE);
@@ -358,7 +364,7 @@ public class CometChatCallActivity extends AppCompatActivity implements View.OnC
     protected void onResume() {
         super.onResume();
         if (isIncoming) {
-        incomingCallView.setVisibility(View.VISIBLE);
+            incomingCallView.setVisibility(View.VISIBLE);
         }
     }
 

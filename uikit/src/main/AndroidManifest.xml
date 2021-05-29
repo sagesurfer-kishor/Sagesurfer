@@ -27,7 +27,8 @@
         <activity
             android:name="screen.CometChatCallActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TransparentCompat" />
+            android:theme="@style/TransparentCompat"
+            android:launchMode="singleTop"/>
         <activity
             android:name="screen.CometChatUserCallListScreenActivity"
             android:screenOrientation="portrait" />

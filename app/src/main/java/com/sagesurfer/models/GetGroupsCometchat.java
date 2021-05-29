@@ -20,8 +20,6 @@ public class GetGroupsCometchat implements Serializable {
     @SerializedName("is_member")
     private Integer is_member;
 
-
-
     @SerializedName("is_friend")
     private Integer is_friend;
 
@@ -30,6 +28,9 @@ public class GetGroupsCometchat implements Serializable {
 
     @SerializedName("created")
     private String created;
+
+    @SerializedName("group_color")
+    private String group_color;
 
     @SerializedName("members_count")
     private String members_count;
@@ -138,5 +139,13 @@ public class GetGroupsCometchat implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getGroup_color() {
+        return group_color;
+    }
+
+    public void setGroup_color(String group_color) {
+        this.group_color = group_color;
     }
 }

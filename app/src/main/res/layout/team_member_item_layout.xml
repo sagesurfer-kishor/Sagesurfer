@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/margin_10"
+    android:background="@drawable/message_rounded_border"
+    android:id="@+id/linearlayout_friendlistitem"
+    android:paddingTop="@dimen/margin_12"
+    android:paddingBottom="@dimen/margin_12"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/friend_relativelayout_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_marginStart="@dimen/margin_32"
+        android:layout_marginLeft="@dimen/margin_16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.cometchat.pro.uikit.Avatar
+            android:id="@+id/friend_list_itemphoto"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_user_male" />
+
+        <ImageView
+            android:id="@+id/friend_list_item_statusicon"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+
+            android:layout_alignStart="@+id/friend_list_itemphoto"
+            android:layout_alignTop="@+id/friend_list_itemphoto"
+            android:layout_marginEnd="5dp"
+            android:padding="1dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:id="@+id/tv_memberName"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ic_counter"
+        android:text="@string/name"
+        android:paddingStart="@dimen/margin_8"
+        app:layout_constraintStart_toEndOf="@+id/friend_relativelayout_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ic_counter"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/primary_circle"
+        android:gravity="center"
+        android:maxLength="2"
+        android:padding="2dp"
+        android:text=""
+        android:textColor="@android:color/white"
+        android:textSize="11sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/tv_memberName"
+        android:layout_marginEnd="@dimen/margin_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

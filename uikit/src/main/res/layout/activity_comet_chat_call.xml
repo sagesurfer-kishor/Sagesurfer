@@ -86,7 +86,6 @@
     </com.google.android.material.card.MaterialCardView>
 
     <RelativeLayout
-
         android:id="@+id/outgoing_call_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -120,9 +119,10 @@
             android:layout_below="@+id/calling_tv"
             android:layout_centerHorizontal="true"
             app:avatar_shape="circle"
+
             app:border_color="@color/textColorWhite"
             app:border_width="16dp"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@drawable/pub_group" />
 
         <TextView
             android:id="@+id/user_tv"

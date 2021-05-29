@@ -76,7 +76,7 @@ public class MessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        /* this preferences used to know that chat creen is open or not if it is open we are not going to show notification*/
+        /* this preferences used to know that chat screen is open or not if it is open we are not going to show notification*/
         preferencesCheckCurrentActivity = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
         isChatScreen = preferencesCheckCurrentActivity.getBoolean("IsChatScreen", false);
         IsFriendListingPage = preferencesCheckCurrentActivity.getBoolean("IsFriendListingPage", false);
@@ -85,15 +85,14 @@ public class MessagingService extends FirebaseMessagingService {
 
         Log.e("notification received..", remoteMessage.toString());
         Logger.error("Debug", "Firebase Notification payload : " + remoteMessage.getData().toString(), getApplicationContext());
-
         Preferences.save(General.IS_PUSH_NOTIFICATION_SENT, false);
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             handleNotification(remoteMessage.getNotification().getBody());
         }
-        // Check if message contains a data payload
 
+        // Check if message contains a data payload
         if (remoteMessage.getData().size() > 0) {
             try {
                 if (remoteMessage.getData().containsKey("action")) {
@@ -119,7 +118,7 @@ public class MessagingService extends FirebaseMessagingService {
             String title = messageData.getString("receiver");
             String receiverType = messageData.getString("receiverType");
 
-            Log.e(TAG, "JSONObject: " + messageData);
+            Log.e(TAG, "received push notification JSONObject: " + messageData);
 
             BaseMessage baseMessage = CometChatHelper.processMessage(new JSONObject(remoteMessage.getData().get("message")));
             if (baseMessage instanceof Call) {
@@ -196,8 +195,7 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     private void handleDataMessage(JSONObject json) {
-        Log.d(TAG, "handleDataMessage " + json);
-
+        Log.d(TAG, "handleDataMessage" + json);
         try {
             JSONObject data = json.getJSONObject("data");
             Preferences.initialize(getApplicationContext());
@@ -440,10 +438,8 @@ public class MessagingService extends FirebaseMessagingService {
                     String team_logs_id = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on")
                             .getJSONObject("entity").getJSONObject("data").getJSONObject("metadata").getString("team_logs_id");
                     String receiver = messageData.getString("receiver");
-
                     String sender = messageData.getJSONObject("data").getJSONObject("entities").
                             getJSONObject("by").getJSONObject("entity").getString("uid");
-
                     String lastActiveAt = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("lastActiveAt");
                     String uid = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("uid");
                     String role = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("role");
@@ -451,11 +447,12 @@ public class MessagingService extends FirebaseMessagingService {
                     String avatar = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("avatar");
                     String status = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("status");
                     String sessionid = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on").getJSONObject("entity").getString("sessionid");
-
                     String callType = messageData.getString("type");
+                    String category = messageData.getString("category");
                     Log.i(TAG, "getIntent: teamLogID " + team_logs_id + " receiver" + receiver + " sender" + sender);
-                    /*intentMain.putExtra("receiver", ""+receiver);
-                    intentMain.putExtra("sender", ""+sender);*/
+
+                    intentMain.putExtra("receiver", "" + receiver);
+                    intentMain.putExtra("sender", "" + sender);
                     intentMain.putExtra("lastActiveAt", "" + lastActiveAt);
                     intentMain.putExtra("uid", "" + uid);
                     intentMain.putExtra("role", "" + role);
@@ -464,6 +461,7 @@ public class MessagingService extends FirebaseMessagingService {
                     intentMain.putExtra("status", "" + status);
                     intentMain.putExtra("callType", "" + callType);
                     intentMain.putExtra("sessionid", "" + sessionid);
+                    intentMain.putExtra("category", "" + category);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

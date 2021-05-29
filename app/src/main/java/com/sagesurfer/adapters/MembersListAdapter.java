@@ -151,15 +151,15 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
         });
     }
 
-    public void addMemberTogroup(String uid, String GUID, String action, String reciveverId, String rec, int position) {
+    public void addMemberTogroup(String uid, String GUID, String action, String receiverId, String rec, int position) {
         List<GroupMember> userList = new ArrayList<>();
-        userList.add(new GroupMember(reciveverId, CometChatConstants.SCOPE_PARTICIPANT));
+        userList.add(new GroupMember(receiverId, CometChatConstants.SCOPE_PARTICIPANT));
 
         CometChat.addMembersToGroup(GUID, userList, null, new CometChat.CallbackListener<HashMap<String, String>>() {
             @Override
             public void onSuccess(HashMap<String, String> stringStringHashMap) {
                 Log.e(TAG, "onSuccess: addMemberTogroup cometchat" + userList + "Group" + GUID);
-                invite(action, uid, GUID, reciveverId, rec, position);
+                invite(action, uid, GUID, receiverId, rec, position);
             }
             @Override
             public void onError(CometChatException e) {

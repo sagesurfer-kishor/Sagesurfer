@@ -81,6 +81,7 @@ import com.firebase.NotificationUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -127,6 +128,7 @@ import com.modules.team.TeamPeerStaffListActivity;
 import com.modules.team.TeamPeerSupervisorListActivity;
 import com.sagesurfer.adapters.DrawerListAdapter;
 import com.sagesurfer.adapters.DrawerMenuAdapter;
+import com.sagesurfer.adapters.JoinChatExpandableListAdapter;
 import com.sagesurfer.animation.ActivityTransition;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.Broadcast;
@@ -195,6 +197,7 @@ import okhttp3.RequestBody;
 import utils.Utils;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
 /**
  * @author Kailash Karankal
  * Created on 13/03/2018
@@ -210,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     int mYear, mMonth, mDay, mHour, mMinute;
     private DrawerLayout drawerLayout;
     String other_user_id;
+    public ArrayList<Teams_> primaryList = new ArrayList<>();
     SharedPreferences domainUrlPref;
     private RelativeLayout mainToolBarBellLayout;
     private AppCompatImageView searchButton, addButton, notificationImageView, addFilter, logBookIcon, setting;
@@ -278,13 +282,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private static final int JOB_ID = 0;
     AppCompatImageView chat_icon, main_toolbar_bell;
     private JobScheduler mScheduler;
-    private SharedPreferences preferencesCheckCurrentActivity;
+    private SharedPreferences preferencesCheckCurrentActivity,  preferencesTeamsData;
     private SharedPreferences.Editor editor;
     PopupMenu popup;
+
     MenuItem menuIteSetAvailability;
     EditText et_startTime, et_endTime;
     int StartTimeHour, EndTimeHour, StartTimeMin, EndTimeMin;
-
+    SharedPreferences.Editor teamDataEditor;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"WrongConstant", "RestrictedApi", "SourceLockedOrientationActivity", "NewApi"})
     @SuppressWarnings("deprecation")
@@ -540,6 +545,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Thread t = new Thread(myRunnable);
             t.start();
         }
+
+        /*This runnable is created for fetching My teams */
+        MyRunnableMyTeams myTeams = new MyRunnableMyTeams();
+        Thread myTeamThread = new Thread(myTeams);
+        myTeamThread.start();
+
+        /*This runnable is created for fetching Join teams */
+        RunnableJoinTeams joinTeams = new RunnableJoinTeams();
+        Thread myJoinThread = new Thread(joinTeams);
+        myJoinThread.start();
     }
 
 
@@ -579,6 +594,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
          }
          return true;
      }*/
+
+    /*This is setting icon pop up*/
     private void showSettingPopup(View view) {
         popup = new PopupMenu(MainActivity.this, view);
         popup.getMenuInflater().inflate(R.menu.menu_setting, popup.getMenu());
@@ -594,7 +611,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 menuIteSetAvailability.setVisible(true);
                 Log.i(TAG, "getSetAvailabilityRolesFromServer: 1");
             }
-        } else if (domainUrlPref.getString("other_user_id",null).equals("1")) {
+        } else if (domainUrlPref.getString("other_user_id", null).equals("1")) {
             if (menuIteSetAvailability != null) {
                 menuIteSetAvailability.setVisible(true);
                 Log.i(TAG, "getSetAvailabilityRolesFromServer: 2");
@@ -698,6 +715,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }*/
 
+    /*if the user has authority of set availability time scinario then it will be visible in setting icon and after click on that this method will invoke*/
     public void openSetAvailabilityDialog() {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -829,8 +847,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         dialog.setCancelable(false);
     }
 
-    public String ConvertTimeIn12hr(String time) throws ParseException {
 
+    public String ConvertTimeIn12hr(String time) throws ParseException {
         final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
         final Date dateObj = sdf.parse(time);
         Log.i(TAG, "ConvertTimeIn12hr: dateObj" + dateObj);
@@ -2038,9 +2056,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ft.replace(R.id.app_bar_main_container, fragment, TAG);
                     ft.commit();
                 }
-            } else {
+            }
+            else {
                 Log.i(TAG, "handleIntent: else");
-                if (mainIntent.hasExtra("sender")) {
+                if (mainIntent.hasExtra("category")) {
+                    if (mainIntent.getStringExtra("category").equals("call")){
                     /*Here we are getting intent  for call redirection*/
                     Log.i(TAG, "handleIntent: call block");
                     String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
@@ -2059,7 +2079,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     user.setName(name);
                     user.setAvatar(avatar);
                     user.setStatus(status);
-                    Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);
+                    Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);}
                 } else /*if (mainIntent.hasExtra("type"))*/ {
                     Log.i(TAG, "handleIntent: whiteboard block");
                     Bundle bundle = new Bundle();
@@ -2632,6 +2652,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             /*here getting firebase token and storing to the preferences
              * so that we can access it..
              * updated by rahulmsk */
+            FirebaseApp.initializeApp(MainActivity.this);
             FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(@NonNull Task<String> task) {
@@ -2706,6 +2727,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     // set all menus with counters in drawer
+
     /**
      * This is drawer menu list here we are showing drower menus and also setting onclick on drawer menu
      * now this code is working and i am commenting this code because when we are scrolling items some items are not working properly
@@ -2803,7 +2825,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     public void onDrawerMenuItemClickListner(DrawerMenu_ drawerMenu_) {
-        Log.i(TAG, "onDrawerMenuItemClickListner: id "+drawerMenu_.getId() +" name "+drawerMenu_.getMenu());
+        Log.i(TAG, "onDrawerMenuItemClickListner: id " + drawerMenu_.getId() + " name " + drawerMenu_.getMenu());
         drawerLayout.closeDrawer(Gravity.LEFT);
         Preferences.save(General.HOME_ICON_NUMBER, "0");
         setTitle(drawerMenu_.getMenu());
@@ -3724,5 +3746,53 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Log.i(TAG, "getSetAvailabilityRolesFromServer: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public class MyRunnableMyTeams implements Runnable {
+        @Override
+        public void run() {
+            getMyTeamsFromServer();
+        }
+    }
+
+    private void getMyTeamsFromServer() {
+        String team_type = "1";
+        primaryList = PerformGetTeamsTask.getMyteam(Actions_.ALL_TEAMS_CHAT, team_type, MainActivity.this, TAG, false, this);
+        StringBuffer stringBuffer = new StringBuffer("");
+        for (Teams_ teams_ : primaryList) {
+            if (stringBuffer.length() == 0) {
+                stringBuffer.append(teams_.getId());
+            }else{
+                stringBuffer.append(","+teams_.getId());
+            }
+        }
+        preferencesTeamsData = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+        teamDataEditor = preferencesTeamsData.edit();
+        teamDataEditor.putString("MyTeams", ""+stringBuffer);
+        teamDataEditor.apply();
+    }
+
+    public class RunnableJoinTeams implements Runnable {
+        @Override
+        public void run() {
+            getJoinTeamsFromServer();
+        }
+    }
+
+    private void getJoinTeamsFromServer() {
+        String team_type = "2";
+        primaryList = PerformGetTeamsTask.getMyteam(Actions_.ALL_TEAMS_CHAT, team_type, MainActivity.this, TAG, false, this);
+        StringBuffer stringBuffer = new StringBuffer("");
+        for (Teams_ teams_ : primaryList) {
+            if (stringBuffer.length() == 0) {
+                stringBuffer.append(teams_.getId());
+            }else{
+                stringBuffer.append(","+teams_.getId());
+            }
+        }
+        preferencesTeamsData = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+        teamDataEditor = preferencesTeamsData.edit();
+        teamDataEditor.putString("JoinTeam", ""+stringBuffer);
+        teamDataEditor.apply();
     }
 }

@@ -118,7 +118,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
             viewHolderTeam.userStatus = (TextView) convertView.findViewById(R.id.friend_list_item_status_message);
             viewHolderTeam.userStatus.setVisibility(View.GONE);
             viewHolderTeam.statusImage = (ImageView) convertView.findViewById(R.id.friend_list_item_status_icon);
-            viewHolderTeam.statusImage.setVisibility(View.GONE);
+            viewHolderTeam.statusImage.setVisibility(View.VISIBLE);
             viewHolderTeam.unreadCount = (TextView) convertView.findViewById(R.id.ic_counter);
             viewHolderTeam.unreadCount.setVisibility(View.GONE);
             viewHolderTeam.timeText = (RelativeTimeTextView) convertView.findViewById(R.id.friend_list_item_last);
@@ -132,7 +132,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
         }
 
         Teams_ item = searchList.get(groupPosition);
-        Log.i(TAG, "getGroupView: "+item.getMembersArrayList());
+        Log.i(TAG, "getGroupView: " + item.getMembersArrayList());
 
         Glide.with(context)
                 .load(item.getBanner())
@@ -160,8 +160,8 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                     mExpandableListView.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = groupPosition;
-                Log.i(TAG, "onGroupExpand: team name"+item.getName());
-                teamsChatExpandableListAdapterListener.onTeamClickFetchTeamData( item);
+                Log.i(TAG, "onGroupExpand: team name" + item.getName());
+                teamsChatExpandableListAdapterListener.onTeamClickFetchTeamData(item);
             }
         });
 
@@ -192,50 +192,49 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
         Preferences.save(General.BANNER_IMG, item.getBanner());
         Preferences.save(General.TEAM_ID, item.getId());
         Preferences.save(General.TEAM_NAME, item.getName());
-        ArrayList<CometChatTeamMembers_> teamMemberList = PerformGetUsersTask.getCometChatTeamMembers(Actions_.COMETCHAT, context, TAG, activity);
+        //ArrayList<CometChatTeamMembers_> teamMemberList = PerformGetUsersTask.getCometChatTeamMembers(Actions_.COMETCHAT, context, TAG, activity);
 
         try {
             final ViewHolderMember viewHolderMember;
-            convertView = inflater.inflate(R.layout.friend_list_item_layout, null);
+            convertView = inflater.inflate(R.layout.team_member_item_layout, null);
             viewHolderMember = new ViewHolderMember();
-
-            viewHolderMember.linearLayoutFriendListItem = (LinearLayout) convertView.findViewById(R.id.linearlayout_friendlistitem);
-            viewHolderMember.memberRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.team_list_item_layout);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            linearParams.setMargins(30, 0, 0, 0);
-            viewHolderMember.memberRelativeLayout.setLayoutParams(linearParams);
-            viewHolderMember.memberRelativeLayout.requestLayout();
-            viewHolderMember.avatar = convertView.findViewById(R.id.friend_list_item_photo);
-            viewHolderMember.userName = (TextView) convertView.findViewById(R.id.friend_list_item_name);
-            viewHolderMember.userStatus = (TextView) convertView.findViewById(R.id.friend_list_item_status_message);
-            viewHolderMember.statusImage = (ImageView) convertView.findViewById(R.id.friend_list_item_status_icon);
-            viewHolderMember.unreadCount = (TextView) convertView.findViewById(R.id.ic_counter);
-            viewHolderMember.unreadCount.setVisibility(View.GONE);
-            viewHolderMember.timeText = (RelativeTimeTextView) convertView.findViewById(R.id.friend_list_item_last);
-            viewHolderMember.typing = (TextView) convertView.findViewById(R.id.friend_list_item_typing);
+            //viewHolderMember.linearLayoutFriendListItem = (LinearLayout) convertView.findViewById(R.id.linearlayout_friendlistitem);
+            //viewHolderMember.memberRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.linearlayout_friendlistitem);
+            //LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            //linearParams.setMargins(30, 0, 0, 0);
+            //viewHolderMember.memberRelativeLayout.setLayoutParams(linearParams);
+            //viewHolderMember.memberRelativeLayout.requestLayout();
+            viewHolderMember.avatar = convertView.findViewById(R.id.friend_list_itemphoto);
+            viewHolderMember.userName = (TextView) convertView.findViewById(R.id.tv_memberName);
+            //viewHolderMember.userStatus = (TextView) convertView.findViewById(R.id.friend_list_item_status_message);
+            viewHolderMember.statusImage = (ImageView) convertView.findViewById(R.id.friend_list_item_statusicon);
+            viewHolderMember.statusImage.setVisibility(View.VISIBLE);
             //viewHolderMember.memberCount = (TextView) convertView.findViewById(R.id.memberCount);
             convertView.setTag(viewHolderMember);
 
             viewHolderMember.userName.setText(item.getMembersArrayList().get(childPosition).getUsername());
-            Log.i(TAG, "getChildView: user Name "+item.getMembersArrayList().get(childPosition).getUsername());
-            Log.i(TAG, "getChildView: user Status "+item.getMembersArrayList().get(childPosition).getStatus());
-            Runnable runnable=new Runnable() {
+            viewHolderMember.ic_counter=(TextView) convertView.findViewById(R.id.ic_counter);
+
+            Log.i(TAG, "getChildView: user Name " + item.getMembersArrayList().get(childPosition).getUsername());
+            Log.i(TAG, "getChildView: user Status " + item.getMembersArrayList().get(childPosition).getStatus());
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    CometChat.getUnreadMessageCountForUser(""+item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
+                    CometChat.getUnreadMessageCountForUser("" + item.getMembersArrayList().get(childPosition).getComet_chat_id(),
+                            new CometChat.CallbackListener<HashMap<String, Integer>>() {
                         @Override
                         public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                            handler=new Handler();
-                             handler.post(new Runnable() {
+                            handler = new Handler();
+                            handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    viewHolderMember.unreadCount.setVisibility(View.VISIBLE);
-                                    //Log.i(TAG, "onSuccess: unread messages   "+stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
-                                    String counter= String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
-                                    if (!counter.equalsIgnoreCase("null")){
-                                        viewHolderMember.unreadCount.setText(counter);
-                                    }else{
-                                        viewHolderMember.unreadCount.setVisibility(View.GONE);
+                                    Log.i(TAG, "run: unread messages "+String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id())));
+                                    String counter = String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
+                                    if (!counter.equalsIgnoreCase("null")) {
+                                        viewHolderMember.ic_counter.setVisibility(View.VISIBLE);
+                                        viewHolderMember.ic_counter.setText(counter);
+                                    } else {
+                                        viewHolderMember.ic_counter.setVisibility(View.GONE);
                                     }
                                 }
                             });
@@ -246,7 +245,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    viewHolderMember.unreadCount.setVisibility(View.GONE);
+                                    viewHolderMember.ic_counter.setVisibility(View.GONE);
                                 }
                             });
                         }
@@ -258,36 +257,44 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
             Thread thread = new Thread(runnable);
             thread.start();
 
-            /*CometChat.getUser(UID, new CometChat.CallbackListener<User>() {
+            Runnable runnableGetUserDetail = new Runnable() {
                 @Override
-                public void onSuccess(User user) {
+                public void run() {
+                    CometChat.getUser("" + item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<User>() {
+                        @Override
+                        public void onSuccess(User user) {
+                            Log.d(TAG, "User details fetched for user: " + user.toString());
+                            handler = new Handler();
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String activeStatus = user.getStatus();
+                                    if (activeStatus.equalsIgnoreCase("online")) {
+                                        // check user is online or offline
+                                        viewHolderMember.statusImage.setImageResource(R.drawable.online_sta);
+                                    } else {
+                                        viewHolderMember.statusImage.setImageResource(R.drawable.offline_sta);
+                                    }
+                                }
+                            });
+                        }
 
-                    Log.d(TAG, "User details fetched for user: " + user.toString());
+                        @Override
+                        public void onError(CometChatException e) {
+                            Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    viewHolderMember.statusImage.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+                    });
                 }
-                @Override
-                public void onError(CometChatException e) {
-                    Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
-                }
-            });*/
+            };
 
-           //viewHolderMember.timeText.setText(timeStamp);
-
-            viewHolderMember.userStatus.setText(teamMemberList.get(childPosition).getM());
-
-           /* CometChat.getUnreadMessageCountForUser(item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<HashMap<String, Integer>>() {
-                @Override
-                public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                    // handle success
-                    Log.e("unreadcount", String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id())));
-
-                   // viewHolderMember.unreadCount.setText(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
-                }
-
-                @Override
-                public void onError(CometChatException e) {
-                    // handle error
-                }
-            });*/
+            Thread thread1 = new Thread(runnableGetUserDetail);
+            thread1.start();
 
             Glide.with(context)
                     .load(item.getMembersArrayList().get(childPosition).getPhoto())
@@ -298,7 +305,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                             .transform(new CircleTransform(context)))
                     .into(viewHolderMember.avatar);
 
-            Log.i(TAG, "getChildView: status of user ---> "+teamMemberList.get(childPosition).getStatus());
+            //Log.i(TAG, "getChildView: status of user ---> "+teamMemberList.get(childPosition).getStatus());
 
             viewHolderMember.linearLayoutFriendListItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -316,7 +323,6 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
         void onMemberRelativeLayoutClicked(int childPosition, Teams_ team_);
 
         void onTeamClickFetchTeamData(Teams_ item);
-
     }
 
     @Override
@@ -334,6 +340,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
         TextView userName;
         TextView userStatus;
         TextView unreadCount;
+        TextView ic_counter;
         Avatar avatar;
         ImageView avtar_image;
         ImageView statusImage;
@@ -362,6 +369,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
         ImageView avtar_image;
         ImageView statusImage;
         View view;
+        TextView ic_counter;
         RelativeTimeTextView timeText;
         TextView typing;
         TextView memberCount;
@@ -369,7 +377,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
 
     @Override
     public Filter getFilter() {
-        Log.e("Seach Functionality", TAG+" getFilter : ");
+        Log.e("Seach Functionality", TAG + " getFilter : ");
         return exampleFilter;
     }
 

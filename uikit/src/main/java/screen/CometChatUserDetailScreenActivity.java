@@ -254,7 +254,6 @@ public class CometChatUserDetailScreenActivity extends AppCompatActivity {
         }
     }
 
-
     private void handleIntent() {
         if (getIntent().hasExtra(StringContract.IntentStrings.IS_ADD_MEMBER)) {
             isAddMember = getIntent().getBooleanExtra(StringContract.IntentStrings.IS_ADD_MEMBER, false);

@@ -188,12 +188,12 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
         Preferences.save(General.BANNER_IMG, item.getBanner());
         Preferences.save(General.TEAM_ID, item.getId());
         Preferences.save(General.TEAM_NAME, item.getName());
-        ArrayList<CometChatTeamMembers_> teamMemberList = PerformGetUsersTask.getCometChatTeamMembers(Actions_.COMETCHAT, context, TAG, activity);
+        //ArrayList<CometChatTeamMembers_> teamMemberList = PerformGetUsersTask.getCometChatTeamMembers(Actions_.COMETCHAT, context, TAG, activity);
 
 
         try {
             final ViewHolderMember viewHolderMember;
-            convertView = inflater.inflate(R.layout.friend_list_item_layout, null);
+            convertView = inflater.inflate(R.layout.team_member_item_layout, null);
             viewHolderMember = new ViewHolderMember();
 
             /*viewHolderMember.memberRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.team_list_item_layout);
@@ -213,23 +213,21 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
             viewHolderMember.statusMessageText.setVisibility(View.VISIBLE);*/
 
 
-            viewHolderMember.linearLayoutFriendListItem = (LinearLayout) convertView.findViewById(R.id.linearlayout_friendlistitem);
+           /* viewHolderMember.linearLayoutFriendListItem = (LinearLayout) convertView.findViewById(R.id.linearlayout_friendlistitem);
             viewHolderMember.memberRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.team_list_item_layout);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             linearParams.setMargins(30, 0, 0, 0);
             viewHolderMember.memberRelativeLayout.setLayoutParams(linearParams);
-            viewHolderMember.memberRelativeLayout.requestLayout();
-            viewHolderMember.avatar = convertView.findViewById(R.id.friend_list_item_photo);
-            viewHolderMember.userName = (TextView) convertView.findViewById(R.id.friend_list_item_name);
-            viewHolderMember.userStatus = (TextView) convertView.findViewById(R.id.friend_list_item_status_message);
-            viewHolderMember.statusImage = (ImageView) convertView.findViewById(R.id.friend_list_item_status_icon);
-            viewHolderMember.unreadCount = (TextView) convertView.findViewById(R.id.ic_counter);
+            viewHolderMember.memberRelativeLayout.requestLayout();*/
+            viewHolderMember.avatar = convertView.findViewById(R.id.friend_list_itemphoto);
+            viewHolderMember.userName = (TextView) convertView.findViewById(R.id.tv_memberName);
+            //viewHolderMember.userStatus = (TextView) convertView.findViewById(R.id.friend_list_item_status_message);
+            viewHolderMember.statusImage = (ImageView) convertView.findViewById(R.id.friend_list_item_statusicon);
 
-            viewHolderMember.timeText = (RelativeTimeTextView) convertView.findViewById(R.id.friend_list_item_last);
-            viewHolderMember.typing = (TextView) convertView.findViewById(R.id.friend_list_item_typing);
+            viewHolderMember.statusImage.setVisibility(View.VISIBLE);
             //viewHolderMember.memberCount = (TextView) convertView.findViewById(R.id.memberCount);
-
             convertView.setTag(viewHolderMember);
+            viewHolderMember.ic_counter=(TextView) convertView.findViewById(R.id.ic_counter);
 
             viewHolderMember.userName.setText(item.getMembersArrayList().get(childPosition).getUsername());
             long time = 0;
@@ -247,7 +245,6 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
                 viewHolderMember.timeText.setReferenceTime(time);
             }
             viewHolderMember.timeText.setText(timeStamp);*/
-            viewHolderMember.userStatus.setText(teamMemberList.get(childPosition).getM());
 
             Glide.with(context)
                     .load(item.getMembersArrayList().get(childPosition).getPhoto())
@@ -259,7 +256,6 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
                     .into(viewHolderMember.avatar);
 
             // check user is online or offline
-            Log.i(TAG, "getChildView: status of user ---> "+teamMemberList.get(childPosition).getStatus());
 /*            if (teamMemberList.get(childPosition).getStatus().equals("online")) {
                 viewHolderMember.statusImage.setImageResource(R.drawable.online_sta);
             } else {
@@ -277,12 +273,13 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    viewHolderMember.unreadCount.setVisibility(View.VISIBLE);
+                                    //viewHolderMember.unreadCount.setVisibility(View.VISIBLE);
                                     String counter= String.valueOf(stringIntegerHashMap.get(item.getMembersArrayList().get(childPosition).getComet_chat_id()));
-                                    if (!counter.equalsIgnoreCase("null")){
-                                        viewHolderMember.unreadCount.setText(counter);
-                                    }else{
-                                        viewHolderMember.unreadCount.setVisibility(View.GONE);
+                                    if (!counter.equalsIgnoreCase("null")) {
+                                        viewHolderMember.ic_counter.setVisibility(View.VISIBLE);
+                                        viewHolderMember.ic_counter.setText(counter);
+                                    } else {
+                                        viewHolderMember.ic_counter.setVisibility(View.GONE);
                                     }
                                 }
                             });
@@ -294,7 +291,7 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    viewHolderMember.unreadCount.setVisibility(View.GONE);
+                                    viewHolderMember.ic_counter.setVisibility(View.GONE);
                                     Log.i(TAG, "onError: unread messages "+e.getMessage());
                                 }
                             });
@@ -306,14 +303,52 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
             Thread thread=new Thread(runnable);
             thread.start();
 
-
-            viewHolderMember.linearLayoutFriendListItem.setOnClickListener(new View.OnClickListener() {
+            /*viewHolderMember.linearLayoutFriendListItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     teamsChatExpandableListAdapterListener.onMemberRelativeLayoutClicked(childPosition, item);
                     Log.e(TAG, "onClick: linearLayoutFriendListItem child position "+childPosition +" Item"+item.getName());
                 }
-            });
+            });*/
+            Runnable runnableGetUserDetail = new Runnable() {
+                @Override
+                public void run() {
+                    CometChat.getUser("" + item.getMembersArrayList().get(childPosition).getComet_chat_id(), new CometChat.CallbackListener<User>() {
+                        @Override
+                        public void onSuccess(User user) {
+                            Log.d(TAG, "User details fetched for user: " + user.toString());
+                            handler = new Handler();
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String activeStatus = user.getStatus();
+                                    if (activeStatus.equalsIgnoreCase("online")) {
+                                        // check user is online or offline
+                                        viewHolderMember.statusImage.setImageResource(R.drawable.online_sta);
+                                    } else {
+                                        viewHolderMember.statusImage.setImageResource(R.drawable.offline_sta);
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError(CometChatException e) {
+                            Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    viewHolderMember.statusImage.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+                    });
+                }
+            };
+
+            Thread thread1 = new Thread(runnableGetUserDetail);
+            thread1.start();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -365,6 +400,7 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
         RelativeLayout memberRelativeLayout;
         TextView userName;
         TextView userStatus;
+        TextView ic_counter;
         TextView unreadCount;
         Avatar avatar;
         ImageView avtar_image;

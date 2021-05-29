@@ -1222,22 +1222,24 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 try {
                     if (baseMessage.getMetadata().getString("type").equalsIgnoreCase("reply")) {
                         JSONObject metaData = baseMessage.getMetadata();
-                        String messageType = metaData.getString("type");
                         String message = metaData.getString("message");
                         viewHolder.replyLayout.setVisibility(View.VISIBLE);
                         viewHolder.replyMessage.setText(message);
-                        String txtMessage = ((TextMessage) baseMessage).getText().trim();
+
                         if (metaData.has("name")) {
                             Log.i(TAG, "setTextData: if" + metaData.getString("name"));
                             viewHolder.replyUser.setVisibility(View.VISIBLE);
                             viewHolder.replyUser.setText(metaData.getString("name"));
-                            //viewHolder.txtMessage.setText(txtMessage);
-                        } else {
-                            Log.i(TAG, "setTextData: else" + metaData.getString("name"));
+
+                        } else if (metaData.has("replyToMessage")){
+                            viewHolder.replyUser.setVisibility(View.VISIBLE);
+                            viewHolder.replyUser.setText(metaData.getJSONObject("replyToMessage").getString("name"));
+                        }else{
+                            Log.i(TAG,  "setTextData: else" + metaData.getString("name"));
                             viewHolder.replyUser.setVisibility(View.GONE);
-                            //viewHolder.txtMessage.setText(txtMessage);
                         }
                     }
+
                    /* if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                         viewHolder.replyMessage.setText(message);
                         viewHolder.replyMessage.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -1255,13 +1257,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         viewHolder.replyMessage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_insert_drive_file_black_24dp, 0, 0, 0);
                     }*/
 
-                    if (baseMessage.getReplyCount() != 0) {
+                    /*if (baseMessage.getReplyCount() != 0) {
                         viewHolder.tvThreadReplyCount.setVisibility(View.VISIBLE);
                         viewHolder.tvThreadReplyCount.setText(baseMessage.getReplyCount() + " Replies");
                     } else {
                         viewHolder.lvReplyAvatar.setVisibility(View.GONE);
                         viewHolder.tvThreadReplyCount.setVisibility(View.GONE);
-                    }
+                    }*/
 
                 } catch (Exception e) {
                     Log.e(TAG, "setTextData: " + e.getMessage());

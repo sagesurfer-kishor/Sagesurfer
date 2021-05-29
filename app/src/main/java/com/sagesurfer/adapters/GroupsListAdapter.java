@@ -94,6 +94,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
     public void GroupListAdapter(Context mContext){
         this.mContext = mContext;
     }
+
+
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView title;
         ImageView img_group_item_options;
@@ -143,6 +145,10 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                     holder.linearLayout.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_border_highlighted));
                 }
             }
+        }
+
+        if (group_item.getGroup_color().equals("0")){
+            holder.linearLayout.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_border_highlighted));
         }
         //Log.e(TAG, "onBindViewHolder: al_unreadCountList size "+al_unreadCountList.size()+" searchGroupList size "+searchGroupList.size());
         /*if (!al_unreadCountList.isEmpty())
@@ -556,6 +562,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                 if (!isMember.equalsIgnoreCase("0")
                         || group_item.getOwner_id().equals(Preferences.get(General.USER_ID))) {
                     fragment.performAdapterClick(position, searchGroupList);
+
                 } else {
                     //Toast.makeText(mContext, "You are not member of this group..", Toast.LENGTH_SHORT).show();
                     AlertDialog.Builder builder;
@@ -925,7 +932,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         CometChat.getUnreadMessageCountForGroup(sender, new CometChat.CallbackListener<HashMap<String, Integer>>() {
             @Override
             public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                Log.e(TAG, "onSuccess: cometchat groupId " + stringIntegerHashMap.get("670270470"));    //getting null values for group
+                Log.e(TAG, "onSuccess:  " + stringIntegerHashMap.get("670270470"));    //getting null values for group
                 for (GetGroupsCometchat group : searchGroupList) {
                     if (group.getGroupId().equals("" + sender)) {
                         Log.i(TAG, "onSuccess: matched user");
@@ -938,9 +945,16 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             @Override
             public void onError(CometChatException e) {
                 Log.i(TAG, "onError get groups " + e.getMessage());
-
             }
         });
+    }
+
+    public void setColorDefault(int position) {
+        Log.i(TAG, "setColorDefault: colorChangeCall "+position );
+        GetGroupsCometchat groupsCometchat=searchGroupList.get(position); /*)group_item.getGroup_color()*/
+        Log.i(TAG, "setColorDefault: colorChangeCall "+searchGroupList.get(position).getName() );
+        groupsCometchat.setGroup_color("1");
+        notifyItemChanged(position);
     }
 }
 

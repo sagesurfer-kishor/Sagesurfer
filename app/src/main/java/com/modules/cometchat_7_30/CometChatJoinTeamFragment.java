@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -65,7 +66,8 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
     private LinearLayout cardview_actions;
     private AppCompatImageView errorIcon;
     SharedPreferences preferenOpenActivity;
-    Dialog alert;
+    AlertDialog alert;
+    private String tabs="4";
     private BroadcastReceiver customReceiver;
     //    private CometChatJoinTeamFragment cometChat;
 //    private CometChatMainFragment parentActivity;
@@ -125,6 +127,16 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
 
         preferenOpenActivity = getActivity().getSharedPreferences("sp_check_push_intent", MODE_PRIVATE);
 
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long id) {
+                //Toast.makeText(getActivity(), ""+primaryList.get(groupPosition).getMembersArrayList().get(childPosition).getUsername(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onChildClick: "+primaryList.get(groupPosition).getMembersArrayList().get(childPosition).getUsername());
+                onMemberRelativeLayoutClicked(childPosition,primaryList.get(groupPosition));
+                return false;
+            }
+        });
+
         return view;
     }
 
@@ -166,7 +178,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
         intent.putExtra(StringContract.IntentStrings.UID, userId);
         intent.putExtra(StringContract.IntentStrings.STATUS, ""+status);
         intent.putExtra(StringContract.IntentStrings.TYPE, "user");
-        intent.putExtra(StringContract.IntentStrings.TABS, "4");
+        intent.putExtra(StringContract.IntentStrings.TABS, tabs);
         intent.putExtra("teamId", teamId);
         intent.putExtra("membersIds", memberId);
         startActivity(intent);
@@ -478,9 +490,10 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
     }
 
     private void showDialog(String success, int position, Teams_ team_) {
+        Log.i(TAG, "showDialog: ");
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getActivity());
-        alert = builder.create();
+       //alert = builder.create();
         String message;
         if (success.equalsIgnoreCase("success") || success.equalsIgnoreCase("fail")) {
             message = "Are you sure you want chat with provider?";
@@ -523,6 +536,8 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
 
         //Creating dialog box
 
+        //Setting the title manually
+        alert = builder.create();
         //Setting the title manually
         alert.setTitle("Alert Notification");
         alert.show();
@@ -588,7 +603,13 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                 if (receiverType.equals("user")) {
                     String team_logs_id = getActivity().getIntent().getStringExtra("team_logs_id");
                     if (team_logs_id != null && !team_logs_id.isEmpty()) {
-                        if (team_logs_id.endsWith("3")) {
+                       /* if (team_logs_id.endsWith("3")) {*/
+                        if (team_logs_id.endsWith("4")) {
+                            tabs="4";
+                        }else  if (team_logs_id.endsWith("3")){
+                            tabs="3";
+                        }
+
                             String ids[] = team_logs_id.split(Pattern.quote("_"));
                             Log.i(TAG, "checkIntent: teamIdIs " + ids[2].substring(1));
                             Log.i(TAG, "checkIntent: memberId: " + ids[0].substring(0));
@@ -603,7 +624,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                                     0,
                                     "" + Integer.parseInt(ids[2].substring(1)),
                                     "" + ids[0].substring(0));
-                        }
+                      /*  }*/
                     }
                 }
             }
@@ -641,3 +662,6 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
 
             }
         }*/
+
+
+

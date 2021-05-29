@@ -13,8 +13,11 @@ import com.cometchat.pro.core.CallSettings;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
+import com.cometchat.pro.rtc.model.AudioMode;
 import com.cometchat.pro.uikit.R;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 import constant.StringContract;
 import screen.messagelist.General;
@@ -67,6 +70,16 @@ public class CometChatStartCallActivity extends AppCompatActivity {
                 Log.e(General.MY_TAG + " onCallEnded: ",call.toString());
                 Log.e(TAG ,General.MY_TAG +  " startCall -> onCallEnded: "+ call.toString());
                 finish();
+            }
+
+            @Override
+            public void onUserListUpdated(List<User> list) {
+
+            }
+
+            @Override
+            public void onAudioModesUpdated(List<AudioMode> list) {
+
             }
         });
     }

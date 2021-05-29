@@ -43,7 +43,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:contentDescription="TODO"
-                android:src="@drawable/ic_group" />
+               />
 
             <ImageView
                 android:id="@+id/friend_list_item_status_icon"
@@ -52,7 +52,7 @@
                 android:layout_alignStart="@+id/friend_list_item_photo"
                 android:layout_alignTop="@+id/friend_list_item_photo"
                 android:layout_marginEnd="5dp"
-                android:contentDescription="TODO"
+                android:contentDescription=""
                 android:padding="1dp" />
         </RelativeLayout>
 
@@ -123,7 +123,7 @@
                     android:gravity="center"
                     android:maxLength="2"
                     android:padding="2dp"
-                    android:text="12"
+                    android:text=""
                     android:visibility="gone"
                     android:background="@drawable/primary_circle"
                     android:textColor="@android:color/white"

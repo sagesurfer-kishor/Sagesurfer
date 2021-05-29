@@ -130,7 +130,7 @@ android {
     dataBinding {
         enabled = true
     }
-
+    buildToolsVersion = '28.0.3'
 }
 
 repositories {
@@ -144,7 +144,7 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.facebook.react:react-native:0.61.3'
+    //implementation 'com.facebook.react:react-native:0.61.3'
     implementation 'org.webkit:android-jsc:r174650'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     testImplementation 'junit:junit:4.13.1'
@@ -198,7 +198,8 @@ dependencies {
     //implementation 'com.google.firebase:firebase-analytics:17.3.0'
     //cometchat dependencies
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    implementation 'com.cometchat:pro-android-chat-sdk:2.1.6'
+    //implementation 'com.cometchat:pro-android-chat-sdk:2.1.6'
+
     implementation 'com.facebook.soloader:soloader:0.10.1'
     implementation 'com.android.volley:volley:1.2.0'
     implementation project(':emoticonkeyboard')
@@ -217,6 +218,10 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'info.hoang8f:android-segmented:1.0.6'
     implementation project(path: ':uikit')
+
+    //cometchat
+    implementation 'com.cometchat:pro-android-chat-sdk:2.3.3'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10'
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {

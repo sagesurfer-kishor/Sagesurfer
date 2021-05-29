@@ -654,15 +654,30 @@ public class Utils {
 
     /*This method open call popup for user to give receive call or decline call option */
     public static void startCallIntent(Context context, User user, String type, boolean isOutgoing, @NonNull String sessionId) {
-        Log.i(TAG, General.MY_TAG + " startCallIntent: ");
+        Log.e(TAG, General.MY_TAG + " startCallIntent: "+user.getAvatar());
         SharedPreferences spCallScreenFlag = context.getSharedPreferences(" call_popup_preferences ", MODE_PRIVATE);
+        Log.e(TAG, General.MY_TAG + " startCallIntent: spCallScreen openCallPopup " + spCallScreenFlag.getBoolean("openCallPopup", false));
 
-        Log.i(TAG, General.MY_TAG + " startCallIntent: spCallScreen openCallPopup " + spCallScreenFlag.getBoolean("openCallPopup", false));
-        if (spCallScreenFlag.getBoolean("openCallPopup", false)) {
+        Intent videoCallIntent = new Intent(context, CometChatCallActivity.class);
+        videoCallIntent.putExtra(StringContract.IntentStrings.NAME, user.getName());
+        videoCallIntent.putExtra(StringContract.IntentStrings.UID, user.getUid());
+        videoCallIntent.putExtra(StringContract.IntentStrings.SESSION_ID, sessionId);
+        videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, user.getAvatar());
+        videoCallIntent.setAction(type);
+        videoCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (isOutgoing) {
+            videoCallIntent.setType("outgoing");
+        } else {
+            videoCallIntent.setType("incoming");
+        }
+        context.startActivity(videoCallIntent);
+//        commented because only once we can open call popup with this code and for notification  it is not  working
+       /* if (spCallScreenFlag.getBoolean("openCallPopup", false)) {
             SharedPreferences.Editor spEditorCallScreenFlag = spCallScreenFlag.edit();
             spEditorCallScreenFlag.putBoolean("openCallPopup", false);
             spEditorCallScreenFlag.apply();
-            Log.i(TAG, General.MY_TAG + " startCallIntent: spCallScreen openCallPopup 2 " + spCallScreenFlag.getBoolean("openCallPopup", false));
+            Log.e(TAG, General.MY_TAG + " startCallIntent: spCallScreen openCallPopup 2 " + spCallScreenFlag.getBoolean("openCallPopup", false));
+            Log.e(TAG, "startCallIntent: user.getAvatar()"+user.getAvatar());
             Intent videoCallIntent = new Intent(context, CometChatCallActivity.class);
             videoCallIntent.putExtra(StringContract.IntentStrings.NAME, user.getName());
             videoCallIntent.putExtra(StringContract.IntentStrings.UID, user.getUid());
@@ -676,7 +691,7 @@ public class Utils {
                 videoCallIntent.setType("incoming");
             }
             context.startActivity(videoCallIntent);
-        }
+        }*/
 
 
         //SharedPreferences.Editor spEditorCallScreenFlag = spCallScreenFlag.edit();
@@ -694,7 +709,7 @@ public class Utils {
             videoCallIntent.setAction(type);
             videoCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (isOutgoing) {
-                videoCallIntent.setType("outgoing");
+                videoCallIntent.setType("ocometchatutgoing");
             } else {
                 videoCallIntent.setType("incoming");
             }
@@ -703,17 +718,30 @@ public class Utils {
     }
 
     /*  }*/
-    public static void
-
-
-    startGroupCallIntent(Context context, Group group, String type,
-                         boolean isOutgoing, @NonNull String sessionId) {
-        Log.i(TAG, General.MY_TAG + " startGroupCallIntent: ");
+    public static void startGroupCallIntent(Context context, Group group, String type, boolean isOutgoing, @NonNull String sessionId)
+    {
+        SharedPreferences domainUrlPref = context.getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String Url=domainUrlPref.getString("domain",null);
+        String[] arrayUrl=Url.split("phase3");
+        Log.i(TAG, General.MY_TAG + " startGroupCallIntent: "+group.getGroupType());
         Intent videoCallIntent = new Intent(context, CometChatCallActivity.class);
         videoCallIntent.putExtra(StringContract.IntentStrings.NAME, group.getName());
         videoCallIntent.putExtra(StringContract.IntentStrings.UID, group.getGuid());
         videoCallIntent.putExtra(StringContract.IntentStrings.SESSION_ID, sessionId);
-        videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, group.getIcon());
+        if (group.getGroupType().equals("public")){
+            Log.i(TAG, "startGroupCallIntent: url "+domainUrlPref.getString("domain",null)+"acomet/img/group_logo_Public.jpg");
+            videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, arrayUrl[0]+"acomet/img/group_logo_Public.jpg");
+        }else if (group.getGroupType().equals("private")){
+            Log.i(TAG, "startGroupCallIntent: url "+domainUrlPref.getString("domain",null)+"acomet/img/group_logo_Private.jpg");
+            videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, arrayUrl[0]+"acomet/img/group_logo_Private.jpg");
+        }else if (group.getGroupType().equals("password")){
+            Log.i(TAG, "startGroupCallIntent: url"+domainUrlPref.getString("domain",null)+"acomet/img/group_logo_Password.jpg");
+            videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, arrayUrl[0]+"acomet/img/group_logo_Password.jpg");
+        }else{
+            Log.i(TAG, "startGroupCallIntent:url "+group.getIcon());
+            videoCallIntent.putExtra(StringContract.IntentStrings.AVATAR, group.getIcon());
+        }
+
         videoCallIntent.setAction(type);
         videoCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

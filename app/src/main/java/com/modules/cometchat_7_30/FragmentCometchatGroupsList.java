@@ -68,6 +68,7 @@ import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
 
 import static android.content.Context.MODE_PRIVATE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -371,8 +372,8 @@ public class FragmentCometchatGroupsList extends Fragment {
                 if (response != null) {
                     Log.e("groups", response);
                     primaryGroupList = GroupTeam_.parseTeams(response, "get_groups_cometchat", getActivity(), TAG);
-                    for (GetGroupsCometchat item : primaryGroupList){
-                        Log.i(TAG, "getGroups: "+item.getName() +" GroupId "+item.getGroupId() +" isMember "+item.getIs_member());
+                    for (GetGroupsCometchat item : primaryGroupList) {
+                        Log.i(TAG, "getGroups: Group info -> " + item.getName() + " GroupId " + item.getGroupId() + " isMember " + item.getIs_member() + " group_color " + item.getGroup_color());
                     }
                     searchGroupList.clear();
                     searchGroupList.addAll(primaryGroupList);
@@ -436,111 +437,6 @@ public class FragmentCometchatGroupsList extends Fragment {
         });
     }
 
-    /*This method is used to get unread messages from cometchat */
-    private void getUnreadMessageCountList() {
-        Handler handler = new Handler();
-        ArrayList<ModelUserCount> al_unreadCountList = new ArrayList<>();
-        if (!this.primaryGroupList.isEmpty()) {
-           /* for (GetGroupsCometchat item : primaryGroupList) {
-                Log.e(TAG, "getUnreadMessageCountList: checking GID " + item.getGroupId() + "  list size" + primaryGroupList.size());*/
-
-            //getUnreadmessagesForParticularGroup
-            CometChat.getUnreadMessageCountForGroup("", new CometChat.CallbackListener<HashMap<String, Integer>>() {
-                @Override
-                public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                    Log.e(TAG, "onSuccess: cometchat groupId " + stringIntegerHashMap.get("670270470"));    //getting null values for group
-                    for (Map.Entry<String, Integer> entry : stringIntegerHashMap.entrySet()) {
-                        String key = entry.getKey();
-                        String value = String.valueOf(entry.getValue());
-                        Log.e(TAG, "get groups cometchat onSuccess: group id " + key + " count " + value);
-                        al_unreadCountList.add(new ModelUserCount("" + value, "" + key));
-                    }
-                    //Log.e(TAG, "onSuccess: groupId"+stringIntegerHashMap.get(item.getGroupId()));
-                }
-
-                @Override
-                public void onError(CometChatException e) {
-                    Log.i(TAG, "onError get groups " + e.getMessage());
-                }
-            });
-               /* handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        groupListAdapter = new GroupsListAdapter(FragmentCometchatGroupsList.this, getContext(), searchGroupList, al_unreadCountList);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        recyclerView.setLayoutManager(mLayoutManager);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.setAdapter(groupListAdapter);
-                        checkIntent();
-                    }
-                }, 10000);*/
-            //checkIntent();
-
-/*
-
-            }
-*/
-
-            //getCometchatUnreadMessagesForAllGroups
-            /*CometChat.getUnreadMessageCountForAllGroups(new CometChat.CallbackListener<HashMap<String, Integer>>() {
-                @Override
-                public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                    // Handle success
-                    for (Map.Entry<String, Integer> entry : stringIntegerHashMap.entrySet()) {
-                        String GID = entry.getKey();
-                        String unreard_count = String.valueOf(entry.getValue());
-                        Log.e(TAG, "onSuccess: groupId " + GID + " counter " + unreard_count);
-
-                        al_unreadCountList.add(new ModelUserCount("" + unreard_count, "" + GID));
-                    }
-                    groupListAdapter = new GroupsListAdapter(FragmentCometchatGroupsList.this, getContext(), searchGroupList, al_unreadCountList);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.setAdapter(groupListAdapter);
-                    checkIntent();
-
-                }
-
-                @Override
-                public void onError(CometChatException e) {
-                    // Handle Error
-                    Log.e(TAG, "onError: allGroupCount");
-                }
-            });*/
-
-            //for (GetGroupsCometchat item : this.primaryGroupList) {
-            //Log.e(TAG, "getGroups: groupId " + item.getGroupId() + "groupName " + item.getName() + "ListSize " + this.primaryGroupList.size() + " " + rotatingCounter);
-                /*CometChat.getUnreadMessageCountForAllGroups(new CometChat.CallbackListener<HashMap<String, Integer>>() {
-                    @Override
-                    public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                        // Handle success
-                       //getting hasmap with values but not available ids which we are finding which we got from our server
-                        for (Map.Entry<String, Integer> entry : stringIntegerHashMap.entrySet()) {
-                            String GID = entry.getKey();
-                            String unreard_count = String.valueOf(entry.getValue());
-                            Log.e(TAG, "onSuccess: groupId " + GID + " counter " + unreard_count);
-                            al_unreadCountList.add(new ModelUserCount("" + unreard_count, "" + GID));  // creating list with counter and gid
-                        }
-                        groupListAdapter = new GroupsListAdapter(FragmentCometchatGroupsList.this, getContext(), searchGroupList, al_unreadCountList);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        recyclerView.setLayoutManager(mLayoutManager);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.setAdapter(groupListAdapter);
-                        checkIntent();
-                    }
-
-                    @Override
-                    public void onError(CometChatException e) {
-                        // Handle Error
-                        Log.e(TAG, "onError: allGroupCount");
-                    }
-                });*/
-
-
-        }
-        //}
-    }
 
 
     private void CreateGroup(String action, String userId, String gId, String gNAme, String gType, String pass) {
@@ -574,6 +470,7 @@ public class FragmentCometchatGroupsList extends Fragment {
          *that time we shoud check intent
          * if preferences is false that means user is returning back from chat screen and
          * */
+        Log.i(TAG, "onResume:  is called");
         if (preferenCheckIntent.getBoolean("checkIntent", false)) {
             checkIntent();
         }
@@ -835,7 +732,6 @@ public class FragmentCometchatGroupsList extends Fragment {
     private void showDialog(String success, GetGroupsCometchat groupList, ArrayList<GetGroupsCometchat> mySearchList, int position) {
         builder = new AlertDialog.Builder(getActivity());
         //Creating dialog box
-
         builder.setMessage(success)
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -857,18 +753,54 @@ public class FragmentCometchatGroupsList extends Fragment {
     /*When user clicked on group list  item this method will invoke
      * added by rahul maske*/
     public void performAdapterClick(int position, ArrayList<GetGroupsCometchat> mySearchList) {
+
         GetGroupsCometchat group = mySearchList.get(position);
+        //group.get
         String GID = group.getGroupId();
-        Log.e("grId", GID);
-        /*commented code */
-        Log.i(TAG, "performAdapterClick: member count " + group.getMembers_count());
-        Log.i(TAG, "performAdapterClick: member list " + group.getMembersArrayList().get(0).getUser_id());
+        colorChangeCall(GID,position,mySearchList,group);
         if (Integer.parseInt(group.getMembers_count()) > 1) {
             getGroupMembersAndProviders(GID, mySearchList, position, group);
         } else {
             StringBuffer stringBufferIMembersId = new StringBuffer();
+
             openActivity(group.getName(), group.getGroupId(), group.getType(), group.getOwner_id(), group.getMembers_count(), "" + group.getPassword(), stringBufferIMembersId);
         }
+        Log.e("grId", GID);
+        /*commented code */
+        Log.i(TAG, "performAdapterClick: member count " + group.getMembers_count());
+        Log.i(TAG, "performAdapterClick: member list " + group.getMembersArrayList().get(0).getUser_id());
+
+    }
+
+    private void colorChangeCall(String GID, int position, ArrayList<GetGroupsCometchat> mySearchList, GetGroupsCometchat group) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                HashMap<String, String> requestMap = new HashMap<>();
+                requestMap.put(General.ACTION, "unread_group_color");
+                requestMap.put("g_id", GID);
+
+                String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
+                RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getActivity(), getActivity());
+                if (requestBody != null) {
+                    try {
+                        String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
+                        if (response != null) {
+                            Log.e("colorChangeCall", response);
+                            //getGroups();
+                            groupListAdapter.setColorDefault(position);
+
+                        } else {
+                            Log.i(TAG, "colorChangeCall: null response ");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread thread=new Thread(runnable);
+        thread.start();
     }
 
     private void prepareToSendGroupChatScreen(GetGroupsCometchat group, ArrayList<GetGroupsCometchat> mySearchList, int position) {
