@@ -26,6 +26,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.modules.cometchat_7_30.CometChatFriendsListFragment_;
+import com.modules.cometchat_7_30.LastConversion.FragmentLastConversation;
 import com.sagesurfer.collaborativecares.LoginActivity;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
@@ -375,7 +376,6 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     private PendingIntent getIntent() {
-
         if (Preferences.contains(General.IS_LOGIN) && Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
             try {
                 if (!isCall) {
@@ -431,7 +431,8 @@ public class MessagingService extends FirebaseMessagingService {
                         }
                     }
 //              intent.putExtra("json", (Parcelable) json);
-                } else {
+                }
+                else {
                     /*Here in this we are preparing for call push notification redirection
                      * on click of notification user will redirect on calling screen
                      * added by rahul maske*/

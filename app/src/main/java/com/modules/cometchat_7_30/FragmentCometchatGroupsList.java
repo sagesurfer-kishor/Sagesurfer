@@ -94,12 +94,17 @@ public class FragmentCometchatGroupsList extends Fragment {
     public List<Group> groupList = new ArrayList<>();
     private LinearLayout cardview_actions;
     public ArrayList<GetGroupsCometchat> primaryGroupList = new ArrayList<>();
+    public ArrayList<GetGroupsCometchat> MainGroupList = new ArrayList<>();
     public ArrayList<GetGroupsCometchat> searchGroupList = new ArrayList<>();
     private TextView error, tv_total_groupCount, tv_total_groupTypeCount;
     SharedPreferences preferenOpenActivity;
     SharedPreferences.Editor editor;
     SharedPreferences preferenCheckIntent;
     ArrayList<Members_> membersArrayList_;
+    int privateCount = 0;
+    int passwordCount = 0;
+    int publicCount = 0;
+    int counter = 0;
     int iteratorCounter1;
     int iterationMemberId = 0;
     int providerIdCounter, membersCounter, iteratingCounter, iteratingCounterMemberList, providerOnlineStatusCounter, memberOnlineStatusCounter = 0;
@@ -144,7 +149,6 @@ public class FragmentCometchatGroupsList extends Fragment {
         createGroup = view.findViewById(R.id.creatGrp);
         edittext_search = view.findViewById(R.id.ed_search_friend);
         tv_total_groupTypeCount = view.findViewById(R.id.tv_total_groupTypeCount);
-        tv_total_groupCount = view.findViewById(R.id.tv_total_groupCount);
         tv_total_groupCount = view.findViewById(R.id.tv_total_groupCount);
         error = view.findViewById(R.id.group_list_error);
         cardview_actions = view.findViewById(R.id.cardview_actions);
@@ -371,17 +375,34 @@ public class FragmentCometchatGroupsList extends Fragment {
                 String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
                 if (response != null) {
                     Log.e("groups", response);
-                    primaryGroupList = GroupTeam_.parseTeams(response, "get_groups_cometchat", getActivity(), TAG);
-                    for (GetGroupsCometchat item : primaryGroupList) {
-                        Log.i(TAG, "getGroups: Group info -> " + item.getName() + " GroupId " + item.getGroupId() + " isMember " + item.getIs_member() + " group_color " + item.getGroup_color());
+                    if (!MainGroupList.isEmpty()){
+                        MainGroupList.clear();
+                    }
+                    if (!primaryGroupList.isEmpty()){
+                        primaryGroupList.clear();
+                    }
+                    MainGroupList = GroupTeam_.parseTeams(response, "get_groups_cometchat", getActivity(), TAG);
+                    for (GetGroupsCometchat item : MainGroupList) {
+                        Log.i(TAG, "getGroups: Group info -> " + item.getName() + " GroupId " + item.getGroupId()
+                                + " isMember " + item.getIs_member() + " group_color " + item.getGroup_color()+" getIs_ban_member "+item.getGroup_banned_members());
+                        if (item.getType().equalsIgnoreCase("public") || item.getType().equalsIgnoreCase("private") || item.getType().equalsIgnoreCase("password")){
+                            if (!item.getGroup_banned_members().equals("1")){
+                                Log.i(TAG, "getGroups: Group info -> ban_member != 1  name " +item.getName());
+                                primaryGroupList.add(item);
+                            }else{
+                                Log.i(TAG, "getGroups: Group info -> ban_member = 1 "+item.getName());
+
+                            }
+                        }
                     }
                     searchGroupList.clear();
                     searchGroupList.addAll(primaryGroupList);
                     cardview_actions.setVisibility(View.VISIBLE);
                     //getUnreadMessageCountList();
                     getGroupsCount();
+
                     tv_total_groupCount.setText("No of Groups : " + searchGroupList.size());
-                    groupListAdapter = new GroupsListAdapter(FragmentCometchatGroupsList.this, getContext(), searchGroupList);
+                    groupListAdapter = new GroupsListAdapter(FragmentCometchatGroupsList.this, getContext(), primaryGroupList);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -397,10 +418,10 @@ public class FragmentCometchatGroupsList extends Fragment {
     }
 
     private void getGroupsCount() {
-        int privateCount = 0;
-        int passwordCount = 0;
-        int publicCount = 0;
-        int counter = 0;
+        counter=0;
+        publicCount=0;
+        privateCount=0;
+        passwordCount=0;
         for (GetGroupsCometchat item : primaryGroupList) {
             counter++;
             if (item.getType().equals("public")) {
@@ -453,7 +474,7 @@ public class FragmentCometchatGroupsList extends Fragment {
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, getActivity());
-                Log.e("33333", response);
+                Log.e(TAG,"CreateGroup response"+ response);
                 if (response != null) {
                     Toast.makeText(getActivity(), "Group Created Successfully", Toast.LENGTH_LONG).show();
                 }
@@ -534,6 +555,7 @@ public class FragmentCometchatGroupsList extends Fragment {
      *       2. if status is online then show dialog as do u want to talk with provider
      *       3. if offline then show offline dialog
      *       4. if provider is not available in list then check members list
+     *       commented and created methods by rahul maske
      *  */
     public void getGroupMembersAndProviders(String GroupId, ArrayList<GetGroupsCometchat> mySearchList, int position, GetGroupsCometchat group) {
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
@@ -548,36 +570,37 @@ public class FragmentCometchatGroupsList extends Fragment {
         requestMap.put(screen.messagelist.General.GROUP_ID, "" + GroupId);
         requestMap.put(screen.messagelist.General.DOMAIN_CODE, DomainCode);
 
-
         RequestBody requestBody = screen.messagelist.NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
         Log.i(TAG, screen.messagelist.General.MY_TAG + " onTeamClickFetchTeamData: Domain " + DomainURL + url);
         try {
             if (requestBody != null) {
                 String response = screen.messagelist.NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
-
                 if (response != null) {
-
                     Log.i(TAG, screen.messagelist.General.MY_TAG + " getGroupMembersAndProviders :  response " + response);
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray get_team_members_array = jsonObject.getJSONArray("get_group_members_array");
-
                     if (get_team_members_array.getJSONObject(0).getString("status").equals("1")) {
                         group_member_id = get_team_members_array.getJSONObject(0).getString("group_member_id");
                         group_provider = get_team_members_array.getJSONObject(0).getString("group_provider");
                         Log.i(TAG, "getGroupMembersAndProviders: group_member_id " + group_member_id + " group_provider " + group_provider);
-
                         GetGroupsCometchat groupsCometchat = mySearchList.get(position);
                         membersArrayList_ = groupsCometchat.getMembersArrayList();
-
                         if (!group_provider.equals("")) {
+                            Log.i(TAG, "getGroupMembersAndProviders: provider block");
                             String[] arrayProvidersId = group_provider.split(",");
+                            //getting user details from server
                             getProvidersDetail(arrayProvidersId);
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     outerLoop:
+                                    /*fetching all provider from list which we have fetched*/
                                     for (User user : arrayListUsers) {
+                                        /* getting members  from member list from our server
+                                        * and checking that member is matched with server list if it matched
+                                        * that means provider is exist in list so that we can check its status and show popup accordingly
+                                        * */
                                         for (Members_ member : membersArrayList_) {
                                             if (user.getUid().equals(member.getComet_chat_id())) {
                                                 String status = user.getStatus();
@@ -604,7 +627,9 @@ public class FragmentCometchatGroupsList extends Fragment {
                                     }
                                 }
                             }, 1000);
-                        } else if (!group_member_id.equals("")) {
+                        }
+                        else if (!group_member_id.equals("")) {
+                            Log.i(TAG, "getGroupMembersAndProviders: members block 1");
                             String[] arrayMembers = group_member_id.split(",");
                             getProvidersDetail(arrayMembers);
                             final Handler handler = new Handler();
@@ -616,10 +641,13 @@ public class FragmentCometchatGroupsList extends Fragment {
                                         for (Members_ member : membersArrayList_) {
                                             if (user.getUid().equals(member.getComet_chat_id())) {
                                                 String status = user.getStatus();
+                                                Log.i(TAG, "run: getGroupMembersAndProviders member block 2");
                                                 if (status.equalsIgnoreCase("online")) {
+                                                    Log.i(TAG, "run: getGroupMembersAndProviders member block 3");
                                                     //show members online status
                                                     gotMemberCountOnlineStatus++;
                                                     if (arrayListUsers.size() == gotMemberCountOnlineStatus) {
+                                                        Log.i(TAG, "run: getGroupMembersAndProviders member block 4");
                                                         //show all providers are online
                                                         prepareToSendGroupChatScreen(group, mySearchList, position);
                                                         gotMemberCountOnlineStatus = 0;
@@ -677,7 +705,8 @@ public class FragmentCometchatGroupsList extends Fragment {
                                 }
                             }*/
 
-                        } else {
+                        }
+                        else {
                             Log.i(TAG, "getGroupMembersAndProviders: no provider and members found ");
                             prepareToSendGroupChatScreen(group, mySearchList, position);
                         }
@@ -700,7 +729,7 @@ public class FragmentCometchatGroupsList extends Fragment {
             e.printStackTrace();
         }
     }
-
+    /*from cometchat getting user details to know user is online or offline and store that all data in array*/
     private void getProvidersDetail(String[] arrayData) {
         Runnable providerRunnable = new Runnable() {
             @Override
@@ -714,7 +743,7 @@ public class FragmentCometchatGroupsList extends Fragment {
         Thread getProviderDataThread = new Thread(providerRunnable);
         getProviderDataThread.start();
     }
-
+    /*getting user details from cometchat*/
     public void getUserDetails(String providerId) {
         CometChat.getUser(providerId, new CometChat.CallbackListener<User>() {
             @Override
@@ -758,17 +787,21 @@ public class FragmentCometchatGroupsList extends Fragment {
         //group.get
         String GID = group.getGroupId();
         colorChangeCall(GID,position,mySearchList,group);
+       Log.i(TAG, "performAdapterClick: "+Integer.parseInt(group.getMembers_count()));
         if (Integer.parseInt(group.getMembers_count()) > 1) {
+            Log.i(TAG, "performAdapterClick: if part");
             getGroupMembersAndProviders(GID, mySearchList, position, group);
         } else {
+            Log.i(TAG, "performAdapterClick: else part");
             StringBuffer stringBufferIMembersId = new StringBuffer();
-
             openActivity(group.getName(), group.getGroupId(), group.getType(), group.getOwner_id(), group.getMembers_count(), "" + group.getPassword(), stringBufferIMembersId);
         }
+
+
         Log.e("grId", GID);
         /*commented code */
-        Log.i(TAG, "performAdapterClick: member count " + group.getMembers_count());
-        Log.i(TAG, "performAdapterClick: member list " + group.getMembersArrayList().get(0).getUser_id());
+        //Log.i(TAG, "performAdapterClick: member count " + group.getMembers_count());
+        //Log.i(TAG, "performAdapterClick: member list " + group.getMembersArrayList().get(0).getUser_id());
 
     }
 
@@ -808,12 +841,15 @@ public class FragmentCometchatGroupsList extends Fragment {
         editor.commit();
 
         StringBuffer sbGroupMemberIds = new StringBuffer("");
+        Log.i(TAG, "prepareToSendGroupChatScreen : getMembers_count"+group.getMembers_count());
         for (Members_ teamsItem : group.getMembersArrayList()) {
             String s = String.valueOf(teamsItem.getUser_id());
             //l.add(s);
             if (sbGroupMemberIds.length() == 0) {
+                Log.i(TAG, "prepareToSendGroupChatScreen: "+sbGroupMemberIds);
                 sbGroupMemberIds.append(s);
             } else {
+                Log.i(TAG, "prepareToSendGroupChatScreen: "+sbGroupMemberIds);
                 sbGroupMemberIds.append("," + s);
             }
         }
@@ -855,7 +891,8 @@ public class FragmentCometchatGroupsList extends Fragment {
                         alert.show();
                     }
 
-                } else {
+                }
+                else {
                     Log.i(TAG, "performAdapterClick: 2");
                     Log.i(TAG, "performAdapterClick: isMember" + isMembers);
                     openActivity(gName, groupIds, groupType, ownerId, memberCount, "", sbGroupMemberIds);
@@ -939,6 +976,7 @@ public class FragmentCometchatGroupsList extends Fragment {
 
     // open chat window on comet chat error
     private void openActivity(String name, String groupId, String ownerId, String GroupType, String memberCount, String GroupPass, StringBuffer groupMembersId) {
+        Log.i(TAG, "openActivity: groupMembersId "+groupMembersId);
         Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.TYPE, "group");
         intent.putExtra(StringContract.IntentStrings.NAME, name);

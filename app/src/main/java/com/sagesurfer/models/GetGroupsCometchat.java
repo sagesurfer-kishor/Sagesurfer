@@ -20,6 +20,9 @@ public class GetGroupsCometchat implements Serializable {
     @SerializedName("is_member")
     private Integer is_member;
 
+    @SerializedName("group_banned_members")
+    private String group_banned_members;
+
     @SerializedName("is_friend")
     private Integer is_friend;
 
@@ -53,6 +56,14 @@ public class GetGroupsCometchat implements Serializable {
 
     public void setMembersArrayList(ArrayList<Members_> membersArrayList) {
         this.membersArrayList = membersArrayList;
+    }
+
+    public String getGroup_banned_members() {
+        return group_banned_members;
+    }
+
+    public void setGroup_banned_members(String group_banned_members) {
+        this.group_banned_members = group_banned_members;
     }
 
     public String getMembers_count() {

@@ -261,7 +261,8 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         rvMemberList.addOnItemTouchListener(new RecyclerTouchListener(this, rvMemberList, new ClickListener() {
             @Override
             public void onClick(View var1, int var2) {
-                GroupMember user = (GroupMember) var1.getTag(R.string.user);
+               /*commeted */
+                /* GroupMember user = (GroupMember) var1.getTag(R.string.user);
                 if (loggedInUserScope != null && (loggedInUserScope.equals(CometChatConstants.SCOPE_ADMIN) || loggedInUserScope.equals(CometChatConstants.SCOPE_MODERATOR))) {
                     groupMember = user;
                     boolean isAdmin = user.getScope().equals(CometChatConstants.SCOPE_ADMIN);
@@ -273,7 +274,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
                             openContextMenu(var1);
                         }
                     }
-                }
+                }*/
             }
 
             @Override
@@ -504,8 +505,10 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
             rvMemberList.setVisibility(View.GONE);
             rl_load_more.setVisibility(View.GONE);
             shared_media_layout.setVisibility(View.GONE);
-            tv_delete.setVisibility(View.VISIBLE);
-            tv_exit.setVisibility(View.VISIBLE);
+            tv_delete.setVisibility(View.GONE);
+            tv_exit.setVisibility(View.GONE);
+        }else{
+            historyView.setVisibility(View.GONE);
         }
     }
 

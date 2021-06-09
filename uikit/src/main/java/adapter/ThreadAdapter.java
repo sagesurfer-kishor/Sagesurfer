@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -48,6 +49,7 @@ import com.cometchat.pro.uikit.Avatar;
 import com.cometchat.pro.uikit.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -63,6 +65,8 @@ import utils.FontUtils;
 import utils.MediaUtils;
 import utils.Utils;
 import utils.ZoomIv;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Purpose - ThreadeAdapter is a subclass of RecyclerView Adapter which is used to display
@@ -86,6 +90,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int AUDIO_MESSAGE = 13;
 
     private List<BaseMessage> messageList = new ArrayList<>();
+
+    SharedPreferences sp;
 
     private static final int TEXT_MESSAGE = 14;
 
@@ -810,6 +816,45 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
+    public void setEditedMessage(BaseMessage oldMessage, BaseMessage translatedMessage) {
+        JSONObject metadata = translatedMessage.getMetadata();
+        try {
+            if (metadata.has("@injected")) {
+                JSONObject injectedObject = null;
+                injectedObject = metadata.getJSONObject("@injected");
+                if (injectedObject.has("extensions")) {
+                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                    if (extensionsObject.has("message-translation")) {
+                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                        HashMap<String, String> translationsMap = new HashMap<String, String>();
+                        for (int i = 0; i < translations.length(); i++) {
+                            JSONObject translation = translations.getJSONObject(i);
+                            String translatedText = translation.getString("message_translated");
+                            String translatedLanguage = translation.getString("language_translated");
+                            translationsMap.put(translatedLanguage, translatedText);
+                            sp = context.getSharedPreferences("login", MODE_PRIVATE);
+                            if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                if (translatedMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                    ((TextMessage) translatedMessage).setText(translatedText);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (messageList.contains(oldMessage)) {
+            int index = messageList.indexOf(oldMessage);
+            messageList.remove(index);
+            //((TextMessage)messageList.get(index)).setText(""+((TextMessage)translatedMessage).getText());
+            messageList.add(index, translatedMessage);
+            notifyItemChanged(index);
+        }
+    }
 
     private void setLinkData(LinkMessageViewHolder viewHolder, int i) {
 

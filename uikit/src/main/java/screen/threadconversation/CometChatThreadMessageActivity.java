@@ -52,6 +52,8 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
 
     private String name;
 
+    private String team_id;
+
     private String uid;
 
     private String messageType;
@@ -133,6 +135,11 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
              if (getIntent().hasExtra(StringContract.IntentStrings.TABS)) {
                  tabs = getIntent().getStringExtra(StringContract.IntentStrings.TABS);
              }
+
+             if (getIntent().hasExtra(StringContract.IntentStrings.TEAM_ID)) {
+                 team_id = getIntent().getStringExtra(StringContract.IntentStrings.TEAM_ID);
+             }
+
              bundle.putString(StringContract.IntentStrings.ID,Id);
              bundle.putString(StringContract.IntentStrings.CONVERSATION_NAME,conversationName);
              bundle.putString(StringContract.IntentStrings.TYPE,type);
@@ -144,6 +151,7 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
              bundle.putString(StringContract.IntentStrings.UID, uid);
              bundle.putString(StringContract.IntentStrings.TABS, tabs);
              bundle.putLong(StringContract.IntentStrings.SENTAT, sentAt);
+             bundle.putString(StringContract.IntentStrings.TEAM_ID, team_id);
 
               if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT))
                   bundle.putString(StringContract.IntentStrings.TEXTMESSAGE,message);

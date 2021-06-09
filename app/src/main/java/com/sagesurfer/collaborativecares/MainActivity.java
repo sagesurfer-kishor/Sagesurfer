@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private static final int JOB_ID = 0;
     AppCompatImageView chat_icon, main_toolbar_bell;
     private JobScheduler mScheduler;
-    private SharedPreferences preferencesCheckCurrentActivity,  preferencesTeamsData;
+    private SharedPreferences preferencesCheckCurrentActivity, preferencesTeamsData;
     private SharedPreferences.Editor editor;
     PopupMenu popup;
 
@@ -290,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     EditText et_startTime, et_endTime;
     int StartTimeHour, EndTimeHour, StartTimeMin, EndTimeMin;
     SharedPreferences.Editor teamDataEditor;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"WrongConstant", "RestrictedApi", "SourceLockedOrientationActivity", "NewApi"})
     @SuppressWarnings("deprecation")
@@ -545,16 +546,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Thread t = new Thread(myRunnable);
             t.start();
         }
+        /*cheking not null because when it has data is taking time to give response and so that push notification getting empty data
+         * added rahul maske*/
+        if (getIntent().getExtras() == null) {
+            /*This runnable is created for fetching My teams */
+            MyRunnableMyTeams myTeams = new MyRunnableMyTeams();
+            Thread myTeamThread = new Thread(myTeams);
+            myTeamThread.start();
 
-        /*This runnable is created for fetching My teams */
-        MyRunnableMyTeams myTeams = new MyRunnableMyTeams();
-        Thread myTeamThread = new Thread(myTeams);
-        myTeamThread.start();
-
-        /*This runnable is created for fetching Join teams */
-        RunnableJoinTeams joinTeams = new RunnableJoinTeams();
-        Thread myJoinThread = new Thread(joinTeams);
-        myJoinThread.start();
+            /*This runnable is created for fetching Join teams */
+            RunnableJoinTeams joinTeams = new RunnableJoinTeams();
+            Thread myJoinThread = new Thread(joinTeams);
+            myJoinThread.start();
+        }
     }
 
 
@@ -2011,6 +2015,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         Log.i(TAG, "handleIntent: " + mainIntent.hasExtra("type"));
         if (mainIntent.getExtras() != null) {
             if (mainIntent.hasExtra("team_logs_id")) {
+                Log.i(TAG, "handleIntent: has team id ");
                 String team_logs_id = mainIntent.getStringExtra("team_logs_id");
                 String receiver = mainIntent.getStringExtra("receiver");
                 String sender = mainIntent.getStringExtra("sender");
@@ -2056,33 +2061,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ft.replace(R.id.app_bar_main_container, fragment, TAG);
                     ft.commit();
                 }
-            }
-            else {
+            } else {
                 Log.i(TAG, "handleIntent: else");
                 if (mainIntent.hasExtra("category")) {
-                    if (mainIntent.getStringExtra("category").equals("call")){
-                    /*Here we are getting intent  for call redirection*/
-                    Log.i(TAG, "handleIntent: call block");
-                    String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
-                    String uid = mainIntent.getStringExtra("uid");
-                    String role = mainIntent.getStringExtra("role");
-                    String name = mainIntent.getStringExtra("name");
-                    String avatar = mainIntent.getStringExtra("avatar");
-                    String status = mainIntent.getStringExtra("status");
-                    String callType = mainIntent.getStringExtra("callType");
-                    String sessionid = mainIntent.getStringExtra("sessionid");
+                    if (mainIntent.getStringExtra("category").equals("call")) {
+                        /*Here we are getting intent  for call redirection*/
+                        Log.i(TAG, "handleIntent: call block");
+                        String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
+                        String uid = mainIntent.getStringExtra("uid");
+                        String role = mainIntent.getStringExtra("role");
+                        String name = mainIntent.getStringExtra("name");
+                        String avatar = mainIntent.getStringExtra("avatar");
+                        String status = mainIntent.getStringExtra("status");
+                        String callType = mainIntent.getStringExtra("callType");
+                        String sessionid = mainIntent.getStringExtra("sessionid");
 
-                    User user = new User();
-                    user.setLastActiveAt(Long.parseLong(lastActiveAt));
-                    user.setUid(uid);
-                    user.setRole(role);
-                    user.setName(name);
-                    user.setAvatar(avatar);
-                    user.setStatus(status);
-                    Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);}
+                        User user = new User();
+                        user.setLastActiveAt(Long.parseLong(lastActiveAt));
+                        user.setUid(uid);
+                        user.setRole(role);
+                        user.setName(name);
+                        user.setAvatar(avatar);
+                        user.setStatus(status);
+                        Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);
+                    }
                 } else /*if (mainIntent.hasExtra("type"))*/ {
                     Log.i(TAG, "handleIntent: whiteboard block");
                     Bundle bundle = new Bundle();
+                    bundle.putString("type", "whiteboard_push");
+
                     Fragment fragment = GetFragments.get(82, bundle);
                     fragment.setArguments(bundle);
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -2094,10 +2101,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-
     // This function checks the intent data and redirects the user to particular tab
-
-
     private void openGroup(Context context, JSONObject message, String notificationMessage) throws JSONException {
         long chatroomId;
         if (message.has("cid")) {
@@ -2107,7 +2111,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         Matcher matcher = pattern.matcher(notificationMessage);
         matcher.find();
         notificationMessage = matcher.group(1);
-
     }
 
     //
@@ -3762,14 +3765,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         for (Teams_ teams_ : primaryList) {
             if (stringBuffer.length() == 0) {
                 stringBuffer.append(teams_.getId());
-            }else{
-                stringBuffer.append(","+teams_.getId());
+            } else {
+                stringBuffer.append("," + teams_.getId());
             }
         }
-        preferencesTeamsData = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+
+        Log.i(TAG, "Team -> getMyTeamsFromServer: " + stringBuffer);
+        preferencesTeamsData = getSharedPreferences("prefrencesPushRedirection", MODE_PRIVATE);
         teamDataEditor = preferencesTeamsData.edit();
-        teamDataEditor.putString("MyTeams", ""+stringBuffer);
+        teamDataEditor.putString("MyTeams", "" + stringBuffer);
         teamDataEditor.apply();
+
     }
 
     public class RunnableJoinTeams implements Runnable {
@@ -3786,13 +3792,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         for (Teams_ teams_ : primaryList) {
             if (stringBuffer.length() == 0) {
                 stringBuffer.append(teams_.getId());
-            }else{
-                stringBuffer.append(","+teams_.getId());
+            } else {
+                stringBuffer.append("," + teams_.getId());
             }
         }
-        preferencesTeamsData = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
+
+        Log.i(TAG, "Team -> getJoinTeamFromServer: " + stringBuffer);
+        preferencesTeamsData = getSharedPreferences("prefrencesPushRedirection", MODE_PRIVATE);
         teamDataEditor = preferencesTeamsData.edit();
-        teamDataEditor.putString("JoinTeam", ""+stringBuffer);
+        teamDataEditor.putString("JoinTeam", "" + stringBuffer);
         teamDataEditor.apply();
+
     }
 }

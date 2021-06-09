@@ -1,8 +1,6 @@
 package com.modules.cometchat_7_30.LastConversion;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -16,17 +14,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cometchat.pro.models.Conversation;
 import com.cometchat.pro.models.Group;
-import com.cometchat.pro.models.MediaMessage;
 import com.cometchat.pro.models.TextMessage;
 import com.cometchat.pro.models.User;
 import com.modules.cometchat_7_30.ModelUserCount;
 import com.sagesurfer.collaborativecares.R;
-import com.sagesurfer.models.Members_;
 import com.storage.preferences.Preferences;
 
 import org.json.JSONException;
@@ -34,10 +31,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import constant.StringContract;
-import screen.messagelist.Call_;
-import screen.messagelist.CometChatMessageListActivity;
-import screen.messagelist.General;
 import utils.Utils;
 
 public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastConversation.MyViewHolder> implements Filterable {
@@ -115,14 +108,14 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                     try {
                         if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equalsIgnoreCase("0")
                             /* || conversation.getLastMessage().getMetadata().getString("team_logs_id") != null*/) {
-                            Glide.with(mContext).load(((User) conversation.getConversationWith()).getAvatar()).into(holder.imgBan);
+                            Glide.with(mContext).load(((User) conversation.getConversationWith()).getAvatar()).into(holder.iv_profile);
                         } else {
                             String team_logs_id = conversation.getLastMessage().getMetadata().getString("team_logs_id");
                             String[] array = team_logs_id.split("_-");
                             if (array[2].equalsIgnoreCase("3")) {
-                                holder.imgBan.setImageResource(R.drawable.team_iconn);
+                                holder.iv_profile.setImageResource(R.drawable.team_iconn);
                             } else if (array[2].equalsIgnoreCase("4")) {
-                                holder.imgBan.setImageResource(R.drawable.team_iconn);
+                                holder.iv_profile.setImageResource(R.drawable.team_iconn);
                             }
                         }
                     } catch (JSONException e) {
@@ -133,14 +126,27 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
 
         } else if (conversation.getConversationType().equals("group")) {
             holder.title.setText(((Group) conversation.getConversationWith()).getName());
+
+            if (((Group) conversation.getConversationWith()).getGroupType().equals("public")) {
+                holder.iv_profile.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.pub_group));
+            } else if (((Group) conversation.getConversationWith()).getGroupType().equals("private")) {
+                holder.iv_profile.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.pri_group));
+            } else {
+                holder.iv_profile.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.pass_group));
+            }
+
             if (conversation.getLastMessage() != null) {
-                Log.i(TAG, "onBindViewHolder: time" + conversation.getLastMessage().getDeliveredToMeAt());
+                Log.i(TAG, "group onBindViewHolder: group name " + ((Group) conversation.getConversationWith()).getName());
                 if (conversation.getLastMessage().getType().equals("text")) {
+                    Log.i(TAG, "group onBindViewHolder: is text == true");
                     if (((TextMessage) conversation.getLastMessage()).getMetadata() != null) {
+                        Log.i(TAG, "group onBindViewHolder: metadata is != null");
                         if (((TextMessage) conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
+                            Log.i(TAG, "group onBindViewHolder: has one-to-one");
                             holder.friend_list_item_statusmessage.setText("This message was deleted");
                             holder.messageTime.setVisibility(View.GONE);
                         } else {
+                            Log.i(TAG, "group onBindViewHolder: has no one-to-one");
                             holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
                             holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
                             holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
@@ -150,7 +156,11 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                         holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText());
                         holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
                     }*/
-
+                    if(conversation.getLastMessage().getDeletedAt()!=0){
+                        holder.friend_list_item_statusmessage.setText("This message was deleted");
+                        holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                        holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+                    }
                 } else if (conversation.getLastMessage().getType().equalsIgnoreCase("image")
                         || conversation.getLastMessage().getType().equalsIgnoreCase("file")
                         || conversation.getLastMessage().getType().equalsIgnoreCase("audio")
@@ -251,7 +261,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView title, friend_list_item_statusmessage;
-        ImageView imgBan;
+        ImageView iv_profile;
         ImageView activeUser;
         ConstraintLayout cl_main;
         TextView txtView, tv_counter, messageTime;
@@ -259,11 +269,10 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
         MyViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.friend_list_itemname);
-            imgBan = view.findViewById(R.id.friend_list_itemphoto);
+            iv_profile = view.findViewById(R.id.friend_list_itemphoto);
             activeUser = view.findViewById(R.id.friend_list_item_statusicon);
             messageTime = view.findViewById(R.id.messageTime);
             cl_main = view.findViewById(R.id.cl_main);
-            // txtView = view.findViewById(R.id.txt_errorMsg);
             tv_counter = view.findViewById(R.id.friend_ic_counter);
             friend_list_item_statusmessage = view.findViewById(R.id.friend_list_item_statusmessage);
         }

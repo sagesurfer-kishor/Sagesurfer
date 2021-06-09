@@ -2135,7 +2135,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
      */
     public void setUpdatedMessage(BaseMessage baseMessage) {
 
-        JSONObject metadata = baseMessage.getMetadata();
+        /*JSONObject metadata = baseMessage.getMetadata();
         if (metadata != null) {
             try {
                 JSONObject injectedObject = metadata.getJSONObject("@injected");
@@ -2150,7 +2150,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             }
 
-        }
+        }*/
 
         if (messageList.contains(baseMessage)) {
             int index = messageList.indexOf(baseMessage);

@@ -76,9 +76,10 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
     private AlertDialog alertDialog;
     private ArrayList<GetAddNewMember> getgroupmemberArrayList = new ArrayList<>();
     private final ArrayList<GetGroupsCometchat> searchGroupList;
+    private final ArrayList<GetGroupsCometchat> mainList;
     private FragmentCometchatGroupsList fragment;
     private EditText et_search_user;
-    private MembersListAdapter memberListAdapter;
+    private AdapterUsersFetchedToAddInGroup memberListAdapter;
     private TextView btnSearch;
     private List<ModelUserCount> al_unreadCountList;
     SharedPreferences preferenOpenActivity;
@@ -86,6 +87,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
     public GroupsListAdapter(FragmentCometchatGroupsList fragment_CometchatGroupsList_, Context mContext, ArrayList<GetGroupsCometchat> searchGroupList) {
         this.mContext = mContext;//, ArrayList<ModelUserCount> al_unreadCountList
         this.searchGroupList = searchGroupList;
+        mainList = new ArrayList<>(searchGroupList);
         //this.al_unreadCountList = al_unreadCountList;
         fragment = fragment_CometchatGroupsList_;
         preferenOpenActivity = mContext.getSharedPreferences("highlighted_group", Context.MODE_PRIVATE);
@@ -94,7 +96,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
     public void GroupListAdapter(Context mContext){
         this.mContext = mContext;
     }
-
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         final TextView title;
@@ -174,7 +175,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             @Override
             public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
                 if (stringIntegerHashMap.get(group_item.getGroupId()) != null) {
-
                     group_item.setStatus(stringIntegerHashMap.get(group_item.getGroupId()));
                     holder.group_ic_counter.setText("" + group_item.getStatus());
                     holder.group_ic_counter.setVisibility(View.VISIBLE);
@@ -204,31 +204,33 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             holder.btnselfinvite.setVisibility(View.INVISIBLE);
         }
 
-        if (group_item.getType().equals("private") && group_item.getType().equals("public")) {
+        if (group_item.getType().equals("private") /*&& group_item.getType().equals("public")*/) {
             holder.btnselfinvite.setVisibility(View.INVISIBLE);
         }
 
-        String isMember = String.valueOf(group_item.getIs_member());
+        int isMember = group_item.getIs_member();
         if (group_item.getOwner_id().equals(Preferences.get(General.USER_ID))) {
             holder.btnselfinvite.setVisibility(View.INVISIBLE);
         }
 
-        if (!isMember.equals("0") || group_item.getOwner_id().equals("" + Preferences.get(General.USER_ID))) {
-            holder.btnselfinvite.setVisibility(View.INVISIBLE);
+        if (isMember==1) {
+            holder.btnselfinvite.setVisibility(View.GONE);
+        }else {
+            holder.btnselfinvite.setVisibility(View.VISIBLE);
         }
 
         // add member
         holder.img_group_item_options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                /* Intent intent = new Intent(mContext, Resourse_Share.class);
                 mContext.startActivity(intent);*/
-
                /* Resourse_Share CallUs = new Resourse_Share();
                 CallUs.show((AppCompatActivity)mContext.getFragmentManager(), "SOME_TAG");*/
                 //Log.e("GroupListAdapter", "onClick: img_group_item_options isMember" );
-
                 /*if (isMember.equals("0")) {*/
+
                 Log.i(TAG, "onClick: group owner " + group_item.getOwner_id() + " isMember " + group_item.getIs_member() + " userId " + Preferences.get(General.USER_ID));
                 //if (isMember.equalsIgnoreCase("1") || group_item.getOwner_id().equalsIgnoreCase(Preferences.get(General.USER_ID)) || ) {
                 final String userId = Preferences.get(General.USER_ID);
@@ -333,7 +335,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
 
                     }
                 });
-
                 dialog1.show();
                 /*}else{
                     Log.e("GroupListAdapter", "onClick: img_group_item_options isMember else Part" );
@@ -341,7 +342,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                     //addMemberingroup(teams_.getType());
                 }*/
             }
-                   /* } else {
+                /* } else {
                         AlertDialog.Builder builder;
                         builder = new AlertDialog.Builder(mContext);
                         //Setting message manually and performing action on button click
@@ -362,9 +363,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                         alert.show();
                     }
                 }*/
-
         });
-
         // self invite call
         holder.btnselfinvite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -558,11 +557,14 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             public void onClick(View view) {
                 SharedPreferences UserInfoForUIKitPref = mContext.getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
                 String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
-                Log.i(TAG, "onClick: pref id " + Preferences.get(General.USER_ID) + " Comet Chat id " + group_item.getOwner_id());
-                if (!isMember.equalsIgnoreCase("0")
-                        || group_item.getOwner_id().equals(Preferences.get(General.USER_ID))) {
-                    fragment.performAdapterClick(position, searchGroupList);
+                Log.i(TAG, "onClick: pref id " + Preferences.get(General.USER_ID)
+                        + " Comet Chat id " + group_item.getOwner_id()
+                        +"group Name "+searchGroupList.get(position).getName()
+                        +"group id "+searchGroupList.get(position).getGroupId()
+                );
 
+                if (isMember!=0 || group_item.getOwner_id().equals(UserId)) {
+                    fragment.performAdapterClick(position, searchGroupList);
                 } else {
                     //Toast.makeText(mContext, "You are not member of this group..", Toast.LENGTH_SHORT).show();
                     AlertDialog.Builder builder;
@@ -619,18 +621,18 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.member_details);*/
 
-        final TextView tv_allMember = view.findViewById(R.id.allMemberList);
-        final TextView tv_addMembers = view.findViewById(R.id.addNewMemberList);
-        final TextView tv_blockedMember = view.findViewById(R.id.blockedMemberList);
+        final TextView tv_allMemberInGroup = view.findViewById(R.id.allMemberList);
+        final TextView tv_membersToAddInGroup = view.findViewById(R.id.addNewMemberList);
+        final TextView tv_banMembersInGroup = view.findViewById(R.id.blockedMemberList);
 
         recyclerView = view.findViewById(R.id.detailMemberList);
         final LinearLayout linearLayout = view.findViewById(R.id.lv_search);
         error = view.findViewById(R.id.error);
         et_search_user = view.findViewById(R.id.search_name);
 
-        tv_allMember.setBackgroundResource(R.color.colorPrimary);
-        tv_addMembers.setBackgroundResource(R.color.white);
-        tv_blockedMember.setBackgroundResource(R.color.white);
+        tv_allMemberInGroup.setBackgroundResource(R.color.colorPrimary);
+        tv_membersToAddInGroup.setBackgroundResource(R.color.white);
+        tv_banMembersInGroup.setBackgroundResource(R.color.white);
         linearLayout.setVisibility(View.GONE);
 
         String groupId = String.valueOf(GID);
@@ -639,9 +641,9 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         Log.i(TAG, "dialogViewMembers: ");
         getGroupMemberFromServer(groupId);
 
-        tv_allMember.setBackgroundResource(R.color.colorPrimary);
-        tv_addMembers.setBackgroundResource(R.color.white);
-        tv_blockedMember.setBackgroundResource(R.color.white);
+        tv_allMemberInGroup.setBackgroundResource(R.color.colorPrimary);
+        tv_membersToAddInGroup.setBackgroundResource(R.color.white);
+        tv_banMembersInGroup.setBackgroundResource(R.color.white);
 
         ImageView btn_CloseDialog = view.findViewById(R.id.btnMemberDismiss);
         btnSearch = view.findViewById(R.id.btnsearch);
@@ -654,7 +656,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             }
         });
 
-        tv_allMember.setOnClickListener(new View.OnClickListener() {
+        tv_allMemberInGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -663,11 +665,9 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
 
                 //  get all team member for selected group
                 getGroupMemberFromServer(groupId);
-
-                tv_allMember.setBackgroundResource(R.color.colorPrimary);
-                tv_addMembers.setBackgroundResource(R.color.white);
-                tv_blockedMember.setBackgroundResource(R.color.white);
-
+                tv_allMemberInGroup.setBackgroundResource(R.color.colorPrimary);
+                tv_membersToAddInGroup.setBackgroundResource(R.color.white);
+                tv_banMembersInGroup.setBackgroundResource(R.color.white);
                 linearLayout.setVisibility(View.GONE);
             }
         });
@@ -676,16 +676,16 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         groupId = String.valueOf(GID);
 
         if (!Preferences.get("owner").equals(userId)) {
-            tv_addMembers.setVisibility(View.GONE);
-            tv_blockedMember.setVisibility(View.GONE);
+            tv_membersToAddInGroup.setVisibility(View.GONE);
+            tv_banMembersInGroup.setVisibility(View.GONE);
         } else {
             // add member
-            tv_addMembers.setOnClickListener(new View.OnClickListener() {
+            tv_membersToAddInGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    tv_allMember.setBackgroundResource(R.color.white);
-                    tv_addMembers.setBackgroundResource(R.color.colorPrimary);
-                    tv_blockedMember.setBackgroundResource(R.color.white);
+                    tv_allMemberInGroup.setBackgroundResource(R.color.white);
+                    tv_membersToAddInGroup.setBackgroundResource(R.color.colorPrimary);
+                    tv_banMembersInGroup.setBackgroundResource(R.color.white);
                     linearLayout.setVisibility(View.VISIBLE);
                     String action = "get_add_new_members";
                     String userId = Preferences.get(General.USER_ID);
@@ -696,14 +696,14 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             });
         }
 
-        tv_blockedMember.setOnClickListener(new View.OnClickListener() {
+        tv_banMembersInGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 linearLayout.setVisibility(View.GONE);
 
-                tv_blockedMember.setBackgroundResource(R.color.colorPrimary);
-                tv_allMember.setBackgroundResource(R.color.white);
-                tv_addMembers.setBackgroundResource(R.color.white);
+                tv_banMembersInGroup.setBackgroundResource(R.color.colorPrimary);
+                tv_allMemberInGroup.setBackgroundResource(R.color.white);
+                tv_membersToAddInGroup.setBackgroundResource(R.color.white);
 
                 // block member list for group
                 getBlockedUserList();
@@ -726,7 +726,6 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
 
             }
         });
-
         alertDialog.show();
     }
 
@@ -742,9 +741,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             @Override
             public void onSuccess(List<GroupMember> list) {
                 Log.e(TAG, "Group Member list fetched successfully : " + list.toString());
-
                 if (list.size() > 0) {
-                    GroupMembersAdapter caseloadListAdapter = new GroupMembersAdapter(mContext, list);
+                    AdapterAllGroupMembers caseloadListAdapter = new AdapterAllGroupMembers(mContext, list);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -778,7 +776,10 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                 String response = NetworkCall_.post(url, requestBody, TAG, mContext);
                 if (response != null) {
                     getgroupmemberArrayList = GroupTeam_.parsegroupMember(response, "get_add_new_members", mContext, TAG);
-                    memberListAdapter = new MembersListAdapter(mContext, getgroupmemberArrayList, groupType);
+                    for (GetAddNewMember members : getgroupmemberArrayList){
+                        Log.i(TAG, "fetchMembersFromServerToAddInGroup: "+members.getComet_chat_id());
+                    }
+                    memberListAdapter = new AdapterUsersFetchedToAddInGroup(mContext, getgroupmemberArrayList, groupType);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -809,7 +810,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
             @Override
             public void onSuccess(List<GroupMember> list) {
                 if (list.size() > 0) {
-                    Banmemberlistadapter banmemberadapter = new Banmemberlistadapter(mContext, list);
+                    AdapterAllBanMembersInGroup banmemberadapter = new AdapterAllBanMembersInGroup(mContext, list);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -903,10 +904,10 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
         protected FilterResults performFiltering(CharSequence constraint) {
             List<GetGroupsCometchat> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(fragment.primaryGroupList);
+                filteredList.addAll(mainList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (GetGroupsCometchat item : fragment.primaryGroupList) {
+                for (GetGroupsCometchat item : searchGroupList) {
                     if (item.getName().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }

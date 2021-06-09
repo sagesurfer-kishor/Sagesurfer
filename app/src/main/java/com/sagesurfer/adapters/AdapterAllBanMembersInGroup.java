@@ -34,13 +34,13 @@ import java.util.List;
 
 import okhttp3.RequestBody;
 
-public class Banmemberlistadapter extends RecyclerView.Adapter<Banmemberlistadapter.MyViewHolder> {
+public class AdapterAllBanMembersInGroup extends RecyclerView.Adapter<AdapterAllBanMembersInGroup.MyViewHolder> {
 
     private final Context mContext;
     private final List<GroupMember> teamList;
     private static final String TAG = FragmentCometchatGroupsList.class.getSimpleName();
 
-    Banmemberlistadapter(Context mContext, List<GroupMember> teamList) {
+    AdapterAllBanMembersInGroup(Context mContext, List<GroupMember> teamList) {
         this.mContext = mContext;
         this.teamList = teamList;
     }
@@ -76,31 +76,30 @@ public class Banmemberlistadapter extends RecyclerView.Adapter<Banmemberlistadap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         GroupMember teams_ = teamList.get(position);
-
         holder.title.setText(teams_.getName());
         holder.userAvatar.setAvatar(teams_.getAvatar());
-
         // unban user
         holder.imgBan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String UID = teams_.getUid();
+                String CometchatUid = teams_.getUid();
                 String GUID = Preferences.get("gId");
                 AlertDialog.Builder builder;
                 builder = new AlertDialog.Builder(mContext);
-
                 //Setting message manually and performing action on button click
                 builder.setMessage("Do you want to unban this member?")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                CometChat.unbanGroupMember(UID, GUID, new CometChat.CallbackListener<String>() {
+                                Log.i(TAG, "onClick: UID " + CometchatUid + " GUID " + GUID);
+
+                                CometChat.unbanGroupMember(CometchatUid, GUID, new CometChat.CallbackListener<String>() {
                                     @Override
                                     public void onSuccess(String successMessage) {
-                                        Log.e(TAG, "onSuccess: unbanUser");
-                                        //unblockedMember("unblock_member", GUID, UID, position);
-                                        addMemberToGroup("unblock_member", GUID, UID, position);
+                                        String[] Array = CometchatUid.split("_");
+                                        Log.e(TAG, "onSuccess: unbanUser "+Array[0]);
+                                        unblockedMember("unblock_member", GUID, Array[0], position,CometchatUid);
+                                        //addMemberToGroup("unblock_member", GUID, UID, position);
                                     }
 
                                     @Override
@@ -125,16 +124,13 @@ public class Banmemberlistadapter extends RecyclerView.Adapter<Banmemberlistadap
         });
     }
 
-    public void addMemberToGroup(String unblock_member, String GUID, String UID, int position){
+    public void addMemberToGroupFromCometchat(String GUID, String cometchatUid) {
         List<GroupMember> userList = new ArrayList<>();
-        userList.add(new GroupMember(UID, CometChatConstants.SCOPE_PARTICIPANT));
-
+        userList.add(new GroupMember(cometchatUid, CometChatConstants.SCOPE_PARTICIPANT));
         CometChat.addMembersToGroup(GUID, userList, null, new CometChat.CallbackListener<HashMap<String, String>>() {
             @Override
             public void onSuccess(HashMap<String, String> stringStringHashMap) {
-                Log.e(TAG, "onSuccess: " + teamList + "Group" + GUID);
-                //invite(action, uid, GUID, reciveverId, rec, position);
-                unblockedMember(unblock_member, GUID, UID, position);
+                Log.e(TAG, "addMemberToGroupFromCometchat onSuccess: " + teamList + "Group" + GUID);
             }
 
             @Override
@@ -149,14 +145,13 @@ public class Banmemberlistadapter extends RecyclerView.Adapter<Banmemberlistadap
         return teamList.size();
     }
 
-    private void unblockedMember(String action, String gId, String uId, int position) {
+    private void unblockedMember(String action, String groupId, String uId, int position,String cometchatUid) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
-        requestMap.put(General.GROUP_ID, gId);
-        requestMap.put(General.USER_ID, uId);
+        requestMap.put(General.GROUP_ID, groupId);
+        requestMap.put(General.BLOCK_USER_ID, uId);
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
-
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, mContext);
         if (requestBody != null) {
             try {
@@ -166,9 +161,10 @@ public class Banmemberlistadapter extends RecyclerView.Adapter<Banmemberlistadap
                     Toast.makeText(mContext, "unblocked user Successfully", Toast.LENGTH_LONG).show();
                     teamList.remove(position);
                     notifyDataSetChanged();
+                    addMemberToGroupFromCometchat( groupId, cometchatUid);
                 }
             } catch (Exception e) {
-                Log.i(TAG, "unblockedMember: onError "+e.getMessage());
+                Log.i(TAG, "unblockedMember: onError " + e.getMessage());
                 e.printStackTrace();
             }
         }

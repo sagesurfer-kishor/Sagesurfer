@@ -98,6 +98,10 @@ public class CometChatMainFragment extends Fragment {
         tabLayout = view.findViewById(R.id.chat_tab_layout);
         tabLayout.setOnTabSelectedListener(tabSelectedListener);
 
+        SharedPreferences preferencesTeamsData = getActivity().getSharedPreferences("prefrencesPushRedirection", MODE_PRIVATE);
+        JoinTeam = preferencesTeamsData.getString("JoinTeam", null);
+        MyTeam = preferencesTeamsData.getString("MyTeams", null);
+        Log.i(TAG, "onCreateView: MyTeamList " + MyTeam + " JoinTeamList " + JoinTeam);
         // add all tabs title here
         tabLayout.addTab(tabLayout.newTab().setText("Friends"));
         tabLayout.addTab(tabLayout.newTab().setText("Group"));
@@ -126,9 +130,7 @@ public class CometChatMainFragment extends Fragment {
             }
         });*/
 
-        SharedPreferences preferencesTeamsData = getActivity().getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
-        JoinTeam = preferencesTeamsData.getString("JoinTeam", null);
-        MyTeam = preferencesTeamsData.getString("MyTeam", null);
+
 
         if (MyTeam!=null ) {
             String[] joinTeam = MyTeam.split(",");
@@ -150,15 +152,8 @@ public class CometChatMainFragment extends Fragment {
                 Log.i(TAG, "onCreateView: myTeam arraylist item" + item);
             }
         }
-        if (joinTeamArrayList.contains("3721")){
-            Log.i(TAG, "onCreateView: contains 3721");
-        }else if (joinTeamArrayList.contains("3711")){
-            Log.i(TAG, "onCreateView: contains 3711");
-        }else if(joinTeamArrayList.contains("3671")) {
-            Log.i(TAG, "onCreateView: contains 3671");
-        }
 
-        Log.i(TAG, "onCreateView: MyTeamList " + MyTeam + " JoinTeamList " + JoinTeam);
+
         /*SharedPreferences.Editor teamDataEditor = preferencesTeamsData.edit();
         teamDataEditor.putString("JoinTeam", ""+stringBuffer);
         teamDataEditor.apply();*/
@@ -267,7 +262,6 @@ public class CometChatMainFragment extends Fragment {
                 unreadCount.add(message.getReceiverUid());
             }
         } else {
-
             if (!unreadCount.contains(message.getSender().getUid())) {
                 unreadCount.add(message.getSender().getUid());
             }
@@ -385,15 +379,19 @@ public class CometChatMainFragment extends Fragment {
                             tabLayout.getTabAt(3).select();
                         else if (team_logs_id.endsWith("4"))
                             tabLayout.getTabAt(2).select();*/
-
                         String[] teamLogArray = team_logs_id.split("_-");
+                        Log.i(TAG, "main fragment checkIntent: user Id "+teamLogArray[0]);
+                        Log.i(TAG, "main fragment checkIntent: team id "+teamLogArray[1]);
+                        Log.i(TAG, "main fragment checkIntent: tabs "+teamLogArray[2]);
+
                         if (myTeamArrayList.contains(teamLogArray[1])){
-                            Log.i(TAG, "checkIntent: myTeam");
+                            Log.i(TAG, "checkIntent: myTeam"+teamLogArray[1]);
                             tabLayout.getTabAt(2).select();
                         }else if (joinTeamArrayList.contains(teamLogArray[1])){
                             tabLayout.getTabAt(3).select();
-                            Log.i(TAG, "checkIntent: joinTeam");
+                            Log.i(TAG, "checkIntent: joinTeam"+teamLogArray[1]);
                         }
+                        Log.i(TAG, "checkIntent: joinTeam"+JoinTeam +" MyTeam " +MyTeam);
                     }
                 } else {
                     // tab 2

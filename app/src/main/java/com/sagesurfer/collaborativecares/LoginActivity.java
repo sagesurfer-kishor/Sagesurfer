@@ -1196,7 +1196,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void cometChatLogin(String Uid) {
         if (CometChat.getLoggedInUser() == null) {
-            CometChat.login(Uid, AppConfig.AppDetails.API_KEY, new CometChat.CallbackListener<User>() {
+            CometChat.login(Uid, AppConfig.AppDetails.AUTH_KEY, new CometChat.CallbackListener<User>() {
                 @Override
                 public void onSuccess(User user) {
                     Log.e(TAG, "Login Successful : " + user.toString());

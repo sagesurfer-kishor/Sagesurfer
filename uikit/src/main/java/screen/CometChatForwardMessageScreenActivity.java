@@ -626,7 +626,6 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                     List<Conversation> conversationsListCustom = new ArrayList<>();
                     for (Conversation item : conversationsList) {
                         Log.i(TAG, "onSuccess: tab is " + tabs);
-
                         if (tabs.equals("1")) {
                             if (item.getConversationType().equals("user")) {
                                 Log.i(TAG, "onSuccess: conversation type " + item.getConversationType());

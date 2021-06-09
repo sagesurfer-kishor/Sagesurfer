@@ -308,7 +308,6 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
     }
 
     public void setColor(int color) {
-
         ivSend.setImageTintList(ColorStateList.valueOf(color));
         ivCamera.setImageTintList(ColorStateList.valueOf(color));
         ivGallery.setImageTintList(ColorStateList.valueOf(color));
@@ -318,7 +317,6 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
 
     public void setComposeBoxListener(ComposeActionListener composeActionListener) {
         this.composeActionListener = composeActionListener;
-
         this.composeActionListener.getCameraActionView(ivCamera);
         this.composeActionListener.getGalleryActionView(ivGallery);
         this.composeActionListener.getFileActionView(ivFile);

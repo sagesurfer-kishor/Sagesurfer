@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 
 import okhttp3.RequestBody;
 
-class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyViewHolder> {
+class AdapterAllGroupMembers extends RecyclerView.Adapter<AdapterAllGroupMembers.MyViewHolder> {
 
     private final Context mContext;
     private static final String TAG = FragmentCometchatGroupsList.class.getSimpleName();
@@ -42,7 +42,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
     RecyclerView recyclerView;
     public List<GroupMember> groupMemberArrayList = new ArrayList<>();
 
-    GroupMembersAdapter(Context mContext, List<GroupMember> groupMemberArrayList) {
+    AdapterAllGroupMembers(Context mContext, List<GroupMember> groupMemberArrayList) {
         this.mContext = mContext;
         this.groupMemberArrayList = groupMemberArrayList;
 
@@ -57,7 +57,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         TextView title;
 
-        ImageView blockuser, deleteUser;
+        ImageView blockuser, deleteUser,friend_list_item_status_icon;
         private Avatar userAvatar;
 
         MyViewHolder(View view) {
@@ -65,6 +65,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
             title = (TextView) view.findViewById(R.id.txtGroupmemberName);
             deleteUser = (ImageView) view.findViewById(R.id.Removemember);
             blockuser = (ImageView) view.findViewById(R.id.blockedMember);
+            friend_list_item_status_icon = (ImageView) view.findViewById(R.id.friend_list_item_status_icon);
             userAvatar = view.findViewById(R.id.groupMember_list_item_photo);
         }
 
@@ -83,9 +84,9 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        GroupMember teams_ = groupMemberArrayList.get(position);
-        String uId = teams_.getUid().split(Pattern.quote("_"))[0];
-        String scope = teams_.getScope();
+        GroupMember member = groupMemberArrayList.get(position);
+        String uId = member.getUid().split(Pattern.quote("_"))[0];
+        String scope = member.getScope();
 
         // Code by Debopam
         //Delete button     
@@ -93,31 +94,34 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
         if (myUserId.equals(uId)) {
             if (scope.equals("admin")) {
                 holder.deleteUser.setVisibility(View.GONE);
-
             } else
                 holder.deleteUser.setVisibility(View.VISIBLE);
-
         } else {
             holder.deleteUser.setVisibility(View.GONE);
         }
 
+        // check user is online or offline
+        String status = member.getStatus();
+        if (status.equals("online")) {
+            holder.friend_list_item_status_icon.setImageResource(R.drawable.online_sta);
+        } else {
+            holder.friend_list_item_status_icon.setImageResource(R.drawable.offline_sta);
+        }
         // Block button
         holder.blockuser.setVisibility(View.GONE);
         if (myUserId.equals(adminUid) && !adminUid.equals(uId)) {
             holder.blockuser.setVisibility(View.VISIBLE);
         }
-
-        holder.title.setText(teams_.getName());
-        holder.userAvatar.setAvatar(teams_.getAvatar());
-
+        holder.title.setText(member.getName());
+        holder.userAvatar.setAvatar(member.getAvatar());
         holder.blockuser.setOnClickListener(view -> {
             Log.i(TAG, "onBindViewHolder: id of the user " + groupMemberArrayList.get(position).getUid());
-            Log.i(TAG, "onBindViewHolder: id of the user " + teams_.getUid());
-            String[] arrayId= teams_.getUid().split("_");
+            Log.i(TAG, "onBindViewHolder: id of the user " + member.getUid());
+            String[] arrayId= member.getUid().split("_");
             Log.i(TAG, "onBindViewHolder: id of the user " + groupMemberArrayList.get(position).getUid());
             Log.i(TAG, "onBindViewHolder: id of the blocked user " + arrayId[0]);
             Log.i(TAG, "onBindViewHolder: id of the group id " + Preferences.get("gId"));
-            String uid = groupMemberArrayList.get(position).getUid();
+            String cometChatUid = groupMemberArrayList.get(position).getUid();
             String GUID = Preferences.get("gId");
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(mContext);
@@ -126,18 +130,19 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            CometChat.banGroupMember(uid, GUID, new CometChat.CallbackListener<String>() {
+                            Log.i(TAG, "onBindViewHolder onClick: userId "+arrayId[0] +" group_id "+GUID +" cometchat Id"+cometChatUid);
+                            CometChat.banGroupMember(cometChatUid, GUID, new CometChat.CallbackListener<String>() {
                                 @Override
                                 public void onSuccess(String successMessage) {
                                     Log.d(TAG, "Group member banned successfully ");
                                     String action = "block_member";
-                                    blockMemberOnServer(action, arrayId[0], GUID, position);
+                                    String UserId=arrayId[0];
+                                    blockMemberOnServer(action,UserId , GUID, position);
                                     dialog.dismiss();
                                 }
-
                                 @Override
                                 public void onError(CometChatException e) {
-                                    Log.d(TAG, "Group member banning failed with exception: " + e.getMessage());
+                                    Log.d(TAG, "onBindViewHolder Group member banning failed with exception: " + e.getMessage());
                                 }
                             });
                         }
@@ -212,11 +217,11 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
     /*  ban member from group and this update we are also storing on server so that we can get right data when we fetch data from server
     *   first we ban group member from cometchat and then we ban member form server also*/
     private void blockMemberOnServer(String action, String userId, String gId, int position) {
+        Log.i(TAG, "blockMemberOnServer: userId "+userId + " groupId "+gId);
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put(General.BLOCK_USER_ID, userId);
         requestMap.put(General.GROUP_ID, gId);
-        requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
 
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, mContext);
@@ -234,6 +239,7 @@ class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.MyVie
             }
         }
     }
+
     /*Delete functionality for the group created by owner and owner can delete that group*/
     private void DeleteMember(String action, String userId, String gId, String memberIds, int position) {
         HashMap<String, String> requestMap = new HashMap<>();

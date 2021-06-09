@@ -60,7 +60,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
         this.context = context;
         this.primaryList = primaryList;
         this.searchList = searchList;
-
+        handler = new Handler();
         this.teamsChatExpandableListAdapterListener = teamsChatExpandableListAdapterListener;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.activity = activity;
@@ -125,7 +125,6 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
             viewHolderTeam.timeText.setVisibility(View.GONE);
             viewHolderTeam.typing = (TextView) convertView.findViewById(R.id.friend_list_item_typing);
             viewHolderTeam.memberCount = (TextView) convertView.findViewById(R.id.memberCount);
-
             convertView.setTag(viewHolderTeam);
         } else {
             viewHolderTeam = (ViewHolderTeam) convertView.getTag();
@@ -161,7 +160,7 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                 }
                 lastExpandedPosition = groupPosition;
                 Log.i(TAG, "onGroupExpand: team name" + item.getName());
-                teamsChatExpandableListAdapterListener.onTeamClickFetchTeamData(item);
+                teamsChatExpandableListAdapterListener.onTeamClickFetchTeamData(primaryList.get(groupPosition));
             }
         });
 
@@ -217,14 +216,16 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
 
             Log.i(TAG, "getChildView: user Name " + item.getMembersArrayList().get(childPosition).getUsername());
             Log.i(TAG, "getChildView: user Status " + item.getMembersArrayList().get(childPosition).getStatus());
+
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
+
                     CometChat.getUnreadMessageCountForUser("" + item.getMembersArrayList().get(childPosition).getComet_chat_id(),
                             new CometChat.CallbackListener<HashMap<String, Integer>>() {
                         @Override
                         public void onSuccess(HashMap<String, Integer> stringIntegerHashMap) {
-                            handler = new Handler();
+
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -233,13 +234,13 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                                     if (!counter.equalsIgnoreCase("null")) {
                                         viewHolderMember.ic_counter.setVisibility(View.VISIBLE);
                                         viewHolderMember.ic_counter.setText(counter);
+                                        viewHolderMember.ic_counter.setText(counter);
                                     } else {
                                         viewHolderMember.ic_counter.setVisibility(View.GONE);
                                     }
                                 }
                             });
                         }
-
                         @Override
                         public void onError(CometChatException e) {
                             handler.post(new Runnable() {
@@ -249,7 +250,6 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                                 }
                             });
                         }
-
                     });
                 }
             };
@@ -264,7 +264,6 @@ public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter 
                         @Override
                         public void onSuccess(User user) {
                             Log.d(TAG, "User details fetched for user: " + user.toString());
-                            handler = new Handler();
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {

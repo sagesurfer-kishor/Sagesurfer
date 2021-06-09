@@ -151,11 +151,11 @@
 
                 <TextView
                     android:id="@+id/thread_reply_count"
-                    android:layout_marginBottom="8dp"
-                    tools:text="0 Replies"
-                    android:textColor="@color/primaryTextColor"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/primaryTextColor"
+                    tools:text="0 Replies" />
                 <!--<ImageView
                     android:id="@+id/ic_forward_option"
                     android:layout_marginRight="16dp"

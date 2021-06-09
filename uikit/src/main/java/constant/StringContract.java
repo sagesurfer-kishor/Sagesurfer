@@ -84,6 +84,7 @@ public class StringContract {
         public static final String TEXTMESSAGE = "text_message";
 
         public static final String SENTAT = "sent_at";
+        public static final String TEAM_ID = "team_id";
 
         public static final String MESSAGE_TYPE = "message_type" ;
 

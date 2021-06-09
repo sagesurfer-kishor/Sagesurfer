@@ -57,14 +57,12 @@ public class SplashActivity extends AppCompatActivity {
                 loginIntent();
             }
         }, 1200);
-
-
     }
 
     private void initializeCometChat() {
         AppSettings appSettings=new AppSettings.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(AppConfig.AppDetails.REGION).build();
 
-        CometChat.init(this, AppConfig.AppDetails.APP_ID,appSettings, new CometChat.CallbackListener<String>() {
+        CometChat.init(this, AppConfig.AppDetails.AUTH_KEY,appSettings, new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String successMessage) {
                 UIKitSettings.setAPIKey(AppConfig.AppDetails.API_KEY);

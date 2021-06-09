@@ -3,6 +3,7 @@ package com.sagesurfer.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.GroupMember;
+import com.cometchat.pro.models.User;
 import com.cometchat.pro.uikit.Avatar;
 import com.modules.cometchat_7_30.FragmentCometchatGroupsList;
 import com.sagesurfer.collaborativecares.R;
@@ -37,29 +40,32 @@ import java.util.List;
 
 import okhttp3.RequestBody;
 
-class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewHolder> implements Filterable {
+class AdapterUsersFetchedToAddInGroup extends RecyclerView.Adapter<AdapterUsersFetchedToAddInGroup.MyViewHolder> implements Filterable {
     private final Context mContext;
     private final ArrayList<GetAddNewMember> groupmemberList;
     private ArrayList<GetAddNewMember> primaryGroupList = new ArrayList<>();
     private static final String TAG = FragmentCometchatGroupsList.class.getSimpleName();
     private String groupType;
+    Handler handler;
 
-    MembersListAdapter(Context mContext, ArrayList<GetAddNewMember> groupmemberList, String groupType) {
+    AdapterUsersFetchedToAddInGroup(Context mContext, ArrayList<GetAddNewMember> groupmemberList, String groupType) {
         this.mContext = mContext;
         this.groupmemberList = groupmemberList;
         this.groupType = groupType;
         this.primaryGroupList.addAll(groupmemberList);
+        handler=new Handler();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         TextView title, txtInviteMember;
         Avatar userAvatar;
-
+        ImageView memberPhoto;
         MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.txtmemberName);
             txtInviteMember = view.findViewById(R.id.txtInviteMember);
             userAvatar = view.findViewById(R.id.groupMember_list_item_photo);
+            memberPhoto = view.findViewById(R.id.memberPhoto);
         }
 
         @Override
@@ -79,10 +85,50 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        GetAddNewMember teams_ = groupmemberList.get(position);
+        GetAddNewMember member = groupmemberList.get(position);
+        holder.title.setText(member.getName());
+        holder.userAvatar.setAvatar(member.getPhoto());
+        Log.i(TAG, "run: member id "+member.getComet_chat_id() +" "+member.getName());
+        Runnable runnableGetUserDetail = new Runnable() {
+            @Override
+            public void run() {
+                CometChat.getUser("" + member.getComet_chat_id(), new CometChat.CallbackListener<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+                        Log.d(TAG, "User details fetched for user: " + user.toString());
+                        handler = new Handler();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                String activeStatus = user.getStatus();
+                                if (activeStatus.equalsIgnoreCase("online")) {
+                                    // check user is online or offline
+                                    holder.memberPhoto.setImageResource(R.drawable.online_sta);
+                                } else {
+                                    holder.memberPhoto.setImageResource(R.drawable.offline_sta);
+                                }
+                            }
+                        });
+                    }
 
-        holder.title.setText(teams_.getName());
-        holder.userAvatar.setAvatar(teams_.getPhoto());
+                    @Override
+                    public void onError(CometChatException e) {
+                        Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.memberPhoto.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        Thread thread1 = new Thread(runnableGetUserDetail);
+        thread1.start();
+
+
         holder.txtInviteMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,12 +145,13 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
                                     String action = "invite_public_friend";
                                     String groupid = Preferences.get("gId");
                                     String UserId = Preferences.get(General.USER_ID);
-                                    String reciverId = teams_.getComet_chat_id();
-                                    String rev = teams_.getUserId();
+                                    String reciverId = member.getComet_chat_id();
+                                    String rev = member.getUserId();
                                     addMemberTogroup(UserId, groupid, action, reciverId, rev, position);
                                     //invite(action, UserId, groupid, reciverId, position);
                                     dialog.cancel();
-                                } else {
+                                }
+                                else {
                                     if (groupmemberList.get(position).getIs_friend().equals("0")) {
                                         /*if the user is not already a friend of the sender then that user will get invitation to accept or decline  add in to the group
                                          * so this block will add user in group  */
@@ -112,8 +159,8 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
                                         String action = "add_member_invite";
                                         String groupid = Preferences.get("gId");
                                         String UserId = Preferences.get(General.USER_ID);
-                                        String reciverId = teams_.getComet_chat_id();
-                                        String rev = teams_.getUserId();
+                                        String reciverId = member.getComet_chat_id();
+                                        String rev = member.getUserId();
                                         invite(action, UserId, groupid, reciverId, rev, position);
                                         Log.e("Yesy", "TEST");
                                         dialog.cancel();
@@ -125,8 +172,8 @@ class MembersListAdapter extends RecyclerView.Adapter<MembersListAdapter.MyViewH
                                         String action = "invite_public_friend";
                                         String groupid = Preferences.get("gId");
                                         String UserId = Preferences.get(General.USER_ID);
-                                        String reciverId = teams_.getComet_chat_id();
-                                        String rev = teams_.getUserId();
+                                        String reciverId = member.getComet_chat_id();
+                                        String rev = member.getUserId();
                                         Log.e("No", "TEST");
                                         addMemberTogroup(UserId, groupid, action, reciverId, rev, position);
                                         Log.e("cometId", reciverId);
