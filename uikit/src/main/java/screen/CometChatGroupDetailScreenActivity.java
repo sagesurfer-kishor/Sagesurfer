@@ -1130,7 +1130,6 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         }
     }
 
-
     public void dialogViewMembers(String groupType) {
 
         androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(CometChatGroupDetailScreenActivity.this);

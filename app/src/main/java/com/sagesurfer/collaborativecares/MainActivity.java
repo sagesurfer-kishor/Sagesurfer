@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -69,6 +70,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -94,6 +96,7 @@ import com.modules.calendar.CustomCalendarAdapter;
 import com.modules.calendar.EventDetailsActivity;
 import com.modules.caseload.CaseloadFragment;
 import com.modules.caseload.PeerNoteDetailsActivity;
+import com.modules.cometchat_7_30.AdapterMembersList;
 import com.modules.contacts.EmergencyContactDialogFragment;
 import com.modules.contacts.ParentEmergencyDialogFragment;
 import com.modules.covid_19.adapter.CovidExpandableListAdapter;
@@ -285,11 +288,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SharedPreferences preferencesCheckCurrentActivity, preferencesTeamsData;
     private SharedPreferences.Editor editor;
     PopupMenu popup;
-
     MenuItem menuIteSetAvailability;
     EditText et_startTime, et_endTime;
     int StartTimeHour, EndTimeHour, StartTimeMin, EndTimeMin;
     SharedPreferences.Editor teamDataEditor;
+    SharedPreferences emergencyMessagePreferences;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"WrongConstant", "RestrictedApi", "SourceLockedOrientationActivity", "NewApi"})
@@ -310,11 +313,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performLogoutTask = new PerformLogoutTask();
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
-
+        emergencyMessagePreferences = getSharedPreferences("emergencyMessagePreferences", MODE_PRIVATE);
         if (Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
             setContentView(R.layout.activity_main);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
            /* try {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -365,10 +367,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             //mScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
             toolbar = (Toolbar) findViewById(R.id.main_toolbar_layout);
             setSupportActionBar(toolbar);
-            assert getSupportActionBar() != null;
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
             mainToolBarBellLayout = toolbar.findViewById(R.id.main_toolbar_bell_layout);
+            assert getSupportActionBar() != null;
             drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -587,7 +589,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     }*/
 
-    /* @Override
+     /*@Override
      public boolean onCreateOptionsMenu(Menu menu) {
          MenuInflater inflater = getMenuInflater();
          inflater.inflate(R.menu.menu_setting, menu);
@@ -629,7 +631,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-
                 switch (item.getItemId()) {
                     case R.id.menu_block_member:
                         Intent blockmembers = new Intent(getApplicationContext(), BlockedMembersActivity.class);
@@ -2003,14 +2004,46 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @SuppressLint("NewApi")
-    public void handleIntentForPushNotification(final Context context, Intent mainIntent) {
-
-    }
-
     //For cometchat push notification onclick events
     public void handleIntent(Intent mainIntent) {
+        if (mainIntent.getExtras() != null) {
+            String firstNotification=emergencyMessagePreferences.getString("firstNotification", null);
+            if (firstNotification ==null) {
+                // Do first run stuff here then set 'firstrun' as false
+                // using the following line to edit/commit prefs
+                emergencyMessagePreferences.edit().putString("firstNotification", "shown").apply();
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+                LayoutInflater inflater = this.getLayoutInflater();
+                View view = inflater.inflate(R.layout.dialog_emergency, null);
+                builder.setView(view);
+                androidx.appcompat.app.AlertDialog dialog = builder.create();
+                Log.i(TAG, "showMembersDialog: ");
+                //Button btn_cancel = view.findViewById(R.id.btn_cancel);
+                Button ok_btn = view.findViewById(R.id.ok_btn);
+
+               /* btn_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });*/
+
+                ok_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        moveToTheActivity(mainIntent);
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+                dialog.setCanceledOnTouchOutside(true);
+            } else
+                moveToTheActivity(mainIntent);
+        }
+    }
+
+    public void moveToTheActivity(Intent mainIntent) {
         Log.i(TAG, "handleIntent: main activity");
         Log.i(TAG, "handleIntent: " + mainIntent.hasExtra("type"));
         if (mainIntent.getExtras() != null) {
@@ -2067,7 +2100,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (mainIntent.getStringExtra("category").equals("call")) {
                         /*Here we are getting intent  for call redirection*/
                         Log.i(TAG, "handleIntent: call block");
-                        String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
+                        Bundle bundle = new Bundle();
+                        bundle.putString("category", mainIntent.getStringExtra("category"));
+                        bundle.putString("lastActiveAt", mainIntent.getStringExtra("lastActiveAt"));
+                        bundle.putString("uid", mainIntent.getStringExtra("uid"));
+                        bundle.putString("role", mainIntent.getStringExtra("role"));
+                        bundle.putString("name", mainIntent.getStringExtra("name"));
+                        bundle.putString("avatar", mainIntent.getStringExtra("avatar"));
+                        bundle.putString("status", mainIntent.getStringExtra("status"));
+                        bundle.putString("sessionid", mainIntent.getStringExtra("sessionid"));
+
+                        Fragment fragment = GetFragments.get(82, bundle);
+                        fragment.setArguments(bundle);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                        ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                        ft.commit();
+
+                       /* String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
                         String uid = mainIntent.getStringExtra("uid");
                         String role = mainIntent.getStringExtra("role");
                         String name = mainIntent.getStringExtra("name");
@@ -2083,7 +2133,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         user.setName(name);
                         user.setAvatar(avatar);
                         user.setStatus(status);
-                        Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);
+                        Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);*/
                     }
                 } else /*if (mainIntent.hasExtra("type"))*/ {
                     Log.i(TAG, "handleIntent: whiteboard block");
@@ -2100,6 +2150,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
     }
+
 
     // This function checks the intent data and redirects the user to particular tab
     private void openGroup(Context context, JSONObject message, String notificationMessage) throws JSONException {
@@ -2349,7 +2400,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             String timeStamp = intent.getStringExtra(General.TIMESTAMP);
                             String date = dateCaps(timeStamp);
                             showDailyDosingComplianceDialog(date, selfgoal_id, AM_PM, message, activity);
-
                         } else {
                             if (set_unset_id.equals("1")) {                                         // SelfGoalDetailsActivity
                                 Log.i(TAG, "onNewIntent: 24 SelfGoalDetailsActivity redirection");
@@ -3775,7 +3825,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         teamDataEditor = preferencesTeamsData.edit();
         teamDataEditor.putString("MyTeams", "" + stringBuffer);
         teamDataEditor.apply();
-
     }
 
     public class RunnableJoinTeams implements Runnable {
@@ -3802,6 +3851,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         teamDataEditor = preferencesTeamsData.edit();
         teamDataEditor.putString("JoinTeam", "" + stringBuffer);
         teamDataEditor.apply();
-
     }
 }

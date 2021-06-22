@@ -177,6 +177,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private boolean isTextMessageClick;
 
     private boolean isImageMessageClick;
+    private boolean isWhiteboardClicked;
     String translatedText = null;
     private SharedPreferences sp;
     private String currentLang;
@@ -1479,11 +1480,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     viewHolder.tvUser.setText(baseMessage.getSender().getName());
                 }
             }
-
             String s;
-
             if (baseMessage.getSender().getUid().equals(loggedInUser.getUid())) {
-
                 String txtMessages = "whiteboard invitation send successfully  <font color=#cc0029>click here</font> to open";
                 viewHolder.txtMessage.setTypeface(fontUtils.getTypeFace(FontUtils.robotoLight));
 
@@ -1604,6 +1602,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
 
+            viewHolder.txtMessage.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Log.i(TAG, "onLongClick: whiteboard");
+                    if (!isLongClickEnabled && !isTextMessageClick) {
+                        isWhiteboardClicked = true;
+                        setLongClickSelectedItem(baseMessage);
+                        messageLongClick.setLongMessageClick(longselectedItemList);
+                        notifyDataSetChanged();
+                    }
+                    return true;
+                }
+            });
+
             viewHolder.txtMessage.setTypeface(fontUtils.getTypeFace(FontUtils.robotoLight));
             if (baseMessage.getSender().getUid().equals(loggedInUser.getUid()))
                 viewHolder.txtMessage.setTextColor(context.getResources().getColor(R.color.textColorWhite));
@@ -1626,6 +1638,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             });
             viewHolder.itemView.setTag(R.string.message, baseMessage);
         }
+
 
     }
 

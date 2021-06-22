@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:paddingTop="@dimen/text_size_16"
+    android:paddingBottom="@dimen/text_size_16"
+    android:layout_marginTop="@dimen/margin_5"
+    android:background="@color/light_grey"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/relativelayout_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_16"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/margin_16"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.cometchat.pro.uikit.Avatar
+            android:id="@+id/friend_list_item_photo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="TODO"
+
+            android:src="@drawable/group_member_blue" />
+
+        <ImageView
+            android:id="@+id/friend_list_item_status_icon"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignStart="@+id/friend_list_item_photo"
+            android:layout_alignTop="@+id/friend_list_item_photo"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="TODO"
+            android:padding="1dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textStyle="bold"
+        android:id="@+id/tv_name"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/margin_16"
+        app:layout_constraintStart_toEndOf="@+id/relativelayout_image"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_time"
+        android:id="@+id/tv_start_time"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        android:layout_marginStart="@dimen/margin_16"
+        app:layout_constraintStart_toEndOf="@+id/relativelayout_image"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_time"
+        android:id="@+id/tv_end_time"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tv_start_time"
+        app:layout_constraintStart_toStartOf="@id/tv_name"
+        android:layout_marginEnd="@dimen/margin_16"
+
+      />
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/light_gray"
+/>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

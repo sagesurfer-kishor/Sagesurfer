@@ -964,7 +964,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (status == 3) {
             status = 2;
             message = getApplicationContext().getResources().getString(R.string.username_password_not_match);
-        } else if (status == 5 && (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021"))) {
+        } else if (status == 5 && (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021"))) {
             if (errorMsg != null) {
                 showDialog(errorMsg);
             }
@@ -1123,8 +1124,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString(General.USER_ID, userInfo.getUserId());
         editor.putString(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
         editor.putString(General.TIMEZONE, DeviceInfo.getTimeZone());
+        editor.putString(General.COMET_CHAT_ID,  userInfo.getComet_chat_id());
         editor.apply();
-
+        Log.e(TAG, "saveData: screen.messagelist.Preferences UserId " +userInfo.getUserId() );
+        Log.e(TAG, "saveData: screen.messagelist.Preferences cometchat UserId " +userInfo.getComet_chat_id());
         screen.messagelist.Preferences.initialize(getApplicationContext());
         screen.messagelist.Preferences.save(General.USER_ID, userInfo.getUserId());
         screen.messagelist.Preferences.save(General.TIMEZONE, DeviceInfo.getTimeZone());
@@ -1157,7 +1160,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Preferences.save(General.COUNTRY_ID, userInfo.getCountry());
         Preferences.save(General.BIRTDATE, userInfo.getDob());
         Preferences.save(General.USER_COMETCHAT_ID, userInfo.getComet_chat_id());
-
 
         if (userInfo.getRole().equalsIgnoreCase("care coordinator")) {
             Preferences.save(General.IS_CC, 1);

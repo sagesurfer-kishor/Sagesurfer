@@ -252,6 +252,9 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.My
                 TextView txtcreatedDated = dialog1.findViewById(R.id.txtcreatedDated);
                 TextView txtowner = dialog1.findViewById(R.id.txtowner);
 
+                if (group_item.getOwner_id().equalsIgnoreCase(Preferences.get(General.USER_ID))){
+                    btnViewMember.setText("Add Members");
+                }
                 txtowner.setText(group_item.getOwner());
                 txtmemberCount.setText(group_item.getMembers_count());
 

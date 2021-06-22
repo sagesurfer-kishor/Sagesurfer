@@ -120,19 +120,17 @@ public class CometChatStartCallActivity extends AppCompatActivity {
         SharedPreferences domainUrlPref = getApplicationContext().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
         String DomainURL = domainUrlPref.getString(General.DOMAIN, null);
         SharedPreferences preferensesCalling = getApplicationContext().getSharedPreferences("callingPreferences", MODE_PRIVATE);
-        String Group_id = null;
-        if (!preferensesCalling.getString("group_id","").equals(CometChatConstants.RECEIVER_TYPE_GROUP)) {
-            Group_id = "";
-        }
-        Log.i(TAG, "Calling test tag logOutEnrtyCometchat: type"+preferensesCalling.getString("type","")+" chat_type"+ preferensesCalling.getString("chat_type","")
-        +" Group_id "+Group_id +" UserId "+UserId);
+        String group_id=preferensesCalling.getString("group_id","");
+
+        Log.i(TAG, "Calling test tag logOutEnrtyCometchat: type"+preferensesCalling.getString("type","")+" chat_type "+ preferensesCalling.getString("chat_type","")
+        +" Group_id "+group_id +" UserId "+UserId);
         String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, "cometchat_outlog");
         requestMap.put(General.MISSED_CALL, "");
         requestMap.put(General.COMET_CHAT_TYPE, "" + preferensesCalling.getString("type",""));
         requestMap.put(General.CHAT_TYPE, preferensesCalling.getString("chat_type",""));
-        requestMap.put(General.GROUP_ID,  Group_id);
+        requestMap.put(General.GROUP_ID,  group_id);
         requestMap.put(General.USER_ID, UserId);
 
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getApplicationContext());

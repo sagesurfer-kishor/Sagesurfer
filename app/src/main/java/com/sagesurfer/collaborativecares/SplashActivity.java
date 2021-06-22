@@ -119,7 +119,6 @@ public class SplashActivity extends AppCompatActivity {
                 moveToDashboard();
             } else {
                 try {
-
                     String Uid = Preferences.get(General.COMET_CHAT_ID);
                     CometChat.login(Uid, AppConfig.AppDetails.API_KEY, new CometChat.CallbackListener<User>() {
                         @Override

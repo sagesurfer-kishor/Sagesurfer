@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/chatt_icon"
-        android:icon="@drawable/chatt_iconn"
+        android:icon="@drawable/blue_close"
         android:title="@string/last_conversation"
         app:showAsAction="always" />
 

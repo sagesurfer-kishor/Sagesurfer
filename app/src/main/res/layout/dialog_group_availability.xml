@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/iv_close_dialog"
+        android:layout_width="@dimen/margin_35"
+        android:layout_height="@dimen/margin_35"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:background="@drawable/close_red_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_30"
+        android:text="@string/alert_description"
+        android:textColor="@color/text_color_primary"
+        android:textSize="@dimen/margin_16"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text=""
+        android:id="@+id/tv_message"
+        android:textColor="@color/text_color_primary"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_16"
+        android:orientation="horizontal"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginRight="11dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_message">
+        <Button
+            android:id="@+id/btn_cancel"
+            android:text="@string/cancel"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"/>
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btn_members"
+            android:text="@string/members"
+            android:visibility="gone"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"/>
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/ok_btn"
+            android:text="@string/ok"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginRight="@dimen/margin_5"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

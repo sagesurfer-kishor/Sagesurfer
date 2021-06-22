@@ -42,9 +42,9 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/margin_5"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/creatGrp"
+
+        app:layout_constraintBottom_toTopOf="@+id/tv_emergency_msg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardview_actions">
@@ -53,10 +53,9 @@
             android:id="@+id/groupsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            />
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp" />
 
         <TextView
             android:id="@+id/group_list_error"
@@ -75,7 +74,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/creatGrp"
+        android:id="@+id/fb_create_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -88,16 +87,30 @@
         app:srcCompat="@drawable/ic_add_white" />
 
     <TextView
-        android:id="@+id/tv_total_groupCount"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_emergency_msg"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
+        android:text="@string/emergency_message"
+        android:textColor="@color/catalyst_redbox_background"
+        android:textStyle="normal"
+        android:paddingBottom="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_marginRight="@dimen/margin_16"
+        app:layout_constraintBottom_toTopOf="@+id/tv_total_groupCount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_total_groupCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="adadasdadd"
         android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/margin_10"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        android:layout_marginStart="@dimen/margin_16"
+        app:layout_constraintBottom_toTopOf="@+id/tv_total_groupTypeCount"
+        app:layout_constraintEnd_toStartOf="@+id/fb_create_group"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_total_groupTypeCount"
@@ -109,7 +122,9 @@
         android:textColor="@color/primaryTextColor"
         android:textSize="@dimen/text_size_12"
         android:textStyle="normal"
-        app:layout_constraintEnd_toStartOf="@+id/creatGrp"
+        app:layout_constraintEnd_toStartOf="@+id/fb_create_group"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_total_groupCount" />
+        android:layout_marginBottom="@dimen/margin_16"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

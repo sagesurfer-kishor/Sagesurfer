@@ -220,7 +220,6 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
     //Make network call to fetch event records from server
     private void getEvents(int position) {
         int selectedDate = position - (6 + CustomCalendar.mFirstDay);
-
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.GET_EVENTS);
         requestMap.put("date", CustomCalendar.mYear + "-" + (CustomCalendar.mMonth + 1) + "-" + selectedDate);

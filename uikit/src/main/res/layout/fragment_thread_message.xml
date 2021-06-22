@@ -165,14 +165,14 @@
                     android:src="@drawable/ic_baseline_forward_24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>-->
-               <!-- <ImageView
-                    android:id="@+id/ic_more_option"
-                    android:clickable="true"
-                    android:foreground="?selectableItemBackground"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_baseline_more_vert_24"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>-->
+                <!-- <ImageView
+                     android:id="@+id/ic_more_option"
+                     android:clickable="true"
+                     android:foreground="?selectableItemBackground"
+                     android:layout_alignParentEnd="true"
+                     android:src="@drawable/ic_baseline_more_vert_24"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"/>-->
 
             </RelativeLayout>
             <View
@@ -204,9 +204,9 @@
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_message_list"
+                android:layout_marginTop="5dp"
                 android:descendantFocusability="blocksDescendants"
                 android:clipToPadding="false"
-                android:layout_marginTop="5dp"
                 android:layout_below="@+id/thread_action"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -218,7 +218,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/chatList_toolbar" />
-    
+
     <include layout="@layout/edit_message_layout"/>
 
     <include layout="@layout/reply_message_layout"/>
@@ -244,6 +244,4 @@
     </RelativeLayout>
 
     <include layout="@layout/block_user_message_layout"/>
-
-
 </RelativeLayout>

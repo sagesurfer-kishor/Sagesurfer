@@ -1,5 +1,4 @@
 package screen;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -61,8 +60,6 @@ import listeners.OnItemClickListener;
 import screen.messagelist.CometChatMessageListActivity;
 import screen.messagelist.CometChatMessageScreen;
 import screen.messagelist.General;
-import screen.messagelist.Preferences;
-import screen.unified.CometChatUnified;
 import utils.FontUtils;
 import utils.MediaUtils;
 import utils.Utils;
@@ -100,6 +97,14 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
     int listSize;
 
     private FontUtils fontUtils;
+	Fragment fragment;
+    {
+        try {
+            fragment = new CometChatMessageScreen();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
    /* Fragment fragment;
 
     {
@@ -111,7 +116,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
     }*/
 
     private String messageType;
-    String avatarUrl, status, uname, mtype, tabs, team_Ids, SenderId, memberCount, groupDesc, groupPassword, groupType, groupOwner;
+    String avatarUrl, status, uname, type, tabs, team_Ids, SenderId, memberCount, groupDesc, groupPassword, groupType, groupOwner;
 
     private String mediaMessageUrl, mediaMessageExtension, mediaMessageName, mediaMessageMime;
 
@@ -168,9 +173,14 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         }
         Log.i(TAG, "handleIntent: tabs -> "+getIntent().getStringExtra(StringContract.IntentStrings.TABS));
         if (getIntent().hasExtra(StringContract.IntentStrings.TYPE)) {
-            messageType = getIntent().getStringExtra(StringContract.IntentStrings.TYPE);
-            Log.i(TAG, "handleIntent: messageType = "+messageType);
+            this.type = getIntent().getStringExtra(StringContract.IntentStrings.TYPE);
+            Log.i(TAG, "handleIntent:  Type = "+getIntent().getStringExtra(StringContract.IntentStrings.TYPE));
         }
+        if (getIntent().hasExtra(StringContract.IntentStrings.MESSAGE_TYPE)) {
+            messageType = getIntent().getStringExtra(StringContract.IntentStrings.MESSAGE_TYPE);
+            Log.i(TAG, "handleIntent: messageType = "+getIntent().getStringExtra(StringContract.IntentStrings.MESSAGE_TYPE));
+        }
+
         if (getIntent().hasExtra(CometChatConstants.MESSAGE_TYPE_TEXT)) {
             textMessage = getIntent().getStringExtra(CometChatConstants.MESSAGE_TYPE_TEXT);
             Log.i(TAG, "handleIntent: textMessage = "+textMessage);
@@ -190,6 +200,19 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         if (getIntent().hasExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_MIME_TYPE)) {
             mediaMessageMime = getIntent().getStringExtra(StringContract.IntentStrings.MESSAGE_TYPE_IMAGE_MIME_TYPE);
         }
+
+        if (getIntent().hasExtra(StringContract.IntentStrings.UID)) {
+            SenderId    = getIntent().getStringExtra(StringContract.IntentStrings.UID);
+        }
+
+        if (getIntent().hasExtra(StringContract.IntentStrings.NAME)) {
+            uname   = getIntent().getStringExtra(StringContract.IntentStrings.NAME);
+        }
+
+        if (getIntent().hasExtra(StringContract.IntentStrings.STATUS)) {
+            status   = getIntent().getStringExtra(StringContract.IntentStrings.STATUS);
+        }
+
         if (getIntent().hasExtra(StringContract.IntentStrings.ID)) {
             id = getIntent().getIntExtra(StringContract.IntentStrings.ID, 0);
         }
@@ -197,6 +220,11 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         if (getIntent().hasExtra(StringContract.IntentStrings.TABS)) {
             tabs = getIntent().getStringExtra(StringContract.IntentStrings.TABS);
             Log.i(TAG, "handleIntent: tabs = "+tabs);
+        }
+
+        if (getIntent().hasExtra("teamId")) {
+            team_Ids = getIntent().getStringExtra("teamId");
+            Log.i(TAG, "handleIntent: team_Ids = "+team_Ids);
         }
 
         /*avatarUrl = getIntent().getStringExtra(""+StringContract.IntentStrings.AVATAR);
@@ -327,9 +355,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                 listSize = userList.size();
 
                 if (messageType != null && messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                    //Runnable runnable = new Runnable() {
-                    //@Override
-                    //public void run() {
+
                     for (int i = 0; i <= userList.size() - 1; i++) {
                         listCounter = listCounter + 1;
                         Log.i(TAG, General.MY_TAG + " run: listCounter " + listCounter);
@@ -339,12 +365,43 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                         String type;
 
                         Log.e(TAG, "run: " + conversation.getConversationId());
+                        SharedPreferences forwardPref = getSharedPreferences("forwardPref", MODE_PRIVATE);
+                        Log.i(TAG, "onClick: Broadcast onJsonReceived 1");
+
                         if (conversation.getConversationType().equals(CometChatConstants.CONVERSATION_TYPE_USER)) {
                             uid = ((User) conversation.getConversationWith()).getUid();
                             type = CometChatConstants.RECEIVER_TYPE_USER;
+                            Log.i(TAG, "onClick: roadcast onJsonReceived user id pref "+forwardPref.getString("UserId", ""));
+                            Log.i(TAG, "onClick: roadcast onJsonReceived user id pref "+uid);
+                            /*if (uid.equalsIgnoreCase(forwardPref.getString("UserId", ""))){
+                                Log.i(TAG, "onClick: Broadcast onJsonReceived user");
+                                Intent intent = new Intent("forwardIntent");
+                                Bundle bundle = new Bundle();
+                                bundle.putString("uid", ""+uid);
+                                bundle.putString("textMessage", ""+textMessage);
+                                bundle.putString("type", ""+type);
+                                TestModel testModel=new TestModel();
+                                testModel.setBaseMessage(conversation.getLastMessage());
+                                bundle.putParcelable("message", (Parcelable) testModel);
+                                intent.putExtras(bundle);
+                                LocalBroadcastManager.getInstance(CometChatForwardMessageScreenActivity.this).sendBroadcast(intent);
+                                finish();
+                            }*/
                         } else {
+                            Log.i(TAG, "onClick: Broadcast onJsonReceived group ");
                             uid = ((Group) conversation.getConversationWith()).getGuid();
                             type = CometChatConstants.RECEIVER_TYPE_GROUP;
+                            //commented code is running but temoporary commented and will use when work on this
+                           /* if (uid.equalsIgnoreCase(forwardPref.getString("UserId", ""))){
+                                Intent intent = new Intent("forwardIntent");
+                                Bundle bundle = new Bundle();
+                                bundle.putString("uid", ""+uid);
+                                bundle.putString("textMessage", ""+textMessage);
+                                bundle.putString("type", ""+type);
+                                bundle.putString("message", ""+conversation);
+                                intent.putExtras(bundle);
+                                LocalBroadcastManager.getInstance(CometChatForwardMessageScreenActivity.this).sendBroadcast(intent);
+                            }*/
                         }
                         message = new TextMessage(uid, textMessage, type);
                         setMetadata(message);
@@ -360,8 +417,6 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                     //};
                     //Thread mythread = new Thread(runnable);
                     // mythread.start();
-
-
                 } else if (messageType != null && !messageType.equals(StringContract.IntentStrings.INTENT_MEDIA_MESSAGE)) {
                     //new Thread(() -> {
                     Log.i(TAG, "onClick: INTENT_MEDIA_MESSAGE");
@@ -397,7 +452,6 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                                 sendMediaMessage(message);
                                 if (listCounter == listSize) {
                                     Log.i(TAG, "onSuccess: listCounter" + listCounter + " listSize " + listSize);
-                                    onBackPressed();
                                 }
 
                                 /*commented by rahul maske to redirect on back page and it was sending on CometChatUnified.class */
@@ -528,8 +582,16 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         if (listCounter == listSize) {
             Log.i(TAG, "onSuccess: listCounter" + listCounter + " listSize " + listSize);
             Toast.makeText(this, "Message forwarded successfully", Toast.LENGTH_SHORT).show();
-            onBackPressed();
+            /*new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    onBackPressed();
+                }
+            });*/
 
+            Intent intent=createIntent();
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -539,19 +601,20 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
             public void onSuccess(TextMessage textMessage) {
                 Log.e(TAG, General.MY_TAG + " onSuccess: receiver uid" + textMessage.getReceiverUid());
                 /*called previous activity by rahul maske */
-
                 /*if (listCounter == listSize) {
                     Log.i(TAG, "onSuccess: listCounter"+listCounter +" listSize "+listSize);
                     onBackPressed();
+                    */
 
-                    *//*handler.post(new Runnable() {
+                /*if (listCounter==listSize-1) {
+                    Handler handler = new Handler();
+                    handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Log.i(TAG, General.MY_TAG+" onback after list completed");
                             onBackPressed();
                             Toast.makeText(CometChatForwardMessageScreenActivity.this, "Message sent successfully", Toast.LENGTH_SHORT).show();
                         }
-                    });*//*
+                    });
                 }*/
             }
 
@@ -568,18 +631,15 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
             public void onSuccess(MediaMessage mediaMessage) {
                 Log.d(TAG, "sendMediaMessage onSuccess: " + mediaMessage.toString());
                 /*called previous activity by rahul maske */
-                /*if (listCounter == listSize - 1) {
+                if (listCounter==listSize-1) {
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
                             onBackPressed();
-                            Toast.makeText(CometChatForwardMessageScreenActivity.this, "Message sent successfully", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-                }*/
-
+                }
             }
 
             @Override
@@ -707,20 +767,26 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    /*public Intent createIntent(){
+    public Intent createIntent(){
         Intent intent = new Intent(CometChatForwardMessageScreenActivity.this, CometChatMessageListActivity.class);
         if (getIntent() != null) {
-
+            Log.i(TAG, "createIntent: avatar "+avatar );
+            Log.i(TAG, "createIntent: uname "+uname );
+            Log.i(TAG, "createIntent: messageType "+messageType );
+            Log.i(TAG, "createIntent: SenderId "+SenderId );
+            Log.i(TAG, "createIntent: status "+status );
+            Log.i(TAG, "createIntent: tabs "+tabs );
+            Log.i(TAG, "createIntent: team_Ids "+team_Ids );
             intent.putExtra(StringContract.IntentStrings.AVATAR,avatar);
             intent.putExtra(StringContract.IntentStrings.NAME,uname);
-            intent.putExtra(StringContract.IntentStrings.TYPE,mtype);
-            intent.putExtra(StringContract.IntentStrings.TIME_ZONE,mtype);
-            if (mtype.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+            Log.i(TAG, "createIntent: "+messageType);
+            intent.putExtra(StringContract.IntentStrings.TYPE, type);
+            intent.putExtra(StringContract.IntentStrings.TIME_ZONE,messageType);
+            if (type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                 intent.putExtra(StringContract.IntentStrings.SENDER_ID, SenderId);
                 intent.putExtra(StringContract.IntentStrings.STATUS, status);
                 intent.putExtra(StringContract.IntentStrings.TABS,tabs);
                 intent.putExtra("teamId",team_Ids);
-
             }else {
                 intent.putExtra(StringContract.IntentStrings.GUID, getIntent().getStringExtra(StringContract.IntentStrings.GUID));
                 intent.putExtra(StringContract.IntentStrings.GROUP_OWNER, getIntent().getStringExtra(StringContract.IntentStrings.GROUP_OWNER));
@@ -731,9 +797,7 @@ public class CometChatForwardMessageScreenActivity extends AppCompatActivity {
                 intent.putExtra(StringContract.IntentStrings.TABS, getIntent().getStringExtra(StringContract.IntentStrings.TABS));
                 intent.putExtra(StringContract.IntentStrings.GROUP_OWNER, groupOwner);
             }
-
-
         }
         return intent;
-    }*/
+    }
 }

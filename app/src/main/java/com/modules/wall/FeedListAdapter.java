@@ -228,7 +228,6 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
 
                 case R.id.feed_list_item_share:
                     int userID = Integer.parseInt(Preferences.get(General.USER_ID));
-
                     if (feedList.get(position).getUser_id() == userID) {
                         Intent friendTeamIntent = new Intent(mContext, FriendsTeamActivity.class);
                         friendTeamIntent.putExtra("wall_id", feedList.get(position).getId());

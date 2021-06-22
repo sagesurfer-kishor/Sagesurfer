@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:padding="@dimen/margin_10"
-            android:text="Group Name :"
+            android:text="Name :"
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
@@ -48,7 +48,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="10dp"
-            android:minLines="2"
+            android:minLines="1"
+            android:text=""
+            android:maxLines="2"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_14" />
 
@@ -64,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:padding="@dimen/margin_10"
-            android:text="Group Type :"
+            android:text="Type :"
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
@@ -111,7 +113,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
+            android:layout_weight="2"
             android:padding="@dimen/margin_10"
             android:text="Password :"
             android:textColor="@color/colorPrimaryDark" />
@@ -120,7 +122,7 @@
             android:id="@+id/txt_password_request"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
+            android:layout_weight="1"
             android:padding="10dp"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_14" />

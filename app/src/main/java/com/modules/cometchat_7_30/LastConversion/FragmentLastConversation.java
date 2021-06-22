@@ -1,5 +1,4 @@
 package com.modules.cometchat_7_30.LastConversion;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -28,10 +27,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cometchat.pro.constants.CometChatConstants;
@@ -41,6 +42,8 @@ import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.Conversation;
 import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.User;
+import com.modules.cometchat_7_30.AdapterMembersList;
+import com.modules.cometchat_7_30.UserModel;
 import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
@@ -66,6 +69,7 @@ import constant.StringContract;
 import listeners.OnItemClickListener;
 import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
+import utils.Utils;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -88,9 +92,10 @@ public class FragmentLastConversation extends Fragment {
     LinearLayout cardview_actions;
     private FragmentActivity mContext;
     Activity activity;
+    private SharedPreferences sp;
     AlertDialog.Builder builder;
     AlertDialog alert;
-    String ClickedUserId;
+    String ClickedUserId,groups_members;
     EditText ed_search_friend;
     ArrayList<User> arrayListUsers;
     int gotProviderCountOnlineStatus, gotMemberCountOnlineStatus;
@@ -102,7 +107,6 @@ public class FragmentLastConversation extends Fragment {
     List<String> arrayListProviderId = new ArrayList<>();
     ProgressBar progressBar;
     String tabs, member_ids, provider_ids;
-    SharedPreferences sp;
     String JoinTeam, MyTeam;
     ArrayList<String> myTeamArrayList = new ArrayList<>();
     ArrayList<String> joinTeamArrayList = new ArrayList<>();
@@ -123,12 +127,10 @@ public class FragmentLastConversation extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
-        Runnable runnableGetProviders = new Runnable() {
-            @Override
-            public void run() {
-                Log.i(TAG, "run: runnableGetProviders");
-                getProvider();
-            }
+
+        Runnable runnableGetProviders = () -> {
+            Log.i(TAG, "run: runnableGetProviders");
+            getProvider();
         };
 
         Thread threadGetProviders = new Thread(runnableGetProviders);
@@ -243,24 +245,6 @@ public class FragmentLastConversation extends Fragment {
             mainActivity.hidesettingIcon(true);
         }
 
-        Thread threadMakeConversation = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //code to do the HTTP request
-                fetchConversationList();
-            }
-        });
-        threadMakeConversation.start();
-
-        Thread threadGetGroupList = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //code to do the HTTP request
-                getGroups();
-            }
-        });
-        threadGetGroupList.start();
-
         ed_search_friend.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -293,6 +277,29 @@ public class FragmentLastConversation extends Fragment {
         if (adapter != null) {
             adapter.getFilter().filter(search);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Thread threadMakeConversation = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //code to do the HTTP request
+                fetchConversationList();
+            }
+        });
+        threadMakeConversation.start();
+
+        Thread threadGetGroupList = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //code to do the HTTP request
+                getGroups();
+            }
+        });
+        threadGetGroupList.start();
+
     }
 
     /**
@@ -332,9 +339,34 @@ public class FragmentLastConversation extends Fragment {
                             Log.i(TAG, "run: data set...");
                             cardview_actions.setVisibility(View.VISIBLE);
                             recyclerView.setAdapter(adapter);
-
+                            Intent mainIntent=requireActivity().getIntent();
                             if (requireActivity().getIntent().getExtras() != null) {
+                                if (mainIntent.hasExtra("category")) {
+                                    if (mainIntent.getStringExtra("category").equals("call")) {
+                                        /*Here we are getting intent  for call redirection*/
+                                        Log.i(TAG, "handleIntent: call block");
+                                        String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
+                                        String uid = mainIntent.getStringExtra("uid");
+                                        String role = mainIntent.getStringExtra("role");
+                                        String name = mainIntent.getStringExtra("name");
+                                        String avatar = mainIntent.getStringExtra("avatar");
+                                        String status = mainIntent.getStringExtra("status");
+                                        String callType = mainIntent.getStringExtra("callType");
+                                        String sessionid = mainIntent.getStringExtra("sessionid");
+
+                                        User user = new User();
+                                        user.setLastActiveAt(Long.parseLong(lastActiveAt));
+                                        user.setUid(uid);
+                                        user.setRole(role);
+                                        user.setName(name);
+                                        user.setAvatar(avatar);
+                                        user.setStatus(status);
+                                        Utils.startCallIntent(getActivity(), user, callType, false, sessionid);
+                                        clearIntent();
+                                    }
+                                }else{
                                 checkIntent(conversationList.get(0));
+                                }
                             }
                         }
                     });
@@ -355,6 +387,18 @@ public class FragmentLastConversation extends Fragment {
                 Log.i(TAG, "makeConversationList onError: ");
             }
         });
+    }
+
+    private void clearIntent() {
+        requireActivity().getIntent().removeExtra("lastActiveAt");
+        requireActivity().getIntent().removeExtra("category");
+        requireActivity().getIntent().removeExtra("uid");
+        requireActivity().getIntent().removeExtra("role");
+        requireActivity().getIntent().removeExtra("name");
+        requireActivity().getIntent().removeExtra("status");
+        requireActivity().getIntent().removeExtra("callType");
+        requireActivity().getIntent().removeExtra("sessionid");
+
     }
 
     @Override
@@ -900,8 +944,6 @@ public class FragmentLastConversation extends Fragment {
     }
 
     public void onGroupClickedPerform(Conversation conversation) {
-        //((Group) conversation.getConversationWith()).getGuid();
-        //primaryGroupList.get(((Group) conversation.getConversationWith()).getGuid();
         Log.i(TAG, "onGroupClickedPerform:1 ");
         ArrayList<Members_> groupMembersArrayList;
         for (GetGroupsCometchat group : primaryGroupList) {
@@ -912,7 +954,12 @@ public class FragmentLastConversation extends Fragment {
                 Log.i(TAG, "onGroupClickedPerform:3 ");
                 if (Integer.parseInt(group.getMembers_count()) > 1) {
                     Log.i(TAG, "onGroupClickedPerform:4 ");
-                    getGroupMembersAndProviders(group.getGroupId(), conversation, group, groupMembersArrayList);
+                    groupClickServerCall(group.getGroupId(), conversation, group);
+                    /*below commented code is working
+                     * this is previous implementation for group clicked and now we have changed flow for this so we are commenting this code
+                     * commented by rahul maske on 15-06-2021
+                     * */
+                    /*getGroupMembersAndProviders(group.getGroupId(), conversation, group, groupMembersArrayList);*/
                 } else {
                     Log.i(TAG, "onGroupClickedPerform:5 ");
                     StringBuffer stringBufferIMembersId = new StringBuffer();
@@ -921,6 +968,164 @@ public class FragmentLastConversation extends Fragment {
                 }
             }
         }
+    }
+
+        private void groupClickServerCall(String GID, Conversation conversation,  GetGroupsCometchat group) {
+        SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+        String DomainCode = UserInfoForUIKitPref.getString(screen.messagelist.General.DOMAIN_CODE, null);
+
+        Log.i(TAG, "groupClickServerCall: Domain code " + DomainCode);
+        Log.i(TAG, "groupClickServerCall: User Id " + UserId);
+
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, "group_pop_message");
+        requestMap.put(General.GROUP_ID, GID);
+        requestMap.put(General.USER_ID, UserId);
+        requestMap.put(General.DOMAIN_CODE, DomainCode);
+
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getActivity(), getActivity());
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
+                if (response != null) {
+                    Log.e(TAG, "groupClickServerCall call response " + response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    String CheckMembers = jsonObject.getJSONArray("group_pop_message").getJSONObject(0).getString("CheckMembers");
+                    String Message = jsonObject.getJSONArray("group_pop_message").getJSONObject(0).getString("msg");
+                    groups_members = jsonObject.getJSONArray("group_pop_message").getJSONObject(0).getString("groups_members");
+                    if (CheckMembers.equalsIgnoreCase("0") && !Message.equalsIgnoreCase("Direct Open pop up")) {
+                        //direct pop up
+                        showDialogNewImplementation(Message, group, conversation, "hide");
+                    } else if (CheckMembers.equalsIgnoreCase("1")) {
+                        // click here message
+                        showDialogNewImplementation(Message, group, conversation, "show");
+                    } else {
+                        prepareToSendGroupChatScreen(group, conversation);
+                    }
+                } else {
+                    Log.i(TAG, "groupClickServerCall: null response");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void showDialogNewImplementation(String message, GetGroupsCometchat group, Conversation conversation, String action) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_group_availability, null);
+        builder.setView(view);
+        AlertDialog alertDialog = builder.create();
+        Button ok = view.findViewById(R.id.ok_btn);
+        TextView tv_message = view.findViewById(R.id.tv_message);
+        Button cancel = view.findViewById(R.id.btn_cancel);
+        Button iv_close_dialog = view.findViewById(R.id.iv_close_dialog);
+        Button btn_members = view.findViewById(R.id.btn_members);
+        tv_message.setText("" + message);
+        if (action.equalsIgnoreCase("show")) {
+            btn_members.setVisibility(View.VISIBLE);
+        } else {
+            btn_members.setVisibility(View.GONE);
+        }
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prepareToSendGroupChatScreen(group,conversation);
+                alertDialog.dismiss();
+            }
+        });
+        iv_close_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                Log.i(TAG, "onClick dialog btn:  cancel clicked ");
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        btn_members.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "onClick: its members button");
+                getMembersListFromServer(group, conversation);
+
+            }
+        });
+        alertDialog.show();
+        // alertDialog.setCanceledOnTouchOutside(false);
+    }
+
+    private void getMembersListFromServer(GetGroupsCometchat groupModel, Conversation conversation) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, "group_members_popup");
+        requestMap.put(General.GROUP_ID, groupModel.getGroupId());
+
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getActivity(), getActivity());
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, getActivity(), getActivity());
+                if (response != null) {
+                    int counterRotate = 0;
+                    ArrayList<UserModel> userModelsArrayList = new ArrayList<UserModel>();
+                    Log.e(TAG, " getMembersListFromServer " + response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("group_members_popup");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        counterRotate++;
+                        if (jsonArray.getJSONObject(i).getString("status").equalsIgnoreCase("1")) {
+                            userModelsArrayList.add(new UserModel(
+                                    "" + jsonArray.getJSONObject(i).getString("photo"),
+                                    "" + jsonArray.getJSONObject(i).getString("firstname"),
+                                    "" + jsonArray.getJSONObject(i).getString("lastname"),
+                                    "" + jsonArray.getJSONObject(i).getString("From_time"),
+                                    "" + jsonArray.getJSONObject(i).getString("To_time"),
+                                    "" + jsonArray.getJSONObject(i).getString("status")
+                            ));
+                        }
+                    }
+                    showMembersDialog(userModelsArrayList);
+                } else {
+                    Log.i(TAG, "getMembersListFromServer: ");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void showMembersDialog( ArrayList<UserModel> userModelsArrayList) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_group_members, null);
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        Log.i(TAG, "showMembersDialog: ");
+        RecyclerView rv_members_list = view.findViewById(R.id.rv_members_list);
+        ImageView iv_close_dialog = view.findViewById(R.id.iv_close_dialog);
+        AdapterMembersList adapterMembersList=new AdapterMembersList(userModelsArrayList,getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        rv_members_list.setLayoutManager(mLayoutManager);
+        rv_members_list.setItemAnimator(new DefaultItemAnimator());
+        rv_members_list.setAdapter(adapterMembersList);
+
+        iv_close_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     public void getGroupMembersAndProviders(String GroupId, Conversation conversation, GetGroupsCometchat group, ArrayList<Members_> groupMembersArrayList) {
@@ -1260,7 +1465,7 @@ public class FragmentLastConversation extends Fragment {
         intent.putExtra(StringContract.IntentStrings.GROUP_DESC, "");
         intent.putExtra(StringContract.IntentStrings.GROUP_PASSWORD, GroupPass);
         intent.putExtra(StringContract.IntentStrings.TABS, "2");
-        intent.putExtra(StringContract.IntentStrings.ALL_MEMBERS_STRING, "" + groupMembersId);
+        intent.putExtra(StringContract.IntentStrings.ALL_MEMBERS_STRING, groups_members );
         getActivity().startActivity(intent);
     }
 

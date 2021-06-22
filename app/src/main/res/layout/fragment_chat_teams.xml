@@ -113,8 +113,8 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="5dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_team_count"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -123,22 +123,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginEnd="@dimen/margin_16"
+            android:textColor="@color/catalyst_redbox_background"
             android:text="SageSurfer is not designed to be used for emergencies. If you are experiencing behavioral health or medical emergency, please dial 911."
-            android:textColor="#212121"
-            android:textSize="16sp" />
+
+            />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_team_count"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/contacts_recycler_view"
         android:text=""
-        android:layout_marginStart="@dimen/margin_16"
-        android:textColor="@color/primaryTextColor"
+        android:textColor="@color/text_color_primary"
         android:textStyle="bold"
-        app:layout_goneMarginBottom="@dimen/margin_16"
-        app:layout_constraintBottom_toTopOf="@+id/emergency_layout"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:paddingStart="@dimen/margin_16"
+        android:paddingEnd="@dimen/margin_16"
+
+        android:paddingBottom="@dimen/margin_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_goneMarginBottom="@dimen/margin_16" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

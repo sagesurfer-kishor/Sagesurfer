@@ -287,8 +287,8 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         Preferences.save(General.BANNER_IMG, team_.getBanner());
         Preferences.save(General.TEAM_ID, team_.getId());
         Preferences.save(General.TEAM_NAME, team_.getName());
-        Log.i(TAG, "onMemberRelativeLayoutClicked: 1 getComet_chat_id" + team_member_id);
-        Log.i(TAG, "onMemberRelativeLayoutClicked: 1 team_provider" + team_member_id);
+        Log.i(TAG, "MyTagTeamMember onMemberRelativeLayoutClicked: 1 getComet_chat_id" + team_member_id);
+        Log.i(TAG, "onMemberRelativeLayoutClicked: 1 getComet_chat_id team_provider" + team_provider);
 
         String[] ProviderArray = team_provider.split(",");
         String[] MemberArray = team_member_id.split(",");
@@ -300,7 +300,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         } else if (Arrays.asList(MemberArray).contains(team_.getMembersArrayList().get(memberPosition).getComet_chat_id())) {
             //if user is member selected by admin dashboard
             getUserDetails(team_.getMembersArrayList().get(memberPosition).getComet_chat_id(), team_, memberPosition, "member");
-            Log.i(TAG, "onMemberRelativeLayoutClicked: This is member --> " + team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+            Log.i(TAG, "MyTagTeamMember onMemberRelativeLayoutClicked: This is member --> " + team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
         } else {
             //if user is normal user
             Log.i(TAG, "onMemberRelativeLayoutClicked: "+ team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
@@ -330,13 +330,13 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
         requestMap.put(screen.messagelist.General.RECEIVER_ID, "" + team_.getMembersArrayList().get(position).getUser_id());
         //team_.getMembersArrayList().get(memberPosition).getUser_id()
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
-        Log.i(TAG, "checkOtherMemberAvailable: 2");
-        Log.i(TAG, "checkOtherMemberAvailable: Domain " + DomainURL + url);
+        Log.i(TAG, "MyTagTeamMember checkOtherMemberAvailable: 2");
+        Log.i(TAG, "MyTagTeamMember checkOtherMemberAvailable: Domain " + DomainURL + url);
         try {
             if (requestBody != null) {
                 String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
                 if (response != null) {
-                    Log.i(TAG, "checkOtherMemberAvailable:  response " + response);
+                    Log.i(TAG, "MyTagTeamMember checkOtherMemberAvailable:  response " + response);
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray provider_time_check_in_db = jsonObject.getJSONArray("other_members_time_check_in_db");
                     String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
@@ -426,6 +426,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
                          * but now after discuss with team we are showing static message for offline user
                          * commented by rahul maske
                          *  */
+                        Log.i(TAG, "onSuccess: MyTagTeamMember member is offline");
                         checkOtherMemberAvailable(team_, memberPosition);
                         //showDialog("",memberPosition,team_);
                     }

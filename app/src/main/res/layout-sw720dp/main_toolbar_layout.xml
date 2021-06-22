@@ -7,6 +7,7 @@
     android:layout_height="@dimen/actionBarSize"
     android:background="@color/colorPrimary"
     android:elevation="4dp"
+    app:popupTheme="@style/PopupTheme"
     tools:context=".MainActivity"
     tools:ignore="MissingDefaultResource"
     tools:targetApi="lollipop">

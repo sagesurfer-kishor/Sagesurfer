@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_toolbar_layout"
+    app:popupTheme="@style/PopupTheme"
     android:layout_width="match_parent"
     android:layout_height="@dimen/actionBarSize"
     android:background="@color/colorPrimary"
     android:elevation="4dp"
+    tools:ignore="MissingDefaultResource"
     tools:context=".MainActivity"
     tools:targetApi="lollipop">
 

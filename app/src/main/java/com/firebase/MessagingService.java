@@ -67,6 +67,7 @@ public class MessagingService extends FirebaseMessagingService {
     private int count = 0;
     private Call call;
     Intent intentMain;
+    Intent callingIntent;
     JSONObject messageData;
     public static String token;
     private static final int REQUEST_CODE = 12;
@@ -83,6 +84,7 @@ public class MessagingService extends FirebaseMessagingService {
         IsFriendListingPage = preferencesCheckCurrentActivity.getBoolean("IsFriendListingPage", false);
         IsGroupListingPage = preferencesCheckCurrentActivity.getBoolean("IsGroupListingPage", false);
         intentMain = new Intent(this, MainActivity.class);
+        callingIntent = new Intent(this, FragmentLastConversation.class);
 
         Log.e("notification received..", remoteMessage.toString());
         Logger.error("Debug", "Firebase Notification payload : " + remoteMessage.getData().toString(), getApplicationContext());
@@ -313,7 +315,9 @@ public class MessagingService extends FirebaseMessagingService {
                 Log.e(TAG, "showNotifcation: " + json.toString());
                 int m = (int) ((new Date().getTime()));
                 String GROUP_ID = "group_id";
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "2")
+                NotificationCompat.Builder builder;
+
+                builder = new NotificationCompat.Builder(this, "2")
                         .setSmallIcon(R.drawable.ic_sage_icon)
                         .setContentTitle(json.getString("title"))
                         .setContentText(json.getString("alert"))
@@ -339,9 +343,7 @@ public class MessagingService extends FirebaseMessagingService {
                 if (isCall) {
                     builder.setGroup(GROUP_ID + "Call");
                     //intentMain.putExtra("callJson", (Parcelable) json);
-                    Utils.startCallIntent(getApplicationContext(), (User) call.getCallInitiator(), call.getType(),
-                            false, call.getSessionId());
-
+                    Utils.startCallIntent(getApplicationContext(), (User) call.getCallInitiator(), call.getType(), false, call.getSessionId());
                     //intentMain.putExtra("CallInitiator",""+)
                     if (json.getString("alert").equals("Incoming audio call") || json.getString("alert").equals("Incoming video call")) {
                         builder.setOngoing(true);
@@ -431,8 +433,7 @@ public class MessagingService extends FirebaseMessagingService {
                         }
                     }
 //              intent.putExtra("json", (Parcelable) json);
-                }
-                else {
+                } else {
                     /*Here in this we are preparing for call push notification redirection
                      * on click of notification user will redirect on calling screen
                      * added by rahul maske*/
@@ -470,6 +471,46 @@ public class MessagingService extends FirebaseMessagingService {
         } else
             // User has not logged in. Send him to login screen
             intentMain = new Intent(this, LoginActivity.class);
+        return PendingIntent.getActivity(this, REQUEST_CODE, intentMain, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+    /*was created for call redirection but later cancel to use and use old intent*/
+    private PendingIntent callPendingIntent() {
+        if (Preferences.contains(General.IS_LOGIN) && Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
+            String team_logs_id = null;
+            try {
+                team_logs_id = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on")
+                        .getJSONObject("entity").getJSONObject("data").getJSONObject("metadata").getString("team_logs_id");
+
+                String receiver = messageData.getString("receiver");
+                String sender = messageData.getJSONObject("data").getJSONObject("entities").
+                        getJSONObject("by").getJSONObject("entity").getString("uid");
+                String lastActiveAt = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("lastActiveAt");
+                String uid = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("uid");
+                String role = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("role");
+                String name = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("name");
+                String avatar = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("avatar");
+                String status = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("by").getJSONObject("entity").getString("status");
+                String sessionid = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on").getJSONObject("entity").getString("sessionid");
+                String callType = messageData.getString("type");
+                String category = messageData.getString("category");
+                Log.i(TAG, "getIntent: teamLogID " + team_logs_id + " receiver" + receiver + " sender" + sender);
+
+                callingIntent.putExtra("receiver", "" + receiver);
+                callingIntent.putExtra("sender", "" + sender);
+                callingIntent.putExtra("lastActiveAt", "" + lastActiveAt);
+                callingIntent.putExtra("uid", "" + uid);
+                callingIntent.putExtra("role", "" + role);
+                callingIntent.putExtra("name", "" + name);
+                callingIntent.putExtra("avatar", "" + avatar);
+                callingIntent.putExtra("status", "" + status);
+                callingIntent.putExtra("callType", "" + callType);
+                callingIntent.putExtra("sessionid", "" + sessionid);
+                callingIntent.putExtra("category", "" + category);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else
+            callingIntent = new Intent(this, LoginActivity.class);
         return PendingIntent.getActivity(this, REQUEST_CODE, intentMain, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

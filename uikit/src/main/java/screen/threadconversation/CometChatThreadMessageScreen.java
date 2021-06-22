@@ -401,10 +401,10 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         composeBox = view.findViewById(R.id.message_box);
         composeBox.ivMic.setVisibility(GONE);
         composeBox.ivSend.setVisibility(VISIBLE);
+        composeBox.ic_whiteboard.setVisibility(GONE);
         setComposeBoxListener();
 
         rvSmartReply = view.findViewById(R.id.rv_smartReply);
-
         editMessageLayout = view.findViewById(R.id.editMessageLayout);
         tvMessageTitle = view.findViewById(R.id.tv_message_layout_title);
         tvMessageSubTitle = view.findViewById(R.id.tv_message_layout_subtitle);
@@ -432,7 +432,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 tvReplyCount.setText(replyCount + " Reply");
             else
                 tvReplyCount.setText(replyCount + " Replies");
-        }else {
+        } else {
             noReplyMessages.setVisibility(VISIBLE);
             tvReplyCount.setText("No reply");
         }
@@ -656,7 +656,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         CometChat.editMessage(textmessage, new CometChat.CallbackListener<BaseMessage>() {
             @Override
             public void onSuccess(BaseMessage baseMessage) {
-                Log.i(TAG, "onSuccess: editThread response "+baseMessage);
+                Log.i(TAG, "onSuccess: editThread response " + baseMessage);
                 textMessage.setText(((TextMessage) baseMessage).getText());
                 message = ((TextMessage) baseMessage).getText();
             }
@@ -774,7 +774,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 }, 2000);
             }
 
-
             @Override
             public void onError(CometChatException e) {
                 Log.d(TAG, "onError: " + e.getMessage());
@@ -791,8 +790,21 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     private List<BaseMessage> filterBaseMessages(List<BaseMessage> baseMessages) {
         List<BaseMessage> tempList = new ArrayList<>();
         for (BaseMessage baseMessage : baseMessages) {
-            Log.e(TAG, "filterBaseMessages: " + baseMessage.getSentAt());
-            if (baseMessage.getMetadata() != null && baseMessage.getEditedAt() != 0) {
+            Log.e(TAG, "filterBaseMessages: is " + baseMessage);
+            if (baseMessage.getDeletedAt() != 0) {
+                Log.i(TAG, "filterBaseMessages: delete block");
+                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                    Action action = ((Action) baseMessage);
+                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                    } else {
+                        tempList.add(baseMessage);
+                    }
+                } else {
+                    tempList.add(baseMessage);
+                }
+            } else if (baseMessage.getMetadata() != null && baseMessage.getEditedAt() != 0) {
+                Log.i(TAG, "filterBaseMessages: edit block");
                 if (baseMessage.getMetadata().has("deleted_one_to_one")) {
                     try {
                         if (baseMessage.getMetadata().getString("deleted_one_to_one").equals("0")) {
@@ -807,25 +819,26 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                     try {
                         long id = baseMessage.getId();
                         String textMessage = ((TextMessage) baseMessage).getText();
-                        Log.i(TAG, "filterBaseMessages: text message is " + ((TextMessage) baseMessage).getText());
-                        String currentLang = sp.getString("currentLang", null);
+                        Log.i(TAG, "filterBaseMessages: edited text message is " + ((TextMessage) baseMessage).getText() + " id "+id);
+                        String currentLang = sp.getString("currentLang", "en");
                         JSONObject body = new JSONObject();
                         JSONArray languages = new JSONArray();
                         languages.put(currentLang);
                         body.put("msgId", id);
                         body.put("languages", languages);
                         body.put("text", textMessage);
-                        Log.i(TAG, "filterBaseMessages: edited at block " + baseMessage);
+                        Log.i(TAG, "filterBaseMessages: edited at block languages " + languages);
                         // Do something after 5s = 5000ms
                         CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
                                 new CometChat.CallbackListener<JSONObject>() {
                                     @Override
                                     public void onSuccess(JSONObject jsonObject) {
                                         try {
+                                            Log.i(TAG, "onSuccess: edited at block");
                                             JSONObject meta = baseMessage.getMetadata();
                                             meta.accumulate("values", jsonObject);
                                             String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
-                                            Log.i(TAG, "filterBaseMessages: edited at block " + messageTranslatedString);
+                                            Log.i(TAG, "filterBaseMessages: edited at block 3" + messageTranslatedString);
                                             BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
                                             //baseMessage.setMetadata(meta);
                                             try {
@@ -886,14 +899,17 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                         e.printStackTrace();
                     }
                 }
-
             } else if (baseMessage.getMetadata().has("@injected")) {
+                Log.i(TAG, "filterBaseMessages: normal message block1");
                 try {
                     JSONObject injectedObject = null;
                     injectedObject = baseMessage.getMetadata().getJSONObject("@injected");
+                    Log.i(TAG, "filterBaseMessages: normal message block2");
                     if (injectedObject.has("extensions")) {
+                        Log.i(TAG, "filterBaseMessages: normal message block3");
                         JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
                         if (extensionsObject.has("message-translation")) {
+                            Log.i(TAG, "filterBaseMessages: normal message block4");
                             JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
                             JSONArray translations = messageTranslationObject.getJSONArray("translations");
                             HashMap<String, String> translationsMap = new HashMap<String, String>();
@@ -915,32 +931,33 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                 }
                             }
                         }
-
-                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                            Action action = ((Action) baseMessage);
-                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                tempList.add(baseMessage);
-                            } else {
-                                tempList.add(baseMessage);
-                            }
-                        } else {
-                            tempList.add(baseMessage);
-                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            /*if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                Action action = ((Action) baseMessage);
-                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
-                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                    Action action = ((Action) baseMessage);
+                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                        tempList.add(baseMessage);
+                    } else {
+                        tempList.add(baseMessage);
+                    }
                 } else {
                     tempList.add(baseMessage);
                 }
             } else {
-                tempList.add(baseMessage);
-            }*/
+                Log.i(TAG, "filterBaseMessages: else block ");
+                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                    Action action = ((Action) baseMessage);
+                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                    } else {
+                        tempList.add(baseMessage);
+                    }
+                } else {
+                    tempList.add(baseMessage);
+                }
+            }
         }
         return tempList;
     }
@@ -1452,10 +1469,44 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             @Override
             public void onSuccess(BaseMessage message) {
                 if (messageAdapter != null) {
-                    Log.e(TAG, "onSuccess: editMessage in thread" + message.toString());
-                    //messageAdapter.setUpdatedMessage(message);
-                    if (messageAdapter != null) {
                         try {
+                            long id = baseMessage.getId();
+                            Log.i(TAG, "filterBaseMessages: text message is " + ((TextMessage) message).getText());
+                            String currentLang = sp.getString("currentLang", null);
+                            JSONObject body = new JSONObject();
+                            JSONArray languages = new JSONArray();
+                            languages.put(currentLang);
+                            body.put("msgId", id);
+                            body.put("languages", languages);
+                            body.put("text", ((TextMessage) message).getText());
+                            Log.i(TAG, "filterBaseMessages: edited at block " + baseMessage);
+                            // Do something after 5s = 5000ms
+                            CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                    new CometChat.CallbackListener<JSONObject>() {
+                                        @Override
+                                        public void onSuccess(JSONObject jsonObject) {
+                                            Log.e(TAG, "onSuccess: message-translation " + jsonObject);
+                                            //baseMessage.setMetadata();
+                                            BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                            Log.i(TAG, "onSuccess: baseMessage 1 " + baseMessage1);
+                                            Log.i(TAG, "onSuccess: baseMessage " + baseMessage);
+                                            //messageAdapter.setUpdatedMessage(baseMessage1);
+                                            messageAdapter.setEditedMessage(baseMessage, baseMessage1);
+                                        }
+
+                                        @Override
+                                        public void onError(CometChatException e) {
+                                            // Some error occured
+                                            Log.i(TAG, "onError: " + e.getMessage());
+                                            Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                        }
+                                    });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                       /* try {
                             JSONObject body = new JSONObject();
                             JSONArray languages = new JSONArray();
                             String currentLang = sp.getString("currentLang", null);
@@ -1469,7 +1520,9 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                         public void onSuccess(JSONObject jsonObject) {
                                             Log.e(TAG, "onSuccess: message-translation " + jsonObject);
                                             //baseMessage.setMetadata(.);
+
                                             BaseMessage baseMessage2 = createMetadataForEditedMessage(message, jsonObject);
+                                            Log.i(TAG, "onSuccess: translated message "+baseMessage2);
                                             //messageAdapter.setUpdatedMessage(baseMessage1);
                                             messageAdapter.setEditedMessage(baseMessage, baseMessage2);
                                         }
@@ -1481,11 +1534,11 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                     });
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
-                        //messageAdapter.setUpdatedMessage(message);
-                    }
+                        }*/
+                    //messageAdapter.setUpdatedMessage(message);
                 }
             }
+
 
             @Override
             public void onError(CometChatException e) {
@@ -1513,6 +1566,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             if (jsonObject.has("data")) {
                 //translations.put(jsonObject.getJSONObject("data").getJSONArray("translations"));
                 message_translation.put("translations", jsonObject.getJSONObject("data").getJSONArray("translations"));
+                Log.i(TAG, "createMetadataForEditedMessage: changed log " + jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getJSONObject("message_translated"));
                 extensions.put("message-translation", message_translation);
                 injected.put("extensions", extensions);
                 metadata.put("@injected", injected);
@@ -1937,12 +1991,12 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         replyMessageLayout.setVisibility(GONE);
         editMessageLayout.setVisibility(GONE);
         boolean copyVisible = true;
-        boolean threadVisible = true;
+        boolean threadVisible = false;
         boolean replyVisible = false;
         boolean editVisible = true;
         boolean deleteVisible = true;
 
-        boolean forwardVisible = true;
+        boolean forwardVisible = false;
         List<BaseMessage> textMessageList = new ArrayList<>();
         List<BaseMessage> mediaMessageList = new ArrayList<>();
         for (BaseMessage baseMessage : baseMessagesList) {
@@ -1962,7 +2016,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                         deleteVisible = true;
                         editVisible = true;
                         if (tabs.equalsIgnoreCase("1") || tabs.equalsIgnoreCase("2")) {
-                            forwardVisible = true;
+                            forwardVisible = false;
                         } else {
                             forwardVisible = false;
                         }
@@ -1970,7 +2024,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                     } else {
                         editVisible = false;
                         if (tabs.equalsIgnoreCase("1") || tabs.equalsIgnoreCase("2")) {
-                            forwardVisible = true;
+                            forwardVisible = false;
                         } else {
                             forwardVisible = false;
                         }
@@ -1995,7 +2049,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                         deleteVisible = true;
                         editVisible = false;
                         if (tabs.equalsIgnoreCase("1") || tabs.equalsIgnoreCase("2")) {
-                            forwardVisible = true;
+                            forwardVisible = false;
                         } else {
                             forwardVisible = false;
                         }
@@ -2006,7 +2060,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                             deleteVisible = false;
                         }
                         if (tabs.equalsIgnoreCase("1") || tabs.equalsIgnoreCase("2")) {
-                            forwardVisible = true;
+                            forwardVisible = false;
                         } else {
                             forwardVisible = false;
                         }
@@ -2324,6 +2378,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 metadata.put("editedBy", editedBy);
                 metadata.put("updatedAt", updatedAt);
                 baseMessage1.setMetadata(metadata);
+
                 Log.i(TAG, "createMetadataForEditedMessage: metadata is " + metadata);
             } else {
                 Log.i(TAG, "createMetadataForEditedMessage: message-translation not found");

@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_5"
         android:padding="@dimen/margin_10"
-        android:background="@drawable/message_rounded_border"
-        >
+        android:background="@drawable/message_rounded_border">
 
         <LinearLayout
             android:id="@+id/groupInfo"

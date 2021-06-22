@@ -1089,5 +1089,7 @@
     <string name="Call_History">Call History</string>
     <string name="set_available_time">Set Available Time</string>
     <string name="blocked_member">Blocked Member</string>
+    <string name="emergency_message">SageSurfer is not designed to be used for emergencies. If you are experiencing behavioral health or medical emergency, please dial 911.</string>
+    <string name="delete_message">This message was deleted</string>
 
 </resources>

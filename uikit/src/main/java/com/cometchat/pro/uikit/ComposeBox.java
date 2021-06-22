@@ -98,7 +98,7 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
 
     private boolean isOpen, isRecording, isPlaying, voiceMessage;
 
-    public ImageView ivAudio, ivCamera, ivGallery, ivFile, ivSend, ivArrow, ivMic, ivDelete, ivWb;
+    public ImageView ivAudio, ivCamera, ivGallery, ivFile, ivSend, ivArrow, ivMic, ic_whiteboard,ivDelete, ivWb;
 
     private SeekBar voiceSeekbar;
 
@@ -188,6 +188,7 @@ public class ComposeBox extends RelativeLayout implements View.OnClickListener {
         composeBox = this.findViewById(R.id.message_box);
         flBox = this.findViewById(R.id.flBox);
         ivMic = this.findViewById(R.id.ivMic);
+        ic_whiteboard = this.findViewById(R.id.ic_whiteboard);
         ivDelete = this.findViewById(R.id.ivDelete);
         audioRecordView = this.findViewById(R.id.record_audio_visualizer);
         voiceMessageLayout = this.findViewById(R.id.voiceMessageLayout);

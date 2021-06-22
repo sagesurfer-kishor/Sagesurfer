@@ -37,15 +37,16 @@
 
     <TextView
         android:id="@+id/friend_list_itemname"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/app_name"
         android:layout_marginStart="16dp"
-        android:singleLine="true"
+        android:layout_marginTop="5dp"
+        android:maxLines="1"
+        android:text="@string/app_name"
         android:textColor="#212121"
         android:textSize="14sp"
-        android:layout_marginTop="5dp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/friend_ic_counter"
         app:layout_constraintStart_toEndOf="@+id/friend_relativelayout_image"
         app:layout_constraintTop_toTopOf="@+id/friend_relativelayout_image" />
 
@@ -63,7 +64,6 @@
         android:textColor="@android:color/white"
         android:textSize="12sp"
         android:visibility="gone"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,14 +71,15 @@
 
     <TextView
         android:id="@+id/friend_list_item_statusmessage"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:singleLine="true"
         android:text=""
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
-        android:layout_marginStart="16dp"
         android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/friend_ic_counter"
         app:layout_constraintStart_toEndOf="@+id/friend_relativelayout_image"
         app:layout_constraintTop_toBottomOf="@+id/friend_list_itemname" />
 

@@ -1,6 +1,7 @@
 package com.modules.cometchat_7_30.LastConversion;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.Conversation;
 import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.TextMessage;
@@ -26,12 +29,16 @@ import com.modules.cometchat_7_30.ModelUserCount;
 import com.sagesurfer.collaborativecares.R;
 import com.storage.preferences.Preferences;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import utils.Utils;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastConversation.MyViewHolder> implements Filterable {
     private final Context mContext;
@@ -41,6 +48,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
     private FragmentLastConversation fragment;
     private static final String TAG = "AdapterLastConversation";
     private FragmentLastConversation currentFragment;
+    SharedPreferences sp;
 
     public AdapterLastConversation(FragmentLastConversation fragment, List<Conversation> conversationList, Context mContext, FragmentLastConversation fragmentLastConversation) {
         this.mContext = mContext;
@@ -49,6 +57,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
         this.al_unreadCountList = al_unreadCountList;
         currentFragment = fragmentLastConversation;
         this.fragment = fragment;
+        sp = mContext.getSharedPreferences("login", MODE_PRIVATE);
     }
 
     @NonNull
@@ -63,18 +72,77 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
         Conversation conversation = conversationList.get(position);
         if (conversation.getConversationType().equals("user")) {
             Log.i(TAG, "onBindViewHolder: metadata " + conversation.getLastMessage().getMetadata());
-            holder.title.setText(((User) conversation.getConversationWith()).getName());
+            String name = ((User) conversation.getConversationWith()).getName();
+
+            if (name.length() > 20) {
+                Log.i(TAG, "onBindViewHolder: name " + name.substring(0, 19));
+                holder.title.setText(name.substring(0, 19));
+            } else {
+                holder.title.setText(((User) conversation.getConversationWith()).getName());
+            }
             if (conversation.getLastMessage().getType().equals("text")) {
                 holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
                 if (((TextMessage) conversation.getLastMessage()).getText() != null) {
                     if (((TextMessage) conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
-                        holder.friend_list_item_statusmessage.setText("This message was deleted");
+                        holder.friend_list_item_statusmessage.setText(mContext.getResources().getString(R.string.delete_message));
                         holder.messageTime.setVisibility(View.GONE);
                     } else {
-                        holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
-                        holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
+                        try {
+                            JSONObject body = new JSONObject();
+                            JSONArray languages = new JSONArray();
+                            languages.put(sp.getString("currentLang", "en"));
+                            body.put("msgId", ((TextMessage) conversation.getLastMessage()).getId());
+                            body.put("languages", languages);
+                            body.put("text", ((TextMessage) conversation.getLastMessage()).getText());
+                            Log.i(TAG, "filterBaseMessages: edited at block 2");
+                            // Do something after 5s = 5000ms
+                            CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                    new CometChat.CallbackListener<JSONObject>() {
+                                        @Override
+                                        public void onSuccess(JSONObject jsonObject) {
+                                            try {
+                                                String messageTranslatedString = null;
+                                                messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+                                                Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
+                                                holder.friend_list_item_statusmessage.setText(messageTranslatedString);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(CometChatException e) {
+                                            // Some error occured
+                                            Log.i(TAG, "onError: " + e.getMessage());
+                                            Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                        }
+                                    });
+                            holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
+            } else if (conversation.getLastMessage().getType().equalsIgnoreCase("image")
+                    || conversation.getLastMessage().getType().equalsIgnoreCase("file")
+                    || conversation.getLastMessage().getType().equalsIgnoreCase("audio")
+                    || conversation.getLastMessage().getType().equalsIgnoreCase("video")
+                    || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard")) {
+                String deleteOneToOne = null;
+                try {
+                    if ((conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
+                        deleteOneToOne = (conversation.getLastMessage()).getMetadata().getString("deleted_one_to_one");
+                        if (deleteOneToOne.equalsIgnoreCase("0") || deleteOneToOne.equalsIgnoreCase("1")
+                                || deleteOneToOne.equalsIgnoreCase("2") || (conversation.getLastMessage()).getDeletedAt() != 0)
+                            holder.friend_list_item_statusmessage.setText(mContext.getResources().getString(R.string.delete_message));
+                        holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                        holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             } else if (conversation.getLastMessage().getType().equalsIgnoreCase("image")
                     || conversation.getLastMessage().getType().equalsIgnoreCase("file")
                     || conversation.getLastMessage().getType().equalsIgnoreCase("audio")
@@ -125,8 +193,14 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
             }
 
         } else if (conversation.getConversationType().equals("group")) {
-            holder.title.setText(((Group) conversation.getConversationWith()).getName());
-
+            String name= ((Group) conversation.getConversationWith()).getName();
+            if (name.length() > 20) {
+                Log.i(TAG, "onBindViewHolder: name " + name.substring(0, 19));
+                holder.title.setText(name.substring(0, 19)+"...");
+            } else {
+                holder.title.setText(((Group) conversation.getConversationWith()).getName());
+            }
+            //
             if (((Group) conversation.getConversationWith()).getGroupType().equals("public")) {
                 holder.iv_profile.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.pub_group));
             } else if (((Group) conversation.getConversationWith()).getGroupType().equals("private")) {
@@ -143,12 +217,46 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                         Log.i(TAG, "group onBindViewHolder: metadata is != null");
                         if (((TextMessage) conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
                             Log.i(TAG, "group onBindViewHolder: has one-to-one");
-                            holder.friend_list_item_statusmessage.setText("This message was deleted");
+                            holder.friend_list_item_statusmessage.setText(mContext.getResources().getString(R.string.delete_message));
                             holder.messageTime.setVisibility(View.GONE);
                         } else {
                             Log.i(TAG, "group onBindViewHolder: has no one-to-one");
                             holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                            holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText().trim());
+                            try {
+                                JSONObject body = new JSONObject();
+                                JSONArray languages = new JSONArray();
+                                languages.put(sp.getString("currentLang", "en"));
+                                body.put("msgId", ((TextMessage) conversation.getLastMessage()).getId());
+                                body.put("languages", languages);
+                                body.put("text", ((TextMessage) conversation.getLastMessage()).getText());
+                                Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                // Do something after 5s = 5000ms
+                                CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                        new CometChat.CallbackListener<JSONObject>() {
+                                            @Override
+                                            public void onSuccess(JSONObject jsonObject) {
+                                                try {
+                                                    String messageTranslatedString = null;
+                                                    messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+                                                    Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
+                                                    holder.friend_list_item_statusmessage.setText(messageTranslatedString);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onError(CometChatException e) {
+                                                // Some error occured
+                                                Log.i(TAG, "onError: " + e.getMessage());
+                                                Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                            }
+                                        });
+                                holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
                         }
                     } /*else {
@@ -156,8 +264,8 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                         holder.friend_list_item_statusmessage.setText(((TextMessage) conversation.getLastMessage()).getText());
                         holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));
                     }*/
-                    if(conversation.getLastMessage().getDeletedAt()!=0){
-                        holder.friend_list_item_statusmessage.setText("This message was deleted");
+                    if (conversation.getLastMessage().getDeletedAt() != 0) {
+                        holder.friend_list_item_statusmessage.setText(mContext.getResources().getString(R.string.delete_message));
                         holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
                         holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
                     }

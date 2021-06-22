@@ -236,7 +236,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                             alert.show();
                         } else {
                             checkProviderAvailableTime(user.getUid(), position);
-                            *//*AlertDialog.Builder builder;
+                            */
+        /*AlertDialog.Builder builder;
                             builder = new AlertDialog.Builder(mContext);
                             //Setting message manually and performing action on button click
                             builder.setMessage("Harsh pro provider staff is unavailable at present. He is available from 06:19 pm to 07:19 pm. Please call 911 for emergency issues.\n" +
@@ -266,7 +267,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.My
                             AlertDialog alert = builder.create();
                             //Setting the title manually
                             alert.setTitle("Alert Notification");
-                            alert.show();*//*
+                            alert.show();*/
+        /*
                         }
 
                     } else {

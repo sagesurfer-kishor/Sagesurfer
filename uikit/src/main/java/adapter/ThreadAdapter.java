@@ -145,6 +145,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public ThreadAdapter(Context context, List<BaseMessage> messageList, String type) {
         setMessageList(messageList);
         this.context = context;
+        sp = context.getSharedPreferences("login", MODE_PRIVATE);
         try {
             messageLongClick = (CometChatThreadMessageActivity)context;
         }catch (Exception e) {
@@ -304,7 +305,6 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             viewHolder.playBtn.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.textColorWhite)));
             setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
             viewHolder.tvUser.setText(baseMessage.getSender().getName());
-
 
             showMessageTime(viewHolder,baseMessage);
 //            if (selectedItemList.contains(baseMessage.getId()))
@@ -819,27 +819,25 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void setEditedMessage(BaseMessage oldMessage, BaseMessage translatedMessage) {
         JSONObject metadata = translatedMessage.getMetadata();
         try {
-            if (metadata.has("@injected")) {
-                JSONObject injectedObject = null;
-                injectedObject = metadata.getJSONObject("@injected");
-                if (injectedObject.has("extensions")) {
-                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
-                    if (extensionsObject.has("message-translation")) {
-                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
-                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
-                        HashMap<String, String> translationsMap = new HashMap<String, String>();
-                        for (int i = 0; i < translations.length(); i++) {
-                            JSONObject translation = translations.getJSONObject(i);
-                            String translatedText = translation.getString("message_translated");
-                            String translatedLanguage = translation.getString("language_translated");
-                            translationsMap.put(translatedLanguage, translatedText);
-                            sp = context.getSharedPreferences("login", MODE_PRIVATE);
+            JSONObject injectedObject = null;
+            injectedObject = translatedMessage.getMetadata().getJSONObject("@injected");
+            if (injectedObject.has("extensions")) {
+                JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                if (extensionsObject.has("message-translation")) {
+                    JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                    JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                    HashMap<String, String> translationsMap = new HashMap<String, String>();
+                    for (int i = 0; i < translations.length(); i++) {
+                        JSONObject translation = translations.getJSONObject(i);
+                        String translatedText = translation.getString("message_translated");
+                        String translatedLanguage = translation.getString("language_translated");
+                        translationsMap.put(translatedLanguage, translatedText);
+//                        Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
                             if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
                                 if (translatedMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                                     ((TextMessage) translatedMessage).setText(translatedText);
                                 }
                             }
-                        }
                     }
                 }
             }

@@ -114,7 +114,7 @@
         android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
         app:layout_goneMarginBottom="@dimen/margin_16"
-        app:layout_constraintBottom_toTopOf="@+id/emergency_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
@@ -125,18 +125,18 @@
         android:gravity="center"
         android:orientation="vertical"
         android:paddingStart="@dimen/margin_16"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_marginBottom="@dimen/margin_5"
         android:paddingEnd="@dimen/margin_16"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_team_count"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/join_team_message"
-            android:textColor="#212121"
-            android:textSize="16sp" />
+            android:text="@string/emergency_message"
+            android:textColor="@color/catalyst_redbox_background"
+            />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
