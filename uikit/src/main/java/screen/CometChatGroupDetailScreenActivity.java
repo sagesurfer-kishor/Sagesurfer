@@ -1097,11 +1097,10 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
                     Log.e(TAG, "leftGroupMembersFromServer : response" + response);
                     JSONArray left_group_members = responseJsonObj.getJSONArray("left_group_members");
 
-                    for (int i = 0; i <= left_group_members.length(); i++) {
+                   // for (int i = 0; i <= left_group_members.length(); i++) {
                         try {
-                            String msg = left_group_members.getJSONObject(i).getString("msg");
+                            String msg = left_group_members.getJSONObject(0).getString("msg");
                             Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
-
                             /*Fragment fragment = GetFragments.get(id, bundle);
                             FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();
                             ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
@@ -1115,12 +1114,11 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
                             intent.putExtra("receiverType", "group");
                             intent.putExtra("username", user_id);
                             intent.putExtra("type", "groupMember");
+                            intent.putExtra("direct", "directMessage");
                             startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }
-                    navigateToGroupList();
                 } else {
                     Toast.makeText(CometChatGroupDetailScreenActivity.this, "Server error..", Toast.LENGTH_SHORT).show();
                 }
@@ -1130,8 +1128,8 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         }
     }
 
-    public void dialogViewMembers(String groupType) {
-
+    public void dialogViewMembers(String groupType)
+    {
         androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(CometChatGroupDetailScreenActivity.this);
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.member_details, null);
@@ -1384,4 +1382,5 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         } else
             callHistoryAdapter.updateList(messageList);
     }
+
 }

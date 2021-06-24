@@ -2008,7 +2008,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void handleIntent(Intent mainIntent) {
         if (mainIntent.getExtras() != null) {
             String firstNotification=emergencyMessagePreferences.getString("firstNotification", null);
-            if (firstNotification ==null) {
+            /*we are checking 2 conditions here
+            * 1. emergency message is not equal to null that means we need to show emergency message te user
+            * 2. If main intent has direct means it is redirecting from some activity not from notification
+            * and we only need to show this message to user when user got his first notification
+            *
+            * */
+            if (firstNotification ==null && !mainIntent.hasExtra("direct")) {
                 // Do first run stuff here then set 'firstrun' as false
                 // using the following line to edit/commit prefs
                 emergencyMessagePreferences.edit().putString("firstNotification", "shown").apply();

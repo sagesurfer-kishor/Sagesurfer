@@ -1490,8 +1490,10 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                             BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
                                             Log.i(TAG, "onSuccess: baseMessage 1 " + baseMessage1);
                                             Log.i(TAG, "onSuccess: baseMessage " + baseMessage);
-                                            //messageAdapter.setUpdatedMessage(baseMessage1);
-                                            messageAdapter.setEditedMessage(baseMessage, baseMessage1);
+
+                                            messageAdapter.setUpdatedMessage(baseMessage1);
+
+                                            //messageAdapter.setEditedMessage(baseMessage, baseMessage1);
                                         }
 
                                         @Override
@@ -2364,7 +2366,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             JSONObject message_translation = new JSONObject();
             if (jsonObject.has("data")) {
                 //translations.put(jsonObject.getJSONObject("data").getJSONArray("translations"));
-                message_translation.put("translations", jsonObject.getJSONObject("data").getJSONArray("translations"));
+                message_translation.put("translations", jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0));
                 extensions.put("message-translation", message_translation);
                 injected.put("extensions", extensions);
 
@@ -2377,6 +2379,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 metadata.put("deletedBy", deletedBy);
                 metadata.put("editedBy", editedBy);
                 metadata.put("updatedAt", updatedAt);
+                ((TextMessage) baseMessage1).setText( jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated"));
                 baseMessage1.setMetadata(metadata);
 
                 Log.i(TAG, "createMetadataForEditedMessage: metadata is " + metadata);

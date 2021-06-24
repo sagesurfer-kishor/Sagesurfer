@@ -2162,8 +2162,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             } catch (Exception e) {
 
             }
-
         }*/
+
+
 
         if (messageList.contains(baseMessage)) {
             int index = messageList.indexOf(baseMessage);
@@ -2176,24 +2177,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void setEditedMessage(BaseMessage oldMessage, BaseMessage translatedMessage) {
         JSONObject metadata = translatedMessage.getMetadata();
         try {
-            if (metadata.has("@injected")) {
-                JSONObject injectedObject = null;
-                injectedObject = metadata.getJSONObject("@injected");
-                if (injectedObject.has("extensions")) {
-                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
-                    if (extensionsObject.has("message-translation")) {
-                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
-                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
-                        HashMap<String, String> translationsMap = new HashMap<String, String>();
-                        for (int i = 0; i < translations.length(); i++) {
-                            JSONObject translation = translations.getJSONObject(i);
-                            String translatedText = translation.getString("message_translated");
-                            String translatedLanguage = translation.getString("language_translated");
-                            translationsMap.put(translatedLanguage, translatedText);
-                            if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
-                                if (translatedMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                                    ((TextMessage) translatedMessage).setText(translatedText);
-                                }
+            JSONObject injectedObject = null;
+            injectedObject = translatedMessage.getMetadata().getJSONObject("@injected");
+            if (injectedObject.has("extensions")) {
+                JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                if (extensionsObject.has("message-translation")) {
+                    JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                    JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                    HashMap<String, String> translationsMap = new HashMap<String, String>();
+                    for (int i = 0; i < translations.length(); i++) {
+                        JSONObject translation = translations.getJSONObject(i);
+                        String translatedText = translation.getString("message_translated");
+                        String translatedLanguage = translation.getString("language_translated");
+                        translationsMap.put(translatedLanguage, translatedText);
+//                        Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
+                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                            if (translatedMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                ((TextMessage) translatedMessage).setText(translatedText);
                             }
                         }
                     }
@@ -2531,7 +2531,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         }
     }
-
+    /*this is created for changing thread message count on messaged received
+    *only thread message count will change from this method
+    * created by rahul maske*/
     public void setReplyMessage(BaseMessage message) {
         for (int i = 0; i < messageList.size(); i++) {
             Log.i(TAG, "onTextMessageReceived: thread block for each");

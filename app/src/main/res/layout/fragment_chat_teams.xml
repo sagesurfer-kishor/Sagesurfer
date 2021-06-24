@@ -85,7 +85,7 @@
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_5"
-        app:layout_constraintBottom_toTopOf="@+id/tv_team_count"
+        app:layout_constraintBottom_toTopOf="@+id/emergency_layout"
         android:choiceMode="multipleChoice"
         android:dividerHeight="0.3dp"
         android:groupIndicator="@null"
@@ -102,7 +102,7 @@
         android:layout_below="@+id/cardview_actions"
         android:dividerHeight="1dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/tv_team_count"
+        app:layout_constraintBottom_toTopOf="@+id/emergency_layout"
         app:layout_constraintTop_toBottomOf="@+id/cardview_actions" />
 
     <LinearLayout

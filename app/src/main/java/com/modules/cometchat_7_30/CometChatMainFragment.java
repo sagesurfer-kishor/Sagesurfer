@@ -98,6 +98,9 @@ public class CometChatMainFragment extends Fragment {
         tabLayout = view.findViewById(R.id.chat_tab_layout);
         tabLayout.setOnTabSelectedListener(tabSelectedListener);
 
+        /*here we are getting join team and myteam ids so that we can check that received message team id we get in myTeam column or in join team
+        * so that we can redirect accordingly because tabs in team_logs_id can me wrong
+        * commented and created by rahul maske*/
         SharedPreferences preferencesTeamsData = getActivity().getSharedPreferences("prefrencesPushRedirection", MODE_PRIVATE);
         JoinTeam = preferencesTeamsData.getString("JoinTeam", null);
         MyTeam = preferencesTeamsData.getString("MyTeams", null);
