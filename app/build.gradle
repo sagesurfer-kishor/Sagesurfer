@@ -220,7 +220,7 @@ dependencies {
     implementation project(path: ':uikit')
 
     //cometchat
-    implementation 'com.cometchat:pro-android-chat-sdk:2.3.3'
+    implementation 'com.cometchat:pro-android-chat-sdk:2.3.5'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10'
 }
 apply plugin: 'com.google.gms.google-services'
