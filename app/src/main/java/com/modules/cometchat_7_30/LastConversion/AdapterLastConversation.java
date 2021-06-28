@@ -131,13 +131,15 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                     || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard")) {
                 String deleteOneToOne = null;
                 try {
-                    if ((conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
-                        deleteOneToOne = (conversation.getLastMessage()).getMetadata().getString("deleted_one_to_one");
-                        if (deleteOneToOne.equalsIgnoreCase("0") || deleteOneToOne.equalsIgnoreCase("1")
-                                || deleteOneToOne.equalsIgnoreCase("2") || (conversation.getLastMessage()).getDeletedAt() != 0)
-                            holder.friend_list_item_statusmessage.setText(mContext.getResources().getString(R.string.delete_message));
-                        holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                        holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+                    if ((conversation.getLastMessage()).getMetadata() != null){
+                        if ((conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
+                            deleteOneToOne = (conversation.getLastMessage()).getMetadata().getString("deleted_one_to_one");
+                            if (deleteOneToOne.equalsIgnoreCase("0") || deleteOneToOne.equalsIgnoreCase("1")
+                                    || deleteOneToOne.equalsIgnoreCase("2") || (conversation.getLastMessage()).getDeletedAt() != 0)
+                                holder.friend_list_item_statusmessage.setText(mContext.getResources().getString(R.string.delete_message));
+                            holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                            holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -193,10 +195,10 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
             }
 
         } else if (conversation.getConversationType().equals("group")) {
-            String name= ((Group) conversation.getConversationWith()).getName();
+            String name = ((Group) conversation.getConversationWith()).getName();
             if (name.length() > 20) {
                 Log.i(TAG, "onBindViewHolder: name " + name.substring(0, 19));
-                holder.title.setText(name.substring(0, 19)+"...");
+                holder.title.setText(name.substring(0, 19) + "...");
             } else {
                 holder.title.setText(((Group) conversation.getConversationWith()).getName());
             }

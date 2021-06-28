@@ -46,6 +46,8 @@
         android:ellipsize="end"
         android:maxWidth="200dp"
         android:maxLines="3"
+        android:paddingEnd="2dp"
+        android:paddingStart="2dp"
         android:textColor="@color/secondaryTextColor"
         android:textStyle="italic"
         tools:text="@string/replyTxt" />

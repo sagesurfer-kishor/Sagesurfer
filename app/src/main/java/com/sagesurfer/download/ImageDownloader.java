@@ -20,7 +20,6 @@ import java.net.URL;
  */
 
 public class ImageDownloader {
-
     public static void getImage(String url, Context context) {
         new DownloadProfile(url, context).execute();
     }

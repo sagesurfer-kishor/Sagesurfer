@@ -121,6 +121,7 @@
     <string name="details">Details</string>
     <string name="administrators">Administrators</string>
     <string name="members">Members</string>
+    <string name="message_information">Message Information</string>
     <string name="add_members">Add Members</string>
     <string name="privacy_support"><![CDATA[Privacy & Support]]></string>
     <string name="privacy_security"><![CDATA[Privacy &  Security]]></string>
@@ -222,6 +223,7 @@
     <string name="gps_disabled">GPS disabled</string>
     <string name="unable_to_get_location">Unable to get your location</string>
     <string name="grant_location_permission">Please allow location permission.</string>
+    <string name="data_not_found">Data not found</string>
 
     <array name="groupType">
         <item>Public Group</item>

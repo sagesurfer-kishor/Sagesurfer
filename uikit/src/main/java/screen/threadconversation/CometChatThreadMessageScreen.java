@@ -10,12 +10,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,6 +46,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.core.MessagesRequest;
@@ -756,10 +760,10 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             public void onSuccess(List<BaseMessage> baseMessages) {
                 isInProgress = false;
                 List<BaseMessage> filteredMessageList = filterBaseMessages(baseMessages);
-                Handler handler = new Handler();
+                /*Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
-                    public void run() {
+                    public void run() {*/
                         initMessageAdapter(filteredMessageList);
                         if (baseMessages.size() != 0) {
                             stopHideShimmer();
@@ -771,8 +775,8 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                             isNoMoreMessages = true;
                         }
                     }
-                }, 2000);
-            }
+               /* }, 2000);
+            }*/
 
             @Override
             public void onError(CometChatException e) {
@@ -841,7 +845,15 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                             Log.i(TAG, "filterBaseMessages: edited at block 3" + messageTranslatedString);
                                             BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
                                             //baseMessage.setMetadata(meta);
-                                            try {
+                                            Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                            // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                            //baseMessage.setMetadata(meta);
+
+                                            ((TextMessage) baseMessage1).setText(messageTranslatedString);
+                                            baseMessage1.setMetadata(meta);
+                                            messageAdapter.setUpdatedMessage(baseMessage1);
+
+                                            /*try {
                                                 JSONObject injectedObject = null;
                                                 injectedObject = baseMessage1.getMetadata().getJSONObject("@injected");
                                                 if (injectedObject.has("extensions")) {
@@ -869,20 +881,12 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                                         }
                                                     }
 
-                                                    if (baseMessage1.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
-                                                        Action action = ((Action) baseMessage1);
-                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
-                                                            tempList.add(baseMessage1);
-                                                        } else {
-                                                            tempList.add(baseMessage1);
-                                                        }
-                                                    } else {
-                                                        tempList.add(baseMessage1);
-                                                    }
                                                 }
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
-                                            }
+                                            }*/
+
+
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -897,6 +901,16 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                 });
                     } catch (Exception e) {
                         e.printStackTrace();
+                    }
+                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                        Action action = ((Action) baseMessage);
+                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                            tempList.add(baseMessage);
+                        } else {
+                            tempList.add(baseMessage);
+                        }
+                    } else {
+                        tempList.add(baseMessage);
                     }
                 }
             } else if (baseMessage.getMetadata().has("@injected")) {
@@ -1000,7 +1014,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             messageAdapter.notifyDataSetChanged();
         } else {
             messageAdapter.updateList(messageList);
-
         }
         if (!isBlockedByMe && rvSmartReply.getAdapter().getItemCount() == 0 && rvSmartReply.getVisibility() == GONE) {
             BaseMessage lastMessage = messageAdapter.getLastMessage();
@@ -1986,7 +1999,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     @Override
     public void setLongMessageClick(List<BaseMessage> baseMessagesList) {
         Log.e(TAG, "setLongMessageClick: " + baseMessagesList);
-        isReply = false;
+        isReply = true;
         isEdit = false;
         isParent = false;
         MessageActionFragment messageActionFragment = new MessageActionFragment();
@@ -1994,11 +2007,12 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         editMessageLayout.setVisibility(GONE);
         boolean copyVisible = true;
         boolean threadVisible = false;
-        boolean replyVisible = false;
+        boolean replyVisible = true;
         boolean editVisible = true;
         boolean deleteVisible = true;
-
+        boolean shareVisible = true;
         boolean forwardVisible = false;
+
         List<BaseMessage> textMessageList = new ArrayList<>();
         List<BaseMessage> mediaMessageList = new ArrayList<>();
         for (BaseMessage baseMessage : baseMessagesList) {
@@ -2072,14 +2086,18 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             }
         }
 
+
         baseMessages = baseMessagesList;
         Bundle bundle = new Bundle();
+
+
         bundle.putBoolean("copyVisible", copyVisible);
         bundle.putBoolean("threadVisible", threadVisible);
         bundle.putBoolean("editVisible", editVisible);
         bundle.putBoolean("deleteVisible", deleteVisible);
         bundle.putBoolean("replyVisible", replyVisible);
         bundle.putBoolean("forwardVisible", forwardVisible);
+        bundle.putBoolean("shareVisible", shareVisible);
         bundle.putString("type", CometChatThreadMessageActivity.class.getName());
         messageActionFragment.setArguments(bundle);
         showBottomSheet(messageActionFragment);
@@ -2148,9 +2166,41 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
             @Override
             public void onShareMessageClick() {
+                shareMessage();
+            }
+
+            @Override
+            public void onMessageInfoClick() {
 
             }
         });
+    }
+
+    public void shareMessage() {
+        Log.i(TAG, "shareMessage: ");
+        if (baseMessage != null && baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TITLE, getResources().getString(R.string.app_name));
+            shareIntent.putExtra(Intent.EXTRA_TEXT, ((TextMessage) baseMessage).getText());
+            shareIntent.setType("text/plain");
+            Intent intent = Intent.createChooser(shareIntent, getResources().getString(R.string.share_message));
+            startActivity(intent);
+        } else if (baseMessage != null && baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_IMAGE)) {
+            String mediaName = ((MediaMessage) baseMessage).getAttachment().getFileName();
+            Glide.with(context).asBitmap().load(((MediaMessage) baseMessage).getAttachment().getFileUrl()).into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), resource, mediaName, null);
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+                    shareIntent.setType(((MediaMessage) baseMessage).getAttachment().getFileMimeType());
+                    Intent intent = Intent.createChooser(shareIntent, getResources().getString(R.string.share_message));
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private void editParentMessage() {

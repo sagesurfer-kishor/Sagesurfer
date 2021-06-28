@@ -12,7 +12,6 @@
             <gradient android:centerColor="@color/light_grey"
                 android:startColor="@color/light_grey"
                 android:endColor="@color/light_grey"/>
-"
         </shape>
     </item>
 </layer-list>

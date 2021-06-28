@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/textColorWhite"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@+id/toolbar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="8dp"
+                app:layout_collapseMode="pin"
+                app:titleTextColor="@color/textColorWhite">
+
+                <ImageView
+                    android:id="@+id/backIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:paddingRight="16dp"
+                    android:src="@drawable/ic_arrow_back_24dp"
+                    app:tint="@color/primaryTextColor" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Message Info"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/primaryTextColor"
+                    android:textStyle="bold" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_marginTop="?actionBarSize"
+                android:id="@+id/message_layout"
+               android:background="@color/light_grey"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/vw_text_message"
+                    layout="@layout/right_message_item"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <include
+                    android:id="@+id/vw_sticker_message"
+                    layout="@layout/message_right_sticker_item"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+                <include android:id="@+id/vw_image_message"
+                    android:layout_width="match_parent"
+
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_height="220dp"
+                    layout="@layout/message_right_list_image_item"/>
+
+                <include android:id="@+id/vwVideoMessage"
+
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_height="220dp"
+                    layout="@layout/message_right_list_video_item"/>
+
+                <include android:id="@+id/vw_file_message"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    layout="@layout/cometchat_right_file_message"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <include android:id="@+id/vw_audio_message"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    tools:visibility="visible"
+                    layout="@layout/cometchat_audio_layout_right"
+                    android:visibility="gone"/>
+
+                <!--<include android:id="@+id/vw_location_message"
+                    android:layout_width="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    tools:visibility="visible"
+                    layout="@layout/"
+                    android:visibility="gone"/>-->
+                <!--<include
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    tools:visibility="visible"
+                    android:id="@+id/vw_polls_message"
+                    layout="@layout/message_right_polls_item"/>-->
+
+                <include
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:visibility="visible"
+                    android:id="@+id/vw_writeboard_message"
+                    layout="@layout/right_message_item"/>
+
+                <include
+                    android:id="@+id/vw_meeting_message"
+                    layout="@layout/right_message_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </RelativeLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/rv_readReceipts"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty_message"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_readReceipts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/data_not_found"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+    <!--<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/swipe_refresh"
+        android:layout_height="match_parent">
+        <screen.message_information.Message_Receipts.CometChatReceiptsList
+            android:id="@+id/rvReceipts"
+            android:layout_marginTop="16dp"
+            app:showDeliveryReceipt="true"
+            app:showReadReceipt="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -213,7 +213,28 @@ public class Utils {
         }
     }
 
+    public static String getReceiptDate(long timestamp) {
+        String lastMessageTime = new SimpleDateFormat("h:mm a").format(new java.util.Date(timestamp * 1000));
+        String lastMessageDate = new SimpleDateFormat("dd MMMM h:mm a").format(new java.util.Date(timestamp * 1000));
+        String lastMessageWeek = new SimpleDateFormat("EEE h:mm a").format(new java.util.Date(timestamp * 1000));
+        long currentTimeStamp = System.currentTimeMillis();
 
+        long diffTimeStamp = currentTimeStamp - timestamp * 1000;
+
+        Log.e(TAG, "getLastMessageDate: " + 24 * 60 * 60 * 1000);
+        if (diffTimeStamp < 24 * 60 * 60 * 1000) {
+            return lastMessageTime;
+
+        } else if (diffTimeStamp < 48 * 60 * 60 * 1000) {
+
+            return "Yesterday";
+        } else if (diffTimeStamp < 7 * 24 * 60 * 60 * 1000) {
+            return lastMessageWeek;
+        } else {
+            return lastMessageDate;
+        }
+
+    }
     public static String getLastMessage(BaseMessage lastMessage) {
 
         String message = null;

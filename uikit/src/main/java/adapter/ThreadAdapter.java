@@ -73,11 +73,10 @@ import static android.content.Context.MODE_PRIVATE;
  * the list of messages in thread. It helps to organize the messages based on its type i.e TextMessage,
  * MediaMessage, Actions. It also helps to manage whether message is sent or recieved and organizes
  * view based on it. It is single adapter used to manage group thread messages and user thread messages.
- *
+ * <p>
  * Created on - 17th July 2020
- *
+ * <p>
  * Modified on  - 17th July 2020
- *
  */
 
 
@@ -119,7 +118,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private MediaPlayer mediaPlayer;
 
-    private int messagePosition=0;
+    private int messagePosition = 0;
 
     private OnMessageLongClick messageLongClick;
 
@@ -130,25 +129,24 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private boolean isTextMessageClick;
 
     private boolean isImageMessageClick;
+
     /**
      * It is used to initialize the adapter wherever we needed. It has parameter like messageList
      * which contains list of messages and it will be used in adapter and paramter type is a String
      * whose values will be either CometChatConstants.RECEIVER_TYPE_USER
      * CometChatConstants.RECEIVER_TYPE_GROUP.
      *
-     *
-     * @param context is a object of Context.
+     * @param context     is a object of Context.
      * @param messageList is a list of messages used in this adapter.
-     * @param type is a String which identifies whether it is a user messages or a group messages.
-     *
+     * @param type        is a String which identifies whether it is a user messages or a group messages.
      */
     public ThreadAdapter(Context context, List<BaseMessage> messageList, String type) {
         setMessageList(messageList);
         this.context = context;
         sp = context.getSharedPreferences("login", MODE_PRIVATE);
         try {
-            messageLongClick = (CometChatThreadMessageActivity)context;
-        }catch (Exception e) {
+            messageLongClick = (CometChatThreadMessageActivity) context;
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -156,16 +154,17 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mediaPlayer = new MediaPlayer();
         }
 
-        fontUtils=FontUtils.getInstance(context);
+        fontUtils = FontUtils.getInstance(context);
     }
 
     /**
      * This method is used to return the different view types to adapter based on item position.
      * It uses getItemViewTypes() method to identify the view type of item.
-     * @see ThreadAdapter#getItemViewTypes(int)
-     *      *
+     *
      * @param position is a position of item in recyclerView.
      * @return It returns int which is value of view type of item.
+     * @see ThreadAdapter#getItemViewTypes(int)
+     * *
      * @see ThreadAdapter#onCreateViewHolder(ViewGroup, int)
      */
     @Override
@@ -175,7 +174,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private void setMessageList(List<BaseMessage> messageList) {
         this.messageList.addAll(0, messageList);
-        notifyItemRangeInserted(0,messageList.size());
+        notifyItemRangeInserted(0, messageList.size());
 
     }
 
@@ -185,11 +184,11 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      * It helps to differentiate view for different type of messages.
      * Based on view type it returns various ViewHolder
      * Ex :- For MediaMessage it will return ImageMessageViewHolder,
-     *       For TextMessage it will return TextMessageViewHolder,etc.
+     * For TextMessage it will return TextMessageViewHolder,etc.
      *
      * @param parent is a object of ViewGroup.
-     * @param i is viewType based on it various view will be inflated by adapter for various type
-     *          of messages.
+     * @param i      is viewType based on it various view will be inflated by adapter for various type
+     *               of messages.
      * @return It return different ViewHolder for different viewType.
      */
     @NonNull
@@ -199,7 +198,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         View view;
         switch (i) {
             case DELETE_MESSAGE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thread_message_item,parent,false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thread_message_item, parent, false);
                 view.setTag(DELETE_MESSAGE);
                 return new DeleteMessageViewHolder(view);
             case TEXT_MESSAGE:
@@ -213,12 +212,12 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return new TextMessageViewHolder(view);
 
             case LINK_MESSAGE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thread_message_link_item,parent,false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thread_message_link_item, parent, false);
                 view.setTag(LINK_MESSAGE);
                 return new LinkMessageViewHolder(view);
 
             case AUDIO_MESSAGE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thread_message_audio_layout,parent,false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thread_message_audio_layout, parent, false);
                 view.setTag(AUDIO_MESSAGE);
                 return new AudioMessageViewHolder(view);
 
@@ -228,7 +227,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return new ImageMessageViewHolder(view);
 
             case VIDEO_MESSAGE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thread_message_video_item,parent,false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.thread_message_video_item, parent, false);
                 view.setTag(VIDEO_MESSAGE);
                 return new VideoMessageViewHolder(view);
 
@@ -253,16 +252,15 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      * This method is used to bind the various ViewHolder content with their respective view types.
      * Here different methods are being called for different view type and in each method different
      * ViewHolder are been passed as parameter along with position of item.
-     *
+     * <p>
      * Ex :- For TextMessage <code>setTextData((TextMessageViewHolder)viewHolder,i)</code> is been called.
      * where <b>viewHolder</b> is casted as <b>TextMessageViewHolder</b> and <b>i</b> is position of item.
      *
+     * @param viewHolder is a object of RecyclerViewHolder.
+     * @param i          is position of item in recyclerView.
      * @see ThreadAdapter#setTextData(TextMessageViewHolder, int)
      * @see ThreadAdapter#setImageData(ImageMessageViewHolder, int)
      * @see ThreadAdapter#setFileData(FileMessageViewHolder, int)
-     *
-     * @param viewHolder is a object of RecyclerViewHolder.
-     * @param i is position of item in recyclerView.
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
@@ -270,23 +268,23 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (viewHolder.getItemViewType()) {
 
             case DELETE_MESSAGE:
-                setDeleteData((DeleteMessageViewHolder)viewHolder,i);
+                setDeleteData((DeleteMessageViewHolder) viewHolder, i);
                 break;
             case TEXT_MESSAGE:
             case REPLY_TEXT_MESSAGE:
                 setTextData((TextMessageViewHolder) viewHolder, i);
                 break;
             case LINK_MESSAGE:
-                setLinkData((LinkMessageViewHolder) viewHolder,i);
+                setLinkData((LinkMessageViewHolder) viewHolder, i);
                 break;
             case IMAGE_MESSAGE:
                 setImageData((ImageMessageViewHolder) viewHolder, i);
                 break;
             case AUDIO_MESSAGE:
-                setAudioData((AudioMessageViewHolder) viewHolder,i);
+                setAudioData((AudioMessageViewHolder) viewHolder, i);
                 break;
             case VIDEO_MESSAGE:
-                setVideoData((VideoMessageViewHolder) viewHolder,i);
+                setVideoData((VideoMessageViewHolder) viewHolder, i);
                 break;
             case FILE_MESSAGE:
                 setFileData((FileMessageViewHolder) viewHolder, i);
@@ -301,30 +299,30 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private void setAudioData(AudioMessageViewHolder viewHolder, int i) {
         BaseMessage baseMessage = messageList.get(i);
-        if (baseMessage!=null&&baseMessage.getDeletedAt()==0) {
+        if (baseMessage != null && baseMessage.getDeletedAt() == 0) {
             viewHolder.playBtn.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.textColorWhite)));
             setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
             viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
-            showMessageTime(viewHolder,baseMessage);
+            showMessageTime(viewHolder, baseMessage);
 //            if (selectedItemList.contains(baseMessage.getId()))
 //                viewHolder.txtTime.setVisibility(View.VISIBLE);
 //            else
 //                viewHolder.txtTime.setVisibility(View.GONE);
 
-            viewHolder.length.setText(Utils.getFileSize(((MediaMessage)baseMessage).getAttachment().getFileSize()));
+            viewHolder.length.setText(Utils.getFileSize(((MediaMessage) baseMessage).getAttachment().getFileSize()));
             viewHolder.playBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
             viewHolder.playBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    MediaUtils.openFile(((MediaMessage) baseMessage).getAttachment().getFileUrl(),context);
                     mediaPlayer.reset();
-                    if (messagePosition!=i) {
+                    if (messagePosition != i) {
                         notifyItemChanged(messagePosition);
                         messagePosition = i;
                     }
                     try {
-                        mediaPlayer.setDataSource(((MediaMessage)baseMessage).getAttachment().getFileUrl());
+                        mediaPlayer.setDataSource(((MediaMessage) baseMessage).getAttachment().getFileUrl());
                         mediaPlayer.prepare();
                         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                             @Override
@@ -333,7 +331,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             }
                         });
                     } catch (Exception e) {
-                        Log.e(TAG, "MediaPlayerError: "+e.getMessage());
+                        Log.e(TAG, "MediaPlayerError: " + e.getMessage());
                     }
                     if (!mediaPlayer.isPlaying()) {
                         mediaPlayer.start();
@@ -360,33 +358,34 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void stopPlayingAudio() {
-        if (mediaPlayer!=null)
+        if (mediaPlayer != null)
             mediaPlayer.stop();
     }
+
     /**
      * This method is called whenever viewType of item is file. It is used to bind FileMessageViewHolder
      * contents with MediaMessage at a given position.
      * It shows FileName, FileType, FileSize.
      *
      * @param viewHolder is a object of FileMessageViewHolder.
-     * @param i is a position of item in recyclerView.
+     * @param i          is a position of item in recyclerView.
      * @see MediaMessage
      * @see BaseMessage
      */
     private void setFileData(FileMessageViewHolder viewHolder, int i) {
         BaseMessage baseMessage = messageList.get(i);
 
-          if (baseMessage!=null&&baseMessage.getDeletedAt()==0) {
-              setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
-              viewHolder.tvUser.setText(baseMessage.getSender().getName());
+        if (baseMessage != null && baseMessage.getDeletedAt() == 0) {
+            setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
+            viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
-              viewHolder.fileName.setText(((MediaMessage) baseMessage).getAttachment().getFileName());
-              viewHolder.fileExt.setText(((MediaMessage) baseMessage).getAttachment().getFileExtension());
-              int fileSize = ((MediaMessage) baseMessage).getAttachment().getFileSize();
+            viewHolder.fileName.setText(((MediaMessage) baseMessage).getAttachment().getFileName());
+            viewHolder.fileExt.setText(((MediaMessage) baseMessage).getAttachment().getFileExtension());
+            int fileSize = ((MediaMessage) baseMessage).getAttachment().getFileSize();
 
-              viewHolder.fileSize.setText(Utils.getFileSize(fileSize));
+            viewHolder.fileSize.setText(Utils.getFileSize(fileSize));
 
-              showMessageTime(viewHolder, baseMessage);
+            showMessageTime(viewHolder, baseMessage);
 
 //              if (selectedItemList.contains(baseMessage.getId()))
 //                  viewHolder.txtTime.setVisibility(View.VISIBLE);
@@ -394,29 +393,29 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 //                  viewHolder.txtTime.setVisibility(View.GONE);
 
 
-              viewHolder.rlMessageBubble.setOnClickListener(view -> {
+            viewHolder.rlMessageBubble.setOnClickListener(view -> {
 //                  if (isLongClickEnabled && !isTextMessageClick) {
 //                          setLongClickSelectedItem(baseMessage);
 //                  }
 //                  else {
-                      setSelectedMessage(baseMessage.getId());
+                setSelectedMessage(baseMessage.getId());
 //                  }
-                  notifyDataSetChanged();
-              });
-              viewHolder.fileName.setOnClickListener(view -> MediaUtils.openFile(((MediaMessage) baseMessage).getAttachment().getFileUrl(),context));
-              viewHolder.rlMessageBubble.setOnLongClickListener(new View.OnLongClickListener() {
-                  @Override
-                  public boolean onLongClick(View v) {
-                      if (!isLongClickEnabled && !isTextMessageClick) {
-                          isImageMessageClick = true;
-                          setLongClickSelectedItem(baseMessage);
-                          messageLongClick.setLongMessageClick(longselectedItemList);
-                          notifyDataSetChanged();
-                      }
-                      return true;
-                  }
-              });
-          }
+                notifyDataSetChanged();
+            });
+            viewHolder.fileName.setOnClickListener(view -> MediaUtils.openFile(((MediaMessage) baseMessage).getAttachment().getFileUrl(), context));
+            viewHolder.rlMessageBubble.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (!isLongClickEnabled && !isTextMessageClick) {
+                        isImageMessageClick = true;
+                        setLongClickSelectedItem(baseMessage);
+                        messageLongClick.setLongMessageClick(longselectedItemList);
+                        notifyDataSetChanged();
+                    }
+                    return true;
+                }
+            });
+        }
     }
 
 
@@ -426,7 +425,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      * It loads image of MediaMessage using its url.
      *
      * @param viewHolder is a object of ImageMessageViewHolder.
-     * @param i is a position of item in recyclerView.
+     * @param i          is a position of item in recyclerView.
      * @see MediaMessage
      * @see BaseMessage
      */
@@ -438,25 +437,25 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
         viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
-        boolean isImageNotSafe = Extensions.getImageModeration(context,baseMessage);
-        String smallUrl = Extensions.getThumbnailGeneration(context,baseMessage);
+        boolean isImageNotSafe = Extensions.getImageModeration(context, baseMessage);
+        String smallUrl = Extensions.getThumbnailGeneration(context, baseMessage);
         viewHolder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_defaulf_image));
-        if (smallUrl!=null) {
+        if (smallUrl != null) {
             Glide.with(context).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).load(smallUrl).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                     if (isImageNotSafe)
-                        viewHolder.imageView.setImageBitmap(Utils.blur(context,resource));
+                        viewHolder.imageView.setImageBitmap(Utils.blur(context, resource));
                     else
                         viewHolder.imageView.setImageBitmap(resource);
                 }
             });
         } else {
-            Glide.with(context).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).load(((MediaMessage)baseMessage).getAttachment().getFileUrl()).into(new SimpleTarget<Bitmap>() {
+            Glide.with(context).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).load(((MediaMessage) baseMessage).getAttachment().getFileUrl()).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                     if (isImageNotSafe)
-                        viewHolder.imageView.setImageBitmap(Utils.blur(context,resource));
+                        viewHolder.imageView.setImageBitmap(Utils.blur(context, resource));
                     else
                         viewHolder.imageView.setImageBitmap(resource);
                 }
@@ -472,7 +471,6 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 //            viewHolder.txtTime.setVisibility(View.VISIBLE);
 //        else
 //            viewHolder.txtTime.setVisibility(View.GONE);
-
 
 
         viewHolder.rlMessageBubble.setOnClickListener(view -> {
@@ -540,7 +538,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
         viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
-        if (((MediaMessage)baseMessage).getAttachment()!=null)
+        if (((MediaMessage) baseMessage).getAttachment() != null)
             Glide.with(context).load(((MediaMessage) baseMessage).getAttachment().getFileUrl()).into(viewHolder.imageView);
 
         showMessageTime(viewHolder, baseMessage);
@@ -571,13 +569,10 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         viewHolder.playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MediaUtils.openFile(((MediaMessage)baseMessage).getAttachment().getFileUrl(),context);
+                MediaUtils.openFile(((MediaMessage) baseMessage).getAttachment().getFileUrl(), context);
             }
         });
     }
-
-
-
 
 
     private void setDeleteData(DeleteMessageViewHolder viewHolder, int i) {
@@ -588,7 +583,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
         viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
-        if (baseMessage.getDeletedAt()!=0) {
+        if (baseMessage.getDeletedAt() != 0) {
             viewHolder.txtMessage.setText(R.string.message_deleted);
             viewHolder.txtMessage.setTextColor(context.getResources().getColor(R.color.secondaryTextColor));
             viewHolder.txtMessage.setTypeface(null, Typeface.ITALIC);
@@ -603,18 +598,16 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-
-
     /**
      * This method is used to show message time below message whenever we click on message.
      * Since we have different ViewHolder, we have to pass <b>txtTime</b> of each viewHolder to
      * <code>setStatusIcon(RecyclerView.ViewHolder viewHolder,BaseMessage baseMessage)</code>
      * along with baseMessage.
-     * @see ThreadAdapter#setStatusIcon(TextView, BaseMessage)
-     *      *
-     * @param viewHolder is object of ViewHolder.
-     * @param baseMessage is a object of BaseMessage.
      *
+     * @param viewHolder  is object of ViewHolder.
+     * @param baseMessage is a object of BaseMessage.
+     * @see ThreadAdapter#setStatusIcon(TextView, BaseMessage)
+     * *
      * @see BaseMessage
      */
     private void showMessageTime(RecyclerView.ViewHolder viewHolder, BaseMessage baseMessage) {
@@ -636,7 +629,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      * If sender of baseMessage is user then for user side messages it will show readAt, deliveredAt
      * time along with respective icon. For reciever side message it will show only deliveredAt time
      *
-     * @param txtTime is a object of TextView which will show time.
+     * @param txtTime     is a object of TextView which will show time.
      * @param baseMessage is a object of BaseMessage used to identify baseMessage sender.
      * @see BaseMessage
      */
@@ -666,21 +659,20 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      * It shows text of a message if deletedAt = 0 else it shows "message deleted"
      *
      * @param viewHolder is a object of TextMessageViewHolder.
-     * @param i is postion of item in recyclerView.
+     * @param i          is postion of item in recyclerView.
      * @see TextMessage
      * @see BaseMessage
      */
     private void setTextData(TextMessageViewHolder viewHolder, int i) {
-
+        Log.i(TAG, "setTextData: block 1");
         BaseMessage baseMessage = messageList.get(i);
-        if (baseMessage!=null) {
+        if (baseMessage != null) {
             if (!baseMessage.getSender().getUid().equals(loggedInUser.getUid())) {
                 boolean isSentimentNegative = Extensions.checkSentiment(baseMessage);
                 if (isSentimentNegative) {
                     viewHolder.txtMessage.setVisibility(View.GONE);
                     viewHolder.sentimentVw.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     viewHolder.txtMessage.setVisibility(View.VISIBLE);
                     viewHolder.sentimentVw.setVisibility(View.GONE);
                 }
@@ -713,11 +705,81 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
             viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
+            /*this commmented code is taken from MessageAdapter but here in thread reply messages response is not same as normal chat reply messages
+             * so we are adding logic as per reply message of thread if needed we will use this code
+             * commented by rahul maske on 25-06-2021 */
+            /*if (baseMessage.getMetadata() != null && baseMessage.getMetadata().has("type")) {
+                try {
+                    Log.i(TAG, "setTextData: type block 1 ");
+                    if (baseMessage.getMetadata().getString("type").equalsIgnoreCase("reply")) {
+                        Log.i(TAG, "setTextData: type block 2");
+                        JSONObject metaData = baseMessage.getMetadata();
+                        String message = metaData.getString("message");
+                        viewHolder.replyLayout.setVisibility(View.VISIBLE);
+                        viewHolder.replyMessage.setText(message);
+
+                        if (metaData.has("name")) {
+                            Log.i(TAG, "setTextData: type block 3");
+                            Log.i(TAG, "setTextData: if" + metaData.getString("name"));
+                            viewHolder.replyUser.setVisibility(View.VISIBLE);
+                            viewHolder.replyUser.setText(metaData.getString("name"));
+
+                        } else if (metaData.has("replyToMessage")){
+                            Log.i(TAG, "setTextData: type block 4");
+                            viewHolder.replyUser.setVisibility(View.VISIBLE);
+                            viewHolder.replyUser.setText(metaData.getJSONObject("replyToMessage").getString("name"));
+                        }else{
+                            Log.i(TAG, "setTextData: type block 5");
+                            Log.i(TAG,  "setTextData: else" + metaData.getString("name"));
+                            viewHolder.replyUser.setVisibility(View.GONE);
+                        }
+                    }
+
+
+
+                } catch (Exception e) {
+                    Log.e(TAG, "setTextData: " + e.getMessage());
+                }
+
+
+
+            }else{
+                Log.i(TAG, "setTextData: block 2 "+baseMessage.getMetadata());
+            }
+*/
+
+            if (baseMessage.getMetadata() != null && baseMessage.getMetadata().has("reply")) {
+                try {
+                    Log.i(TAG, "setTextData: reply block 1");
+                    JSONObject replyObject=baseMessage.getMetadata().getJSONObject("reply");
+                    String message = replyObject.getString("message");
+                    viewHolder.replyLayout.setVisibility(View.VISIBLE);
+                    viewHolder.replyMessage.setText(message);
+
+                    if (replyObject.has("name")) {
+                        Log.i(TAG, "setTextData: type block 3");
+                        Log.i(TAG, "setTextData: if" + replyObject.getString("name"));
+                        viewHolder.replyUser.setVisibility(View.VISIBLE);
+                        viewHolder.replyUser.setText(replyObject.getString("name"));
+                    }else{
+                        Log.i(TAG, "setTextData: type block 5");
+                        Log.i(TAG,  "setTextData: else" + replyObject.getString("name"));
+                        viewHolder.replyUser.setVisibility(View.GONE);
+                    }
+
+
+                } catch (Exception e) {
+                    Log.e(TAG, "setTextData: " + e.getMessage());
+                }
+            } else {
+                Log.i(TAG, "setTextData: block 2 " + baseMessage.getMetadata());
+            }
+
             String txtMessage = ((TextMessage) baseMessage).getText().trim();
             viewHolder.txtMessage.setTextSize(16f);
             int count = 0;
             CharSequence processed = EmojiCompat.get().process(txtMessage, 0,
-                    txtMessage.length() -1, Integer.MAX_VALUE, EmojiCompat.REPLACE_STRATEGY_ALL);
+                    txtMessage.length() - 1, Integer.MAX_VALUE, EmojiCompat.REPLACE_STRATEGY_ALL);
             if (processed instanceof Spannable) {
                 Spannable spannable = (Spannable) processed;
                 count = spannable.getSpans(0, spannable.length() - 1, EmojiSpan.class).length;
@@ -730,7 +792,18 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             }
 
-            viewHolder.txtMessage.setText(txtMessage);
+
+                if (baseMessage.getMetadata().has("reply")) {
+                    //if (baseMessage.getMetadata().getString("type").equalsIgnoreCase("reply")) {
+                        viewHolder.txtMessage.setText(txtMessage+" ");
+                        Log.i(TAG, "setTextData: has type  " + txtMessage);
+                    //}
+                } else {
+                    Log.i(TAG, "setTextData: has no type  " + txtMessage);
+                    viewHolder.txtMessage.setText(txtMessage+" ");
+                    viewHolder.replyLayout.setVisibility(View.GONE);
+                }
+
             String profanityFilter = Extensions.checkProfanityMessage(baseMessage);
             viewHolder.txtMessage.setText(profanityFilter);
             viewHolder.txtMessage.setTypeface(fontUtils.getTypeFace(FontUtils.robotoRegular));
@@ -738,19 +811,17 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             viewHolder.txtMessage.setTextColor(context.getResources().getColor(R.color.primaryTextColor));
 
             showMessageTime(viewHolder, baseMessage);
-            if (messageList.get(messageList.size()-1).equals(baseMessage))
-            {
+            if (messageList.get(messageList.size() - 1).equals(baseMessage)) {
                 selectedItemList.add(baseMessage.getId());
             }
 
-            setColorFilter(baseMessage,viewHolder.cardView);
+            setColorFilter(baseMessage, viewHolder.cardView);
 
             viewHolder.rlMessageBubble.setOnClickListener(view -> {
                 if (isLongClickEnabled && !isImageMessageClick) {
                     setLongClickSelectedItem(baseMessage);
                     messageLongClick.setLongMessageClick(longselectedItemList);
-                }
-                else {
+                } else {
                     setSelectedMessage(baseMessage.getId());
                 }
                 notifyDataSetChanged();
@@ -778,7 +849,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void setCustomData(CustomMessageViewHolder viewHolder, int i) {
 
         BaseMessage baseMessage = messageList.get(i);
-        if (baseMessage!=null) {
+        if (baseMessage != null) {
             setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
             viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
@@ -787,8 +858,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             viewHolder.txtMessage.setTextColor(context.getResources().getColor(R.color.primaryTextColor));
 
             showMessageTime(viewHolder, baseMessage);
-            if (messageList.get(messageList.size()-1).equals(baseMessage))
-            {
+            if (messageList.get(messageList.size() - 1).equals(baseMessage)) {
                 selectedItemList.add(baseMessage.getId());
             }
             if (selectedItemList.contains(baseMessage.getId()))
@@ -805,10 +875,9 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private void setColorFilter(BaseMessage baseMessage,View view){
+    private void setColorFilter(BaseMessage baseMessage, View view) {
 
-        if (!longselectedItemList.contains(baseMessage))
-        {
+        if (!longselectedItemList.contains(baseMessage)) {
             view.getBackground().setColorFilter(context.getResources().getColor(R.color.message_bubble_grey), PorterDuff.Mode.SRC_ATOP);
         } else {
             view.getBackground().setColorFilter(context.getResources().getColor(R.color.secondaryTextColor), PorterDuff.Mode.SRC_ATOP);
@@ -833,11 +902,11 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         String translatedLanguage = translation.getString("language_translated");
                         translationsMap.put(translatedLanguage, translatedText);
 //                        Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
-                            if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
-                                if (translatedMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
-                                    ((TextMessage) translatedMessage).setText(translatedText);
-                                }
+                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                            if (translatedMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                ((TextMessage) translatedMessage).setText(translatedText);
                             }
+                        }
                     }
                 }
             }
@@ -860,14 +929,14 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         String url = null;
 
-        if (baseMessage!=null) {
+        if (baseMessage != null) {
 
             setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
             viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
             if (baseMessage.getDeletedAt() == 0) {
-                HashMap<String,JSONObject> extensionList = Extensions.extensionCheck(baseMessage);
-                if (extensionList!=null) {
+                HashMap<String, JSONObject> extensionList = Extensions.extensionCheck(baseMessage);
+                if (extensionList != null) {
                     if (extensionList.containsKey("linkPreview")) {
                         JSONObject linkPreviewJsonObject = extensionList.get("linkPreview");
                         try {
@@ -926,8 +995,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 if (isLongClickEnabled && !isImageMessageClick) {
                     setLongClickSelectedItem(baseMessage);
                     messageLongClick.setLongMessageClick(longselectedItemList);
-                }
-                else {
+                } else {
                     setSelectedMessage(baseMessage.getId());
                 }
                 notifyDataSetChanged();
@@ -950,8 +1018,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public void setSelectedMessage(Integer id)
-    {
+    public void setSelectedMessage(Integer id) {
         if (selectedItemList.contains(id))
             selectedItemList.remove(id);
         else
@@ -966,16 +1033,16 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         else
             longselectedItemList.add(baseMessage);
     }
+
     /**
      * This method is used to set avatar of groupMembers to show in groupMessages. If avatar of
      * group member is not available then it calls <code>setInitials(String name)</code> to show
      * first two letter of group member name.
      *
-     * @param avatar is a object of Avatar
+     * @param avatar    is a object of Avatar
      * @param avatarUrl is a String. It is url of avatar.
-     * @param name is a String. It is a name of groupMember.
+     * @param name      is a String. It is a name of groupMember.
      * @see Avatar
-     *
      */
     private void setAvatar(Avatar avatar, String avatarUrl, String name) {
 
@@ -1019,30 +1086,27 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     /**
      * This method is used to maintain different viewType based on message category and type and
      * returns the different view types to adapter based on it.
-     *
+     * <p>
      * Ex :- For message with category <b>CometChatConstants.CATEGORY_MESSAGE</b> and type
      * <b>CometChatConstants.MESSAGE_TYPE_TEXT</b> and message is sent by a <b>Logged-in user</b>,
      * It will return <b>RIGHT_TEXT_MESSAGE</b>
      *
-     *
      * @param position is a position of item in recyclerView.
      * @return It returns int which is value of view type of item.
-     *
      * @see ThreadAdapter#onCreateViewHolder(ViewGroup, int)
      * @see BaseMessage
-     *
      */
     private int getItemViewTypes(int position) {
         BaseMessage baseMessage = messageList.get(position);
-        HashMap<String,JSONObject> extensionList = Extensions.extensionCheck(baseMessage);
-        if (baseMessage.getDeletedAt()==0) {
+        HashMap<String, JSONObject> extensionList = Extensions.extensionCheck(baseMessage);
+        if (baseMessage.getDeletedAt() == 0) {
             if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_MESSAGE)) {
                 switch (baseMessage.getType()) {
 
                     case CometChatConstants.MESSAGE_TYPE_TEXT:
                         if (extensionList != null && extensionList.containsKey("linkPreview") && extensionList.get("linkPreview") != null)
                             return LINK_MESSAGE;
-                        else if (baseMessage.getMetadata()!=null && baseMessage.getMetadata().has("reply"))
+                        else if (baseMessage.getMetadata() != null && baseMessage.getMetadata().has("reply"))
                             return REPLY_TEXT_MESSAGE;
                         else
                             return TEXT_MESSAGE;
@@ -1058,13 +1122,11 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         return -1;
                 }
             } else {
-                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_CUSTOM)){
+                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_CUSTOM)) {
                     return CUSTOM_MESSAGE;
                 }
             }
-        }
-        else
-        {
+        } else {
             return DELETE_MESSAGE;
         }
         return -1;
@@ -1075,7 +1137,6 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      * This method is used to update message list of adapter.
      *
      * @param baseMessageList is list of baseMessages.
-     *
      */
     public void updateList(List<BaseMessage> baseMessageList) {
         setMessageList(baseMessageList);
@@ -1125,14 +1186,13 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      *
      * @param baseMessage is a object of BaseMessage. It is new message which will added.
      * @see BaseMessage
-     *
      */
     public void addMessage(BaseMessage baseMessage) {
 //        if (!messageList.contains(baseMessage)) {
-            messageList.add(baseMessage);
-            selectedItemList.clear();
+        messageList.add(baseMessage);
+        selectedItemList.clear();
 //        }
-        notifyItemInserted(messageList.size()-1);
+        notifyItemInserted(messageList.size() - 1);
     }
 
     /**
@@ -1164,16 +1224,14 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public BaseMessage getLastMessage() {
-        if (messageList.size()>0)
-        {
-            Log.e(TAG, "getLastMessage: "+messageList.get(messageList.size()-1 ));
-            return messageList.get(messageList.size()-1);
-        }
-        else
+        if (messageList.size() > 0) {
+            Log.e(TAG, "getLastMessage: " + messageList.get(messageList.size() - 1));
+            return messageList.get(messageList.size() - 1);
+        } else
             return null;
     }
 
-    public int getPosition(BaseMessage baseMessage){
+    public int getPosition(BaseMessage baseMessage) {
         return messageList.indexOf(baseMessage);
     }
 
@@ -1183,15 +1241,16 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private CardView cardView;
         private ProgressBar progressBar;
         private Avatar ivUser;
-        public TextView txtTime,tvUser;
+        public TextView txtTime, tvUser;
         private RelativeLayout rlMessageBubble;
 
         private RelativeLayout sensitiveLayout;
+
         public ImageMessageViewHolder(@NonNull View view) {
             super(view);
             int type = (int) view.getTag();
             imageView = view.findViewById(R.id.go_img_message);
-            tvUser= view.findViewById(R.id.tv_user);
+            tvUser = view.findViewById(R.id.tv_user);
             cardView = view.findViewById(R.id.cv_image_message_container);
             progressBar = view.findViewById(R.id.img_progress_bar);
             txtTime = view.findViewById(R.id.txt_time);
@@ -1219,7 +1278,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private CardView cardView;
         private ProgressBar progressBar;
         private Avatar ivUser;
-        public TextView txtTime,tvUser;
+        public TextView txtTime, tvUser;
         private RelativeLayout rlMessageBubble;
 
         public VideoMessageViewHolder(@NonNull View view) {
@@ -1227,7 +1286,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             int type = (int) view.getTag();
             imageView = view.findViewById(R.id.go_video_message);
             playBtn = view.findViewById(R.id.playBtn);
-            tvUser= view.findViewById(R.id.tv_user);
+            tvUser = view.findViewById(R.id.tv_user);
             cardView = view.findViewById(R.id.cv_image_message_container);
             progressBar = view.findViewById(R.id.img_progress_bar);
             txtTime = view.findViewById(R.id.txt_time);
@@ -1361,9 +1420,10 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private Avatar ivUser;
         private RelativeLayout rlMessageBubble;
         private TextView txtTime;
+
         public AudioMessageViewHolder(@NonNull View itemView) {
             super(itemView);
-            type = (int)itemView.getTag();
+            type = (int) itemView.getTag();
             length = itemView.findViewById(R.id.audiolength_tv);
             playBtn = itemView.findViewById(R.id.playBtn);
             rlMessageBubble = itemView.findViewById(R.id.cv_message_container);
@@ -1372,6 +1432,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             txtTime = itemView.findViewById(R.id.txt_time);
         }
     }
+
     public class LinkMessageViewHolder extends RecyclerView.ViewHolder {
 
         private TextView linkTitle;
@@ -1419,8 +1480,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public interface OnMessageLongClick
-    {
+    public interface OnMessageLongClick {
         void setLongMessageClick(List<BaseMessage> baseMessage);
     }
 }

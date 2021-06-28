@@ -52,6 +52,9 @@
             android:name="screen.addmember.CometChatAddMemberScreenActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="screen.message_information.CometChatMessageInfoScreenActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="screen.adminAndModeratorList.CometChatAdminModeratorListScreenActivity"
             android:screenOrientation="portrait" />
         <activity
