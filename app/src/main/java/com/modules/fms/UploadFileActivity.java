@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.Window;
@@ -177,6 +178,17 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         } else {
             onBackPressed();
         }
+
+
+        if (data != null && data.hasExtra(General.FOLDER_ID)) {
+            folder_id = data.getIntExtra(General.FOLDER_ID, 0);
+        }
+
+        if (data != null && data.hasExtra(General.DIRECTORY)) {
+            String foldername = data.getStringExtra(General.DIRECTORY);
+            selectFolder.setText("root/" + foldername);
+        }
+
     }
 
     // make a call to upload file
@@ -189,9 +201,33 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         if (customRadio.isChecked()) {
             is_default = "0";
         }
-        int status = FileSharingOperations.upload("" + file_id, "" + group_id, user_access_array(),
-                Preferences.get(General.PERMISSION), "" + folder_id, description, comment, is_default,
-                action, start_time, this);
+
+
+
+//        int status = FileSharingOperations.upload("" + file_id,
+//                "" + group_id,
+//                user_access_array(),
+//                Preferences.get(General.PERMISSION),
+//                "" + folder_id,
+//                description,
+//                comment,
+//                is_default,
+//                action,
+//                start_time,
+//                this);
+
+        int status = FileSharingOperations.upload("" + file_id,
+                "" + group_id,
+                user_access_array(),
+"1",
+                "" + folder_id,
+                description,
+                comment,
+                is_default,
+                action,
+                start_time,
+                this);
+
 
         showResponses(status, postButton);
     }
@@ -433,6 +469,9 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             int status = 12;
             String file_name = FileOperations.getFileName(path);
             String url = Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, "") + Urls_.MOBILE_UPLOADER;
+
+            Log.i(UploadFileActivity.class.getSimpleName(),"File Upload URL: "+url);
+
             String user_id = Preferences.get(General.USER_ID);
             try {
                 String response = FileUpload.uploadFile(path, file_name, user_id, url,

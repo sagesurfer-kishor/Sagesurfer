@@ -7,6 +7,8 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 import com.cometchat.pro.core.AppSettings;
@@ -20,6 +22,13 @@ import java.io.File;
 import constant.StringContract;
 import listeners.CometChatCallListener;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import com.storage.preferences.Preferences;
+
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by Kailash on 7/18/2018.
  */
@@ -29,6 +38,8 @@ public class Application extends MultiDexApplication {
 
     private static Application instance;
     private static AppObserver observer;
+
+    private FirebaseCrashlytics crashlytics;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -41,7 +52,33 @@ public class Application extends MultiDexApplication {
         super.onCreate();
         observer = new AppObserver(this);
 
-        createNotificationChannel();
+        crashlytics = FirebaseCrashlytics.getInstance();
+        crashlytics.log("Start logging!");
+
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "FirebaseMessaging failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult();
+                        //StorageHelper.setTOKEN(getApplicationContext(), token);
+                        Log.i(Application.class.getSimpleName(), "Token: " + token);
+
+                        Preferences.save("regId_save", false);
+                        Preferences.initialize(getApplicationContext());
+                        Preferences.save("regId", token);
+
+                    }
+                });
+
+        //createNotificationChannel();
 
         AppSettings appSettings = new AppSettings.AppSettingsBuilder().
                 subscribePresenceForAllUsers().setRegion(AppConfig.AppDetails.REGION).build();

@@ -79,10 +79,14 @@ public class CreateGalleryActivity extends AppCompatActivity implements GalleryM
     private ArrayList<String> covetImgSelectedId = new ArrayList<String>();
     private RecyclerView.LayoutManager mLayoutManager;
 
+    String coverid = "";
+
     @SuppressLint({"RestrictedApi", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        coverid = "";
 
         //For setting status bar color
         Window window = getWindow();
@@ -335,7 +339,15 @@ public class CreateGalleryActivity extends AppCompatActivity implements GalleryM
                             JsonObject object = jsonArray.get(0).getAsJsonObject();
                             if (object.has(General.STATUS)) {
                                 status = object.get(General.STATUS).getAsInt();
+
+
                                 if (status == 1) {
+
+                                    if (coverid.isEmpty()) {
+                                        coverid = object.get(General.ID).getAsLong() + "";
+                                    }
+
+
                                     if (al_images.size() == 0) {
                                         fileID.add(String.valueOf(object.get(General.ID).getAsLong()));
                                         MultipleImage multipleImage = new MultipleImage();
@@ -491,7 +503,12 @@ public class CreateGalleryActivity extends AppCompatActivity implements GalleryM
         requestMap.put(General.TITLE, albumName.getText().toString().trim());
         requestMap.put(General.CAPTION, description.getText().toString().trim());
         requestMap.put("file_id", getFileIds());
-        requestMap.put("cover_img_id", getCoverId());
+
+        if (!getCoverId().isEmpty()) {
+            requestMap.put("cover_img_id", getCoverId());
+        } else {
+            requestMap.put("cover_img_id", coverid);
+        }
 
         String url = Preferences.get(General.DOMAIN) + Urls_.CREATE_GALLERY_IMAGE;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getApplicationContext(), this);

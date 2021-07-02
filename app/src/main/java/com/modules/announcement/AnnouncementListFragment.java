@@ -123,6 +123,11 @@ public class AnnouncementListFragment extends Fragment implements View.OnClickLi
         } else {
             fab.setVisibility(View.GONE);
         }
+
+
+//         MAYUR TERAIYA ADDED
+        fab.setVisibility(View.VISIBLE);
+
         getHeight(fab);
         Log.i(TAG, "onCreateView: announcement");
         return view;

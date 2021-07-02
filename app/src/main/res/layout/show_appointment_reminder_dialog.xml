@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
                 android:src="@drawable/ic_close_24dp"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
 
         <LinearLayout
@@ -199,6 +199,20 @@
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:text="Yes"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <Button
+                android:id="@+id/can_btn"
+                style="@style/CustomFontStyleSecondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:visibility="gone"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="Cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16" />

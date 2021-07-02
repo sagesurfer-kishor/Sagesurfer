@@ -600,11 +600,13 @@ public class AppointmentFragment extends Fragment implements AppointmentListAdap
         String roleId = Preferences.get(General.ROLE_ID);
         Log.e("roleId", roleId);
 
-        if (roleId.equals("31")) {
-            closePopup.setVisibility(View.VISIBLE);
-        } else {
-            closePopup.setVisibility(View.GONE);
-        }
+//        if (roleId.equals("31")) {
+//            closePopup.setVisibility(View.VISIBLE);
+//        } else {
+//            closePopup.setVisibility(View.GONE);
+//        }
+
+        closePopup.setVisibility(View.VISIBLE);
 
         if (!Preferences.get(General.APP_ID).equals("0")) {
             callDeatilsAPI(Preferences.get(General.APP_ID), userName, description, dateTxt, timeTxt, serviceValueTxt);
@@ -812,11 +814,20 @@ public class AppointmentFragment extends Fragment implements AppointmentListAdap
                 e.printStackTrace();
             }
         }
+       
 
     }
 
     private void callDismiss() {
-        dialog.dismiss();
+        try {
+            if (dialog != null) {
+                if (dialog.isShowing())
+                    dialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

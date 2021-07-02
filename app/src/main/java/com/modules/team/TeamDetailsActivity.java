@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -410,6 +412,16 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         memberStatusIcon4 = (ImageView) findViewById(R.id.member_status_icon4);
         memberStatusIcon5 = (ImageView) findViewById(R.id.member_status_icon5);
         memberStatusIcon6 = (ImageView) findViewById(R.id.member_status_icon6);
+
+        // MAYUR TERAIYA ADDED
+        memberStatusIcon0.setVisibility(View.GONE);
+        memberStatusIcon1.setVisibility(View.GONE);
+        memberStatusIcon2.setVisibility(View.GONE);
+        memberStatusIcon3.setVisibility(View.GONE);
+        memberStatusIcon4.setVisibility(View.GONE);
+        memberStatusIcon5.setVisibility(View.GONE);
+        memberStatusIcon6.setVisibility(View.GONE);
+
 
         imageViewStats.setColorFilter(color);
         imageViewStats.setImageResource(R.drawable.vi_drawer_teams);
@@ -926,12 +938,12 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                                 .into(banner);
                     }
 
-                    /*Glide.with(getApplicationContext()).load(Uri.parse(al_team.get(0).getBanner()))
+                    Glide.with(getApplicationContext()).load(Uri.parse(al_team.get(0).getBanner()))
                             .thumbnail(0.5f)
                             .transition(withCrossFade())
                             .apply(new RequestOptions()
                                     .diskCacheStrategy(DiskCacheStrategy.ALL))
-                            .into(banner);*/
+                            .into(banner);
 
 
                     //team counter parsing

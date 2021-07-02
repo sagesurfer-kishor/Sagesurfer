@@ -107,6 +107,7 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
     boolean sendSOSClciked = false;
     boolean isGPSOn = false;
     private AlertDialog alertDialog;
+    LinearLayout messageLinearLayout;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -145,11 +146,11 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
         /*int color = Color.parseColor("#a5a5a5"); //text_color_tertiary
         postButton.setColorFilter(color);
         postButton.setImageResource(R.drawable.vi_check_white);*/
-        postButton = (AppCompatImageView)toolbar.findViewById(R.id.imageview_toolbar_save);
+        postButton = (AppCompatImageView) toolbar.findViewById(R.id.imageview_toolbar_save);
         postButton.setVisibility(View.VISIBLE);
         postButton.setOnClickListener(this);
 
-        LinearLayout messageLinearLayout = (LinearLayout) findViewById(R.id.linearlayout_select_message);
+        messageLinearLayout = (LinearLayout) findViewById(R.id.linearlayout_select_message);
         messageLinearLayout.setOnClickListener(this);
 
         messageBox = (EditText) findViewById(R.id.create_sos_message_box);
@@ -533,43 +534,40 @@ public class CreateSosActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         Log.i(TAG, "onClick: hit");
         KeyboardOperation.hide(getApplicationContext(), messageBox.getWindowToken());
-        switch (v.getId()) {
-            case R.id.imageview_toolbar_save:
-                Log.i(TAG, "onClick: sendSOS1");
-                String message = messageBox.getText().toString().trim();
-                if (sosValidation(message, v)) {
-                    Log.i(TAG, "onClick: sendSOS2");
-                    if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
-                        alertDialog.show();
-                        Log.i(TAG, "onClick: sendSOS3");
-                    } else {
-                        lat_lon_status = 1;
-                        sendSOSClciked = true;
-                        Log.i(TAG, "onClick: sendSOS4");
-                        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                        boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                        if ((lat_lon_status == 0) || (lat_lon_status == 1 && locationAddressString.length() > 0) || (lat_lon_status == 1 && !statusOfGPS)) {
-                            sendSOSClciked = false;
-                            sendSos(message);
-                        }
-                    }
-                }else{
-                    Log.i(TAG, "onClick: validation failed");
-                }
 
-                break;
-            case R.id.create_sos_team_select:
-                if (teamsArrayList == null || teamsArrayList.size() <= 0) {
-                    ShowSnack.viewWarning(v,
-                            this.getResources().getString(R.string.teams_unavailable), getApplicationContext());
-                    return;
+        if (postButton.equals(v)) {
+            Log.i(TAG, "onClick: sendSOS1");
+            String message = messageBox.getText().toString().trim();
+            if (sosValidation(message, v)) {
+                Log.i(TAG, "onClick: sendSOS2");
+                if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
+                    alertDialog.show();
+                    Log.i(TAG, "onClick: sendSOS3");
+                } else {
+                    lat_lon_status = 1;
+                    sendSOSClciked = true;
+                    Log.i(TAG, "onClick: sendSOS4");
+                    LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                    if ((lat_lon_status == 0) || (lat_lon_status == 1 && locationAddressString.length() > 0) || (lat_lon_status == 1 && !statusOfGPS)) {
+                        sendSOSClciked = false;
+
+                        sendSos(message);
+                    }
                 }
-                openTeamSelector();
-                break;
-            case R.id.linearlayout_select_message:
-                Log.i(TAG, "onClick: message");
-                showInbuilt();
-                break;
+            } else {
+                Log.i(TAG, "onClick: validation failed");
+            }
+        } else if (teamSelector.equals(v)) {
+            if (teamsArrayList == null || teamsArrayList.size() <= 0) {
+                ShowSnack.viewWarning(v,
+                        this.getResources().getString(R.string.teams_unavailable), getApplicationContext());
+                return;
+            }
+            openTeamSelector();
+        } else if (messageLinearLayout.equals(v)) {
+            Log.i(TAG, "onClick: message");
+            showInbuilt();
         }
     }
 

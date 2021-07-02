@@ -7,14 +7,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.AppCompatImageView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -27,6 +31,7 @@ import com.sagesurfer.models.Content_;
 import com.sagesurfer.snack.SubmitSnackResponse;
 import com.storage.preferences.Preferences;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -39,14 +44,14 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
     private final List<Content_> contentList;
     private static final String TAG = SelfCareContentListAdapter.class.getSimpleName();
     private final Activity activity;
-    private final SelfCareContentListAdapterListener listener;
+    private WeakReference<SelfCareContentListAdapterListener> listener;
     private ViewHolder viewHolder;
 
     SelfCareContentListAdapter(Activity activity, List<Content_> contentList, SelfCareContentListAdapterListener listener) {
         super(activity, 0, contentList);
         this.contentList = contentList;
         this.activity = activity;
-        this.listener = listener;
+        this.listener = new WeakReference<>(listener);
     }
 
     @Override
@@ -99,7 +104,7 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
             viewHolder.imageViewSelfCareContentListItemTypeIcon = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_type_icon);
             viewHolder.imageViewSelfCareContentListItemLike = (AppCompatImageButton) view.findViewById(R.id.btn_like);
             viewHolder.imageViewSelfCareContentListItemComment = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_comment);
-            viewHolder.imageViewSelfCareContentListItemShare = (AppCompatImageButton) view.findViewById(R.id.btn_share);
+            viewHolder.imageViewSelfCareContentListItemShare = (ImageButton) view.findViewById(R.id.btn_share);
             viewHolder.relativeLayoutSelfCareContentListItemIcon = (RelativeLayout) view.findViewById(R.id.relativelayout_selfcarecontentlistitem_icon);
             viewHolder.mLinearLayoutShare = (LinearLayout) view.findViewById(R.id.linear_share);
 
@@ -127,13 +132,24 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
             }
             applyLike(viewHolder, position);
             applyComment(viewHolder, position);
-            applyClickEvents(viewHolder, position);
+//            applyClickEvents(viewHolder, position);
 
-            viewHolder.relativeLayoutCaseloadDetails.setTag(position);
             viewHolder.imageViewSelfCareContentListItemLike.setTag(position);
             viewHolder.imageViewSelfCareContentListItemLike.setOnClickListener(onClick);
             viewHolder.imageViewSelfCareContentListItemComment.setTag(position);
             viewHolder.imageViewSelfCareContentListItemComment.setOnClickListener(onClick);
+            /**
+             * @Author : Mahesh
+             * @Uses : clicked on recycler view item
+             */
+            viewHolder.relativeLayoutCaseloadDetails.setTag(position);
+            viewHolder.relativeLayoutCaseloadDetails.setOnClickListener(onClick);
+            /**
+             * @Author : Mahesh
+             * @Uses : clicked on share button
+             */
+            viewHolder.imageViewSelfCareContentListItemShare.setOnClickListener(onClick);
+            viewHolder.imageViewSelfCareContentListItemShare.setTag(position);
 
             // added by kishor k 09-09-2020
             Glide.with(activity.getApplicationContext())
@@ -183,7 +199,18 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
                     break;
 
                 case R.id.btn_share:
-                    applyClickEvents(viewHolder, position);
+                    /**
+                     * @Author mahesh
+                     * after button clicked initializing clicked event previously :: applyClickEvents()
+                     */
+                        listener.get().onItemClicked(position, "mainContainer");
+                    break;
+
+                case R.id.relativelayout_caseload_details:
+                    /**
+                     * @Author mahesh
+                     */
+                        listener.get().onItemClicked(position, "listItem");
                     break;
             }
         }
@@ -302,19 +329,20 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
         void onItemClicked(int position, String itemView);
     }
 
-    private void applyClickEvents(ViewHolder holder, final int position) {
+    /*private void applyClickEvents(ViewHolder holder, final int position) {
         holder.imageViewSelfCareContentListItemShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onItemClicked(position, "mainContainer");
             }
         });
-    }
+    }*/
 
     private class ViewHolder {
         TextView textViewSelfCareContentListItemTitle, textViewSelfCareContentListItemDescription, textViewSelfCareContentListItemCategory, textViewSelfCareContentListItemLikeCount, textViewSelfCareContentListItemCommentCount, textViewSelfCareContentListItemShareCount;
         ImageView imageViewSelfCareContentListItemIcon;
-        AppCompatImageButton imageViewSelfCareContentListItemLike,imageViewSelfCareContentListItemShare;
+        AppCompatImageButton imageViewSelfCareContentListItemLike;
+        ImageButton imageViewSelfCareContentListItemShare;
         AppCompatImageView imageViewSelfCareContentListItemTypeIcon, imageViewSelfCareContentListItemComment;
         RelativeLayout relativeLayoutCaseloadDetails, relativeLayoutSelfCareContentListItemIcon;
         LinearLayout mLinearLayoutShare;

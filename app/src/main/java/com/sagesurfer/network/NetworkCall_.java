@@ -2,6 +2,7 @@ package com.sagesurfer.network;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -48,6 +49,32 @@ import okio.Buffer;
 
 @SuppressWarnings("ConstantConditions")
 public class NetworkCall_ {
+
+
+    private static ProgressDialog pDialog;
+
+    public static void showDialog(Context _context) {
+        try {
+            pDialog = new ProgressDialog(_context);
+            pDialog.setCancelable(false);
+            pDialog.setMessage("Loading...");
+            pDialog.setCanceledOnTouchOutside(false);
+
+
+            pDialog.show();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void hideDialog() {
+        try {
+            if (pDialog != null && pDialog.isShowing())
+                pDialog.dismiss();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     private static final String TAG = NetworkCall_.class.getSimpleName();
     private static RefreshToken refreshToken;
@@ -129,8 +156,14 @@ public class NetworkCall_ {
     }
 
     public static String post(String url, RequestBody formBody, String tag, Context _context, Activity activity) throws Exception {
-        MyCall myCall = new MyCall(url, formBody, tag, _context, activity);
-        return myCall.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR).get();
+        try {
+
+            MyCall myCall = new MyCall(url, formBody, tag, _context, activity);
+            return myCall.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     @SuppressLint("StaticFieldLeak")

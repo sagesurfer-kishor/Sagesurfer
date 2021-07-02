@@ -213,14 +213,14 @@
                     android:gravity="center_vertical|start"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageButton
                         android:id="@+id/btn_share"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:background="@android:color/transparent"
                         android:padding="2dp"
-                        android:background="?android:attr/selectableItemBackground"
-                        app:srcCompat="@drawable/vi_share_gray" />
-
+                        android:src="@drawable/vi_share_gray" />
+<!--android:background="?android:attr/selectableItemBackground"-->
                     <TextView
                         android:id="@+id/textview_selfcarecontentlistitem_share_count"
                         style="@style/CustomFontStylePrimary"

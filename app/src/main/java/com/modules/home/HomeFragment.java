@@ -358,12 +358,12 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         String roleId = Preferences.get(General.ROLE_ID);
         Log.e("appon", Preferences.get(General.APP_ID));
 
-        if (roleId.equals("31")) {
-            closePopup.setVisibility(View.VISIBLE);
-        } else {
-            closePopup.setVisibility(View.GONE);
-        }
-
+//        if (roleId.equals("31") || BuildConfig.DEBUG) {
+//            closePopup.setVisibility(View.VISIBLE);
+//        } else {
+//            closePopup.setVisibility(View.GONE);
+//        }
+        closePopup.setVisibility(View.VISIBLE);
 
         if (!Preferences.get(General.APP_ID).equals("0")) {
             callDeatilsAPI(Preferences.get(General.APP_ID), userName, description, dateTxt, timeTxt, serviceValueTxt);

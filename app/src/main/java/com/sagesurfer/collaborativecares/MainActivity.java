@@ -301,6 +301,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Preferences.initialize(getApplicationContext());
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         activity = this;
         /*this preferences is created for firebase messaging service to know that the user is on which activity
          * here we are clearing preferences

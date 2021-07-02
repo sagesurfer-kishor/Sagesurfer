@@ -147,9 +147,14 @@ public class FileFolderListActivity extends AppCompatActivity implements View.On
         requestMap.put(General.GROUP_ID, Preferences.get(General.GROUP_ID));
         requestMap.put(General.LAST_DATE, "0");
         requestMap.put(General.FOLDER_ID, "" + folder_id);
+        requestMap.put("is_dev", "0");
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_FMS;
-        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this.getApplicationContext(), this);
+        RequestBody requestBody = NetworkCall_.make(requestMap,
+                url,
+                TAG,
+                this.getApplicationContext(),
+                this);
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this.getApplicationContext(), this);
@@ -259,6 +264,10 @@ public class FileFolderListActivity extends AppCompatActivity implements View.On
             case R.id.fab_listview:
                 Intent createIntent = new Intent(getApplicationContext(), UploadFileActivity.class);
                 createIntent.putExtra(General.GROUP_ID, Integer.parseInt(Preferences.get(General.GROUP_ID)));
+                createIntent.putExtra(General.FOLDER_ID, folder_id);
+
+                createIntent.putExtra(General.DIRECTORY, directory);
+
                 startActivity(createIntent);
                 overridePendingTransition(0, 0);
                 break;

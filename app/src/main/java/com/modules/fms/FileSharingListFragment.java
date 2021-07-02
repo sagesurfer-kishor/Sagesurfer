@@ -126,6 +126,10 @@ public class FileSharingListFragment extends Fragment implements View.OnClickLis
             fab.setVisibility(View.GONE);
         }
 
+        //MAYUR TERAIYA
+        fab.setVisibility(View.VISIBLE);
+
+
         getHeight(fab);
         return view;
     }
