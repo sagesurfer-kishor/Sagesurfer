@@ -15,6 +15,7 @@ public class General {
     public static final String IMAGE_PATH = "image_path";
     public static final String URL = "url";
     public static final String FMS = "fms";
+    public static final String FIREBASE_ID = "firebase_id";
     public static final String QUES = "ques";
     public static final String TOKEN = "access_token";
     public static final String KEY = "k";

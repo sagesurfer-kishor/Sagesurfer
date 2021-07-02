@@ -15,6 +15,8 @@ import com.cometchat.pro.core.AppSettings;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.modules.caseload.observer.AppObserver;
 import com.sagesurfer.directory.DirectoryList;
 import com.sagesurfer.network.AppConfig;

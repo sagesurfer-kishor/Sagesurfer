@@ -1015,7 +1015,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Preferences.save(General.DOMAIN_CODE, code);
                 SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = domainUrlPref.edit();
-                editor.putString(General.DOMAIN, ""+server.getDomainUrl());
+                editor.putString(General.DOMAIN, "" + server.getDomainUrl());
                 editor.apply();
 //                screen.messagelist.Preferences.save(General.DOMAIN, server.getDomainUrl());
                 Preferences.save(General.CHAT_URL, server.getChatUrl());
@@ -1033,11 +1033,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             response = new PerformServerTask(this).execute(getApplicationContext()).get();
 //            Log.e(TAG, "getServers: "+response.toString() );
-           JSONObject jsonObject=new JSONObject(response);
-           JSONArray jsonArray=jsonObject.getJSONArray("instances");
-           for(int i=0; i<jsonArray.length(); i ++){
-               Log.i(TAG, "getServers: Instance "+jsonArray.get(i));
-           }
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("instances");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Log.i(TAG, "getServers: Instance " + jsonArray.get(i));
+            }
         } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "getServers: catch" + e.getMessage());
@@ -1048,7 +1048,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (serverList.size() > 0) {
                 toggleLogin(true);
             } else {
-                ShowSnack.buttonWarning(buttonLogin,    this.getResources().getString(R.string.servers_unavailable), getApplicationContext());
+                ShowSnack.buttonWarning(buttonLogin, this.getResources().getString(R.string.servers_unavailable), getApplicationContext());
             }
         } else {
             ShowSnack.buttonWarning(buttonLogin, Warnings.AUTHENTICATION_FAILED, getApplicationContext());
@@ -1057,7 +1057,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //onSuccessful oAuth token generation, store user details and move to HomeRecentUpdates_ page
     private void moveNext() {
-        SharedPreferences loginSessionCheck =getSharedPreferences("loginSessionCheck",MODE_PRIVATE);
+        SharedPreferences loginSessionCheck = getSharedPreferences("loginSessionCheck", MODE_PRIVATE);
         SharedPreferences.Editor editor = loginSessionCheck.edit();
         editor.putString(General.IS_LOGIN, "1");
         editor.apply();
@@ -1124,15 +1124,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Preferences.save(General.PASSWORD, password);
         Preferences.save(General.USER_ID, userInfo.getUserId());
 
-        SharedPreferences UserInfoForUIKitPref =getSharedPreferences("UserInfoForUIKitPref",MODE_PRIVATE);
+        SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = UserInfoForUIKitPref.edit();
         editor.putString(General.USER_ID, userInfo.getUserId());
         editor.putString(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
         editor.putString(General.TIMEZONE, DeviceInfo.getTimeZone());
-        editor.putString(General.COMET_CHAT_ID,  userInfo.getComet_chat_id());
+        editor.putString(General.COMET_CHAT_ID, userInfo.getComet_chat_id());
         editor.apply();
-        Log.e(TAG, "saveData: screen.messagelist.Preferences UserId " +userInfo.getUserId() );
-        Log.e(TAG, "saveData: screen.messagelist.Preferences cometchat UserId " +userInfo.getComet_chat_id());
+        Log.e(TAG, "saveData: screen.messagelist.Preferences UserId " + userInfo.getUserId());
+        Log.e(TAG, "saveData: screen.messagelist.Preferences cometchat UserId " + userInfo.getComet_chat_id());
         screen.messagelist.Preferences.initialize(getApplicationContext());
         screen.messagelist.Preferences.save(General.USER_ID, userInfo.getUserId());
         screen.messagelist.Preferences.save(General.TIMEZONE, DeviceInfo.getTimeZone());
@@ -1224,7 +1224,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void registerPushNotificationToken() {
-        FirebaseMessaging.getInstance().getToken()
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                RegisterFirebaseTokenToServer(Preferences.get("regId"));
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        /*FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
@@ -1234,23 +1243,54 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                         // Get new FCM registration token
                         firebaseToken = task.getResult();
-                        Log.i(TAG, "onComplete: token "+firebaseToken);
-
-                        CometChat.registerTokenForPushNotification(firebaseToken, new CometChat.CallbackListener<String>() {
-                            @Override
-                            public void onSuccess(String s) {
-                                Toast.makeText(LoginActivity.this, s, Toast.LENGTH_LONG).show();
-                                Log.e(TAG, "registerPushNotification onSuccess: token register successfully");
-                            }
-
-                            @Override
-                            public void onError(CometChatException e) {
-                                Log.e("onErrorPN: ", e.getMessage());
-                                Log.e(TAG, "registerPushNotification onSuccess: token register successfully");
-                            }
-                        });
+                        Log.i(TAG, "onComplete: token " + firebaseToken);
                     }
-                });
+                });*/
+
+        CometChat.registerTokenForPushNotification(Preferences.get("regId"), new CometChat.CallbackListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Toast.makeText(LoginActivity.this, s, Toast.LENGTH_LONG).show();
+                Log.e(TAG, "registerPushNotification onSuccess: token register successfully");
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.e("onErrorPN: ", e.getMessage());
+                Log.e(TAG, "registerPushNotification onSuccess: token register successfully");
+            }
+        });
+    }
+
+
+    private void RegisterFirebaseTokenToServer(String token) {
+
+        SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+        SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
+        String url = screen.messagelist.Urls_.MOBILE_FIREBASE_REGISTER;
+        Log.i(TAG, "RegisterFirebaseTokenToServer: " + DomainURL + " -> " + url);
+
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(screen.messagelist.General.FIREBASE_ID, "" + token);
+        requestMap.put(screen.messagelist.General.USER_ID, "" + UserId);
+        RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, this);
+        try {
+            if (requestBody != null) {
+                String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, this);
+                if (response != null) {
+                    Log.i(TAG, "RegisterFirebaseTokenToServer:  response " + response);
+                } else {
+                    Log.i(TAG, "RegisterFirebaseTokenToServer:  null  ");
+                }
+            } else {
+                Log.i(TAG, "RegisterFirebaseTokenToServer:  null2");
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "RegisterFirebaseTokenToServer: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override

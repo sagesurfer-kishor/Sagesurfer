@@ -67,7 +67,7 @@ public class NotificationUtils {
         showNotificationMessage(title, message, timeStamp, type, intent, null);
     }
 
-    void showNotificationMessage(final String title, final String message, final String timeStamp, final String type, Intent intent, String imageUrl) {
+    public void showNotificationMessage(final String title, final String message, final String timeStamp, final String type, Intent intent, String imageUrl) {
         // Check for empty push message
         if (TextUtils.isEmpty(message))
             return;
