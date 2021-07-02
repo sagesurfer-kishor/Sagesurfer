@@ -163,22 +163,31 @@ public class MoreFrgament extends Fragment {
     public void onResume() {
         super.onResume();
         if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013))
-                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))) {
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
+                ||Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))) {
             textViewShare.setText(activity.getResources().getString(R.string.share_with_peer_mentor));
         } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
                 || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
             textViewShare.setText(activity.getResources().getString(R.string.share_with_wellness_asso));
-        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
+        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage050))) {
             textViewShare.setText(activity.getResources().getString(R.string.share_with_coach));
-        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024))) {
-            textViewShare.setText("Case Manager");
+        } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024) )
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage052))) {
+            textViewShare.setText(getResources().getString(R.string.case_manager));
         }else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage008))
-                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage006))) {
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage006))
+        ||Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage047))
+        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage051))) {
             textViewShare.setText(getResources().getString(R.string.share_with_care_coordinator));
         } else if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
             textViewShare.setText(activity.getResources().getString(R.string.share_with_clinician));
-        } else {
+        }  else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage053))) {
+            textViewShare.setText(activity.getResources().getString(R.string.lead_peer_support_specialist));
+        }else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage049))) {
             textViewShare.setText(activity.getResources().getString(R.string.share_with_sys_admin));
+        }else {
+            textViewShare.setText(activity.getResources().getString(R.string.share_with_care_coordinator));
         }
         int mood_reminder_status = Integer.valueOf(Preferences.get(General.MOOD_REMINDER_STATUS));
         if (mood_reminder_status == 1) {

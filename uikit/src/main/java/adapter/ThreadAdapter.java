@@ -705,10 +705,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             setAvatar(viewHolder.ivUser, baseMessage.getSender().getAvatar(), baseMessage.getSender().getName());
             viewHolder.tvUser.setText(baseMessage.getSender().getName());
 
-            /*this commmented code is taken from MessageAdapter but here in thread reply messages response is not same as normal chat reply messages
-             * so we are adding logic as per reply message of thread if needed we will use this code
-             * commented by rahul maske on 25-06-2021 */
-            /*if (baseMessage.getMetadata() != null && baseMessage.getMetadata().has("type")) {
+
+            if (baseMessage.getMetadata() != null && baseMessage.getMetadata().has("type")) {
                 try {
                     Log.i(TAG, "setTextData: type block 1 ");
                     if (baseMessage.getMetadata().getString("type").equalsIgnoreCase("reply")) {
@@ -724,17 +722,16 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             viewHolder.replyUser.setVisibility(View.VISIBLE);
                             viewHolder.replyUser.setText(metaData.getString("name"));
 
-                        } else if (metaData.has("replyToMessage")){
+                        } else if (metaData.has("replyToMessage")) {
                             Log.i(TAG, "setTextData: type block 4");
                             viewHolder.replyUser.setVisibility(View.VISIBLE);
                             viewHolder.replyUser.setText(metaData.getJSONObject("replyToMessage").getString("name"));
-                        }else{
+                        } else {
                             Log.i(TAG, "setTextData: type block 5");
-                            Log.i(TAG,  "setTextData: else" + metaData.getString("name"));
+                            Log.i(TAG, "setTextData: else" + metaData.getString("name"));
                             viewHolder.replyUser.setVisibility(View.GONE);
                         }
                     }
-
 
 
                 } catch (Exception e) {
@@ -742,13 +739,13 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
 
 
-
-            }else{
-                Log.i(TAG, "setTextData: block 2 "+baseMessage.getMetadata());
+            } else {
+                Log.i(TAG, "setTextData: block 2 " + baseMessage.getMetadata());
             }
-*/
-
-            if (baseMessage.getMetadata() != null && baseMessage.getMetadata().has("reply")) {
+            /*this commmented code is taken from MessageAdapter but here in thread reply messages response is not same as normal chat reply messages
+             * so we are adding logic as per reply message of thread if needed we will use this code
+             * commented by rahul maske on 25-06-2021 */
+            /*if (baseMessage.getMetadata() != null && baseMessage.getMetadata().has("reply")) {
                 try {
                     Log.i(TAG, "setTextData: reply block 1");
                     JSONObject replyObject=baseMessage.getMetadata().getJSONObject("reply");
@@ -773,7 +770,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             } else {
                 Log.i(TAG, "setTextData: block 2 " + baseMessage.getMetadata());
-            }
+            }*/
 
             String txtMessage = ((TextMessage) baseMessage).getText().trim();
             viewHolder.txtMessage.setTextSize(16f);
@@ -793,16 +790,20 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
 
 
-                if (baseMessage.getMetadata().has("reply")) {
-                    //if (baseMessage.getMetadata().getString("type").equalsIgnoreCase("reply")) {
-                        viewHolder.txtMessage.setText(txtMessage+" ");
-                        Log.i(TAG, "setTextData: has type  " + txtMessage);
-                    //}
+            try {
+                if (baseMessage.getMetadata().has("type")) {
+                    if (baseMessage.getMetadata().getString("type").equalsIgnoreCase("reply")) {
+                        viewHolder.txtMessage.setText(txtMessage);
+                        Log.i(TAG, "setTextData: has type  "+txtMessage);
+                    }
                 } else {
-                    Log.i(TAG, "setTextData: has no type  " + txtMessage);
-                    viewHolder.txtMessage.setText(txtMessage+" ");
+                    Log.i(TAG, "setTextData: has no type  "+txtMessage);
+                    viewHolder.txtMessage.setText(txtMessage);
                     viewHolder.replyLayout.setVisibility(View.GONE);
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             String profanityFilter = Extensions.checkProfanityMessage(baseMessage);
             viewHolder.txtMessage.setText(profanityFilter);

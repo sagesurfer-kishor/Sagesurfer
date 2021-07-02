@@ -16,10 +16,8 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,7 +51,6 @@ import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.core.MessagesRequest;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.Action;
-import com.cometchat.pro.models.Attachment;
 import com.cometchat.pro.models.BaseMessage;
 import com.cometchat.pro.models.Group;
 import com.cometchat.pro.models.MediaMessage;
@@ -69,6 +66,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,6 +77,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 import adapter.ThreadAdapter;
 import constant.StringContract;
@@ -91,6 +90,7 @@ import screen.CometChatForwardMessageScreenActivity;
 import screen.CometChatGroupDetailScreenActivity;
 import screen.CometChatUserDetailScreenActivity;
 import screen.MessageActionFragment;
+import screen.messagelist.General;
 import utils.Extensions;
 import utils.FontUtils;
 import utils.KeyBoardUtils;
@@ -98,7 +98,6 @@ import utils.MediaUtils;
 import utils.Utils;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.view.View.FOCUS_DOWN;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -134,7 +133,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     private MessagesRequest messagesRequest;    //Used to fetch messages.
 
     private ComposeBox composeBox;
-
+    private String team_logs_id = "";
     private MediaRecorder mediaRecorder;
 
     private MediaPlayer mediaPlayer;
@@ -164,7 +163,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
     private TextView tvSentAt;
 
-    private String Id;
+    private String NextGroupOrUserId;
 
     private Context context;
 
@@ -310,7 +309,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             parentId = getArguments().getInt(StringContract.IntentStrings.PARENT_ID, 0);
             replyCount = getArguments().getInt(StringContract.IntentStrings.REPLY_COUNT, 0);
             type = getArguments().getString(StringContract.IntentStrings.TYPE);
-            Id = getArguments().getString(StringContract.IntentStrings.ID);
+            NextGroupOrUserId = getArguments().getString(StringContract.IntentStrings.ID);
             avatarUrl = getArguments().getString(StringContract.IntentStrings.AVATAR);
             name = getArguments().getString(StringContract.IntentStrings.NAME);
             conversationName = getArguments().getString(StringContract.IntentStrings.CONVERSATION_NAME);
@@ -555,7 +554,6 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     }
 
     private void setComposeBoxListener() {
-
         composeBox.setComposeBoxListener(new ComposeActionListener() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -652,9 +650,9 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
         TextMessage textmessage;
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-            textmessage = new TextMessage(Id, editMessage, CometChatConstants.RECEIVER_TYPE_USER);
+            textmessage = new TextMessage(NextGroupOrUserId, editMessage, CometChatConstants.RECEIVER_TYPE_USER);
         else
-            textmessage = new TextMessage(Id, editMessage, CometChatConstants.RECEIVER_TYPE_GROUP);
+            textmessage = new TextMessage(NextGroupOrUserId, editMessage, CometChatConstants.RECEIVER_TYPE_GROUP);
         sendTypingIndicator(true);
         textmessage.setId(parentId);
         CometChat.editMessage(textmessage, new CometChat.CallbackListener<BaseMessage>() {
@@ -725,7 +723,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
      */
     private void unblockUser() {
         ArrayList<String> uids = new ArrayList<>();
-        uids.add(Id);
+        uids.add(NextGroupOrUserId);
         CometChat.unblockUsers(uids, new CometChat.CallbackListener<HashMap<String, String>>() {
             @Override
             public void onSuccess(HashMap<String, String> stringStringHashMap) {
@@ -791,7 +789,1979 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     }
 
 
-    private List<BaseMessage> filterBaseMessages(List<BaseMessage> baseMessages) {
+    public List<BaseMessage> filterBaseMessages(List<BaseMessage> baseMessages) {
+        List<BaseMessage> tempList = new ArrayList<>();
+        int editAction = 0;
+        for (BaseMessage baseMessage : baseMessages) {
+            JSONObject metadata = baseMessage.getMetadata();
+            Log.e("base message => ", baseMessage.toString());
+            switch (tabs) {
+                // Frirends chat
+                case "1":
+                    Log.e("tab 1 friend", baseMessage.toString());
+                    if (baseMessage.getCategory().equals("custom")) {
+                        int team_log;
+                        Log.e(TAG, General.MY_TAG + " filterBaseMessages: metadata " + baseMessage.getMetadata());
+                        try {
+                            team_log = metadata.getInt("team_logs_id");
+                            Log.e(TAG, General.MY_TAG + " filterBaseMessages: team_log_id " + metadata.getInt("team_logs_id"));
+                            if (team_log == 0) {
+                                if (baseMessage.getType().equals("extension_whiteboard")) {
+                                    try {
+                                        if (baseMessage.getMetadata().has("deleted_one_to_one")) {
+                                            if (baseMessage.getMetadata().getString("deleted_one_to_one").equalsIgnoreCase("0")) {
+                                                baseMessage.setDeletedAt(12345);
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            Log.i(TAG, General.MY_TAG + " filterBaseMessages: type = extension_whiteboard condition");
+                                            String s = null;
+                                            s = baseMessage.getMetadata().getString("whiteboard_URL_one");
+                                            Log.i(TAG, General.MY_TAG + " filterBaseMessages: whiteboard_URL_one" + s);
+                                            if (!s.isEmpty()) {
+                                                Log.e(TAG, General.MY_TAG + " filterBaseMessages2: " + baseMessage.toString());
+                                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                    Action action = ((Action) baseMessage);
+                                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    } else {
+                                                        Log.i(TAG, "filterBaseMessages:  " + General.MY_TAG + " delete else ");
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                } else {
+                                                    Log.i(TAG, "filterBaseMessages:  " + General.MY_TAG + " action else ");
+                                                    tempList.add(baseMessage);
+                                                }
+                                            }
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else if ((baseMessage.getType().equals("stickers"))) {
+                                    String s = null;
+                                    try {
+                                        s = baseMessage.getMetadata().getString("stickers");
+                                        if (!s.isEmpty()) {
+                                            Log.e(TAG, "filterBaseMessages: " + baseMessage.toString());
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        //implementation 'com.cometchat:pro-android-chat-sdk:2.3.1'
+                    }
+                    else if (baseMessage.getCategory().equals("message")) {
+                        String team_log;
+//                        Log.i(TAG, "filterBaseMessages: Reply at checking " + baseMessage.getMetadata() + " message " + ((TextMessage) baseMessage).getText());
+                        if (metadata != null || baseMessage.getDeletedAt() != 0) {
+                            try {
+                                if (metadata != null) {
+                                    team_log = metadata.getString("team_logs_id");
+                                } else {
+                                    team_log = "0";
+                                }
+                                if (team_log.equals("0") || baseMessage.getDeletedAt() != 0) {
+                                    if (baseMessage.getType().equals("text")) {
+                                        if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                            /*Here we are marking message as deleted so that user can check that it is deleted */
+                                            //Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    /*setting delated at with some value to understand this is deleted message.. this value is just random value...*/
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            } else {
+                                                //                                             Log.i(TAG, "filterBaseMessages: edited at block 1");
+                                                try {
+                                                    long id = baseMessage.getId();
+                                                    String textMessage = ((TextMessage) baseMessage).getText();
+                                                    String currentLang = sp.getString("currentLang", null);
+                                                    JSONObject body = new JSONObject();
+                                                    JSONArray languages = new JSONArray();
+                                                    languages.put(currentLang);
+                                                    body.put("msgId", id);
+                                                    body.put("languages", languages);
+                                                    body.put("text", textMessage);
+                                                    Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                                    // Do something after 5s = 5000ms
+                                                    CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                            new CometChat.CallbackListener<JSONObject>() {
+                                                                @Override
+                                                                public void onSuccess(JSONObject jsonObject) {
+                                                                    try {
+                                                                        Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                                                        JSONObject meta = baseMessage.getMetadata();
+                                                                        meta.accumulate("values", jsonObject);
+                                                                        String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                        // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                        //baseMessage.setMetadata(meta);
+
+                                                                        ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                        baseMessage.setMetadata(meta);
+                                                                        messageAdapter.setUpdatedMessage(baseMessage);
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+
+                                                                @Override
+                                                                public void onError(CometChatException e) {
+                                                                    // Some error occured
+                                                                    Log.i(TAG, "onError: " + e.getMessage());
+                                                                    Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                                }
+                                                            });
+
+
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    tempList.add(baseMessage);
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                //                                          Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else if (metadata != null && metadata.has("type")) {
+                                            //this is for replied message
+                                            if (metadata.has("message") && metadata.getString("type").equalsIgnoreCase("reply")) {
+                                                Log.i(TAG, "filterBaseMessages: " + metadata.getString("message"));
+                                                JSONObject body = new JSONObject();
+                                                JSONArray languages = new JSONArray();
+                                                languages.put(sp.getString("currentLang", "en"));
+                                                body.put("msgId", baseMessage.getId());
+                                                body.put("languages", languages);
+                                                body.put("text", metadata.getString("message"));
+                                                Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                                // Do something after 5s = 5000ms
+                                                CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                        new CometChat.CallbackListener<JSONObject>() {
+                                                            @Override
+                                                            public void onSuccess(JSONObject jsonObject) {
+                                                                try {
+                                                                    // Log.i(TAG, "filterBaseMessages: edited at block 3 translated response for replied message "+jsonObject);
+                                                                    JSONObject meta = baseMessage.getMetadata();
+                                                                    //meta.accumulate("values", jsonObject);
+                                                                    String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+                                                                    Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
+                                                                    metadata.remove("message");
+                                                                    metadata.put("message", messageTranslatedString);
+                                                                    messageAdapter.setUpdatedMessage(baseMessage);
+                                                                    Log.i(TAG, "filterBaseMessages onSuccess: metadata for replied translate " + metadata);
+                                                                    // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                    //baseMessage.setMetadata(meta);
+                                                                    // ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                    //baseMessage.setMetadata(meta);
+
+
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onError(CometChatException e) {
+                                                                // Some error occured
+                                                                Log.i(TAG, "onError: " + e.getMessage());
+                                                                Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                            }
+                                                        });
+                                                try {
+                                                    if (metadata.has("@injected")) {
+                                                        JSONObject injectedObject = null;
+                                                        injectedObject = metadata.getJSONObject("@injected");
+                                                        if (injectedObject.has("extensions")) {
+                                                            JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                            if (extensionsObject.has("message-translation")) {
+                                                                JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                                JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                                HashMap<String, String> translationsMap = new HashMap<String, String>();
+                                                                for (int i = 0; i < translations.length(); i++) {
+                                                                    JSONObject translation = translations.getJSONObject(i);
+                                                                    String translatedText = translation.getString("message_translated");
+                                                                    String translatedLanguage = translation.getString("language_translated");
+                                                                    translationsMap.put(translatedLanguage, translatedText);
+                                                                    Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
+
+                                                                    if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                                            if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                                ((TextMessage) baseMessage).setText(translatedText);
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                                Action action = ((Action) baseMessage);
+                                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                                    tempList.add(baseMessage);
+                                                                } else {
+                                                                    tempList.add(baseMessage);
+                                                                }
+                                                            } else {
+                                                                tempList.add(baseMessage);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                            Action action = ((Action) baseMessage);
+                                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                                tempList.add(baseMessage);
+                                                            } else {
+                                                                tempList.add(baseMessage);
+                                                            }
+                                                        } else {
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                            }
+
+                                        } else if (metadata != null || baseMessage.getReadAt() != 0) {
+                                            /*This code is use to check if the text message is reply message from ios or normal message
+                                             * if it is replied msg and send from ios then we change metadata to display the text message
+                                             * code is written by rahul maske
+                                             */
+
+                                                /*Handler handler=new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {*/
+                                            try {
+                                                if (metadata.has("@injected")) {
+                                                    JSONObject injectedObject = null;
+                                                    injectedObject = metadata.getJSONObject("@injected");
+                                                    if (injectedObject.has("extensions")) {
+                                                        JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                        if (extensionsObject.has("message-translation")) {
+                                                            JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                            JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                            HashMap<String, String> translationsMap = new HashMap<String, String>();
+                                                            for (int i = 0; i < translations.length(); i++) {
+                                                                JSONObject translation = translations.getJSONObject(i);
+                                                                String translatedText = translation.getString("message_translated");
+                                                                String translatedLanguage = translation.getString("language_translated");
+                                                                translationsMap.put(translatedLanguage, translatedText);
+                                                                Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
+
+                                                                if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                                    if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                                        if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                            ((TextMessage) baseMessage).setText(translatedText);
+                                                                        }
+                                                                    }
+                                                                } else {
+                                                                    ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                            Action action = ((Action) baseMessage);
+                                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                                tempList.add(baseMessage);
+                                                            } else {
+                                                                tempList.add(baseMessage);
+                                                            }
+                                                        } else {
+
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    }
+                                                } else {
+                                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                        Action action = ((Action) baseMessage);
+                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                            tempList.add(baseMessage);
+                                                        } else {
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    } else {
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                                   /* }
+                                                },1000);*/
+
+                                            /*else {
+                                                try {
+                                                    if (metadata.has("@injected")) {
+                                                        JSONObject injectedObject = null;
+                                                        injectedObject = metadata.getJSONObject("@injected");
+                                                        if (injectedObject.has("extensions")) {
+                                                            JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                            if (extensionsObject.has("message-translation")) {
+                                                                JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                                JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                                HashMap<String, String> translationsMap = new HashMap<String, String>();
+                                                                for (int i = 0; i < translations.length(); i++) {
+                                                                    JSONObject translation = translations.getJSONObject(i);
+                                                                    String translatedText = translation.getString("message_translated");
+                                                                    String translatedLanguage = translation.getString("language_translated");
+                                                                    translationsMap.put(translatedLanguage, translatedText);
+                                                                    Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
+
+                                                                    if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                                            if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                                ((TextMessage) baseMessage).setText(translatedText);
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                                    }
+
+                                                                }
+                                                            }
+
+                                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                                Action action = ((Action) baseMessage);
+                                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                                    tempList.add(baseMessage);
+                                                                } else {
+                                                                    tempList.add(baseMessage);
+                                                                }
+                                                            } else {
+
+                                                                tempList.add(baseMessage);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                            Action action = ((Action) baseMessage);
+                                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                                tempList.add(baseMessage);
+                                                            } else {
+                                                                tempList.add(baseMessage);
+                                                            }
+                                                        } else {
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }*/
+
+                                        } else {
+                                            Log.e(TAG, "filterBaseMessages: 1.3");
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    tempList.add(baseMessage);
+                                                } else {
+                                                    tempList.add(baseMessage);
+
+                                                }
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        }
+
+                                    } else if (baseMessage.getType().equals("image")) {
+                                        if (baseMessage.getEditedAt() != 0) {
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            }
+                                        }
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else if (baseMessage.getType().equals("file")) {
+                                        if (baseMessage.getEditedAt() != 0) {
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            }
+                                        }
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else if (baseMessage.getType().equals("audio")) {
+                                        if (baseMessage.getEditedAt() != 0) {
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            }
+                                        }
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else if (baseMessage.getType().equals("video")) {
+                                        if (baseMessage.getEditedAt() != 0) {
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            }
+                                        }
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else {
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.i(TAG, "filterBaseMessages: message id " + baseMessage.getId());
+                        }
+                    }
+                    else if (baseMessage.getCategory().equals("call")) {
+                        int team_log;
+                        try {
+                            // team_log = metadata.getInt("team_logs_id");
+                            // team_log = metadata.getInt("team_logs_id");
+                            team_log = metadata.getInt("team_logs_id");
+                            if (team_log == 0) {
+                                if (baseMessage.getType().equals("audio")) {
+                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                        Action action = ((Action) baseMessage);
+                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                        } else {
+                                            Log.i(TAG, "filterBaseMessages: friend audio call log1");
+                                            //Log.i(TAG, "filterBaseMessages: friend audio call log3 "+baseMessage);
+
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else if (baseMessage.getType().equals("video")) {
+                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                        Action action = ((Action) baseMessage);
+                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                        } else {
+                                            Log.i(TAG, "filterBaseMessages: friend video call log1");
+                                          /*  Log.i(TAG, "filterBaseMessages: call BaseMessage" + ((Action) baseMessage).getAction());
+                                            Log.i(TAG, "filterBaseMessages: call BaseMessage" + baseMessage.getSentAt());
+                                            Log.i(TAG, "filterBaseMessages: call BaseMessage" + baseMessage.getDeletedAt());
+                                            Log.i(TAG, "filterBaseMessages: call BaseMessage" + ((Action) baseMessage).getMessage());*/
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else {
+                                        /*Log.i(TAG, "filterBaseMessages: call BaseMessage" + ((Action) baseMessage).getAction());
+                                        Log.i(TAG, "filterBaseMessages: call BaseMessage" + baseMessage.getSentAt());
+                                        Log.i(TAG, "filterBaseMessages: call BaseMessage" + baseMessage.getDeletedAt());
+                                        Log.i(TAG, "filterBaseMessages: call BaseMessage" + ((Action) baseMessage).getMessage());*/
+                                        Log.i(TAG, "filterBaseMessages: friend video call log2");
+                                        tempList.add(baseMessage);
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                    else {
+                        Log.e(TAG, "filterBaseMessages: " + baseMessage.toString());
+                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                            Action action = ((Action) baseMessage);
+                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+                        } else {
+                            tempList.add(baseMessage);
+                        }
+                    }
+                    break;
+
+                // group chat
+                case "2":
+                    Log.i(TAG, "filterBaseMessages: case Groups");
+                    Log.e("tab 2 group ", baseMessage.toString());
+                    if (baseMessage.getCategory().equals("custom")) {
+                        if (baseMessage.getType().equals("extension_whiteboard")) {
+                            String s = null;
+                            try {
+                                if (baseMessage.getDeletedAt() != 0) {
+                                    tempList.add(baseMessage);
+                                } else {
+                                    s = baseMessage.getMetadata().getString("whiteboard_URL_group");
+                                    if (!s.isEmpty()) {
+                                        Log.i(TAG, "filterBaseMessages: whiteboard custom url " + s);
+                                        Log.e(TAG, "filterBaseMessages: 2.1" + baseMessage.toString());
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else if (baseMessage.getCategory().equals("message")) {
+                        if (baseMessage.getType().equals("text")) {
+                            /*This code is use to check if the text message is reply message from ios or normal message
+                             * if it is replied msg and send from ios then we change metadata to display the text message
+                             * code is written by rahul maske */
+                            if (baseMessage.getDeletedAt() != 0) {
+                                Log.i(TAG, "filterBaseMessages block check: deleted message..1");
+                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                Log.i(TAG, "filterBaseMessages block check: edited message..");
+                                Log.i(TAG, "filterBaseMessages: edit and deleted message message");
+                                /*Here we are marking message as deleted so that user can check that it is deleted */
+                                try {
+                                    Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } else {
+                                        /*this is normal edited message functionality */
+                                        Log.i(TAG, "filterBaseMessages: edited at block 1");
+                                        long id = baseMessage.getId();
+                                        String textMessage = ((TextMessage) baseMessage).getText();
+                                        String currentLang = sp.getString("currentLang", null);
+                                        JSONObject body = new JSONObject();
+                                        JSONArray languages = new JSONArray();
+                                        languages.put(currentLang);
+                                        body.put("msgId", id);
+                                        body.put("languages", languages);
+                                        body.put("text", textMessage);
+                                        Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                        // Do something after 5s = 5000ms
+                                        CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                new CometChat.CallbackListener<JSONObject>() {
+                                                    @Override
+                                                    public void onSuccess(JSONObject jsonObject) {
+                                                        try {
+                                                            Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                                            JSONObject meta = baseMessage.getMetadata();
+                                                            meta.accumulate("values", jsonObject);
+                                                            String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                            // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                            //baseMessage.setMetadata(meta);
+
+                                                            ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                            baseMessage.setMetadata(meta);
+                                                            messageAdapter.setUpdatedMessage(baseMessage);
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onError(CometChatException e) {
+                                                        // Some error occured
+                                                        Log.i(TAG, "onError: " + e.getMessage());
+                                                        Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                    }
+                                                });
+                                    }
+
+                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                        Action action = ((Action) baseMessage);
+                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            tempList.add(baseMessage);
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else {
+                                        Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                        tempList.add(baseMessage);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (metadata != null && metadata.has("type")) {
+                                Log.i(TAG, "filterBaseMessages block check: replied message..");
+                                if (metadata.has("type")) {
+                                    try {
+                                        if (metadata.has("message")) {
+                                            Log.i(TAG, "filterBaseMessages: " + metadata.getString("message"));
+                                            JSONObject body = new JSONObject();
+                                            JSONArray languages = new JSONArray();
+                                            languages.put(sp.getString("currentLang", "en"));
+                                            body.put("languages", languages);
+                                            body.put("text", metadata.getString("message"));
+                                            Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                            // Do something after 5s = 5000ms
+                                            CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                    new CometChat.CallbackListener<JSONObject>() {
+                                                        @Override
+                                                        public void onSuccess(JSONObject jsonObject) {
+                                                            try {
+                                                                // Log.i(TAG, "filterBaseMessages: edited at block 3 translated response for replied message "+jsonObject);
+                                                                JSONObject meta = baseMessage.getMetadata();
+
+                                                                //meta.accumulate("values", jsonObject);
+                                                                String messageTranslatedString = null;
+
+                                                                messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
+                                                                metadata.remove("message");
+                                                                metadata.put("message", messageTranslatedString);
+                                                                messageAdapter.setUpdatedMessage(baseMessage);
+                                                                Log.i(TAG, "filterBaseMessages onSuccess: metadata for replied translate " + metadata);
+                                                                // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                //baseMessage.setMetadata(meta);
+                                                                // ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                //baseMessage.setMetadata(meta);
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
+
+                                                        }
+
+                                                        @Override
+                                                        public void onError(CometChatException e) {
+                                                            // Some error occured
+                                                            Log.i(TAG, "onError: " + e.getMessage());
+                                                            Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                        }
+                                                    });
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    try {
+                                        JSONObject injectedObject = metadata.getJSONObject("@injected");
+                                        if (injectedObject.has("extensions")) {
+                                            JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                            if (extensionsObject.has("message-translation")) {
+                                                JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                HashMap<String, String> translationsMap = new HashMap<String, String>();
+
+                                                for (int i = 0; i < translations.length(); i++) {
+                                                    JSONObject translation = translations.getJSONObject(i);
+                                                    String translatedText = translation.getString("message_translated");
+                                                    String translatedLanguage = translation.getString("language_translated");
+                                                    translationsMap.put(translatedLanguage, translatedText);
+                                                                /*if (translatedLanguage.equals(currentLang)) {
+                                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                        ((TextMessage) baseMessage).setText(translatedText);
+                                                                        Log.i(TAG, "filterBaseMessages: case 3 translated text " + translatedText);
+                                                                    }
+                                                                }*/
+                                                    if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                            if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                ((TextMessage) baseMessage).setText(translatedText);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                tempList.add(baseMessage);
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                            tempList.add(baseMessage);
+                                        }
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+
+                                }
+                            } else {
+                                //normal message
+                                Log.i(TAG, "filterBaseMessages block check: normal message..");
+                                try {
+                                    if (metadata.has("@injected")) {
+                                        JSONObject injectedObject = null;
+                                        injectedObject = metadata.getJSONObject("@injected");
+                                        if (injectedObject.has("extensions")) {
+                                            JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                            if (extensionsObject.has("message-translation")) {
+                                                JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                HashMap<String, String> translationsMap = new HashMap<String, String>();
+                                                for (int i = 0; i < translations.length(); i++) {
+                                                    JSONObject translation = translations.getJSONObject(i);
+                                                    String translatedText = translation.getString("message_translated");
+                                                    String translatedLanguage = translation.getString("language_translated");
+                                                    translationsMap.put(translatedLanguage, translatedText);
+                                                    Log.i(TAG, "filterBaseMessages: currentLang " + sp.getString("currentLang", "en"));
+
+                                                    if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                            if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                ((TextMessage) baseMessage).setText(translatedText);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                    }
+                                                }
+                                            }
+
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) || action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    tempList.add(baseMessage);
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+
+                                                tempList.add(baseMessage);
+                                            }
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else if (baseMessage.getType().equals("image")) {
+                            if (baseMessage.getEditedAt() != 0) {
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                Action action = ((Action) baseMessage);
+                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+
+                        } else if (baseMessage.getType().equals("file")) {
+                            if (baseMessage.getEditedAt() != 0) {
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                Action action = ((Action) baseMessage);
+                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+                        } else if (baseMessage.getType().equals("audio")) {
+                            if (baseMessage.getEditedAt() != 0) {
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                Action action = ((Action) baseMessage);
+                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+
+                        } else if (baseMessage.getType().equals("video")) {
+                            if (baseMessage.getEditedAt() != 0) {
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                Action action = ((Action) baseMessage);
+                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+                        } else {
+                            if (baseMessage.getEditedAt() != 0) {
+                                if (metadata.has("deleted_one_to_one")) {
+                                    try {
+                                        if (metadata.getString("deleted_one_to_one").equals("0")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                Action action = ((Action) baseMessage);
+                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+
+                        }
+
+                    } else {
+                        Log.e(TAG, "filterBaseMessages: 2.3" + baseMessage.toString());
+                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                            Action action = ((Action) baseMessage);
+
+                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+                        } else {
+                            tempList.add(baseMessage);
+                        }
+                    }
+                    break;
+                // myteam chat
+                case "3":
+                    Log.i(TAG, "filterBaseMessages: case my team");
+                    Log.e("tab 3 myteam", baseMessage.toString());
+                    if (baseMessage.getCategory().equals("custom")) {
+                        String team_log;
+                        try {
+                            team_log = metadata.getString("team_logs_id");
+                            String ids[] = team_log.split(Pattern.quote("_"));
+                            Log.e("tabs case 3", String.valueOf(ids.length));
+
+                            if (ids.length == 3 || ids.length == 4) {
+
+                                String[] arrayTeamId = team_log.split("_-");
+                                String part2 = arrayTeamId[1]; // 034556 //team id fetching
+
+                                if (team_id.equals(part2)) {
+                                    if (baseMessage.getType().equals("extension_whiteboard")) {
+                                        String s = null;
+                                        try {
+                                            if (baseMessage.getMetadata().has("deleted_one_to_one")) {
+                                                if (baseMessage.getMetadata().getString("deleted_one_to_one").equalsIgnoreCase("1")
+                                                        || baseMessage.getMetadata().getString("deleted_one_to_one").equalsIgnoreCase("2")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                s = baseMessage.getMetadata().getString("whiteboard_URL");
+                                                if (!s.isEmpty()) {
+                                                    Log.e(TAG, "filterBaseMessages:3.1 " + baseMessage.toString());
+                                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                        Action action = ((Action) baseMessage);
+                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                        } else {
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    } else {
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                }
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else if (baseMessage.getCategory().equals("message")) {
+                        String team_log;
+                        try {
+                            if (baseMessage.getDeletedAt() != 0) {
+                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            }
+                            team_log = metadata.getString("team_logs_id");
+                            String underscoreSplittedArray[] = team_log.split(Pattern.quote("_"));
+                            Log.e("tabs case 3", String.valueOf(underscoreSplittedArray.length));
+                            /*if (underscoreSplittedArray.length == 3 || underscoreSplittedArray.length == 4) {
+                                String[] underscoreDashSplittedArray = team_log.split("_-");
+                                String part2 = underscoreDashSplittedArray[1];
+                                if (team_id.equals(part2)) {*/
+                            if (baseMessage.getType().equals("text")) {
+                                if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                    /*Here we are marking message as deleted so that user can check that it is deleted */
+                                    try {
+                                        Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                        if (metadata.has("deleted_one_to_one")) {
+                                            if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                                baseMessage.setDeletedAt(12345);
+                                            }
+                                        } else {
+                                            Log.i(TAG, "filterBaseMessages: edited at block 1");
+
+                                            long id = baseMessage.getId();
+                                            String textMessage = ((TextMessage) baseMessage).getText();
+                                            String currentLang = sp.getString("currentLang", null);
+                                            JSONObject body = new JSONObject();
+                                            JSONArray languages = new JSONArray();
+                                            languages.put(currentLang);
+                                            body.put("msgId", id);
+                                            body.put("languages", languages);
+                                            body.put("text", textMessage);
+                                            Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                            // Do something after 5s = 5000ms
+                                            CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                    new CometChat.CallbackListener<JSONObject>() {
+                                                        @Override
+                                                        public void onSuccess(JSONObject jsonObject) {
+                                                            try {
+                                                                Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                                                JSONObject meta = baseMessage.getMetadata();
+                                                                meta.accumulate("values", jsonObject);
+                                                                String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                //baseMessage.setMetadata(meta);
+
+                                                                ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                baseMessage.setMetadata(meta);
+                                                                messageAdapter.setUpdatedMessage(baseMessage);
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onError(CometChatException e) {
+                                                            // Some error occured
+                                                            Log.i(TAG, "onError: " + e.getMessage());
+                                                            Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                        }
+                                                    });
+                                        }
+
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                tempList.add(baseMessage);
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                            tempList.add(baseMessage);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                } else if (metadata != null && metadata.has("type")) {
+                                    if (metadata.has("type")) {
+                                        try {
+                                            if (metadata.has("message")) {
+                                                Log.i(TAG, "filterBaseMessages: " + metadata.getString("message"));
+                                                JSONObject body = new JSONObject();
+                                                JSONArray languages = new JSONArray();
+                                                languages.put(sp.getString("currentLang", "en"));
+                                                body.put("languages", languages);
+                                                body.put("text", metadata.getString("message"));
+                                                Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                                // Do something after 5s = 5000ms
+                                                CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                        new CometChat.CallbackListener<JSONObject>() {
+                                                            @Override
+                                                            public void onSuccess(JSONObject jsonObject) {
+                                                                try {
+                                                                    // Log.i(TAG, "filterBaseMessages: edited at block 3 translated response for replied message "+jsonObject);
+                                                                    JSONObject meta = baseMessage.getMetadata();
+
+                                                                    //meta.accumulate("values", jsonObject);
+                                                                    String messageTranslatedString = null;
+
+                                                                    messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                    Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
+                                                                    metadata.remove("message");
+                                                                    metadata.put("message", messageTranslatedString);
+                                                                    messageAdapter.setUpdatedMessage(baseMessage);
+                                                                    Log.i(TAG, "filterBaseMessages onSuccess: metadata for replied translate " + metadata);
+                                                                    // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                    //baseMessage.setMetadata(meta);
+                                                                    // ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                    //baseMessage.setMetadata(meta);
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                }
+
+                                                            }
+
+                                                            @Override
+                                                            public void onError(CometChatException e) {
+                                                                // Some error occured
+                                                                Log.i(TAG, "onError: " + e.getMessage());
+                                                                Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                            }
+                                                        });
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        try {
+                                            JSONObject injectedObject = metadata.getJSONObject("@injected");
+                                            if (injectedObject.has("extensions")) {
+                                                JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                if (extensionsObject.has("message-translation")) {
+                                                    JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                    JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                    HashMap<String, String> translationsMap = new HashMap<String, String>();
+
+                                                    for (int i = 0; i < translations.length(); i++) {
+                                                        JSONObject translation = translations.getJSONObject(i);
+                                                        String translatedText = translation.getString("message_translated");
+                                                        String translatedLanguage = translation.getString("language_translated");
+                                                        translationsMap.put(translatedLanguage, translatedText);
+                                                                /*if (translatedLanguage.equals(currentLang)) {
+                                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                        ((TextMessage) baseMessage).setText(translatedText);
+                                                                        Log.i(TAG, "filterBaseMessages: case 3 translated text " + translatedText);
+                                                                    }
+                                                                }*/
+                                                        if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                            if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                                if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                    ((TextMessage) baseMessage).setText(translatedText);
+                                                                }
+                                                            }
+                                                        } else {
+                                                            ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    tempList.add(baseMessage);
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                                tempList.add(baseMessage);
+                                            }
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+
+                                    }
+                                } else {
+                                    try {
+                                        JSONObject injectedObject = metadata.getJSONObject("@injected");
+                                        if (injectedObject.has("extensions")) {
+                                            JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                            if (extensionsObject.has("message-translation")) {
+                                                JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                HashMap<String, String> translationsMap = new HashMap<String, String>();
+
+                                                for (int i = 0; i < translations.length(); i++) {
+                                                    JSONObject translation = translations.getJSONObject(i);
+                                                    String translatedText = translation.getString("message_translated");
+                                                    String translatedLanguage = translation.getString("language_translated");
+                                                    translationsMap.put(translatedLanguage, translatedText);
+                                                                /*if (translatedLanguage.equals(currentLang)) {
+                                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                        ((TextMessage) baseMessage).setText(translatedText);
+                                                                        Log.i(TAG, "filterBaseMessages: case 3 translated text " + translatedText);
+                                                                    }
+                                                                }*/
+                                                    if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                        if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                            if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                ((TextMessage) baseMessage).setText(translatedText);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                //tempList.add(baseMessage);
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                            tempList.add(baseMessage);
+                                        }
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else if (baseMessage.getType().equals("image")) {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        try {
+                                            if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                                baseMessage.setDeletedAt(12345);
+                                                tempList.add(baseMessage);
+
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+
+                            } else if (baseMessage.getType().equals("file")) {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        try {
+                                            if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                                baseMessage.setDeletedAt(12345);
+                                                tempList.add(baseMessage);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else if (baseMessage.getType().equals("audio")) {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        try {
+                                            if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                                baseMessage.setDeletedAt(12345);
+                                                tempList.add(baseMessage);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else if (baseMessage.getType().equals("video")) {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        try {
+                                            if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                                baseMessage.setDeletedAt(12345);
+                                                tempList.add(baseMessage);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        try {
+                                            if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                                baseMessage.setDeletedAt(12345);
+                                                tempList.add(baseMessage);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+
+                            }
+
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } else if (baseMessage.getCategory().equals("call")) {
+                        String team_log;
+                        try {
+                            team_log = metadata.getString("team_logs_id");
+                            String ids[] = team_log.split(Pattern.quote("_"));
+                            Log.e("tabs", String.valueOf(ids.length));
+
+                            if (ids.length == 3 || ids.length == 4) {
+
+                                String[] parts = team_log.split("_-");
+                                String part2 = parts[1]; // 034556
+
+                                if (team_id.equals(part2)) {
+
+                                    if (baseMessage.getType().equals("audio")) {
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else if (baseMessage.getType().equals("video")) {
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.e(TAG, "filterBaseMessages: 3.3 else" + baseMessage.toString());
+                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                            Action action = ((Action) baseMessage);
+                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+                        } else {
+                            tempList.add(baseMessage);
+                        }
+                    }
+                    break;
+
+                // join team
+                case "4":
+                    Log.i(TAG, "filterBaseMessages: case join team " + baseMessage.getCategory());
+                    if (baseMessage.getCategory().equals("custom")) {
+                        String team_log;
+                        try {
+                            team_log = metadata.getString("team_logs_id");
+                            String ids[] = team_log.split(Pattern.quote("_"));
+                            Log.e("tabs", String.valueOf(ids.length));
+                            if (ids.length == 4 || ids.length == 3) {
+
+                                String[] parts = team_log.split("_-");
+                                String part2 = parts[1]; // 034556
+
+                                if (team_id.equals(part2)) {
+                                    Log.i(TAG, "filterBaseMessages: message for join team  " + baseMessage);
+                                    if (baseMessage.getType().equals("extension_whiteboard")) {
+                                        String s = null;
+                                        try {
+                                            if (baseMessage.getMetadata().has("deleted_one_to_one")) {
+                                                if (baseMessage.getMetadata().getString("deleted_one_to_one").equalsIgnoreCase("2")
+                                                        || baseMessage.getMetadata().getString("deleted_one_to_one").equalsIgnoreCase("1")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                s = baseMessage.getMetadata().getString("whiteboard_URL");
+                                                if (!s.isEmpty()) {
+                                                    Log.e(TAG, "filterBaseMessages: 4.1" + baseMessage.toString());
+                                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                        Action action = ((Action) baseMessage);
+                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                        } else {
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    } else {
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                }
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } else if (baseMessage.getCategory().equals("message")) {
+                        Log.i(TAG, "filterBaseMessages: category is Message");
+                        String team_log;
+                        try {
+                            if (baseMessage.getDeletedAt() != 0) {
+                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            }
+                            team_log = metadata.getString("team_logs_id");
+                            Log.i(TAG, "filterBaseMessages: team_log_ids " + team_log);
+                            String ids[] = team_log.split(Pattern.quote("_"));
+                            Log.e("Team tabs", "" + String.valueOf(ids.length));
+                            Log.e("Team team_logs_id", team_log);
+                            /* if (ids.length == 4 || ids.length == 3) {*/
+
+                            String[] parts = team_log.split("_-");
+                            String part2 = parts[1]; // 034556
+                            Log.i("Teams parts2", " " + part2);
+                            Log.i("Teams team_Ids", " " + team_id);
+
+                            /*if (team_id.equals(part2)) {*/
+                            Log.i(TAG, "filterBaseMessages: message for join team  " + baseMessage);
+                            if (baseMessage.getType().equals("text")) {
+                                if (metadata != null) {
+                                    /*This code is use to check if the text message is reply message from ios or normal message
+                                     * if it is replied msg and send from ios then we change metadata to display the text message
+                                     * code is written by rahul maske 27-03-2021*/
+                                    /* if (metadata.has("type")) {
+                                     */
+                                            /*try {
+                                                    JSONObject customMetadata = new JSONObject();
+                                                    JSONObject reply = new JSONObject();
+                                                    reply.put("name", baseMessage.getSender().getName());
+                                                    reply.put("type", baseMessage.getType());
+                                                    reply.put("avatar", baseMessage.getSender().getAvatar());
+                                                    reply.put("message", baseMessage.getMetadata().getString("message"));
+                                                    customMetadata.put("reply", reply);
+                                                    customMetadata.put("readByMeAt", baseMessage.getReadAt());
+                                                    customMetadata.put("deliveredToMeAt", baseMessage.getDeliveredToMeAt());
+                                                    customMetadata.put("deletedAt", baseMessage.getDeletedAt());
+                                                    customMetadata.put("editedAt", baseMessage.getEditedAt());
+                                                    customMetadata.put("deletedBy", baseMessage.getDeletedBy());
+                                                    customMetadata.put("editedBy", baseMessage.getEditedBy());
+                                                    customMetadata.put("updatedAt", baseMessage.getUpdatedAt());
+                                                    //readByMeAt=0, deliveredToMeAt=0, deletedAt=0, editedAt=0, deletedBy='null',
+                                                    // editedBy='null', updatedAt=1616823540
+                                                    baseMessage.setMetadata(customMetadata);
+                                                    tempList.add(baseMessage);
+                                                    Log.i(TAG, "filterBaseMessages: iosReply name" + baseMessage.getSender().getName());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply type " + baseMessage.getType());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply avtar " + baseMessage.getSender().getAvatar());
+                                                    Log.i(TAG, "filterBaseMessages: iosReply message " + baseMessage.getMetadata().getString("message"));
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }*/
+                                            /*
+                                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                    Action action = ((Action) baseMessage);
+                                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                        tempList.add(baseMessage);
+                                                    } else {
+                                                        tempList.add(baseMessage);
+                                                    }
+                                                } else {
+                                                    Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                                    tempList.add(baseMessage);
+                                                }
+                                            }*/
+
+                                    if (metadata != null && baseMessage.getEditedAt() != 0) {
+                                        /*Here we are marking message as deleted so that user can check that it is deleted */
+                                        try {
+                                            Log.i(TAG, "filterBaseMessages: edited at block 0" + ((TextMessage) baseMessage).getText());
+                                            if (metadata.has("deleted_one_to_one")) {
+                                                if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                                    baseMessage.setDeletedAt(12345);
+                                                }
+                                            } else {
+                                                Log.i(TAG, "filterBaseMessages: edited at block 1");
+
+                                                long id = baseMessage.getId();
+                                                String textMessage = ((TextMessage) baseMessage).getText();
+                                                String currentLang = sp.getString("currentLang", null);
+                                                JSONObject body = new JSONObject();
+                                                JSONArray languages = new JSONArray();
+                                                languages.put(currentLang);
+                                                body.put("languages", languages);
+                                                body.put("text", textMessage);
+                                                Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                                // Do something after 5s = 5000ms
+                                                CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                        new CometChat.CallbackListener<JSONObject>() {
+                                                            @Override
+                                                            public void onSuccess(JSONObject jsonObject) {
+                                                                try {
+                                                                    Log.i(TAG, "filterBaseMessages: edited at block 3");
+                                                                    JSONObject meta = baseMessage.getMetadata();
+                                                                    meta.accumulate("values", jsonObject);
+                                                                    String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                    // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                    //baseMessage.setMetadata(meta);
+
+                                                                    ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                    baseMessage.setMetadata(meta);
+                                                                    messageAdapter.setUpdatedMessage(baseMessage);
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onError(CometChatException e) {
+                                                                // Some error occured
+                                                                Log.i(TAG, "onError: " + e.getMessage());
+                                                                Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                            }
+                                                        });
+
+                                            }
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                    tempList.add(baseMessage);
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                                tempList.add(baseMessage);
+                                            }
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else if (metadata != null && metadata.has("type")) {
+                                        if (metadata.has("type")) {
+                                            try {
+                                                if (metadata.has("message")) {
+                                                    Log.i(TAG, "filterBaseMessages: " + metadata.getString("message"));
+                                                    JSONObject body = new JSONObject();
+                                                    JSONArray languages = new JSONArray();
+                                                    languages.put(sp.getString("currentLang", "en"));
+                                                    body.put("languages", languages);
+                                                    body.put("text", metadata.getString("message"));
+                                                    Log.i(TAG, "filterBaseMessages: edited at block 2");
+                                                    // Do something after 5s = 5000ms
+                                                    CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                                            new CometChat.CallbackListener<JSONObject>() {
+                                                                @Override
+                                                                public void onSuccess(JSONObject jsonObject) {
+                                                                    try {
+                                                                        // Log.i(TAG, "filterBaseMessages: edited at block 3 translated response for replied message "+jsonObject);
+                                                                        JSONObject meta = baseMessage.getMetadata();
+
+                                                                        //meta.accumulate("values", jsonObject);
+                                                                        String messageTranslatedString = null;
+
+                                                                        messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+
+                                                                        Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
+                                                                        metadata.remove("message");
+                                                                        metadata.put("message", messageTranslatedString);
+                                                                        messageAdapter.setUpdatedMessage(baseMessage);
+                                                                        Log.i(TAG, "filterBaseMessages onSuccess: metadata for replied translate " + metadata);
+                                                                        // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                                                        //baseMessage.setMetadata(meta);
+                                                                        // ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                                                        //baseMessage.setMetadata(meta);
+
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+
+                                                                }
+
+                                                                @Override
+                                                                public void onError(CometChatException e) {
+                                                                    // Some error occured
+                                                                    Log.i(TAG, "onError: " + e.getMessage());
+                                                                    Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                                                }
+                                                            });
+                                                }
+
+                                                try {
+                                                    JSONObject injectedObject = metadata.getJSONObject("@injected");
+                                                    if (injectedObject.has("extensions")) {
+                                                        JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                        if (extensionsObject.has("message-translation")) {
+                                                            JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                            JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                            HashMap<String, String> translationsMap = new HashMap<String, String>();
+
+                                                            for (int i = 0; i < translations.length(); i++) {
+                                                                JSONObject translation = translations.getJSONObject(i);
+                                                                String translatedText = translation.getString("message_translated");
+                                                                String translatedLanguage = translation.getString("language_translated");
+                                                                translationsMap.put(translatedLanguage, translatedText);
+                                                                /*if (translatedLanguage.equals(currentLang)) {
+                                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                        ((TextMessage) baseMessage).setText(translatedText);
+                                                                        Log.i(TAG, "filterBaseMessages: case 3 translated text " + translatedText);
+                                                                    }
+                                                                }*/
+                                                                if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                                    if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                                        if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                            ((TextMessage) baseMessage).setText(translatedText);
+                                                                        }
+                                                                    }
+                                                                } else {
+                                                                    ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                        Action action = ((Action) baseMessage);
+                                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                            tempList.add(baseMessage);
+                                                        } else {
+                                                            tempList.add(baseMessage);
+                                                        }
+                                                    } else {
+                                                        Log.i(TAG, "filterBaseMessages: edited at block 5");
+                                                        tempList.add(baseMessage);
+                                                    }
+
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    } else {
+
+                                        Log.i(TAG, "filterBaseMessages: normal message...");
+                                        try {
+                                            JSONObject injectedObject = metadata.getJSONObject("@injected");
+                                            if (injectedObject.has("extensions")) {
+                                                JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                                                if (extensionsObject.has("message-translation")) {
+                                                    JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                                                    JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                                                    HashMap<String, String> translationsMap = new HashMap<String, String>();
+
+                                                    for (int i = 0; i < translations.length(); i++) {
+                                                        JSONObject translation = translations.getJSONObject(i);
+                                                        String translatedText = translation.getString("message_translated");
+                                                        String translatedLanguage = translation.getString("language_translated");
+                                                        translationsMap.put(translatedLanguage, translatedText);
+                                                                /*if (translatedLanguage.equals(currentLang)) {
+                                                                    if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                        ((TextMessage) baseMessage).setText(translatedText);
+                                                                        Log.i(TAG, "filterBaseMessages: case 4 translated text " + translatedText);
+                                                                    }
+                                                                }*/
+                                                        if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {
+                                                            if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                                                if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                                                    ((TextMessage) baseMessage).setText(translatedText);
+                                                                }
+                                                            }
+                                                        } else {
+                                                            ((TextMessage) baseMessage).setText(((TextMessage) baseMessage).getText());
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        Log.e(TAG, "filterBaseMessages: 4.2" + baseMessage.toString());
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    }
+                                           /* Log.e(TAG, "filterBaseMessages: 4.2" + baseMessage.toString());
+                                            if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                                Action action = ((Action) baseMessage);
+                                                if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                        action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                                } else {
+                                                    tempList.add(baseMessage);
+                                                }
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }*/
+                                } else {
+                                    Log.e(TAG, "filterBaseMessages: 3.2" + baseMessage.toString());
+                                    if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                        Action action = ((Action) baseMessage);
+                                        if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                }
+                            } else if (baseMessage.getType().equals("image")) {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                        tempList.add(baseMessage);
+                                    }
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+
+                            } else if (baseMessage.getType().equals("file")) {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                        tempList.add(baseMessage);
+                                    }
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else if (baseMessage.getType().equals("audio")) {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                        tempList.add(baseMessage);
+                                    }
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else if (baseMessage.getType().equals("video")) {
+                                if (baseMessage.getEditedAt() != 0) {
+                                    if (metadata.has("deleted_one_to_one")) {
+                                        if (metadata.getString("deleted_one_to_one").equals("1") || metadata.getString("deleted_one_to_one").equals("2")) {
+                                            baseMessage.setDeletedAt(12345);
+                                        }
+                                        tempList.add(baseMessage);
+                                    }
+                                } else if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            } else {
+                                if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                    Action action = ((Action) baseMessage);
+                                    if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                            action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                    } else {
+                                        tempList.add(baseMessage);
+                                    }
+                                } else {
+                                    tempList.add(baseMessage);
+                                }
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } else if (baseMessage.getCategory().equals("call")) {
+                        String team_log;
+                        try {
+                            team_log = metadata.getString("team_logs_id");
+                            String ids[] = team_log.split(Pattern.quote("_"));
+                            Log.e("tabs", String.valueOf(ids.length));
+                            if (ids.length == 4 || ids.length == 3) {
+
+                                String[] parts = team_log.split("_-");
+                                String part2 = parts[1]; // 034556
+
+                                if (team_id.equals(part2)) {
+                                    if (baseMessage.getType().equals("audio")) {
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    } else if (baseMessage.getType().equals("video")) {
+                                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                                            Action action = ((Action) baseMessage);
+                                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                                            } else {
+                                                tempList.add(baseMessage);
+                                            }
+                                        } else {
+                                            tempList.add(baseMessage);
+                                        }
+                                    }
+
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        Log.e(TAG, "filterBaseMessages: 4.3" + baseMessage.toString());
+                        if (baseMessage.getCategory().equals(CometChatConstants.CATEGORY_ACTION)) {
+                            Action action = ((Action) baseMessage);
+                            if (action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_DELETED) ||
+                                    action.getAction().equals(CometChatConstants.ActionKeys.ACTION_MESSAGE_EDITED)) {
+                            } else {
+                                tempList.add(baseMessage);
+                            }
+                        } else {
+                            tempList.add(baseMessage);
+                        }
+                    }
+                    break;
+            }
+        }
+        tempList.size();
+        return tempList;
+    }
+
+/*this is previous filter bas message method now commenting in this code and we are making changes
+* commented and updated by rahul maske on 02-07-2021*/
+
+    /*private List<BaseMessage> filterBaseMessages(List<BaseMessage> baseMessages) {
         List<BaseMessage> tempList = new ArrayList<>();
         for (BaseMessage baseMessage : baseMessages) {
             Log.e(TAG, "filterBaseMessages: is " + baseMessage);
@@ -812,7 +2782,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 if (baseMessage.getMetadata().has("deleted_one_to_one")) {
                     try {
                         if (baseMessage.getMetadata().getString("deleted_one_to_one").equals("0")) {
-                            /*setting delated at with some value to understand this is deleted message.. this value is just random value...*/
+                            *//*setting delated at with some value to understand this is deleted message.. this value is just random value...*//*
                             baseMessage.setDeletedAt(12345);
                         }
                     } catch (JSONException e) {
@@ -853,7 +2823,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                             baseMessage1.setMetadata(meta);
                                             messageAdapter.setUpdatedMessage(baseMessage1);
 
-                                            /*try {
+                                            *//*try {
                                                 JSONObject injectedObject = null;
                                                 injectedObject = baseMessage1.getMetadata().getJSONObject("@injected");
                                                 if (injectedObject.has("extensions")) {
@@ -884,7 +2854,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                                                 }
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
-                                            }*/
+                                            }*//*
 
 
                                         } catch (JSONException e) {
@@ -974,7 +2944,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             }
         }
         return tempList;
-    }
+    }*/
 
     private void getSmartReplyList(BaseMessage baseMessage) {
         HashMap<String, JSONObject> extensionList = Extensions.extensionCheck(baseMessage);
@@ -1031,15 +3001,15 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     private void sendTypingIndicator(boolean isEnd) {
         if (isEnd) {
             if (type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                CometChat.endTyping(new TypingIndicator(Id, CometChatConstants.RECEIVER_TYPE_USER));
+                CometChat.endTyping(new TypingIndicator(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_USER));
             } else {
-                CometChat.endTyping(new TypingIndicator(Id, CometChatConstants.RECEIVER_TYPE_GROUP));
+                CometChat.endTyping(new TypingIndicator(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_GROUP));
             }
         } else {
             if (type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                CometChat.startTyping(new TypingIndicator(Id, CometChatConstants.RECEIVER_TYPE_USER));
+                CometChat.startTyping(new TypingIndicator(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_USER));
             } else {
-                CometChat.startTyping(new TypingIndicator(Id, CometChatConstants.RECEIVER_TYPE_GROUP));
+                CometChat.startTyping(new TypingIndicator(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_GROUP));
             }
         }
     }
@@ -1125,9 +3095,9 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         MediaMessage mediaMessage;
 
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-            mediaMessage = new MediaMessage(Id, file, filetype, CometChatConstants.RECEIVER_TYPE_USER);
+            mediaMessage = new MediaMessage(NextGroupOrUserId, file, filetype, CometChatConstants.RECEIVER_TYPE_USER);
         else
-            mediaMessage = new MediaMessage(Id, file, filetype, CometChatConstants.RECEIVER_TYPE_GROUP);
+            mediaMessage = new MediaMessage(NextGroupOrUserId, file, filetype, CometChatConstants.RECEIVER_TYPE_GROUP);
 
         /*JSONArray languageArray = new JSONArray();
         languageArray.put("en");
@@ -1231,7 +3201,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
      */
     private void getUser() {
 
-        CometChat.getUser(Id, new CometChat.CallbackListener<User>() {
+        CometChat.getUser(NextGroupOrUserId, new CometChat.CallbackListener<User>() {
             @Override
             public void onSuccess(User user) {
 
@@ -1274,7 +3244,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
      */
     private void getGroup() {
 
-        CometChat.getGroup(Id, new CometChat.CallbackListener<Group>() {
+        CometChat.getGroup(NextGroupOrUserId, new CometChat.CallbackListener<Group>() {
             @Override
             public void onSuccess(Group group) {
                 if (getActivity() != null) {
@@ -1305,9 +3275,9 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         Log.i(TAG, "sendMessage: block ");
         TextMessage textMessage;
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-            textMessage = new TextMessage(Id, message, CometChatConstants.RECEIVER_TYPE_USER);
+            textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_USER);
         else
-            textMessage = new TextMessage(Id, message, CometChatConstants.RECEIVER_TYPE_GROUP);
+            textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_GROUP);
 
 
         JSONArray languageArray = new JSONArray();
@@ -1349,7 +3319,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 break;
 
             case "3":
-                team_logs_id = Id + "_-" + team_id + "_-" + 3; //+"_sage036"
+                team_logs_id = NextGroupOrUserId + "_-" + team_id + "_-" + 3; //+"_sage036"
                 try {
                     jsonObject.put("team_logs_id", team_logs_id);
                     jsonObject.put("message_translation_languages", languageArray);
@@ -1361,7 +3331,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 break;
 
             case "4":
-                team_logs_id = Id + "_-" + team_id + "_-" + 4; //+"_sage036"
+                team_logs_id = NextGroupOrUserId + "_-" + team_id + "_-" + 4; //+"_sage036"
                 try {
                     jsonObject.put("team_logs_id", team_logs_id);
                     jsonObject.put("message_translation_languages", languageArray);
@@ -1617,9 +3587,122 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         try {
             TextMessage textMessage;
             if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-                textMessage = new TextMessage(Id, message, CometChatConstants.RECEIVER_TYPE_USER);
+                textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_USER);
             else
-                textMessage = new TextMessage(Id, message, CometChatConstants.RECEIVER_TYPE_GROUP);
+                textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_GROUP);
+
+            JSONObject replyObject = new JSONObject();
+            //replyObject.put("replyToMessage", baseMessage);
+            replyObject.put("type", "reply");
+            if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+//                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_TEXT);
+                replyObject.put("message", ((TextMessage) baseMessage).getText());
+            } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_IMAGE)) {
+//                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_IMAGE);
+                replyObject.put("message", "image");
+            } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_VIDEO)) {
+//                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_VIDEO);
+                replyObject.put("message", "video");
+            } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_FILE)) {
+//                replyObject.put("type", CometChatConstants.MESSAGE_TYPE_FILE);
+                replyObject.put("message", "file");
+            } else if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_AUDIO)) {
+                // replyObject.put("type", CometChatConstants.MESSAGE_TYPE_AUDIO);
+                replyObject.put("message", "audio");
+            }
+            replyObject.put("name", baseMessage.getSender().getName());
+            replyObject.put("avatar", baseMessage.getSender().getAvatar());
+            // jsonObject.put("reply", replyObject);
+
+            JSONArray languageArray = new JSONArray();
+            languageArray.put("en");
+            languageArray.put("hi");
+            languageArray.put("ar");
+            languageArray.put("ko");
+            languageArray.put("de");
+            languageArray.put("fr");
+            languageArray.put("fr-CA");
+            languageArray.put("es");
+            languageArray.put("ru");
+            languageArray.put("pt");
+            languageArray.put("vi");
+            languageArray.put("ur");
+
+            replyObject.put("message_translation_languages", languageArray);
+            switch (tabs) {
+                case "1":
+                    try {
+                        replyObject.put("team_logs_id", 0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case "2":
+
+                    //textMessage.setMetadata(jsonObject);
+                    break;
+
+                case "3":
+                    if (NextGroupOrUserId != null && team_id != null) {
+                        team_logs_id = NextGroupOrUserId + "_-" + team_id + "_-" + 3;
+                        try {
+                            replyObject.put("team_logs_id", team_logs_id);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //textMessage.setMetadata(jsonObject);
+                    }
+                    break;
+
+                case "4":
+                    if (NextGroupOrUserId != null && team_id != null) {
+                        team_logs_id = NextGroupOrUserId + "_-" + team_id + "_-" + 4;
+                        try {
+                            replyObject.put("team_logs_id", team_logs_id);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        // textMessage.setMetadata(jsonObject);
+                    }
+                    break;
+            }
+
+            textMessage.setMetadata(replyObject);
+            textMessage.setParentMessageId(parentId);
+            sendTypingIndicator(true);
+            CometChat.sendMessage(textMessage, new CometChat.CallbackListener<TextMessage>() {
+                @Override
+                public void onSuccess(TextMessage textMessage) {
+                    if (messageAdapter != null) {
+                        MediaUtils.playSendSound(context, R.raw.outgoing_message);
+                        Log.e(TAG, "onSuccess: replied message response is " + textMessage);
+                        filterTextMessage(textMessage, "");
+                        //messageAdapter.addMessage(textMessage);
+                        scrollToBottom();
+                    }
+                }
+
+                @Override
+                public void onError(CometChatException e) {
+                    Log.e(TAG, "onError: " + e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "replyMessage: " + e.getMessage());
+        }
+
+        /*Previous thread code for reply message and now implementhing code as main chat screen*/
+       /* isReply = false;
+        try {
+            TextMessage textMessage;
+            if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
+                textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_USER);
+            else
+                textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_GROUP);
+
             JSONObject jsonObject = new JSONObject();
             JSONObject replyObject = new JSONObject();
             if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
@@ -1641,6 +3724,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             replyObject.put("name", baseMessage.getSender().getName());
             replyObject.put("avatar", baseMessage.getSender().getAvatar());
             jsonObject.put("reply", replyObject);
+
             textMessage.setParentMessageId(parentId);
             textMessage.setMetadata(jsonObject);
             sendTypingIndicator(true);
@@ -1661,7 +3745,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             });
         } catch (Exception e) {
             Log.e(TAG, "replyMessage: " + e.getMessage());
-        }
+        }*/
     }
 
     private void scrollToBottom() {
@@ -1755,7 +3839,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     private void setMessageReciept(MessageReceipt messageReceipt) {
         if (messageAdapter != null) {
             if (messageReceipt.getReceivertype().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                if (Id != null && messageReceipt.getSender().getUid().equals(Id)) {
+                if (NextGroupOrUserId != null && messageReceipt.getSender().getUid().equals(NextGroupOrUserId)) {
                     if (messageReceipt.getReceiptType().equals(MessageReceipt.RECEIPT_TYPE_DELIVERED))
                         messageAdapter.setDeliveryReceipts(messageReceipt);
                     else
@@ -1768,18 +3852,148 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
     private void setTypingIndicator(TypingIndicator typingIndicator, boolean isShow) {
         if (typingIndicator.getReceiverType().equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER)) {
             Log.e(TAG, "onTypingStarted: " + typingIndicator);
-            if (Id != null && Id.equalsIgnoreCase(typingIndicator.getSender().getUid())) {
+            if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(typingIndicator.getSender().getUid())) {
                 if (typingIndicator.getMetadata() == null)
                     typingIndicator(typingIndicator, isShow);
             }
         } else {
-            if (Id != null && Id.equalsIgnoreCase(typingIndicator.getReceiverId()))
+            if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(typingIndicator.getReceiverId()))
                 typingIndicator(typingIndicator, isShow);
         }
     }
 
     private void onMessageReceived(BaseMessage message) {
-        MediaUtils.playSendSound(context, R.raw.incoming_message);
+        JSONObject metadata = message.getMetadata();
+        switch (tabs) {
+            case "1":
+                int team_log;
+                try {
+                    if(message.getParentMessageId()==parentId) {
+                        if (metadata.has("team_logs_id")) {
+                            team_log = metadata.getInt("team_logs_id");
+                            if (team_log == 0) {
+                                /*for normal message and for android  reply message this block will execute*/
+                                if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+                                    if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getSender().getUid())) {
+
+                                        Log.i(TAG, "onMessageReceived: case 1 reply block");
+                                        filterTextMessage(message, "");
+                                        //scrollToBottom();
+                                        //}
+                                    } else if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getReceiverUid())
+                                            && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
+                                        Log.i(TAG, "onMessageReceived: else part");
+                                        //if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
+                                        setMessage(message);
+                                        scrollToBottom();
+                                        //}
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "2":
+                Log.i(TAG, "onMessageReceived: case 2 ");
+                try {
+                    if(message.getParentMessageId()==parentId) {
+                        if (!metadata.has("team_logs_id")) {
+                            /*if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*/
+                           /* setMessage(message);
+                            scrollToBottom();*/
+                            filterTextMessage(message, "");
+                            /*}*/
+                            Log.i(TAG, "onMessageReceived: group case setMessage");
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                break;
+
+            case "3":
+                String logss;
+                try {
+                    if(message.getParentMessageId()==parentId) {
+                    logss = metadata.getString("team_logs_id");
+                    if (!logss.isEmpty() && !logss.equals("0")) {
+                        if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+                            if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getSender().getUid())) {
+                                /*for normal message and for android  reply message this block will execute*/
+
+                                Log.i(TAG, "onMessageReceived: case 1 reply block");
+                                filterTextMessage(message, "");
+
+                            } else if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getReceiverUid())
+                                    && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
+                                Log.i(TAG, "onMessageReceived: else part");
+
+                                setMessage(message);
+                                scrollToBottom();
+
+                            }
+                        }
+                    }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "4":
+                String logs;
+                try {
+                    if(message.getParentMessageId()==parentId) {
+                    Log.i(TAG, "onMessageReceived: case 4 ");
+                    logs = metadata.getString("team_logs_id");
+                    Log.e(TAG, "onMessageReceived: " + logs);
+                    if (!logs.isEmpty() && !logs.equals("0")) {
+                        if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+
+                            if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getSender().getUid())) {
+                                /*for normal message and for android  reply message this block will execute*/
+
+                                Log.i(TAG, "onMessageReceived: case 1 reply block");
+                                filterTextMessage(message, "");
+
+                            } else if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getReceiverUid())
+                                    && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
+                                Log.i(TAG, "onMessageReceived: else part");
+
+                                setMessage(message);
+                                scrollToBottom();
+
+                            }
+                            /*commented because it was not working for ios replied messages on 17-06-2021 by rahul maske*/
+                            /* if (SenderId != null && SenderId.equalsIgnoreCase(message.getSender().getUid())) {
+                             *//*if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*//*
+                             *//*setMessage(message);
+                                    scrollToBottom();*//*
+                                filterTextMessage(message, "");
+                                *//*}*//*
+                            } else if (SenderId != null && SenderId.equalsIgnoreCase(message.getReceiverUid()) && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
+
+                                *//*if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {*//*
+                                setMessage(message);
+                                scrollToBottom();
+                                *//*}*//*
+                            }*/
+                        }
+                    }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        /* MediaUtils.playSendSound(context, R.raw.incoming_message);
         if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
             if (Id != null && Id.equalsIgnoreCase(message.getSender().getUid())) {
                 if (message.getParentMessageId() == parentId)
@@ -1792,6 +4006,123 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             if (Id != null && Id.equalsIgnoreCase(message.getReceiverUid())) {
                 if (message.getParentMessageId() == parentId)
                     setMessage(message);
+            }
+        }*/
+    }
+
+    public void filterTextMessage(@NotNull BaseMessage message, String string) {
+        Log.i(TAG, "filterTextMessage: string -> " + string + " message " + message);
+        JSONObject metadata = message.getMetadata();
+        if (message.getType().equals("text")) {
+            try {
+                if (metadata.has("message") && metadata.getString("type").equalsIgnoreCase("reply")) {
+                    Log.i(TAG, "filterBaseMessages: " + metadata.getString("message"));
+                    JSONObject body = new JSONObject();
+                    JSONArray languages = new JSONArray();
+                    languages.put(sp.getString("currentLang", "en"));
+                    body.put("msgId", message.getId());
+                    body.put("languages", languages);
+                    body.put("text", metadata.getString("message"));
+                    Log.i(TAG, "filterTextMessage: reply from iOS ");
+                    // Do something after 5s = 5000ms
+                    CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                            new CometChat.CallbackListener<JSONObject>() {
+                                @Override
+                                public void onSuccess(JSONObject jsonObject) {
+                                    try {
+                                        // Log.i(TAG, "filterBaseMessages: edited at block 3 translated response for replied message "+jsonObject);
+                                        JSONObject meta = message.getMetadata();
+                                        //meta.accumulate("values", jsonObject);
+                                        String messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
+                                        Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
+                                        metadata.remove("message");
+                                        metadata.put("message", messageTranslatedString);
+                                        //messageAdapter.setUpdatedMessage(message);
+                                        Log.i(TAG, "filterBaseMessages onSuccess: metadata for replied translate " + metadata);
+                                        // BaseMessage baseMessage1 = createMetadataForEditedMessageNew(baseMessage, jsonObject);
+                                        //baseMessage.setMetadata(meta);
+                                        // ((TextMessage) baseMessage).setText(messageTranslatedString);
+                                        //baseMessage.setMetadata(meta);
+                                        transaletAndSetMessage(metadata, message, string);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(CometChatException e) {
+                                    // Some error occured
+                                    Log.i(TAG, "onError: " + e.getMessage());
+                                    Log.i(TAG, "filterBaseMessages: edited at block 4");
+                                }
+                            });
+                } else {
+                    transaletAndSetMessage(metadata, message, string);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            setMessage(message);
+            scrollToBottom();
+        }
+
+    }
+
+    public void transaletAndSetMessage(JSONObject metadata, BaseMessage message, String string) throws JSONException {
+        Log.i(TAG, "transaletAndSetMessage: block 1 " + message);
+        if (metadata != null) {
+            if (!string.equalsIgnoreCase("reply")) {
+                JSONObject injectedObject = metadata.getJSONObject("@injected");
+                if (injectedObject.has("extensions")) {
+                    JSONObject extensionsObject = injectedObject.getJSONObject("extensions");
+                    if (extensionsObject.has("message-translation")) {
+                        Log.i(TAG, "transaletAndSetMessage: block 2");
+                        JSONObject messageTranslationObject = extensionsObject.getJSONObject("message-translation");
+                        JSONArray translations = messageTranslationObject.getJSONArray("translations");
+                        HashMap<String, String> translationsMap = new HashMap<String, String>();
+                        for (int i = 0; i < translations.length(); i++) {
+                            JSONObject translation = translations.getJSONObject(i);
+                            String translatedText = translation.getString("message_translated");
+                            String translatedLanguage = translation.getString("language_translated");
+                            translationsMap.put(translatedLanguage, translatedText);
+                            Log.i(TAG, "transaletAndSetMessage: currentLang " + sp.getString("currentLang", "en"));
+                            /* if (!sp.getString("currentLang", "en").equalsIgnoreCase("en")) {*/
+                            if (translatedLanguage.equals(sp.getString("currentLang", "en"))) {
+                                if (message.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
+                                    ((TextMessage) message).setText(translatedText);
+                                }
+                            }
+
+                        /*} else {
+                            ((TextMessage) message).setText(((TextMessage) message).getText());
+                        }*/
+                        }
+                    }
+                }
+            }
+            if (messageAdapter != null) {
+                Log.i(TAG, "transaletAndSetMessage: block 5 " + string);
+                if (string.equals("reply")) {
+                    Log.i(TAG, "transaletAndSetMessage: block 3");
+                    messageAdapter.addMessage(message);
+                    markMessageAsRead(message);
+                    scrollToBottom();
+                } else {
+                    Log.i(TAG, "transaletAndSetMessage: block 4");
+                    messageAdapter.addMessage(message);
+                    checkSmartReply(message);
+                    markMessageAsRead(message);
+                    scrollToBottom();
+                    if ((messageAdapter.getItemCount() - 1) - ((LinearLayoutManager) rvChatListView.getLayoutManager()).findLastVisibleItemPosition() < 5)
+                        scrollToBottom();
+                }
+            } else {
+                Log.i(TAG, "transaletAndSetMessage: block 4");
+                messageList.add(message);
+                initMessageAdapter(messageList);
             }
         }
     }
@@ -1977,7 +4308,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         } else if (id == R.id.chatList_toolbar) {
             if (type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                 Intent intent = new Intent(getContext(), CometChatUserDetailScreenActivity.class);
-                intent.putExtra(StringContract.IntentStrings.UID, Id);
+                intent.putExtra(StringContract.IntentStrings.UID, NextGroupOrUserId);
                 intent.putExtra(StringContract.IntentStrings.NAME, conversationName);
                 intent.putExtra(StringContract.IntentStrings.AVATAR, avatarUrl);
                 intent.putExtra(StringContract.IntentStrings.IS_BLOCKED_BY_ME, isBlockedByMe);
@@ -1985,7 +4316,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(getContext(), CometChatGroupDetailScreenActivity.class);
-                intent.putExtra(StringContract.IntentStrings.GUID, Id);
+                intent.putExtra(StringContract.IntentStrings.GUID, NextGroupOrUserId);
                 intent.putExtra(StringContract.IntentStrings.NAME, conversationName);
                 intent.putExtra(StringContract.IntentStrings.AVATAR, avatarUrl);
                 intent.putExtra(StringContract.IntentStrings.TYPE, type);
@@ -2143,21 +4474,17 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
             @Override
             public void onCopyMessageClick() {
-                String copyMessage = "";
-                if (isParent) {
-                    copyMessage = message;
-                }
+                String message = "";
                 for (BaseMessage bMessage : baseMessages) {
                     if (bMessage.getDeletedAt() == 0 && bMessage instanceof TextMessage) {
-                        copyMessage = copyMessage + "[" + Utils.getLastMessageDate(bMessage.getSentAt()) + "] " + bMessage.getSender().getName() + ": " + ((TextMessage) bMessage).getText();
+                        message = message + "[" + Utils.getLastMessageDate(bMessage.getSentAt()) + "] " + bMessage.getSender().getName() + ": " + ((TextMessage) bMessage).getText();
                     }
                 }
                 Log.e(TAG, "onCopy: " + message);
                 ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("ThreadMessageAdapter", copyMessage);
+                ClipData clipData = ClipData.newPlainText("MessageAdapter", message);
                 clipboardManager.setPrimaryClip(clipData);
                 Toast.makeText(context, getResources().getString(R.string.text_copied_clipboard), Toast.LENGTH_LONG).show();
-                isParent = true;
                 if (messageAdapter != null) {
                     messageAdapter.clearLongClickSelectedItem();
                     messageAdapter.notifyDataSetChanged();

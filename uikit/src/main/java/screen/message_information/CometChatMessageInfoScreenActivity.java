@@ -1,5 +1,6 @@
 package screen.message_information;
 
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,9 +31,11 @@ import com.google.android.material.button.MaterialButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import screen.message_information.Message_Receipts.CometChatReceiptsList;
+import screen.messagelist.General;
 import utils.Utils;
 
 public class CometChatMessageInfoScreenActivity extends AppCompatActivity {
@@ -70,7 +73,7 @@ public class CometChatMessageInfoScreenActivity extends AppCompatActivity {
     private TextView fileSize;
     private AdapterReadReceipts adapter;
 
-    private TextView writeBoardText,tv_empty_message;
+    private TextView writeBoardText, tv_empty_message;
 
     private MaterialButton joinWriteBoard;
     private MaterialButton joinMeetingBtn;
@@ -80,7 +83,7 @@ public class CometChatMessageInfoScreenActivity extends AppCompatActivity {
     private String messageType;
     private int messageSize;
     private String messageExtension;
-    private int percentage=0;
+    private int percentage = 0;
     private String TAG = "CometChatMessageInfo";
     private RecyclerView rv_readReceipts;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -106,7 +109,7 @@ public class CometChatMessageInfoScreenActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         rv_readReceipts.setLayoutManager(mLayoutManager);
         rv_readReceipts.setItemAnimator(new DefaultItemAnimator());
-       // locationMessage = findViewById(R.id.vw_location_message);
+        // locationMessage = findViewById(R.id.vw_location_message);
         //pollsMessage = findViewById(R.id.vw_polls_message);
         stickerMessage = findViewById(R.id.vw_sticker_message);
         ///whiteBoardMessage = findViewById(R.id.vw_whiteboard_message);
@@ -148,12 +151,12 @@ public class CometChatMessageInfoScreenActivity extends AppCompatActivity {
                 fetchReceipts();
             }
         });*/
-       // ivMap = findViewById(R.id.iv_map);
+        // ivMap = findViewById(R.id.iv_map);
         //tvPlaceName = findViewById(R.id.tv_place_name);
         handleIntent();
         fetchReceipts();
         backIcon.setOnClickListener(view -> onBackPressed());
-        if(Utils.isDarkMode(this)) {
+        if (Utils.isDarkMode(this)) {
             toolbar.setBackgroundColor(getResources().getColor(R.color.darkModeBackground));
             messageLayout.setBackgroundColor(getResources().getColor(R.color.darkModeBackground));
         } else {
@@ -164,41 +167,59 @@ public class CometChatMessageInfoScreenActivity extends AppCompatActivity {
 
     private void fetchReceipts() {
         CometChat.getMessageReceipts(id, new CometChat.CallbackListener<List<MessageReceipt>>() {
-                @Override
-                public void onSuccess(List<MessageReceipt> messageReceipts) {
-                    //cometChatReceiptsList.clear();
-                    //cometChatReceiptsList.setMessageReceiptList(messageReceipts);
+            @Override
+            public void onSuccess(List<MessageReceipt> messageReceipts) {
+                List<MessageReceipt> messageReceiptsSorted = new ArrayList<>();
+                //cometChatReceiptsList.clear();
+                //cometChatReceiptsList.setMessageReceiptList(messageReceipts);
                     /*if (swipeRefreshLayout.isRefreshing())
                         swipeRefreshLayout.setRefreshing(false);
                     for (MessageReceipt messageReceipt: messageReceipts){
                         Log.i(TAG, "onSuccess: fetchReceipts"+messageReceipt.getReceiverId() +" size "+messageReceipts.size());
                     }*/
-                    if (messageReceipts.size()!=0) {
-                        adapter = new AdapterReadReceipts(messageReceipts, CometChatMessageInfoScreenActivity.this);
-                        rv_readReceipts.setAdapter(adapter);
-                        tv_empty_message.setVisibility(View.GONE);
-                    }else
-                        tv_empty_message.setVisibility(View.VISIBLE);
-                }
+                SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+                //editor.putString(General.COMET_CHAT_ID,  userInfo.getComet_chat_id());
 
-                @Override
-                public void onError(CometChatException e) {
+                if (messageReceipts.size() != 0) {
+                    String userCometchatId = UserInfoForUIKitPref.getString(General.COMET_CHAT_ID, null);
+                    for (MessageReceipt messageReceipt : messageReceipts) {
+                        if (messageReceipt.getSender().getUid().equalsIgnoreCase(userCometchatId)) {
+                            Log.i(TAG, "fetchReceipts onSuccess: matched id " + messageReceipt.getSender().getUid());
+                        } else {
+                            messageReceiptsSorted.add(messageReceipt);
+                            Log.i(TAG, "fetchReceipts onSuccess: unmatched id " + messageReceipt.getSender().getUid());
+                        }
+                    }
+
+                    adapter = new AdapterReadReceipts(messageReceiptsSorted, CometChatMessageInfoScreenActivity.this);
+                    rv_readReceipts.setAdapter(adapter);
+                    if (messageReceiptsSorted.size() == 0)
+                        tv_empty_message.setVisibility(View.VISIBLE);
+                    else
+                        tv_empty_message.setVisibility(View.GONE);
+
+                } else
+                    tv_empty_message.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onError(CometChatException e) {
                    /*CometChatSnackBar.show(CometChatMessageInfoScreenActivity.this,
                             cometChatReceiptsList, CometChatError.localized(e), CometChatSnackBar.ERROR);*/
-                }
+            }
         });
     }
 
     private void handleIntent() {
-        if (getIntent().hasExtra(UIKitConstants.IntentStrings.ID)){
-            id = getIntent().getIntExtra(UIKitConstants.IntentStrings.ID,0);
+        if (getIntent().hasExtra(UIKitConstants.IntentStrings.ID)) {
+            id = getIntent().getIntExtra(UIKitConstants.IntentStrings.ID, 0);
         }
         if (getIntent().hasExtra(UIKitConstants.IntentStrings.TEXTMESSAGE)) {
             message = getIntent().getStringExtra(UIKitConstants.IntentStrings.TEXTMESSAGE);
         }
         if (getIntent().hasExtra(UIKitConstants.IntentStrings.IMAGE_MODERATION)) {
             boolean isImageNotSafe = getIntent()
-                    .getBooleanExtra(UIKitConstants.IntentStrings.IMAGE_MODERATION,true);
+                    .getBooleanExtra(UIKitConstants.IntentStrings.IMAGE_MODERATION, true);
             if (isImageNotSafe)
                 sensitiveLayout.setVisibility(View.VISIBLE);
             else
@@ -215,23 +236,23 @@ public class CometChatMessageInfoScreenActivity extends AppCompatActivity {
         }
         if (getIntent().hasExtra(UIKitConstants.IntentStrings.MESSAGE_TYPE_IMAGE_SIZE)) {
             messageSize = getIntent().
-                    getIntExtra(UIKitConstants.IntentStrings.MESSAGE_TYPE_IMAGE_SIZE,0);
+                    getIntExtra(UIKitConstants.IntentStrings.MESSAGE_TYPE_IMAGE_SIZE, 0);
         }
         if (getIntent().hasExtra(UIKitConstants.IntentStrings.SENTAT)) {
             txtTime.setText(Utils.getHeaderDate(getIntent()
-                    .getLongExtra(UIKitConstants.IntentStrings.SENTAT,0)*1000));
+                    .getLongExtra(UIKitConstants.IntentStrings.SENTAT, 0) * 1000));
         }
         if (getIntent().hasExtra(UIKitConstants.IntentStrings.CUSTOM_MESSAGE)) {
             message = getIntent().getStringExtra(UIKitConstants.IntentStrings.CUSTOM_MESSAGE);
         }
 
         if (getIntent().hasExtra(UIKitConstants.IntentStrings.POLL_RESULT)) {
-            percentage = getIntent().getIntExtra(UIKitConstants.IntentStrings.POLL_RESULT,0);
+            percentage = getIntent().getIntExtra(UIKitConstants.IntentStrings.POLL_RESULT, 0);
         }
-        if (messageType!=null) {
+        if (messageType != null) {
             if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                 textMessage.setVisibility(View.VISIBLE);
-                Log.i(TAG, "handleIntent: message type is text "+message);
+                Log.i(TAG, "handleIntent: message type is text " + message);
                 messageText.setText(message);
             } else if (messageType.equals(CometChatConstants.MESSAGE_TYPE_IMAGE)) {
                 Log.i(TAG, "handleIntent: message type is Image ");
@@ -245,7 +266,7 @@ public class CometChatMessageInfoScreenActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }else if (messageType.equals(CometChatConstants.MESSAGE_TYPE_VIDEO)) {
+            } else if (messageType.equals(CometChatConstants.MESSAGE_TYPE_VIDEO)) {
                 videoMessage.setVisibility(View.VISIBLE);
                 Glide.with(this).load(message).into(messageVideo);
             } else if (messageType.equals(CometChatConstants.MESSAGE_TYPE_FILE)) {

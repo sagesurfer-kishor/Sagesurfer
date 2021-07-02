@@ -139,7 +139,6 @@
         android:textStyle="bold"
         android:paddingStart="@dimen/margin_16"
         android:paddingEnd="@dimen/margin_16"
-
         android:paddingBottom="@dimen/margin_16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

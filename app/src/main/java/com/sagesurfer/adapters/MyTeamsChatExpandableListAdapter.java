@@ -42,7 +42,6 @@ import java.util.List;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class MyTeamsChatExpandableListAdapter extends BaseExpandableListAdapter implements Filterable {
-
     private static final String TAG = MyTeamsChatExpandableListAdapter.class.getSimpleName();
     Handler handler;
     private LayoutInflater inflater;

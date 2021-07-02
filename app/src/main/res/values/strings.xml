@@ -924,7 +924,15 @@
     <string name="sage021">sage021</string>
     <string name="sage022">sage022</string>
     <string name="sage023">sage023</string>
+    <string name="sage050">sage050</string>
     <string name="sage024">sage024</string>
+    <string name="sage048">sage048</string>
+    <string name="sage047">sage047</string>
+    <string name="sage053">sage053</string>
+    <string name="sage051">sage051</string>
+    <string name="care_coordinator">Share with Care Coordinator</string>
+    <string name="case_manager">Share with Case Manager</string>
+    <string name="lead_peer_support_specialist">Share with Lead Peer Support Specialist</string>
     <string name="sage025">sage025</string>
     <string name="sage026">sage026</string>   <!--MHAW devlopment-->
     <string name="sage027">sage027</string>   <!--MHAW Live-->
@@ -1086,6 +1094,7 @@
     <string name="from_time">From Time</string>
     <string name="to_time">To Time</string>
     <string name="channel_description">Sagesurfer channel</string>
+    <string name="block_user_message">You have blocked</string>
     <string name="Call_History">Call History</string>
     <string name="set_available_time">Set Available Time</string>
     <string name="blocked_member">Blocked Member</string>

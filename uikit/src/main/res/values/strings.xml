@@ -224,6 +224,9 @@
     <string name="unable_to_get_location">Unable to get your location</string>
     <string name="grant_location_permission">Please allow location permission.</string>
     <string name="data_not_found">Data not found</string>
+    <string name="message_text">Message</string>
+    <string name="block_user_message">You have blocked</string>
+    <string name="receipt_info">Receipt Information</string>
 
     <array name="groupType">
         <item>Public Group</item>

@@ -36,7 +36,7 @@ public class   GetDrawerIcon {
             case 10:
                 return R.drawable.side_contact;
             case 11:
-                return R.drawable.side_con_consent;
+                    return R.drawable.side_con_consent;
             case 12:
                 return R.drawable.side_uploader;
             case 13:

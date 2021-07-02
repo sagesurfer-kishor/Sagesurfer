@@ -131,7 +131,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                     || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard")) {
                 String deleteOneToOne = null;
                 try {
-                    if ((conversation.getLastMessage()).getMetadata() != null){
+                    if ((conversation.getLastMessage()).getMetadata() != null) {
                         if ((conversation.getLastMessage()).getMetadata().has("deleted_one_to_one")) {
                             deleteOneToOne = (conversation.getLastMessage()).getMetadata().getString("deleted_one_to_one");
                             if (deleteOneToOne.equalsIgnoreCase("0") || deleteOneToOne.equalsIgnoreCase("1")
@@ -205,7 +205,8 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
             //
             if (((Group) conversation.getConversationWith()).getGroupType().equals("public")) {
                 holder.iv_profile.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.pub_group));
-            } else if (((Group) conversation.getConversationWith()).getGroupType().equals("private")) {
+            }
+            else if (((Group) conversation.getConversationWith()).getGroupType().equals("private")) {
                 holder.iv_profile.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.pri_group));
             } else {
                 holder.iv_profile.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.pass_group));
@@ -276,10 +277,18 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                         || conversation.getLastMessage().getType().equalsIgnoreCase("audio")
                         || conversation.getLastMessage().getType().equalsIgnoreCase("video")
                         || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard")) {
-                    String type = (conversation.getLastMessage()).getType();
-                    holder.friend_list_item_statusmessage.setText("" + type);
-                    holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                    holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+
+
+                        if ((conversation.getLastMessage()).getDeletedAt() != 0) {
+                            holder.friend_list_item_statusmessage.setText(mContext.getResources().getString(R.string.delete_message));
+                            holder.messageTime.setVisibility(View.GONE);
+                        }else {
+                            String type = (conversation.getLastMessage()).getType();
+                            holder.friend_list_item_statusmessage.setText("" + type);
+                            holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                            holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+                        }
+
                 } else if (conversation.getLastMessage().getType().equals("call")) {
                     holder.friend_list_item_statusmessage.setText("" + conversation.getLastMessage().getType());
                     holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);

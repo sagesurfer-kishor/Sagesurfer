@@ -190,7 +190,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     //Used to display list of messages.
     private LinearLayoutManager linearLayoutManager;
 
-    private String type, groupType, loggedInUserScope, groupOwnerId, SenderId, memberNames, groupDesc, currentLang,
+    private String type, groupType, loggedInUserScope, groupOwnerId, NextGroupOrUserId, memberNames, groupDesc, currentLang,
             tabs, groupPassword, avatarUrl;
     private String team_Ids = "";
     private static String teamId, receiverId, team_logs_id;
@@ -315,15 +315,59 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 Log.i(TAG, "onCreateView: myTeam arraylist item" + item);
             }
         }
+        CheckUsersBlockStatus();
+    }
+
+    private void CheckUsersBlockStatus() {
+        if (type != null && type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+            CometChat.getUser(NextGroupOrUserId, new CometChat.CallbackListener<User>() {
+                @Override
+                public void onSuccess(User user) {
+                    Log.d(TAG, "User details fetched for user: " + user.toString());
+                    if (user.isHasBlockedMe()) {
+                        /*blocked*/
+                        ShowBlockedUserDialog();
+                    } else {
+                        /*not blocked*/
+                        //ShowBlockedUserDialog();
+                    }
+                }
+
+                @Override
+                public void onError(CometChatException e) {
+                    Log.d(TAG, "User details fetching failed with exception: " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    public void ShowBlockedUserDialog() {
+
+        Log.i(TAG, "performAdapterClick: 3");
+        androidx.appcompat.app.AlertDialog.Builder builder;
+        builder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
+        //Setting message manually and performing action on button click
+        builder.setMessage(getActivity().getResources().getString(R.string.block_user_message))
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        getActivity().onBackPressed();
+                    }
+                });
+        androidx.appcompat.app.AlertDialog alert = builder.create();
+        alert.setTitle("Alert Notification");
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
 
     }
+
 
     /**
      * This method is used to handle arguments passed to this fragment.
      */
     public void handleArguments() {
         if (getArguments() != null) {
-            SenderId = getArguments().getString(StringContract.IntentStrings.SENDER_ID);
+            NextGroupOrUserId = getArguments().getString(StringContract.IntentStrings.SENDER_ID);
             avatarUrl = getArguments().getString(StringContract.IntentStrings.AVATAR);
             status = getArguments().getString(StringContract.IntentStrings.STATUS);
             name = getArguments().getString(StringContract.IntentStrings.NAME);
@@ -344,19 +388,19 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             Log.i(TAG, "handleArguments: team_ids" + teamId + " receiverId " + receiverId);
             Log.i(TAG, "handleArguments: 2 team_Ids" + team_Ids + " tabs  " + tabs);
             if (type != null && type.equals(CometChatConstants.RECEIVER_TYPE_GROUP)) {
-                SenderId = getArguments().getString(StringContract.IntentStrings.GUID);
+                NextGroupOrUserId = getArguments().getString(StringContract.IntentStrings.GUID);
                 Group_id = "" + getArguments().getString(StringContract.IntentStrings.GUID);
                 memberCount = getArguments().getInt(StringContract.IntentStrings.MEMBER_COUNT);
                 groupDesc = getArguments().getString(StringContract.IntentStrings.GROUP_DESC);
                 groupPassword = getArguments().getString(StringContract.IntentStrings.GROUP_PASSWORD);
                 groupType = getArguments().getString(StringContract.IntentStrings.GROUP_TYPE);
-                Log.i(TAG, "handleArguments: 1 userId" + SenderId + " groupId " + Group_id);
+                Log.i(TAG, "handleArguments: 1 userId" + NextGroupOrUserId + " groupId " + Group_id);
                 if (getArguments().containsKey(StringContract.IntentStrings.ALL_MEMBERS_STRING)) {
                     group_all_members_id = getArguments().getString(StringContract.IntentStrings.ALL_MEMBERS_STRING);
                     Log.i(TAG, "handleArguments: group_all_members_id" + group_all_members_id);
                 }
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putString("IDS", SenderId);
+                editor.putString("IDS", NextGroupOrUserId);
                 editor.commit();
             }
 
@@ -376,7 +420,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 ChatGroupId = "0";
             }
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString("IDS", SenderId);
+            editor.putString("IDS", NextGroupOrUserId);
             editor.apply();
         }
     }
@@ -579,9 +623,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             }).create().show();
         } else {
             if (type.equals("user")) {
-                initiatecall(context, SenderId, CometChatConstants.RECEIVER_TYPE_USER, callType);
+                initiatecall(context, NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_USER, callType);
             } else {
-                initiateGroupCall(SenderId, CometChatConstants.RECEIVER_TYPE_GROUP, callType);
+                initiateGroupCall(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_GROUP, callType);
             }
         }
     }
@@ -848,9 +892,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             @Override
             public void onSendCustomActionClicked(String string) {
                 if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-                    SendCustomMessage(string, SenderId);
+                    SendCustomMessage(string, NextGroupOrUserId);
                 else
-                    SendCustomMessage(string, SenderId);
+                    SendCustomMessage(string, NextGroupOrUserId);
             }
 
             @Override
@@ -878,7 +922,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         @Override
                         public void OnResponseSuccess(Object var) {
                             JSONObject stickersJSON = (JSONObject) var;
-                            stickersView.setData(SenderId, type, Extensions.extractStickersFromJSON(stickersJSON));
+                            stickersView.setData(NextGroupOrUserId, type, Extensions.extractStickersFromJSON(stickersJSON));
                         }
 
                         @Override
@@ -1067,9 +1111,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     public void sendCustomMessage(String stickers, JSONObject stickerData) {
         CustomMessage customMessage;
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-            customMessage = new CustomMessage(SenderId, CometChatConstants.RECEIVER_TYPE_USER, stickers, stickerData);
+            customMessage = new CustomMessage(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_USER, stickers, stickerData);
         else
-            customMessage = new CustomMessage(SenderId, CometChatConstants.RECEIVER_TYPE_GROUP, stickers, stickerData);
+            customMessage = new CustomMessage(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_GROUP, stickers, stickerData);
 
         JSONObject metadataObject = new JSONObject();
         JSONArray languageArray = new JSONArray();
@@ -1138,9 +1182,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         CustomMessage customMessage;
 
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-            customMessage = new CustomMessage(SenderId, CometChatConstants.RECEIVER_TYPE_USER, "image", stickerData);
+            customMessage = new CustomMessage(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_USER, "image", stickerData);
         else
-            customMessage = new CustomMessage(SenderId, CometChatConstants.RECEIVER_TYPE_GROUP, "image", stickerData);
+            customMessage = new CustomMessage(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_GROUP, "image", stickerData);
 
         JSONObject metadataObject = new JSONObject();
         JSONArray languageArray = new JSONArray();
@@ -1437,7 +1481,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
      * @see GroupMembersRequest
      */
     public void getMember() {
-        GroupMembersRequest groupMembersRequest = new GroupMembersRequest.GroupMembersRequestBuilder(SenderId).setLimit(100).build();
+        GroupMembersRequest groupMembersRequest = new GroupMembersRequest.GroupMembersRequestBuilder(NextGroupOrUserId).setLimit(100).build();
         groupMembersRequest.fetchNext(new CometChat.CallbackListener<List<GroupMember>>() {
             @Override
             public void onSuccess(List<GroupMember> list) {
@@ -1466,7 +1510,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
      */
     public void unblockUser() {
         ArrayList<String> uids = new ArrayList<>();
-        uids.add(SenderId);
+        uids.add(NextGroupOrUserId);
         CometChat.unblockUsers(uids, new CometChat.CallbackListener<HashMap<String, String>>() {
             @Override
             public void onSuccess(HashMap<String, String> stringStringHashMap) {
@@ -1514,20 +1558,20 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         if (messagesRequest == null) {
             if (type != null) {
                 if (type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                    Log.e(TAG, "fetchMessage: ID = " + SenderId);
+                    Log.e(TAG, "fetchMessage: ID = " + NextGroupOrUserId);
                     /* previous request commenting and adding new request as per cometchat sample app
                      * commenting on 25-06-2021 by rahul maske */
                     messagesRequest = new MessagesRequest.MessagesRequestBuilder().setLimit(LIMIT)
                             .setTypes(UIKitConstants.MessageRequest.messageTypesForUser)
                             .setCategories(UIKitConstants.MessageRequest.messageCategoriesForUser)
-                            .hideReplies(true).setUID(SenderId).build();
+                            .hideReplies(true).setUID(NextGroupOrUserId).build();
                     /*messagesRequest = new MessagesRequest.MessagesRequestBuilder()
                             .setLimit(LIMIT).hideReplies(true).setUID(SenderId).build();*/
                 } else {
                     messagesRequest = new MessagesRequest.MessagesRequestBuilder().setLimit(LIMIT)
                             .setTypes(UIKitConstants.MessageRequest.messageTypesForGroup)
                             .setCategories(UIKitConstants.MessageRequest.messageCategoriesForGroup)
-                            .hideReplies(true).setGUID(SenderId).hideMessagesFromBlockedUsers(true).build();
+                            .hideReplies(true).setGUID(NextGroupOrUserId).hideMessagesFromBlockedUsers(true).build();
 
                     /* previous request commenting and adding new request as per cometchat sample app
                      * commenting on 25-06-2021 by rahul maske */
@@ -3626,15 +3670,15 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     public void sendTypingIndicator(boolean isEnd) {
         if (isEnd) {
             if (type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                CometChat.endTyping(new TypingIndicator(SenderId, CometChatConstants.RECEIVER_TYPE_USER));
+                CometChat.endTyping(new TypingIndicator(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_USER));
             } else {
-                CometChat.endTyping(new TypingIndicator(SenderId, CometChatConstants.RECEIVER_TYPE_GROUP));
+                CometChat.endTyping(new TypingIndicator(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_GROUP));
             }
         } else {
             if (type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                CometChat.startTyping(new TypingIndicator(SenderId, CometChatConstants.RECEIVER_TYPE_USER));
+                CometChat.startTyping(new TypingIndicator(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_USER));
             } else {
-                CometChat.startTyping(new TypingIndicator(SenderId, CometChatConstants.RECEIVER_TYPE_GROUP));
+                CometChat.startTyping(new TypingIndicator(NextGroupOrUserId, CometChatConstants.RECEIVER_TYPE_GROUP));
             }
         }
     }
@@ -3721,9 +3765,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         MediaMessage mediaMessage;
 
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-            mediaMessage = new MediaMessage(SenderId, file, filetype, CometChatConstants.RECEIVER_TYPE_USER);
+            mediaMessage = new MediaMessage(NextGroupOrUserId, file, filetype, CometChatConstants.RECEIVER_TYPE_USER);
         else
-            mediaMessage = new MediaMessage(SenderId, file, filetype, CometChatConstants.RECEIVER_TYPE_GROUP);
+            mediaMessage = new MediaMessage(NextGroupOrUserId, file, filetype, CometChatConstants.RECEIVER_TYPE_GROUP);
 
         JSONObject jsonObject = new JSONObject();
         JSONArray languageArray = new JSONArray();
@@ -3802,7 +3846,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
      * @see CometChat#getUser(String, CometChat.CallbackListener)
      */
     public void getUser() {
-        CometChat.getUser(SenderId, new CometChat.CallbackListener<User>() {
+        CometChat.getUser(NextGroupOrUserId, new CometChat.CallbackListener<User>() {
             @Override
             public void onSuccess(User user) {
 
@@ -3854,7 +3898,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
      */
     public void getGroup() {
 
-        CometChat.getGroup(SenderId, new CometChat.CallbackListener<Group>() {
+        CometChat.getGroup(NextGroupOrUserId, new CometChat.CallbackListener<Group>() {
             @Override
             public void onSuccess(Group group) {
                 if (getActivity() != null) {
@@ -3889,9 +3933,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         TextMessage textMessage;
         final TextMessage[] textMessageProfinity = new TextMessage[1];
         if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-            textMessage = new TextMessage(SenderId, message, CometChatConstants.RECEIVER_TYPE_USER);
+            textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_USER);
         else
-            textMessage = new TextMessage(SenderId, message, CometChatConstants.RECEIVER_TYPE_GROUP);
+            textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_GROUP);
 
         sendTypingIndicator(true);
         JSONArray languageArray = new JSONArray();
@@ -4366,9 +4410,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         try {
             TextMessage textMessage;
             if (type.equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
-                textMessage = new TextMessage(SenderId, message, CometChatConstants.RECEIVER_TYPE_USER);
+                textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_USER);
             else
-                textMessage = new TextMessage(SenderId, message, CometChatConstants.RECEIVER_TYPE_GROUP);
+                textMessage = new TextMessage(NextGroupOrUserId, message, CometChatConstants.RECEIVER_TYPE_GROUP);
 
             JSONObject replyObject = new JSONObject();
             //replyObject.put("replyToMessage", baseMessage);
@@ -4492,7 +4536,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             public void onGroupMemberJoined(Action action, User joinedUser, Group joinedGroup) {
                 super.onGroupMemberJoined(action, joinedUser, joinedGroup);
                 Log.i(TAG, "onGroupMemberJoined: ");
-                if (joinedGroup.getGuid().equals(SenderId))
+                if (joinedGroup.getGuid().equals(NextGroupOrUserId))
                     tvStatus.setText(memberNames + "," + joinedUser.getName());
 
                 onMessageReceived(action);
@@ -4502,7 +4546,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             public void onGroupMemberLeft(Action action, User leftUser, Group leftGroup) {
                 super.onGroupMemberLeft(action, leftUser, leftGroup);
                 Log.d(TAG, "onGroupMemberLeft: " + leftUser.getName());
-                if (leftGroup.getGuid().equals(SenderId)) {
+                if (leftGroup.getGuid().equals(NextGroupOrUserId)) {
                     if (memberNames != null)
                         tvStatus.setText(memberNames.replace("," + leftUser.getName(), ""));
                 }
@@ -4518,7 +4562,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         getActivity().finish();
 
                 }
-                if (kickedFrom.getGuid().equals(SenderId))
+                if (kickedFrom.getGuid().equals(NextGroupOrUserId))
                     tvStatus.setText(memberNames.replace("," + kickedUser.getName(), ""));
                 onMessageReceived(action);
             }
@@ -4551,7 +4595,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             @Override
             public void onMemberAddedToGroup(Action action, User addedby, User userAdded, Group addedTo) {
                 Log.i(TAG, "onMemberAddedToGroup: ");
-                if (addedTo.getGuid().equals(SenderId))
+                if (addedTo.getGuid().equals(NextGroupOrUserId))
                     tvStatus.setText(memberNames + "," + userAdded.getName());
                 onMessageReceived(action);
             }
@@ -4570,7 +4614,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 @Override
                 public void onUserOnline(User user) {
                     //Log.d(TAG, "onUserOnline: " + user.toString());
-                    if (user.getUid().equals(SenderId)) {
+                    if (user.getUid().equals(NextGroupOrUserId)) {
                         status = CometChatConstants.USER_STATUS_ONLINE;
                         tvStatus.setText(user.getStatus());
                         tvStatus.setTextColor(getResources().getColor(R.color.textColorWhite));
@@ -4580,7 +4624,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 @Override
                 public void onUserOffline(User user) {
                     //Log.d(TAG, "onUserOffline: " + user.toString());
-                    if (user.getUid().equals(SenderId)) {
+                    if (user.getUid().equals(NextGroupOrUserId)) {
                         if (Utils.isDarkMode(getContext()))
                             tvStatus.setTextColor(getResources().getColor(R.color.textColorWhite));
                         else
@@ -4628,7 +4672,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                     Log.i(TAG, "onTextMessageReceived: set reply message ");
                     messageAdapter.setReplyMessage(message);
                 } else if (message.getReceiverType().equalsIgnoreCase("group")
-                        && message.getReceiverUid().equalsIgnoreCase(SenderId)) {
+                        && message.getReceiverUid().equalsIgnoreCase(NextGroupOrUserId)) {
                     Log.i(TAG, "onTextMessageReceived: set group messages ");
                     onMessageReceived(message);
                 } else if (message.getReceiverType().equalsIgnoreCase("user")) {
@@ -4678,7 +4722,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
                 //onMessageReceived(message);
                 if (message.getReceiverType().equalsIgnoreCase("group")
-                        && message.getReceiverUid().equalsIgnoreCase(SenderId)) {
+                        && message.getReceiverUid().equalsIgnoreCase(NextGroupOrUserId)) {
                     onMessageReceived(message);
                 } else if (message.getReceiverType().equalsIgnoreCase("user")) {
                     onMessageReceived(message);
@@ -4739,7 +4783,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 //Log.e(TAG, "onCustomMessageReceived: receiverType" + customMessage.getReceiverType());
 
                 if (customMessage.getReceiverType().equalsIgnoreCase("group")
-                        && customMessage.getReceiverUid().equalsIgnoreCase(SenderId)) {
+                        && customMessage.getReceiverUid().equalsIgnoreCase(NextGroupOrUserId)) {
                     if (customMessage.getType().equals("extension_whiteboard")) {
                         String s = null;
 
@@ -4790,7 +4834,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     public void setMessageReciept(MessageReceipt messageReceipt) {
         if (messageAdapter != null) {
             if (messageReceipt.getReceivertype().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                if (SenderId != null && messageReceipt.getSender().getUid().equals(SenderId)) {
+                if (NextGroupOrUserId != null && messageReceipt.getSender().getUid().equals(NextGroupOrUserId)) {
                     if (messageReceipt.getReceiptType().equals(MessageReceipt.RECEIPT_TYPE_DELIVERED))
                         messageAdapter.setDeliveryReceipts(messageReceipt);
                     else
@@ -4803,12 +4847,12 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     public void setTypingIndicator(TypingIndicator typingIndicator, boolean isShow) {
         if (typingIndicator.getReceiverType().equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER)) {
             Log.e(TAG, "onTypingStarted: " + typingIndicator);
-            if (SenderId != null && SenderId.equalsIgnoreCase(typingIndicator.getSender().getUid())) {
+            if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(typingIndicator.getSender().getUid())) {
                 if (typingIndicator.getMetadata() == null)
                     typingIndicator(typingIndicator, isShow);
             }
         } else {
-            if (SenderId != null && SenderId.equalsIgnoreCase(typingIndicator.getReceiverId()))
+            if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(typingIndicator.getReceiverId()))
                 typingIndicator(typingIndicator, isShow);
         }
     }
@@ -4855,13 +4899,13 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                             if (team_log == 0) {
                                 /*for normal message and for android  reply message this block will execute*/
                                 if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                                    if (SenderId != null && SenderId.equalsIgnoreCase(message.getSender().getUid())) {
+                                    if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getSender().getUid())) {
 
                                         Log.i(TAG, "onMessageReceived: case 1 reply block");
                                         filterTextMessage(message, "");
                                         //scrollToBottom();
                                         //}
-                                    } else if (SenderId != null && SenderId.equalsIgnoreCase(message.getReceiverUid())
+                                    } else if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getReceiverUid())
                                             && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
                                         Log.i(TAG, "onMessageReceived: else part");
                                         //if (!checkIOSReplyOrNot(metadata, message, General.CHATSCREEN_RECEIVED_MESSAGE)) {
@@ -4904,13 +4948,13 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         logss = metadata.getString("team_logs_id");
                         if (!logss.isEmpty() && !logss.equals("0")) {
                             if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                                if (SenderId != null && SenderId.equalsIgnoreCase(message.getSender().getUid())) {
+                                if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getSender().getUid())) {
                                     /*for normal message and for android  reply message this block will execute*/
 
                                     Log.i(TAG, "onMessageReceived: case 1 reply block");
                                     filterTextMessage(message, "");
 
-                                } else if (SenderId != null && SenderId.equalsIgnoreCase(message.getReceiverUid())
+                                } else if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getReceiverUid())
                                         && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
                                     Log.i(TAG, "onMessageReceived: else part");
 
@@ -4937,13 +4981,13 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                         if (!logs.isEmpty() && !logs.equals("0")) {
                             if (message.getReceiverType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
 
-                                if (SenderId != null && SenderId.equalsIgnoreCase(message.getSender().getUid())) {
+                                if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getSender().getUid())) {
                                     /*for normal message and for android  reply message this block will execute*/
 
                                     Log.i(TAG, "onMessageReceived: case 1 reply block");
                                     filterTextMessage(message, "");
 
-                                } else if (SenderId != null && SenderId.equalsIgnoreCase(message.getReceiverUid())
+                                } else if (NextGroupOrUserId != null && NextGroupOrUserId.equalsIgnoreCase(message.getReceiverUid())
                                         && message.getSender().getUid().equalsIgnoreCase(loggedInUser.getUid())) {
                                     Log.i(TAG, "onMessageReceived: else part");
 
@@ -5420,7 +5464,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         } else if (id == R.id.chatList_toolbar) {
             if (type.equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                 Intent intent = new Intent(getContext(), CometChatUserDetailScreenActivity.class);
-                intent.putExtra(StringContract.IntentStrings.UID, SenderId);
+                intent.putExtra(StringContract.IntentStrings.UID, NextGroupOrUserId);
                 intent.putExtra(StringContract.IntentStrings.NAME, name);
                 intent.putExtra(StringContract.IntentStrings.AVATAR, avatarUrl);
                 intent.putExtra(StringContract.IntentStrings.IS_BLOCKED_BY_ME, isBlockedByMe);
@@ -5429,7 +5473,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(getContext(), CometChatGroupDetailScreenActivity.class);
-                intent.putExtra(StringContract.IntentStrings.GUID, SenderId);
+                intent.putExtra(StringContract.IntentStrings.GUID, NextGroupOrUserId);
                 intent.putExtra(StringContract.IntentStrings.NAME, name);
                 intent.putExtra(StringContract.IntentStrings.AVATAR, avatarUrl);
                 intent.putExtra(StringContract.IntentStrings.TYPE, type);
@@ -5464,7 +5508,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         //forword flag
         SharedPreferences forwardPref = getActivity().getSharedPreferences("forwardPref", MODE_PRIVATE);
         SharedPreferences.Editor editorForward = forwardPref.edit();
-        editorForward.putString("UserId", SenderId);
+        editorForward.putString("UserId", NextGroupOrUserId);
         editorForward.commit();
 
         Intent intent = new Intent(getContext(), CometChatForwardMessageScreenActivity.class);
@@ -5473,7 +5517,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         intent.putExtra(StringContract.IntentStrings.TYPE, getArguments().getString(StringContract.IntentStrings.TYPE));
         intent.putExtra(StringContract.IntentStrings.STATUS, getArguments().getString(StringContract.IntentStrings.STATUS));
         intent.putExtra(StringContract.IntentStrings.TABS, getArguments().getString(StringContract.IntentStrings.TABS));
-        intent.putExtra(StringContract.IntentStrings.UID, SenderId);
+        intent.putExtra(StringContract.IntentStrings.UID, NextGroupOrUserId);
         intent.putExtra("teamId", getArguments().getString("teamId"));
         if (type != null && type.equals(CometChatConstants.RECEIVER_TYPE_GROUP)) {
             intent.putExtra(StringContract.IntentStrings.GUID, getArguments().getString(StringContract.IntentStrings.GUID));
@@ -5559,9 +5603,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         }
         intent.putExtra(StringContract.IntentStrings.TYPE, type);
         if (type.equals(CometChatConstants.CONVERSATION_TYPE_GROUP)) {
-            intent.putExtra(StringContract.IntentStrings.GUID, SenderId);
+            intent.putExtra(StringContract.IntentStrings.GUID, NextGroupOrUserId);
         } else {
-            intent.putExtra(StringContract.IntentStrings.UID, SenderId);
+            intent.putExtra(StringContract.IntentStrings.UID, NextGroupOrUserId);
         }
         startActivity(intent);
     }
@@ -6037,7 +6081,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
 
     public void sendMediaMessageForStickers(String file_Path) throws
             MalformedURLException, URISyntaxException {
-        String receiverID = SenderId;
+        String receiverID = NextGroupOrUserId;
         String messageType = CometChatConstants.MESSAGE_TYPE_IMAGE;
 
         String filePath = file_Path;
@@ -6159,7 +6203,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         requestMap.put(General.ACTION, "cometchat_log");
         requestMap.put(General.FROM_CHAT, UserId);
         requestMap.put(General.USER_ID, UserId);
-        requestMap.put(General.TO_CHAT, SenderId);
+        requestMap.put(General.TO_CHAT, NextGroupOrUserId);
         requestMap.put(General.CHAT_TYPE, ChatType);
         requestMap.put(General.DIRECTION, "1");
         requestMap.put(General.MESSAGE, Message);
@@ -6171,7 +6215,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         requestMap.put(General.GROUP_ALL_MEMBERS_ID_, "" + group_all_members_id);
         requestMap.put(General.RECEIVE_MAIL, receiverMail);
         requestMap.put(General.LAST_CONVERSATION_STATUS, status);
-        Log.i(TAG, "Calling test tag saveChatLogToTheServer: From_chat " + UserId + " To_chat " + SenderId + " CHAT_TYPE " + ChatType
+        Log.i(TAG, "Calling test tag saveChatLogToTheServer: From_chat " + UserId + " To_chat " + NextGroupOrUserId + " CHAT_TYPE " + ChatType
                 + " MESSAGE " + Message + " CHAT_GROUP_ID " + chat_group_id + " PRIVATE_GROUP_ID " + team_Ids + " COMET_CHAT_TYPE " + comet_chat_type
                 + " CHAT_MSG_ID " + chat_message_id + " GROUP_ALL_MEMBERS_ID_ " + group_all_members_id + " receiverMail " + receiverMail + " LAST_CONVERSATION_STATUS " + status);
 

@@ -483,7 +483,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage027)) ||
                             Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage006)) ||
                             Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage030)) ||
-                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031))) {
+                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031)) ||
+                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048)) ||
+                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage051)) ||
+                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage052)) ||
+                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage050)) ||
+                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage053)) ||
+                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage049)) ||
+                            Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage047))
+                    ) {
                         Intent intent = new Intent(MainActivity.this, LogBookActivity.class);
                         startActivity(intent);
                     }
@@ -562,7 +570,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myJoinThread.start();
         }
     }
-
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -2002,6 +2009,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             chat_icon.setVisibility(View.GONE);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @SuppressLint("NewApi")
+    public void handleIntentForPushNotification(final Context context, Intent mainIntent) {
+
     }
 
     //For cometchat push notification onclick events
