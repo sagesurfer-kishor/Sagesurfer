@@ -100,10 +100,14 @@ public class SelfGoalListAdapter extends RecyclerView.Adapter {
         setPin(goal_.getIs_dashboard(), viewHolder);
 
         if (goal_.getToday_status() == 1) {
+            viewHolder.inputTxt.setVisibility(View.VISIBLE);
+            viewHolder.inputLabel.setVisibility(View.VISIBLE);
             viewHolder.mainLayout.setBackgroundResource(R.drawable.red_rounded_border);
             viewHolder.inputTxt.setText("Input Needed");
             viewHolder.inputTxt.setTextColor(activity.getResources().getColor(R.color.self_goal_missed));
         } else if (goal_.getToday_status() == 2) {
+            viewHolder.inputTxt.setVisibility(View.VISIBLE);
+            viewHolder.inputLabel.setVisibility(View.VISIBLE);
             viewHolder.mainLayout.setBackgroundResource(R.drawable.green_rounded_border);
             viewHolder.inputTxt.setText("Input Provided");
             viewHolder.inputTxt.setTextColor(activity.getResources().getColor(R.color.self_goal_completed));

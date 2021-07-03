@@ -251,7 +251,7 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getActivity(), GetColor.getHomeIconBackgroundColorColorParse(false)));
-        performLogoutTask=new PerformLogoutTask();
+        performLogoutTask = new PerformLogoutTask();
         if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
             if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023)) ||
                     Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage025))) {
@@ -378,7 +378,9 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
         closePopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitClosepop(General.CLOSE_LOG, Preferences.get(General.APP_ID));
+                submitClosepop(General.CLOSE_LOG,
+                        Preferences.get(General.APP_ID),
+                        dialog);
             }
         });
         buttonYes.setOnClickListener(new View.OnClickListener() {
@@ -458,6 +460,34 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+    }
+
+    private void submitClosepop(String closeLog, String app_id, Dialog dialog) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, closeLog);
+        requestMap.put(General.ID, app_id);
+
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_MHAW_APPOINTMENT;
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, activity, activity);
+
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, activity, activity);
+                if (response != null) {
+                    callDismiss();
+                    Toast.makeText(activity, "Data updated successfully.", Toast.LENGTH_LONG).show();
+                    Preferences.save(General.SHOW_APPOINTMENT_FILLED, false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (dialog != null) {
+            if (dialog.isShowing())
+                dialog.dismiss();
         }
 
     }
@@ -973,10 +1003,10 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
 
         homeMenuList = Login_.homeMenuParser();
         drawerMenuList = Login_.drawerMenuParser();
-        for (DrawerMenu_ menu_ : drawerMenuList){
-            Log.i(TAG, "onResume: menu name "+menu_.getMenu());
-            Log.i(TAG, "onResume: menu counter "+menu_.getCounter());
-            Log.i(TAG, "onResume: menu Id "+menu_.getId());
+        for (DrawerMenu_ menu_ : drawerMenuList) {
+            Log.i(TAG, "onResume: menu name " + menu_.getMenu());
+            Log.i(TAG, "onResume: menu counter " + menu_.getCounter());
+            Log.i(TAG, "onResume: menu Id " + menu_.getId());
         }
 
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.home));
@@ -1197,9 +1227,9 @@ public class HomeFragment extends Fragment implements HomeRecentUpdateAdapter.Ho
             } else {
                 mainActivityInterface.toggleAdd(false);
             }
-            Log.i(TAG, "replaceFragment: id"+id);
-            if (id==36){
-                id=82;
+            Log.i(TAG, "replaceFragment: id" + id);
+            if (id == 36) {
+                id = 82;
             }
             Fragment fragment = GetFragments.get(id, bundle);
             FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();

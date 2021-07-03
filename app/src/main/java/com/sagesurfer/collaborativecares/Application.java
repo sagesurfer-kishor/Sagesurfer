@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import com.storage.preferences.Preferences;
+import com.storage.preferences.StorageHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -76,6 +77,8 @@ public class Application extends MultiDexApplication {
                         Preferences.save("regId_save", false);
                         Preferences.initialize(getApplicationContext());
                         Preferences.save("regId", token);
+
+                        StorageHelper.setTOKEN(getApplicationContext(), token);
 
                     }
                 });

@@ -64,19 +64,27 @@ import okhttp3.RequestBody;
  */
 
 public class CaseloadFragment extends Fragment implements CaseloadListAdapter.CaseloadListAdapterListener, View.OnClickListener/*, CaseloadSettingActivity.GetChoice*/ {
+
     private static final String TAG = CaseloadFragment.class.getSimpleName();
+
     @BindView(R.id.edittext_search)
     EditText editTextSearch;
+
     @BindView(R.id.imagebutton_filter)
     AppCompatImageButton imageButtonFilter;
+
     @BindView(R.id.imagebutton_setting)
     AppCompatImageButton imageButtonSetting;
+
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+
     @BindView(R.id.linearlayout_error)
     LinearLayout linearLayoutError;
+
     @BindView(R.id.imageview_error)
     AppCompatImageView imageViewError;
+
     @BindView(R.id.textview_error_message)
     TextView textViewErrorMessage;
 

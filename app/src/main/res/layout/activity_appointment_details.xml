@@ -547,7 +547,7 @@
                         android:background="@drawable/edittext_rounded_border"
                         android:text="View More"
                         android:textAllCaps="false"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14"
                         android:visibility="visible" />
                     <LinearLayout
