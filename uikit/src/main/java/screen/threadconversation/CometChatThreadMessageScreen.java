@@ -62,6 +62,7 @@ import com.cometchat.pro.uikit.Avatar;
 import com.cometchat.pro.uikit.ComposeBox;
 import com.cometchat.pro.uikit.R;
 import com.cometchat.pro.uikit.SmartReplyList;
+import com.cometchat.pro.uikit.sticker.ComposeBoxThread;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -132,7 +133,7 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
     private MessagesRequest messagesRequest;    //Used to fetch messages.
 
-    private ComposeBox composeBox;
+    private ComposeBoxThread composeBox;
     private String team_logs_id = "";
     private MediaRecorder mediaRecorder;
 
@@ -3099,24 +3100,11 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         else
             mediaMessage = new MediaMessage(NextGroupOrUserId, file, filetype, CometChatConstants.RECEIVER_TYPE_GROUP);
 
-        /*JSONArray languageArray = new JSONArray();
-        languageArray.put("en");
-        languageArray.put("hi");
-        languageArray.put("ar");
-        languageArray.put("ko");
-        languageArray.put("de");
-        languageArray.put("fr");
-        languageArray.put("fr-CA");
-        languageArray.put("es");
-        languageArray.put("ru");
-        languageArray.put("pt");
-        languageArray.put("vi");
-        languageArray.put("ur");
-
         JSONObject jsonObject = new JSONObject();
+        JSONArray languageArray = new JSONArray();
+        languageArray.put("");
 
         switch (tabs) {
-            //Friend chat
             case "1":
                 try {
                     jsonObject.put("team_logs_id", 0);
@@ -3124,54 +3112,48 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 break;
 
-            //group
             case "2":
-
                 try {
                     jsonObject.put("message_translation_languages", languageArray);
-                    Log.i(TAG, "sendMessage: Hello its tab 2 sending msg");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;
 
             case "3":
-                team_logs_id = receiverId + "_-" + teamId + "_-" + 3; //+"_sage036"
+                team_logs_id = NextGroupOrUserId + "_-" + team_id + "_-" + 3;
                 try {
                     jsonObject.put("team_logs_id", team_logs_id);
                     jsonObject.put("message_translation_languages", languageArray);
-                    Log.i(TAG, "sendMessage: TeamId " + teamId);
-                    Log.i(TAG, "sendMessage: Hello its tab3 sending msg " + team_logs_id);
+                    jsonObject.put("path", file.getAbsolutePath());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;
 
             case "4":
-                team_logs_id = receiverId + "_-" + teamId + "_-" + 4; //+"_sage036"
+                team_logs_id = NextGroupOrUserId + "_-" + team_id + "_-" + 4;
                 try {
                     jsonObject.put("team_logs_id", team_logs_id);
                     jsonObject.put("message_translation_languages", languageArray);
-                    Log.i(TAG, "sendMessage: Hello its tab4 sending msg" + team_logs_id);
+                    jsonObject.put("path", file.getAbsolutePath());
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;
+
         }
+        mediaMessage.setMetadata(jsonObject);
 
-        textMessage.setMetadata(jsonObject);*/
-
-
-        JSONObject jsonObject = new JSONObject();
+       /* JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("path", file.getAbsolutePath());
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        mediaMessage.setMetadata(jsonObject);
+        }*/
         mediaMessage.setParentMessageId(parentId);
         CometChat.sendMediaMessage(mediaMessage, new CometChat.CallbackListener<MediaMessage>() {
             @Override
@@ -4465,11 +4447,17 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
 
             @Override
             public void onDeleteMessageClick() {
-                deleteMessage(baseMessage);
+                if (tabs.equals("2")/* || !baseMessage.getType().equals("text")*/) {
+                    deleteMessage(baseMessage);
+                } else {
+                    onDeleteClickForFriendAndTeams("");
+                }
+
+              /*  deleteMessage(baseMessage);
                 if (messageAdapter != null) {
                     messageAdapter.clearLongClickSelectedItem();
                     messageAdapter.notifyDataSetChanged();
-                }
+                }*/
             }
 
             @Override
@@ -4499,6 +4487,115 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             @Override
             public void onMessageInfoClick() {
 
+            }
+        });
+    }
+
+    /*delete message method created for friend, team and */
+    public void onDeleteClickForFriendAndTeams(String message) {
+        isEdit = false;
+        TextMessage textMessage;
+        JSONObject jsonObject = new JSONObject();
+
+        if (baseMessage.getReceiverType().equalsIgnoreCase(CometChatConstants.RECEIVER_TYPE_USER))
+            textMessage = new TextMessage(baseMessage.getReceiverUid(), message, CometChatConstants.RECEIVER_TYPE_USER);
+        else
+            textMessage = new TextMessage(baseMessage.getReceiverUid(), message, CometChatConstants.RECEIVER_TYPE_GROUP);
+
+        sendTypingIndicator(true);
+
+        textMessage.setId(baseMessage.getId());
+        JSONArray languageArray = new JSONArray();
+        languageArray.put("en");
+        languageArray.put("hi");
+        languageArray.put("ar");
+        languageArray.put("ko");
+        languageArray.put("de");
+        languageArray.put("fr");
+        languageArray.put("fr-CA");
+        languageArray.put("es");
+        languageArray.put("ru");
+        languageArray.put("pt");
+        languageArray.put("vi");
+        languageArray.put("ur");
+
+        switch (tabs) {
+            //Friend chat
+            case "1":
+                try {
+                    jsonObject.put("team_logs_id", 0);
+                    jsonObject.put("deleted_one_to_one", 0);
+                    jsonObject.put("message_translation_languages", languageArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "3":
+                team_logs_id = NextGroupOrUserId + "_-" + team_id + "_-" + 3; //+"_sage036"
+                try {
+                    jsonObject.put("team_logs_id", team_logs_id);
+                    jsonObject.put("deleted_one_to_one", 1);
+                    jsonObject.put("message_translation_languages", languageArray);
+                    Log.i(TAG, "sendMessage: TeamId " + team_id);
+                    Log.i(TAG, "sendMessage: Hello its tab3 sending msg " + team_logs_id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "4":
+                team_logs_id = NextGroupOrUserId + "_-" + team_id + "_-" + 4; //+"_sage036"
+                try {
+                    jsonObject.put("team_logs_id", team_logs_id);
+                    jsonObject.put("deleted_one_to_one", 1);
+                    jsonObject.put("message_translation_languages", languageArray);
+                    Log.i(TAG, "sendMessage: Hello its tab4 sending msg" + team_logs_id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        Log.i(TAG, "editMessage:  metadata" + jsonObject);
+        textMessage.setMetadata(jsonObject);
+        CometChat.editMessage(textMessage, new CometChat.CallbackListener<BaseMessage>() {
+            @Override
+            public void onSuccess(BaseMessage baseMessage1) {
+                Log.e(TAG, "onSuccess: onDeleteClickForFriendAndTeams" + baseMessage1.toString());
+                if (messageAdapter != null) {
+                    try {
+                        JSONObject body = new JSONObject();
+                        JSONArray languages = new JSONArray();
+                        languages.put(sp.getString("currentLang", "en"));
+                        body.put("msgId", baseMessage1.getId());
+                        body.put("languages", languages);
+                        body.put("text", "" + message);
+                        baseMessage1.setDeletedAt(12324);
+                        messageAdapter.setUpdatedMessage(baseMessage1);
+                        /*CometChat.callExtension("message-translation", "POST", "/v2/translate", body,
+                                new CometChat.CallbackListener<JSONObject>() {
+                                    @Override
+                                    public void onSuccess(JSONObject jsonObject) {
+                                        Log.i(TAG, "onSuccess: message-translation " + jsonObject);
+                                        baseMessage.setDeletedAt(12324);
+                                        messageAdapter.setUpdatedMessage(baseMessage);
+                                    }
+                                    @Override
+                                    public void onError(CometChatException e) {
+                                        Log.i(TAG, "onError: " + e.getMessage());
+                                    }
+                                });*/
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //messageAdapter.setUpdatedMessage(message);
+                }
+            }
+
+            @Override
+            public void onError(CometChatException e) {
+                Log.d(TAG, "onError: onDeleteClickForFriendAndTeams " + e.getMessage());
             }
         });
     }

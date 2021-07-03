@@ -139,22 +139,17 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                                 holder.friend_list_item_statusmessage.setText(mContext.getResources().getString(R.string.delete_message));
                             holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
                             holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
+                        }else{
+                            String type = (conversation.getLastMessage()).getType();
+                            holder.friend_list_item_statusmessage.setText("" + type);
+                            holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
+                            holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-            } else if (conversation.getLastMessage().getType().equalsIgnoreCase("image")
-                    || conversation.getLastMessage().getType().equalsIgnoreCase("file")
-                    || conversation.getLastMessage().getType().equalsIgnoreCase("audio")
-                    || conversation.getLastMessage().getType().equalsIgnoreCase("video")
-                    || conversation.getLastMessage().getType().equalsIgnoreCase("extension_whiteboard")) {
-                String type = (conversation.getLastMessage()).getType();
-                holder.friend_list_item_statusmessage.setText("" + type);
-                holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
-                holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));
-            } else if (conversation.getLastMessage().getType().equals("call")) {
+            }  else if (conversation.getLastMessage().getType().equals("call")) {
                 holder.friend_list_item_statusmessage.setText("" + conversation.getLastMessage().getType());
                 holder.friend_list_item_statusmessage.setVisibility(View.VISIBLE);
                 holder.messageTime.setText(Utils.getLastMessageDate((conversation.getLastMessage()).getSentAt()));

@@ -238,7 +238,7 @@
             android:layout_above="@id/message_box"
             android:layout_height="wrap_content"/>
 
-        <com.cometchat.pro.uikit.ComposeBox
+        <com.cometchat.pro.uikit.sticker.ComposeBoxThread
             android:id="@+id/message_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

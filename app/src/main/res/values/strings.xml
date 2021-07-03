@@ -568,7 +568,7 @@
     <string name="valid_image_error">Please select valid image</string>
     <string name="valid_file_error">Please select valid file</string>
     <string name="select_owner">Select Owner</string>
-    <string name="no_record_found">No Record Found</string>
+    <string name="no_record_found">No Records Found</string>
     <string name="internal_error_occurred">Internal Error Occurred</string>
     <string name="network_error_occurred">Network Error Occurred</string>
     <string name="authentication_failed">Authentication Failed</string>

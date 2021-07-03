@@ -167,7 +167,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
         SharedPreferences.Editor editor = preferencesCheckCurrentActivity.edit();
         editor.putBoolean("IsFriendListingPage", false);
         editor.apply();
-
+        bm.unregisterReceiver(onJsonReceived);
     }
 
     @Override

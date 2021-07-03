@@ -110,7 +110,7 @@ public class FragmentLastConversation extends Fragment {
     String JoinTeam, MyTeam;
     ArrayList<String> myTeamArrayList = new ArrayList<>();
     ArrayList<String> joinTeamArrayList = new ArrayList<>();
-
+    LinearLayout linealayout_error;
     public FragmentLastConversation() {
         // Required empty public constructor
     }
@@ -235,6 +235,7 @@ public class FragmentLastConversation extends Fragment {
         sp = getActivity().getSharedPreferences("login", MODE_PRIVATE);
         cardview_actions = view.findViewById(R.id.cardview_actions);
         ed_search_friend = view.findViewById(R.id.ed_search_friend);
+        linealayout_error = view.findViewById(R.id.linealayout_error);
         progressBar = view.findViewById(R.id.progressBarLastConversation);
         arrayListUsers = new ArrayList<>();
         activity = getActivity();
@@ -282,15 +283,15 @@ public class FragmentLastConversation extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Thread threadMakeConversation = new Thread(new Runnable() {
+        /*Thread threadMakeConversation = new Thread(new Runnable() {
             @Override
             public void run() {
                 //code to do the HTTP request
-                fetchConversationList();
+
             }
         });
-        threadMakeConversation.start();
-
+        threadMakeConversation.start();*/
+        fetchConversationList();
         Thread threadGetGroupList = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -332,51 +333,48 @@ public class FragmentLastConversation extends Fragment {
                 }
 
                 if (conversationList.size() != 0) {
+                    linealayout_error.setVisibility(View.GONE);
                     adapter = new AdapterLastConversation(FragmentLastConversation.this, conversationList, getActivity(), FragmentLastConversation.this);
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.i(TAG, "run: data set...");
-                            cardview_actions.setVisibility(View.VISIBLE);
-                            recyclerView.setAdapter(adapter);
-                            Intent mainIntent=requireActivity().getIntent();
-                            if (requireActivity().getIntent().getExtras() != null) {
-                                if (mainIntent.hasExtra("category")) {
-                                    if (mainIntent.getStringExtra("category").equals("call")) {
-                                        /*Here we are getting intent  for call redirection*/
-                                        Log.i(TAG, "handleIntent: call block");
-                                        String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
-                                        String uid = mainIntent.getStringExtra("uid");
-                                        String role = mainIntent.getStringExtra("role");
-                                        String name = mainIntent.getStringExtra("name");
-                                        String avatar = mainIntent.getStringExtra("avatar");
-                                        String status = mainIntent.getStringExtra("status");
-                                        String callType = mainIntent.getStringExtra("callType");
-                                        String sessionid = mainIntent.getStringExtra("sessionid");
+                    cardview_actions.setVisibility(View.VISIBLE);
+                    recyclerView.setAdapter(adapter);
 
-                                        User user = new User();
-                                        user.setLastActiveAt(Long.parseLong(lastActiveAt));
-                                        user.setUid(uid);
-                                        user.setRole(role);
-                                        user.setName(name);
-                                        user.setAvatar(avatar);
-                                        user.setStatus(status);
-                                        Utils.startCallIntent(getActivity(), user, callType, false, sessionid);
-                                        clearIntent();
-                                    }
-                                }else{
-                                checkIntent(conversationList.get(0));
-                                }
+                    Intent mainIntent=requireActivity().getIntent();
+                    if (requireActivity().getIntent().getExtras() != null) {
+                        if (mainIntent.hasExtra("category")) {
+                            if (mainIntent.getStringExtra("category").equals("call")) {
+                                /*Here we are getting intent  for call redirection*/
+                                Log.i(TAG, "handleIntent: call block");
+                                String lastActiveAt = mainIntent.getStringExtra("lastActiveAt");
+                                String uid = mainIntent.getStringExtra("uid");
+                                String role = mainIntent.getStringExtra("role");
+                                String name = mainIntent.getStringExtra("name");
+                                String avatar = mainIntent.getStringExtra("avatar");
+                                String status = mainIntent.getStringExtra("status");
+                                String callType = mainIntent.getStringExtra("callType");
+                                String sessionid = mainIntent.getStringExtra("sessionid");
+
+                                User user = new User();
+                                user.setLastActiveAt(Long.parseLong(lastActiveAt));
+                                user.setUid(uid);
+                                user.setRole(role);
+                                user.setName(name);
+                                user.setAvatar(avatar);
+                                user.setStatus(status);
+                                Utils.startCallIntent(getActivity(), user, callType, false, sessionid);
+                                clearIntent();
                             }
+                        }else{
+                            checkIntent(conversationList.get(0));
                         }
-                    });
+                    }
 
                 } else {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            cardview_actions.setVisibility(View.VISIBLE);
+                            cardview_actions.setVisibility(View.GONE);
                             Log.i(TAG, "run: data set else");
+                            linealayout_error.setVisibility(View.VISIBLE);
                         }
                     });
                 }

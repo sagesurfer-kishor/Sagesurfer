@@ -290,8 +290,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String title = data.optString("title");
             String message = data.optString("message");
 
-
-
 //            String message = "This is demo app";
             String imageUrl = data.optString("image");
             String type = data.optString("menu_id");
@@ -417,6 +415,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Preferences.save("regId_save", false);
         Preferences.initialize(getApplicationContext());
         Preferences.save("regId", token);
+        Preferences.save("device_token", token);
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
@@ -605,7 +604,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private PendingIntent getIntent() {
-
         if (Preferences.contains(General.IS_LOGIN) && Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
             // User is logged in
             try {
