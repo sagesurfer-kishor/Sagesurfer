@@ -1227,7 +1227,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i(TAG, "run: "+Preferences.get("regId"));
+                Log.i(TAG, "registerPushNotificationToken : "+Preferences.get("regId"));
                 RegisterFirebaseTokenToServer(Preferences.get("regId"));
             }
         };
