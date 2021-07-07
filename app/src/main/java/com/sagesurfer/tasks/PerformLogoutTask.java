@@ -6,14 +6,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.cometchat.pro.constants.CometChatConstants;
 import com.cometchat.pro.core.CometChat;
-import com.cometchat.pro.core.CometChatExtension;
 import com.cometchat.pro.exceptions.CometChatException;
-import com.firebase.MessagingService;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sagesurfer.collaborativecares.Application;
@@ -26,11 +23,7 @@ import com.sagesurfer.network.Urls_;
 import com.sagesurfer.secure.KeyMaker_;
 import com.storage.preferences.Preferences;
 
-import org.json.JSONObject;
-
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 
 import okhttp3.FormBody;
@@ -45,7 +38,6 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class PerformLogoutTask {
-
     private static final String TAG = PerformLogoutTask.class.getSimpleName();
     private static SharedPreferences loginPreferences;
     private static SharedPreferences.Editor loginPrefsEditor;
@@ -113,8 +105,8 @@ public class PerformLogoutTask {
         }
     }
 
-    private static void logoutFromCometchat(Activity activity){
-        Runnable runnable=new Runnable() {
+    private static void logoutFromCometchat(Activity activity) {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 CometChat.logout(new CometChat.CallbackListener<String>() {
@@ -131,14 +123,16 @@ public class PerformLogoutTask {
                 });
             }
         };
-        Thread thread=new Thread(runnable);
+        Thread thread = new Thread(runnable);
         thread.start();
         safeLogout(activity);
     }
 
-    private static  void unSubscribeUserFromCometchat(Activity activity){
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConfig.AppDetails.APP_ID + "_" + CometChatConstants.RECEIVER_TYPE_USER + "_" +
-                Preferences.get(General.COMET_CHAT_ID)).addOnSuccessListener(new OnSuccessListener<Void>() {
+    private static void unSubscribeUserFromCometchat(Activity activity) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConfig.AppDetails.APP_ID + "_"
+                + CometChatConstants.RECEIVER_TYPE_USER + "_"
+                + Preferences.get(General.COMET_CHAT_ID)).addOnSuccessListener(new OnSuccessListener<Void>() {
+
             @Override
             public void onSuccess(Void aVoid) {
                 Log.e(TAG, Preferences.get(General.COMET_CHAT_ID) + " Unsubscribed Success");
@@ -160,7 +154,7 @@ public class PerformLogoutTask {
         spEditor.clear();
         spEditor.apply();
 
-        SharedPreferences loginSessionCheck =activity.getSharedPreferences("loginSessionCheck",MODE_PRIVATE);
+        SharedPreferences loginSessionCheck = activity.getSharedPreferences("loginSessionCheck", MODE_PRIVATE);
         SharedPreferences.Editor editor = loginSessionCheck.edit();
         editor.putString(General.IS_LOGIN, "0");
         editor.apply();

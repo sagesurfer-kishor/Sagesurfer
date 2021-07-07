@@ -145,7 +145,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
     private TextView tvMemberCount;
     private int groupMemberCount = 0;
     private RecyclerView history_rv;
-    private static int LIMIT = 30;
+    private static final int LIMIT = 30;
     LinearLayout shared_media_layout;
     RelativeLayout rlAdminView;
     private User loggedInUser = CometChat.getLoggedInUser();
@@ -261,7 +261,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         rvMemberList.addOnItemTouchListener(new RecyclerTouchListener(this, rvMemberList, new ClickListener() {
             @Override
             public void onClick(View var1, int var2) {
-               /*commeted */
+                /*commeted */
                 /* GroupMember user = (GroupMember) var1.getTag(R.string.user);
                 if (loggedInUserScope != null && (loggedInUserScope.equals(CometChatConstants.SCOPE_ADMIN) || loggedInUserScope.equals(CometChatConstants.SCOPE_MODERATOR))) {
                     groupMember = user;
@@ -409,7 +409,6 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
      * @param drawableRes
      */
     private void createDialog(String title, String message, String positiveText, String negativeText, int drawableRes) {
-
         MaterialAlertDialogBuilder alert_dialog = new MaterialAlertDialogBuilder(CometChatGroupDetailScreenActivity.this,
                 R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered);
         alert_dialog.setTitle(title);
@@ -422,6 +421,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
             else if (positiveText.equalsIgnoreCase(getResources().getString(R.string.delete))
                     && loggedInUserScope.equalsIgnoreCase(CometChatConstants.SCOPE_ADMIN))
                 deleteGroup();
+
 
         });
 
@@ -507,7 +507,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
             shared_media_layout.setVisibility(View.GONE);
             tv_delete.setVisibility(View.GONE);
             tv_exit.setVisibility(View.GONE);
-        }else{
+        } else {
             historyView.setVisibility(View.GONE);
         }
     }
@@ -566,7 +566,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         CometChat.deleteGroup(guid, new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
-                launchUnified();
+                DeleteGroup("delete_group",guid,1);
             }
 
             @Override
@@ -1097,28 +1097,28 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
                     Log.e(TAG, "leftGroupMembersFromServer : response" + response);
                     JSONArray left_group_members = responseJsonObj.getJSONArray("left_group_members");
 
-                   // for (int i = 0; i <= left_group_members.length(); i++) {
-                        try {
-                            String msg = left_group_members.getJSONObject(0).getString("msg");
-                            Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
+                    // for (int i = 0; i <= left_group_members.length(); i++) {
+                    try {
+                        String msg = left_group_members.getJSONObject(0).getString("msg");
+                        Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
                             /*Fragment fragment = GetFragments.get(id, bundle);
                             FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();
                             ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
                             ft.replace(R.id.app_bar_main_container, fragment, TAG);
                             ft.commit();*/
-                            Intent intent = new Intent(CometChatGroupDetailScreenActivity.this, Class.forName("com.sagesurfer.collaborativecares.MainActivity"));
-                            String team_logs_id = "";
-                            intent.putExtra("team_logs_id", team_logs_id);
-                            intent.putExtra("receiver", guid);
-                            intent.putExtra("sender", user_id);
-                            intent.putExtra("receiverType", "group");
-                            intent.putExtra("username", user_id);
-                            intent.putExtra("type", "groupMember");
-                            intent.putExtra("direct", "directMessage");
-                            startActivity(intent);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        Intent intent = new Intent(CometChatGroupDetailScreenActivity.this, Class.forName("com.sagesurfer.collaborativecares.MainActivity"));
+                        String team_logs_id = "";
+                        intent.putExtra("team_logs_id", team_logs_id);
+                        intent.putExtra("receiver", guid);
+                        intent.putExtra("sender", user_id);
+                        intent.putExtra("receiverType", "group");
+                        intent.putExtra("username", user_id);
+                        intent.putExtra("type", "groupMember");
+                        intent.putExtra("direct", "directMessage");
+                        startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Toast.makeText(CometChatGroupDetailScreenActivity.this, "Server error..", Toast.LENGTH_SHORT).show();
                 }
@@ -1128,8 +1128,7 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
         }
     }
 
-    public void dialogViewMembers(String groupType)
-    {
+    public void dialogViewMembers(String groupType) {
         androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(CometChatGroupDetailScreenActivity.this);
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.member_details, null);
@@ -1383,4 +1382,41 @@ public class CometChatGroupDetailScreenActivity extends AppCompatActivity {
             callHistoryAdapter.updateList(messageList);
     }
 
+    private void DeleteGroup(String action, String gId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, action);
+        requestMap.put(General.GROUP_ID, gId);
+        SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String DomainURL = domainUrlPref.getString(General.DOMAIN, null);
+        String url = DomainURL + Urls_.MOBILE_COMET_CHAT_TEAMS;
+        Log.i(TAG, "DeleteGroup: "+url);
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this);
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, this);
+                Log.e("deleteGroup", response);
+                if (response != null) {
+                    Toast.makeText(this, "Delete group Successfully", Toast.LENGTH_LONG).show();
+                    try {
+                    Intent intent = null;
+                    intent = new Intent(CometChatGroupDetailScreenActivity.this, Class.forName("com.sagesurfer.collaborativecares.MainActivity"));
+                    String team_logs_id = "";
+                    User user = CometChat.getLoggedInUser();
+                    intent.putExtra("team_logs_id", team_logs_id);
+                    intent.putExtra("receiver", guid);
+                    intent.putExtra("sender", user.getUid());
+                    intent.putExtra("receiverType", "group");
+                    intent.putExtra("username", user.getUid());
+                    intent.putExtra("type", "groupMember");
+                    intent.putExtra("direct", "directMessage");
+                    startActivity(intent);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

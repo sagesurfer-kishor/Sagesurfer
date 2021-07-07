@@ -104,7 +104,13 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                                                 String messageTranslatedString = null;
                                                 messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
                                                 Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
-                                                holder.friend_list_item_statusmessage.setText(messageTranslatedString);
+
+                                                if (messageTranslatedString.length() > 25) {
+
+                                                    holder.friend_list_item_statusmessage.setText(messageTranslatedString.substring(0, 24)+"...");
+                                                } else {
+                                                    holder.friend_list_item_statusmessage.setText(messageTranslatedString);
+                                                }
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
@@ -237,7 +243,12 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                                                     String messageTranslatedString = null;
                                                     messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
                                                     Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
-                                                    holder.friend_list_item_statusmessage.setText(messageTranslatedString);
+                                                    if (messageTranslatedString.length() > 25) {
+                                                        Log.i(TAG, "onBindViewHolder: name " + name.substring(0, 19));
+                                                        holder.friend_list_item_statusmessage.setText(messageTranslatedString.substring(0, 24)+"...");
+                                                    } else {
+                                                        holder.friend_list_item_statusmessage.setText(messageTranslatedString);
+                                                    }
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
                                                 }

@@ -317,8 +317,9 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             messageType = getArguments().getString(StringContract.IntentStrings.MESSAGE_TYPE);
             messageSentAt = getArguments().getLong(StringContract.IntentStrings.SENTAT);
             tabs = getArguments().getString(StringContract.IntentStrings.TABS);
-            team_id = getArguments().getString(StringContract.IntentStrings.TEAM_ID);
-            Log.i(TAG, "handleArguments: tabs " + tabs);
+            //team_id = getArguments().getString(StringContract.IntentStrings.TEAM_ID);
+
+            //Log.i(TAG, "handleArguments: tabs " + tabs +" team_id "+team_id);
             if (messageType.equals(CometChatConstants.MESSAGE_TYPE_TEXT)) {
                 message = getArguments().getString(StringContract.IntentStrings.TEXTMESSAGE);
             } else {
@@ -354,6 +355,8 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
         // ivForwardMessage = view.findViewById(R.id.ic_forward_option);
         //ivForwardMessage.setOnClickListener(this);
         sp = context.getSharedPreferences("login", MODE_PRIVATE);
+        Log.i(TAG, "initViewComponent: team_id "+sp.getString("teamIds", ""));
+        team_id =sp.getString("teamIds", "");
         textMessage = view.findViewById(R.id.tv_textMessage);
         message_layout = view.findViewById(R.id.message_layout);
         textMessage.setText(message);
@@ -3807,7 +3810,16 @@ public class CometChatThreadMessageScreen extends Fragment implements View.OnCli
             @Override
             public void onMessageEdited(BaseMessage message) {
                 Log.d(TAG, "onMessageEdited: " + message.toString());
-                updateMessage(message);
+                /*delete one_to_one is tag which we user for messaged deletion if it has this tag that means that message is deleted
+                 * commented and created by rahul maske on 24-06-2021*/
+                if (message.getMetadata().has("deleted_one_to_one")) {
+                    message.setDeletedAt(12324);
+                    messageAdapter.setUpdatedMessage(message);
+                    Log.i(TAG, "onMessageEdited: 1");
+                } else {
+                    Log.i(TAG, "onMessageEdited: 2");
+                    updateMessage(message);
+                }
             }
 
             @Override

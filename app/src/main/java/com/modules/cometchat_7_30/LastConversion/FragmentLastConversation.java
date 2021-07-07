@@ -466,7 +466,7 @@ public class FragmentLastConversation extends Fragment {
         String ProviderIds[] = allProvidersString.split(",");
         Log.i(TAG, "performAdapterClick:  " + ((User) conversation.getConversationWith()).getUid());
         //Log.i(TAG, "performAdapterClick:  "+((User) conversation.getConversationWith()).getMetadata().getString("team_logs_id"));
-        Log.i(TAG, "onUserClickPerform: has team_logs_id medadata for message" + conversation.getLastMessage().getMetadata());
+        Log.i(TAG, ": has team_logs_id medadata for message" + conversation.getLastMessage().getMetadata());
 
         if (conversation.getLastMessage().getMetadata().has("team_logs_id")) {
             if (conversation.getLastMessage().getMetadata().getString("team_logs_id").equals("0")) {

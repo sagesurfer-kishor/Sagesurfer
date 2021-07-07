@@ -138,8 +138,9 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
 
              if (getIntent().hasExtra(StringContract.IntentStrings.TEAM_ID)) {
                  team_id = getIntent().getStringExtra(StringContract.IntentStrings.TEAM_ID);
-             }
 
+             }
+             Log.i(TAG, "onCreate: team_Id "+team_id +" sp teamId " );
              bundle.putString(StringContract.IntentStrings.ID,Id);
              bundle.putString(StringContract.IntentStrings.CONVERSATION_NAME,conversationName);
              bundle.putString(StringContract.IntentStrings.TYPE,type);
@@ -164,7 +165,7 @@ public class CometChatThreadMessageActivity extends AppCompatActivity implements
               }
 
               fragment.setArguments(bundle);
-             getSupportFragmentManager().beginTransaction().replace(R.id.ChatFragment, fragment).commit();
+              getSupportFragmentManager().beginTransaction().replace(R.id.ChatFragment, fragment).commit();
          }
     }
 

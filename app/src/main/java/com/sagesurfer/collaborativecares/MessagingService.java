@@ -1,4 +1,4 @@
-package com.firebase;
+package com.sagesurfer.collaborativecares;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,19 +20,17 @@ import com.cometchat.pro.core.Call;
 import com.cometchat.pro.helpers.CometChatHelper;
 import com.cometchat.pro.models.BaseMessage;
 import com.cometchat.pro.models.User;
+import com.firebase.CallNotificationAction;
+import com.firebase.Config;
+import com.firebase.NotificationUtils;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.modules.cometchat_7_30.CometChatFriendsListFragment_;
 import com.modules.cometchat_7_30.LastConversion.FragmentLastConversation;
-import com.sagesurfer.collaborativecares.LoginActivity;
-import com.sagesurfer.collaborativecares.MainActivity;
-import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.logger.Logger;
 import com.sagesurfer.network.AppConfig;
-import com.sagesurfer.utilities.AppInfo;
 import com.storage.preferences.Preferences;
 
 import org.json.JSONException;
@@ -50,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 
 import constant.StringContract;
-import screen.messagelist.CometChatMessageScreen;
 import utils.Utils;
 
 /**
@@ -72,6 +68,7 @@ public class MessagingService extends FirebaseMessagingService {
     public static String token;
     private static final int REQUEST_CODE = 12;
     private boolean isCall;
+
     private boolean isChatScreen, IsFriendListingPage, IsGroupListingPage;
     SharedPreferences preferencesCheckCurrentActivity;
     SharedPreferences.Editor editor;
@@ -86,7 +83,7 @@ public class MessagingService extends FirebaseMessagingService {
         intentMain = new Intent(this, MainActivity.class);
         callingIntent = new Intent(this, FragmentLastConversation.class);
 
-        Log.e("notification received..", remoteMessage.toString());
+        Log.e(TAG , " notification received.. "+ remoteMessage.toString());
         Logger.error("Debug", "Firebase Notification payload : " + remoteMessage.getData().toString(), getApplicationContext());
         Preferences.save(General.IS_PUSH_NOTIFICATION_SENT, false);
 

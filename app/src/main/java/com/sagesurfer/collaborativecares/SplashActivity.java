@@ -1,4 +1,4 @@
-package com.sagesurfer.collaborativecares;
+ package com.sagesurfer.collaborativecares;
 
 import android.annotation.SuppressLint;
 
@@ -20,6 +20,7 @@ import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
 import com.cometchat.pro.uikit.Settings.UIKitSettings;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.sagesurfer.constant.Chat;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.directory.MakeDirectory;
@@ -47,6 +48,16 @@ public class SplashActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initializeCometChat();
         Preferences.initialize(this);
+
+        /*firebase code*/
+        /*FirebaseOptions options = new FirebaseOptions.Builder()
+                .setApplicationId("com.sagesurfer.collaborativecares") // Required for Analytics.
+                .setProjectId("collaborative-care-connection") // Required for Firebase Installations.
+                .setApiKey("AIzaSyA1XQjGycX-rEQnHcZzjaeoKy64Yw8ZkMI") // Required for Auth.
+                .build();
+       // FirebaseApp.initializeApp(this, options, "Collaborative Care Connection");
+        FirebaseApp.initializeApp(this, options, "Collaborative Care Connection");*/
+
         new Handler().postDelayed(() -> {
             if (Preferences.contains(General.IS_LOGIN) &&
                     Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {

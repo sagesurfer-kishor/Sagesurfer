@@ -107,6 +107,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 import adapter.MessageAdapter;
@@ -5589,7 +5590,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         intent.putExtra(StringContract.IntentStrings.SENTAT, baseMessage.getSentAt());
         intent.putExtra(StringContract.IntentStrings.TABS, tabs);
         if (tabs.equals("3") || tabs.equals("4")) {
-            intent.putExtra(StringContract.IntentStrings.TEAM_ID, team_Ids);
+            intent.putExtra(StringContract.IntentStrings.TEAM_ID, sp.getString("teamIds", teamId));
+            Log.i(TAG, "startThreadActivity: sending team_id "+team_Ids);
         }
         if (baseMessage.getType().equals(CometChatConstants.MESSAGE_TYPE_TEXT))
             intent.putExtra(StringContract.IntentStrings.TEXTMESSAGE, ((TextMessage) baseMessage).getText());
@@ -5864,8 +5866,10 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 String message = "";
                 for (BaseMessage bMessage : baseMessages) {
                     if (bMessage.getDeletedAt() == 0 && bMessage instanceof TextMessage) {
-                        message = message + "[" + Utils.getLastMessageDate(bMessage.getSentAt()) + "] " + bMessage.getSender().getName() + ": " + ((TextMessage) bMessage).getText();
+                        message = message + "[" + Utils.getLastMessageDate(bMessage.getSentAt())
+                                + "] " + bMessage.getSender().getName() + ": " + ((TextMessage) bMessage).getText();
                     }
+
                 }
                 Log.e(TAG, "onCopy: " + message);
                 ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);

@@ -299,7 +299,7 @@ public class NotificationUtils {
     }
 
     // Playing notification sound
-    void playNotificationSound() {
+    public void playNotificationSound() {
         try {
             Uri alarmSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + mContext.getPackageName() + "/raw/notification");
             Ringtone r = RingtoneManager.getRingtone(mContext, alarmSound);
@@ -309,7 +309,7 @@ public class NotificationUtils {
         }
     }
 
-    static boolean isAppIsInBackground(Context context) {
+    public static boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         assert am != null;

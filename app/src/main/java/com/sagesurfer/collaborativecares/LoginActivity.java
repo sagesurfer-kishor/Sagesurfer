@@ -1,6 +1,5 @@
 package com.sagesurfer.collaborativecares;
 
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -45,13 +44,12 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
-import com.firebase.MessagingService;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 /*
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 */
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -93,7 +91,6 @@ import com.storage.preferences.Preferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -104,7 +101,6 @@ import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import constant.StringContract;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -1234,7 +1230,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Thread thread = new Thread(runnable);
         thread.start();
 
-        /*FirebaseMessaging.getInstance().getToken()
+        FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
@@ -1246,7 +1242,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         firebaseToken = task.getResult();
                         Log.i(TAG, "onComplete: token " + firebaseToken);
                     }
-                });*/
+                });
 
         CometChat.registerTokenForPushNotification(Preferences.get("regId"), new CometChat.CallbackListener<String>() {
             @Override
@@ -1265,7 +1261,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void RegisterFirebaseTokenToServer(String token) {
-
         SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
         SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
