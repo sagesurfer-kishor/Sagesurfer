@@ -84,6 +84,7 @@
         <activity
             android:name="com.modules.team.gallery.activity.CreateGalleryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
@@ -94,6 +95,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SignUpActivity"
             android:screenOrientation="portrait"
@@ -152,11 +154,7 @@
         <activity
             android:name="com.modules.postcard.CreateMailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <!--
-            <activity
-            android:name="com.modules.home.gment"
-            android:theme="@style/AppTheme.NoActionBar" />
-        -->
+
         <!-- Wall -->
         <activity
             android:name="com.modules.team.TeamDetailsActivity"
@@ -561,14 +559,14 @@
         </service>
 
 
-        <!--<service
+        <service
             android:name=".MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>-->
+        </service>
 
        <!-- <service
             android:name=".FinalNotificationReceived"
@@ -579,14 +577,12 @@
             </intent-filter>
         </service>-->
 
-
-                <service android:name=".MessagingService"
+<!--                <service android:name=".MessagingService"
                     android:exported="false">
                     <intent-filter>
-                        <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                        <action android:name="com.google.firebase.MESSAGING_EVENT" />
                     </intent-filter>
-                </service>
-
+                </service>-->
 
 
 <!--        <service android:name=".service.MyFirebaseMessagingService"-->
@@ -595,16 +591,9 @@
 <!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
 <!--            </intent-filter>-->
 <!--        </service>-->
-        <receiver android:name="com.firebase.CallNotificationAction" />
-        <!--<service
-            android:name="com.firebase.IdService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>-->
 
+
+        <receiver android:name="com.firebase.CallNotificationAction" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

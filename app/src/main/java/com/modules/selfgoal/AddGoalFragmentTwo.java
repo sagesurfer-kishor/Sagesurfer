@@ -60,8 +60,8 @@ import butterknife.Unbinder;
 
 /**
  * @author Monika M (monikam@sagesurfer.com)
- *         Created on 24/03/2018
- *         Last Modified on
+ * Created on 24/03/2018
+ * Last Modified on
  */
 
 public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener {
@@ -146,14 +146,19 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
     EditText editTextFragmentAddGoalTwoFrequencyMonthCountTwo;
     @BindView(R.id.linearlayout_fragmentaddgoaltwo_occurrences)
     LinearLayout linearLayoutFragmentAddGoalTwoOccurrences;
+
     @BindView(R.id.edittext_fragmentaddgoaltwo_occurrence)
     EditText editTextFragmentAddGoalTwoOccurrence;
+
     @BindView(R.id.textview_fragmentaddgoaltwo_occurrencetime)
     TextView textViewFragmentAddGoalTwoOccurrenceTime;
+
     @BindView(R.id.linearlayout_fragmentaddgoaltwo_date)
     LinearLayout linearLayoutFragmentAddGoalTwoDate;
+
     @BindView(R.id.textview_fragmentaddgoaltwo_startdate)
     TextView textViewFragmentAddGoalTwoStartDate;
+
     @BindView(R.id.textview_fragmentaddgoaltwo_enddate)
     TextView textViewFragmentAddGoalTwoEndDate;
 
@@ -268,15 +273,21 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
                 }
             }
         };
+
         AddGoalPreferences.initialize(activity.getApplicationContext());
-        if (AddGoalPreferences.contains(General.ACTION) && AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.add_goal))) {
+
+        if (AddGoalPreferences.contains(General.ACTION)
+                && AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.add_goal))) {
             clearTimePreferences();
             textViewFragmentAddGoalTwoFrequency.setEnabled(true);
-        } else if (AddGoalPreferences.contains(General.ACTION) && AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.edit))) {
+        } else if (AddGoalPreferences.contains(General.ACTION)
+                && AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.edit))) {
             textViewFragmentAddGoalTwoFrequency.setEnabled(false);
         }
         setData();
+
         toggleGoalType();
+
         return view;
     }
 
@@ -301,7 +312,9 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
             int day = spinnerFragmentAddGoalTwoFrequencyMonthWeek.getSelectedItemPosition() + 1;
             int week = spinnerFragmentAddGoalTwoFrequencyMonthSequence.getSelectedItemPosition() + 1;
             end_date = GetTime.getSpecificDay(week, day, Formulas_.getMonthCount(occurrences, month));
+
             textViewFragmentAddGoalTwoEndDate.setText(GetTime.month_DdYyyy(end_date));
+
         }
 
         @Override
@@ -316,7 +329,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
             switch (v.getId()) {
                 case R.id.edittext_fragmentaddgoaltwo_occurrence:
                     if (!hasFocus) {
-                        if(editTextFragmentAddGoalTwoOccurrence != null) {
+                        if (editTextFragmentAddGoalTwoOccurrence != null) {
                             String occurrences = editTextFragmentAddGoalTwoOccurrence.getText().toString().trim();
                             if (occurrences.length() <= 0) {
                                 editTextFragmentAddGoalTwoOccurrence.setText("1");
@@ -326,7 +339,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
                     break;
                 case R.id.edittext_fragmentaddgoaltwo_specificdaycount:
                     if (!hasFocus) {
-                        if(editTextFragmentAddGoalTwoSpecificDayCount != null) {
+                        if (editTextFragmentAddGoalTwoSpecificDayCount != null) {
                             String count_day = editTextFragmentAddGoalTwoSpecificDayCount.getText().toString().trim();
                             if (count_day.length() <= 0) {
                                 editTextFragmentAddGoalTwoSpecificDayCount.setText("1");
@@ -336,7 +349,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
                     break;
                 case R.id.edittext_fragmentaddgoaltwo_frequencymonthcount:
                     if (!hasFocus) {
-                        if(editTextFragmentAddGoalTwoFrequencyMonthCount != null) {
+                        if (editTextFragmentAddGoalTwoFrequencyMonthCount != null) {
                             String count_month = editTextFragmentAddGoalTwoFrequencyMonthCount.getText().toString().trim();
                             if (count_month.length() <= 0) {
                                 editTextFragmentAddGoalTwoFrequencyMonthCount.setText("1");
@@ -346,7 +359,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
                     break;
                 case R.id.edittext_fragmentaddgoaltwo_frequencymonthdaycount:
                     if (!hasFocus) {
-                        if(editTextFragmentAddGoalTwoFrequencyMonthDayCount != null) {
+                        if (editTextFragmentAddGoalTwoFrequencyMonthDayCount != null) {
                             String count_day = editTextFragmentAddGoalTwoFrequencyMonthDayCount.getText().toString().trim();
                             if (count_day.length() <= 0) {
                                 editTextFragmentAddGoalTwoFrequencyMonthDayCount.setText("1");
@@ -356,7 +369,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
                     break;
                 case R.id.edittext_fragmentaddgoaltwo_frequencymonthcounttwo:
                     if (!hasFocus) {
-                        if(editTextFragmentAddGoalTwoFrequencyMonthCountTwo != null) {
+                        if (editTextFragmentAddGoalTwoFrequencyMonthCountTwo != null) {
                             String month_count = editTextFragmentAddGoalTwoFrequencyMonthCountTwo.getText().toString().trim();
                             if (month_count.length() <= 0) {
                                 editTextFragmentAddGoalTwoFrequencyMonthCountTwo.setText("1");
@@ -497,7 +510,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
     }
 
     private void setSentenceText() {
-        if(editTextFragmentAddGoalTwoFrequencyMonthCountTwo != null || editTextFragmentAddGoalTwoOccurrence != null || textViewFragmentAddGoalTwoSentence != null) {
+        if (editTextFragmentAddGoalTwoFrequencyMonthCountTwo != null || editTextFragmentAddGoalTwoOccurrence != null || textViewFragmentAddGoalTwoSentence != null) {
             String main_count = editTextFragmentAddGoalTwoCount.getText().toString().trim();
             String occurrences = editTextFragmentAddGoalTwoOccurrence.getText().toString().trim();
             if (occurrences.length() <= 0) {
@@ -690,7 +703,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
 
     private void addUnit() {
         String otherString = editTextFragmentAddGoalTwoUnitOther.getText().toString().trim();
-        if(otherString.length() != 0) {
+        if (otherString.length() != 0) {
             unitList.add(otherString);
             textViewFragmentAddGoalTwoCountUnit.setText(otherString);
             editTextFragmentAddGoalTwoUnitOther.setText("");
@@ -773,11 +786,15 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
             }
             textViewFragmentAddGoalTwoStartDate.setText(GetTime.month_DdYyyy(start_date));
             textViewFragmentAddGoalTwoEndDate.setText(GetTime.month_DdYyyy(end_date));
+
         } else {
+
             start_date = AddGoalPreferences.get(General.START_DATE);
             end_date = AddGoalPreferences.get(General.END_DATE);
+
             textViewFragmentAddGoalTwoStartDate.setText(GetTime.month_DdYyyy(start_date));
             textViewFragmentAddGoalTwoEndDate.setText(GetTime.month_DdYyyy(end_date));
+
         }
         setSentenceText();
     }
@@ -852,7 +869,15 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
         isDayCheck(1, true);
         editTextFragmentAddGoalTwoFrequencyMonthDayCount.setText("20");
         editTextFragmentAddGoalTwoOccurrence.setText("");
-        textViewFragmentAddGoalTwoOccurrenceTime.setText("");
+
+        if (frequency.equalsIgnoreCase(activity.getApplicationContext()
+                .getResources().getString(R.string.daily))
+                || frequency.equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.weekly))) {
+
+        } else {
+            textViewFragmentAddGoalTwoOccurrenceTime.setText("");
+        }
+
         editTextFragmentAddGoalTwoFrequencyMonthCount.setText("1");
         editTextFragmentAddGoalTwoFrequencyMonthCountTwo.setText("1");
     }
@@ -1028,12 +1053,12 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
     public void setTime(String _hour, String _minute, String _unit) {
         //Log.e(TAG, "setTime() _hour: " + _hour + " _minute: " + _minute + " _unit: " + _unit);
         String time;
-        String timeOne=_hour+":"+_minute+":"+_unit;
+        String timeOne = _hour + ":" + _minute + ":" + _unit;
         if (frequency.equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.hour))) {
             time = GetCounters.checkDigit(Integer.parseInt(_hour)) + ":" + GetCounters.checkDigit(Integer.parseInt(_minute));
             hour = _hour;
         } else {
-           // time = convertTime(_hour) + ":" + _minute + " " + _unit;
+            // time = convertTime(_hour) + ":" + _minute + " " + _unit;
             time = timeOne;
             hour_time = convertTime(_hour) + ":" + _minute + " " + _unit;
         }
@@ -1257,7 +1282,9 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
             toggleFrequencyLayout();
             advanceActive = true;
             toggleAdvance();
+
             setTime(AddGoalPreferences.get(General.START_HOUR), AddGoalPreferences.get(General.START_MINUTE), AddGoalPreferences.get(General.TIME_UNIT));
+
             if (AddGoalPreferences.contains(General.ACTION) && !AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext()
                     .getResources().getString(R.string.add_goal))) {
                 editTextFragmentAddGoalTwoOccurrence.setText(AddGoalPreferences.get("occurrences"));

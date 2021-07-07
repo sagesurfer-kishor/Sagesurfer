@@ -211,7 +211,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         SingleTeamSelectorDialog.GetChoice, View.OnClickListener, MultiUserSelectorDialog.SelectedUsers, GoalDetailsInterface {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
     private List<HomeMenu_> homeMenuList;
+
     private List<DrawerMenu_> drawerMenuList;
     int mYear, mMonth, mDay, mHour, mMinute;
     private DrawerLayout drawerLayout;
@@ -319,18 +321,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
             setContentView(R.layout.activity_main);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-           /* try {
-                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    // Create channel to show notifications.
-                    String channelId = getString(R.string.default_notification_channel_id);
-                    String channelName = getString(R.string.notifications_admin_channel_name);
-                    notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
             createNotificationChannel();
             intent = new Intent(this, CounterService.class);
             homeMenuList = new ArrayList<>();
@@ -2890,9 +2881,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         drawerMenuList = Login_.drawerMenuParser();
+
         DrawerMenu_ drawerMenu = new DrawerMenu_();
+
         drawerMenu.setId(0);
         drawerMenu.setMenu(getResources().getString(R.string.logout));
+
         drawerMenuList.add(drawerMenu);
         drawerMenuAdapter = new DrawerMenuAdapter(this, drawerMenuList);
         rv_drawerMenus.setAdapter(drawerMenuAdapter);
@@ -3765,12 +3759,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return date;
     }
 
-    private String getDate(long time) {
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(time * 1000);
-        String date = DateFormat.format("yyyy-MM-dd", cal).toString();
-        return date;
-    }
+
 
 
     public class MyRunnableGetRole implements Runnable {

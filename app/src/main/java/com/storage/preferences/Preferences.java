@@ -35,17 +35,17 @@ public class Preferences {
 
     public static void clear() {
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
     public static void save(String key, String value) {
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void save(String key, boolean value) {
         editor.putBoolean(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void save(String key, Integer value) {

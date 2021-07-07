@@ -9,8 +9,10 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,26 +58,35 @@ public class CaseloadActionsDialogFragment extends DialogFragment implements Vie
 
     @BindView(R.id.imageview_profile)
     ImageView imageViewProfile;
+
     @BindView(R.id.textview_username)
     TextView textViewUserName;
+
     @BindView(R.id.linearlayout_caseload_summary)
     LinearLayout summaryLinearLayout;
+
     @BindView(R.id.imageview_caseload_summary)
     AppCompatImageView summaryImageView;
+
     @BindView(R.id.linearlayout_caseload_events)
     LinearLayout eventsLinearLayout;
+
     @BindView(R.id.imageview_caseload_events)
     AppCompatImageView eventsImageView;
+
     @BindView(R.id.linearlayout_caseload_plan)
     LinearLayout planLinearLayout;
+
     @BindView(R.id.imageview_caseload_plan)
     AppCompatImageView planImageView;
     @BindView(R.id.linearlayout_caseload_team)
     LinearLayout teamLinearLayout;
     @BindView(R.id.imageview_caseload_team)
     AppCompatImageView teamImageView;
+
     @BindView(R.id.linearlayout_caseload_status)
     LinearLayout statusLinearLayout;
+
     @BindView(R.id.imageview_caseload_status)
     AppCompatImageView statusImageView;
     @BindView(R.id.linearlayout_caseload_progress_note)
@@ -182,17 +193,31 @@ public class CaseloadActionsDialogFragment extends DialogFragment implements Vie
         moodImageView.setImageResource(R.drawable.vi_drawer_mood);
         moodImageView.setOnClickListener(this);
 
-        if (!Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015") && CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
+        if (!Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage015")
+                && CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
             planLinearLayout.setVisibility(View.VISIBLE);
         }
 
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage022")) {
+
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage021")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage022")) {
             planLinearLayout.setVisibility(View.GONE);
         } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023")) {
             planLinearLayout.setVisibility(View.GONE);
             statusLinearLayout.setVisibility(View.GONE);
             progressNoteImageView.setClickable(false);
         }
+
+
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage048")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage052")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage050")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage049")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage053")) {
+            planLinearLayout.setVisibility(View.GONE);
+        }
+
+
         return view;
     }
 

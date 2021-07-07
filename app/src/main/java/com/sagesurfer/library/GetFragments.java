@@ -229,11 +229,16 @@ public class GetFragments {
 
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage013")) {
                     return new ProcessOutcomeReportFragment(); //only for instance domain
-                } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage008") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025")) {
+                } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage008")
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023")
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025")
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage050")) {
                     return new JournalListFragment(); //only for instance domain
                 } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage030") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage031")) {
                     return new HomeFragment();
                 }
+
 
             case 66:
                 return new ReAssignmentFragment();

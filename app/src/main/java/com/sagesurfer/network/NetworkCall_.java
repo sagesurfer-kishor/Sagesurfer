@@ -132,7 +132,7 @@ public class NetworkCall_ {
                 .build();
 
         String body = bodyToString(request);
-        Log.e(TAG, tag+ " make: request body "+body );
+        Log.e(TAG, tag + " make: request body " + body);
         Logger.debug(tag, url + "?" + body, _context);
         String token = getToken(_context);
         if (token != null) {
@@ -150,7 +150,7 @@ public class NetworkCall_ {
                 .tag(tag)
                 .build();
         String body = bodyToString(request);
-        Logger.debug(tag, ""+url + "?" + body, _context);
+        Logger.debug(tag, "" + url + "?" + body, _context);
 
         return null;
     }
@@ -201,49 +201,53 @@ public class NetworkCall_ {
             try {
                 Response response = client.newCall(request).execute();
                 String res = response.body().string();
-                Log.e(TAG, "doInBackground: "+res );
-                if (res.trim().length() > 0) {
-                    Log.e(TAG, "doInBackground: teamsResponse"+response);
+                Log.e(TAG, "doInBackground: " + res);
+                if (res.trim().length() > 4) {
+                    Log.e(TAG, "doInBackground: teamsResponse" + response);
                     JsonElement jelement = new JsonParser().parse(res);
-                    JsonObject jsonObject1 = jelement.getAsJsonObject();
-                    JSONObject jsonObject = new JSONObject(res);
-                    Logger.debug(tag, res, _context);
-                    if (response.isSuccessful()) {
-                        if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 13) {
-                            return "13";
-                        } else if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 21) {
-                            PerformLogoutTask.logout(activity);
-                        } else if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 20) {
-                            //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + my_packagename));
-                            final String appPackageName = _context.getPackageName(); // getPackageName() from Context or Activity object
-                            try {
-                                _context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                            } catch (android.content.ActivityNotFoundException anfe) {
-                                _context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                            }
-                        } else if (jsonObject1.has("details")) {
-                            try {
-                                JsonObject object = jsonObject1.get("details").getAsJsonObject();
-                                //JsonArray  jarray = jsonObject1.get("details").getAsJsonArray();
-                                //JsonObject object = jarray.get(0).getAsJsonObject();
-                                if (object.has(General.STATUS) && object.get(General.STATUS).getAsInt() == 21) {
-                                    //PerformLogoutTask.logout(activity);
-                                    HashMap<String, String> keyMap = KeyMaker_.getKey();
-                                    RequestBody logoutBody = new FormBody.Builder()
-                                            .add(General.USER_ID, Preferences.get(General.USER_ID))
-                                            .add(General.KEY, keyMap.get(General.KEY))
-                                            .add(General.TOKEN, keyMap.get(General.TOKEN))
-                                            .build();
-                                    String responseLogout = MakeCall.post(Preferences.get(General.DOMAIN) + "/" + Urls_.LOGOUT_URL, logoutBody, TAG, activity.getApplicationContext(), activity);
-                                    if (responseLogout != null) {
+
+                    if (jelement != null) {
+
+                        JsonObject jsonObject1 = jelement.getAsJsonObject();
+
+                        JSONObject jsonObject = new JSONObject(res);
+                        Logger.debug(tag, res, _context);
+                        if (response.isSuccessful()) {
+                            if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 13) {
+                                return "13";
+                            } else if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 21) {
+                                PerformLogoutTask.logout(activity);
+                            } else if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 20) {
+                                //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + my_packagename));
+                                final String appPackageName = _context.getPackageName(); // getPackageName() from Context or Activity object
+                                try {
+                                    _context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                } catch (android.content.ActivityNotFoundException anfe) {
+                                    _context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                }
+                            } else if (jsonObject1.has("details")) {
+                                try {
+                                    JsonObject object = jsonObject1.get("details").getAsJsonObject();
+                                    //JsonArray  jarray = jsonObject1.get("details").getAsJsonArray();
+                                    //JsonObject object = jarray.get(0).getAsJsonObject();
+                                    if (object.has(General.STATUS) && object.get(General.STATUS).getAsInt() == 21) {
+                                        //PerformLogoutTask.logout(activity);
+                                        HashMap<String, String> keyMap = KeyMaker_.getKey();
+                                        RequestBody logoutBody = new FormBody.Builder()
+                                                .add(General.USER_ID, Preferences.get(General.USER_ID))
+                                                .add(General.KEY, keyMap.get(General.KEY))
+                                                .add(General.TOKEN, keyMap.get(General.TOKEN))
+                                                .build();
+                                        String responseLogout = MakeCall.post(Preferences.get(General.DOMAIN) + "/" + Urls_.LOGOUT_URL, logoutBody, TAG, activity.getApplicationContext(), activity);
+                                        if (responseLogout != null) {
 
 
-                                        Preferences.save(General.IS_LOGIN, 0);
-                                        Preferences.removeKey("regId");
-                                        Preferences.removeKey(General.GROUP_NAME);
-                                        Preferences.removeKey(General.GROUP_ID);
-                                        Preferences.removeKey(General.OWNER_ID);
-                                        Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
+                                            Preferences.save(General.IS_LOGIN, 0);
+                                            Preferences.removeKey("regId");
+                                            Preferences.removeKey(General.GROUP_NAME);
+                                            Preferences.removeKey(General.GROUP_ID);
+                                            Preferences.removeKey(General.OWNER_ID);
+                                            Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
 
                                        /* SugarRecord.deleteAll(OneOnOneMessage.class);
                                         SugarRecord.deleteAll(Groups.class);
@@ -253,34 +257,37 @@ public class NetworkCall_ {
                                         SugarRecord.deleteAll(Contact.class);
                                         SugarRecord.deleteAll(Bot.class);*/
 
-                                        Intent loginIntent = new Intent(activity.getApplicationContext(), LoginActivity.class);
-                                        loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        activity.startActivity(loginIntent);
-                                        activity.finish();
+                                            Intent loginIntent = new Intent(activity.getApplicationContext(), LoginActivity.class);
+                                            loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            activity.startActivity(loginIntent);
+                                            activity.finish();
+                                        }
+                                    } else if (object.has(General.STATUS) && object.get(General.STATUS).getAsInt() == 20) {
+                                        final String appPackageName = _context.getPackageName(); // getPackageName() from Context or Activity object
+                                        try {
+                                            _context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                        } catch (android.content.ActivityNotFoundException anfe) {
+                                            _context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                        }
+                                    } else {
+                                        return res;
                                     }
-                                } else if (object.has(General.STATUS) && object.get(General.STATUS).getAsInt() == 20) {
-                                    final String appPackageName = _context.getPackageName(); // getPackageName() from Context or Activity object
-                                    try {
-                                        _context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                    } catch (android.content.ActivityNotFoundException anfe) {
-                                        _context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                    }
-                                } else {
-                                    return res;
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            } else {
+                                return res;
                             }
                         } else {
-                            return res;
-                        }
-                    } else {
-                        if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 13) {
-                            return "13";
-                        } else {
-                            return null;
+                            if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 13) {
+                                return "13";
+                            } else {
+                                return null;
+                            }
                         }
                     }
+                } else {
+                    return null;
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();

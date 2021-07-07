@@ -1,5 +1,6 @@
 package com.sagesurfer.collaborativecares;
 
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -11,13 +12,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 
-import androidx.annotation.NonNull;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,19 +38,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.utils.AppLog;
 import com.airbnb.lottie.LottieAnimationView;
 
 
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
+import com.firebase.MessagingService;
 /*
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 */
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -87,6 +86,7 @@ import com.sagesurfer.tasks.PerformLoginTask;
 import com.sagesurfer.tasks.PerformServerTask;
 import com.sagesurfer.validator.LoginValidator;
 import com.storage.preferences.Preferences;
+import com.storage.preferences.StorageHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -616,10 +616,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int status = 12;
         int roleId = 0;
         String response = null;
-        Log.i(TAG, "doLogin: entered ------------------->");
+        AppLog.i(TAG, "doLogin: entered ------------------->");
         try {
             response = new PerformLoginTask(user_name, password, start_time, this).execute().get();
-            Log.e("doLogin : ", "Login response " + response);
+            AppLog.e("doLogin : ", "Login response " + response);
 
             /*JSONObject jsonObject=new JSONObject(response);
             if(jsonObject.has("drawer")){
@@ -1005,8 +1005,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean checkCode(String code) {
         for (Server_ server : serverList) {
             if (server.getKey().equalsIgnoreCase(code)) {
-                Log.e(TAG, "DomainCodeBeforeSaving: " + code);
-                Log.e(TAG, "DomainURLMain: " + server.getDomainUrl());
+                AppLog.e(TAG, "DomainCodeBeforeSaving: " + code);
+                AppLog.e(TAG, "DomainURLMain: " + server.getDomainUrl());
                 Preferences.save(General.DOMAIN, server.getDomainUrl());//server.getDomainUrl());
                 Preferences.save(General.DOMAIN_CODE, code);
                 SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
@@ -1015,7 +1015,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor.apply();
 //                screen.messagelist.Preferences.save(General.DOMAIN, server.getDomainUrl());
                 Preferences.save(General.CHAT_URL, server.getChatUrl());
-                Log.e(TAG, "DomainCodeFromPreferences: " + Preferences.get(General.DOMAIN_CODE));
+                AppLog.e(TAG, "DomainCodeFromPreferences: " + Preferences.get(General.DOMAIN_CODE));
                 return true;
             }
         }
@@ -1032,11 +1032,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("instances");
             for (int i = 0; i < jsonArray.length(); i++) {
-                Log.i(TAG, "getServers: Instance " + jsonArray.get(i));
+                AppLog.i(TAG, "getServers: Instance " + jsonArray.get(i));
             }
         } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
-            Log.e(TAG, "getServers: catch" + e.getMessage());
+            AppLog.e(TAG, "getServers: catch" + e.getMessage());
         }
         if (response != null) {
 
@@ -1127,15 +1127,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString(General.TIMEZONE, DeviceInfo.getTimeZone());
         editor.putString(General.COMET_CHAT_ID, userInfo.getComet_chat_id());
         editor.apply();
-        Log.e(TAG, "saveData: screen.messagelist.Preferences UserId " + userInfo.getUserId());
-        Log.e(TAG, "saveData: screen.messagelist.Preferences cometchat UserId " + userInfo.getComet_chat_id());
+        AppLog.e(TAG, "saveData: screen.messagelist.Preferences UserId " + userInfo.getUserId());
+        AppLog.e(TAG, "saveData: screen.messagelist.Preferences cometchat UserId " + userInfo.getComet_chat_id());
         screen.messagelist.Preferences.initialize(getApplicationContext());
         screen.messagelist.Preferences.save(General.USER_ID, userInfo.getUserId());
         screen.messagelist.Preferences.save(General.TIMEZONE, DeviceInfo.getTimeZone());
         screen.messagelist.Preferences.save(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
-        Log.e(TAG, "saveData: screen.messagelist.Preferences UserId " + screen.messagelist.Preferences.get(General.USER_ID));
-        Log.e(TAG, "saveData: screen.messagelist.Preferences timezone " + screen.messagelist.Preferences.get(General.TIMEZONE));
-        Log.e(TAG, "saveData: screen.messagelist.Preferences Domain code " + screen.messagelist.Preferences.get(General.DOMAIN_CODE));
+        AppLog.e(TAG, "saveData: screen.messagelist.Preferences UserId " + screen.messagelist.Preferences.get(General.USER_ID));
+        AppLog.e(TAG, "saveData: screen.messagelist.Preferences timezone " + screen.messagelist.Preferences.get(General.TIMEZONE));
+        AppLog.e(TAG, "saveData: screen.messagelist.Preferences Domain code " + screen.messagelist.Preferences.get(General.DOMAIN_CODE));
         Preferences.save(General.TIMEZONE, DeviceInfo.getTimeZone());
         Preferences.save(General.NAME, userInfo.getName());
         Preferences.save(General.FIRST_NAME, userInfo.getFirstName());
@@ -1143,7 +1143,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Preferences.save(General.USERNAME, userInfo.getUsername());
         Preferences.save(General.EMAIL, userInfo.getEmail());
         Preferences.save(General.ROLE, userInfo.getRole());
-        Log.e(TAG, "User Role is " + userInfo.getRole() + " Id = " + userInfo.getRoleId());
+        AppLog.e(TAG, "User Role is " + userInfo.getRole() + " Id = " + userInfo.getRoleId());
         Preferences.save(General.ROLE_ID, userInfo.getRoleId());
         Preferences.save(General.URL_IMAGE, userInfo.getImage());
         Preferences.save(General.LOCAL_IMAGE, DirectoryList.DIR_MY_PIC);
@@ -1171,7 +1171,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (userInfo.getRole().equalsIgnoreCase("Student")) {
             Preferences.save(General.IS_STUDENT, 1);
         }
-        Log.e(TAG, "saveData: is_case_manager " + Preferences.get(General.IS_CASE_MANAGER));
+        AppLog.e(TAG, "saveData: is_case_manager " + Preferences.get(General.IS_CASE_MANAGER));
 
         if (userInfo.getLati_longi() != null) {
             Preferences.save(General.LATI_LONGI, userInfo.getLati_longi());
@@ -1202,17 +1202,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             CometChat.login(Uid, AppConfig.AppDetails.AUTH_KEY, new CometChat.CallbackListener<User>() {
                 @Override
                 public void onSuccess(User user) {
-                    Log.e(TAG, "Login Successful : " + user.toString());
+                    AppLog.e(TAG, "Login Successful : " + user.toString());
                     CometChat.getLoggedInUser().setUid(Uid);
                     Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
                     MessagingService.subscribeUserNotification(user.getUid());
-                    Log.e(TAG, "subscribe : " + user.getUid());
+                    AppLog.e(TAG, "subscribe : " + user.getUid());
                     registerPushNotificationToken();
                 }
 
                 @Override
                 public void onError(CometChatException e) {
-                    Log.d(TAG, "Login failed with exception: " + e.getMessage());
+                    AppLog.d(TAG, "Login failed with exception: " + e.getMessage());
                     Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
                 }
             });
@@ -1223,14 +1223,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i(TAG, "registerPushNotificationToken : "+Preferences.get("regId"));
-                RegisterFirebaseTokenToServer(Preferences.get("regId"));
+                AppLog.i(TAG, "registerPushNotificationToken : "+Preferences.get("regId"));
+//                RegisterFirebaseTokenToServer(Preferences.get("regId"));
+                RegisterFirebaseTokenToServer(StorageHelper.geTOKEN(LoginActivity.this));
             }
         };
         Thread thread = new Thread(runnable);
         thread.start();
 
-        FirebaseMessaging.getInstance().getToken()
+        /*FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
@@ -1242,49 +1243,56 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         firebaseToken = task.getResult();
                         Log.i(TAG, "onComplete: token " + firebaseToken);
                     }
-                });
+                });*/
 
         CometChat.registerTokenForPushNotification(Preferences.get("regId"), new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
                 Toast.makeText(LoginActivity.this, s, Toast.LENGTH_LONG).show();
-                Log.e(TAG, "registerPushNotification onSuccess: token register successfully");
+                AppLog.e(TAG, "registerPushNotification onSuccess: token register successfully");
             }
 
             @Override
             public void onError(CometChatException e) {
-                Log.e("onErrorPN: ", e.getMessage());
-                Log.e(TAG, "registerPushNotification onSuccess: token register successfully");
+                AppLog.e("onErrorPN: ", e.getMessage());
+                AppLog.e(TAG, "registerPushNotification onSuccess: token register successfully");
             }
         });
     }
 
 
     private void RegisterFirebaseTokenToServer(String token) {
+
         SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
-        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
+        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, "");
         SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
-        String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
+        String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, "");
+
         String url = screen.messagelist.Urls_.MOBILE_FIREBASE_REGISTER;
-        Log.i(TAG, "RegisterFirebaseTokenToServer: " + DomainURL + " -> " + url);
+
+        AppLog.i(TAG, "RegisterFirebaseTokenToServer: Token at submit :"+token);
+
+        AppLog.i(TAG, "RegisterFirebaseTokenToServer: " + DomainURL + " -> " + url +" Token :"+token);
 
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(screen.messagelist.General.FIREBASE_ID, "" + token);
         requestMap.put(screen.messagelist.General.USER_ID, "" + UserId);
+
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, this);
+
         try {
             if (requestBody != null) {
                 String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, this);
                 if (response != null) {
-                    Log.i(TAG, "RegisterFirebaseTokenToServer:  response " + response);
+                    AppLog.i(TAG, "RegisterFirebaseTokenToServer:  response " + response);
                 } else {
-                    Log.i(TAG, "RegisterFirebaseTokenToServer:  null  ");
+                    AppLog.i(TAG, "RegisterFirebaseTokenToServer:  null  ");
                 }
             } else {
-                Log.i(TAG, "RegisterFirebaseTokenToServer:  null2");
+                AppLog.i(TAG, "RegisterFirebaseTokenToServer:  null2");
             }
         } catch (Exception e) {
-            Log.i(TAG, "RegisterFirebaseTokenToServer: " + e.getMessage());
+            AppLog.i(TAG, "RegisterFirebaseTokenToServer: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -56,16 +56,21 @@ public class SelfCareContentListFragment extends Fragment implements SelfCareCon
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+
     @BindView(R.id.swipe_menu_listview)
     SwipeMenuListView swipeMenuListView;
+
     @BindView(R.id.linealayout_error)
     LinearLayout lineaLayoutError;
+
     @BindView(R.id.imageview_error_icon)
     AppCompatImageView imageViewErrorIcon;
+
     @BindView(R.id.textview_error_message)
     TextView textViewErrorMessage;
 
     private ArrayList<Content_> contentArrayList;
+
     private String personal = "0", like = "0", comment = "0", category = "0", search = "", language = "0", age = "0", type = "0", location = "0", state = "0", city = "0";
 
     private Activity activity;

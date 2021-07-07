@@ -55,16 +55,22 @@ import okhttp3.RequestBody;
 
 public class SelfGoalMainFragment extends Fragment implements SelfGoalListAdapter.GoalListAdapterListener {
     private static final String TAG = SelfGoalMainFragment.class.getSimpleName();
+
     @BindView(R.id.textview_fragmentselfgoalmain_total)
     TextView textViewFragmentSelfGoalMainTotal;
+
     @BindView(R.id.textview_fragmentselfgoalmain_missed)
     TextView textViewFragmentSelfGoalMainMissed;
+
     @BindView(R.id.textview_fragmentselfgoalmain_active)
     TextView textViewFragmentSelfGoalMainActive;
+
     @BindView(R.id.textview_fragmentselfgoalmain_completed)
     TextView textViewFragmentSelfGoalMainCompleted;
+
     @BindView(R.id.recycleview_fragmentselfgoalmain)
     RecyclerView recycleViewFragmentSelfGoalMain;
+
     @BindView(R.id.fab_fragmentselfgoalmain)
     FloatingActionButton fabFragmentSelfGoalMain;
 
