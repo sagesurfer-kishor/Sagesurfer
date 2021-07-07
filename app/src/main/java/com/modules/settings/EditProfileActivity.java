@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.modules.journaling.model.Student_;
 import com.sagesurfer.collaborativecares.R;
@@ -33,6 +36,7 @@ import com.sagesurfer.parser.GetJson_;
 import com.sagesurfer.snack.ShowToast;
 import com.sagesurfer.validator.LoginValidator;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,26 +54,39 @@ import okhttp3.RequestBody;
  */
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
     private static final String TAG = EditProfileActivity.class.getSimpleName();
+
     @BindView(R.id.et_firstname)
     EditText et_firstname;
+
     @BindView(R.id.et_lastname)
     EditText et_lastname;
+
     @BindView(R.id.et_username)
     EditText et_username;
+
     @BindView(R.id.et_email)
     EditText et_email;
+
     @BindView(R.id.textview_editprofile_dob)
     TextView textViewEditProfileDOB;
+
     @BindView(R.id.edittext_editprofile_address)
     EditText editTextEditProfileAddress;
+
     private int mYear = 0, mMonth = 0, mDay = 0;
+
     private int sYear, sMonth, sDay;
+
     private String date_of_birth = "";
+
     private Toolbar toolbar;
+
     private boolean showMsg = false;
 
     private ArrayList<Student_> cityArrayList = new ArrayList<>(), stateArrayList = new ArrayList<>(), countryArrayList = new ArrayList<>();
+
     private Spinner spinnerCityList, spinnerStateList, spinnerCountryList, spinnerStateListOne, spinnerCityListOne;
 
     @SuppressLint({"RestrictedApi", "SourceLockedOrientationActivity"})
@@ -86,8 +103,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         ButterKnife.bind(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        toolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
+        toolbar = findViewById(R.id.activity_toolbar_layout);
         setSupportActionBar(toolbar);
+
+
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
@@ -106,15 +125,15 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         textViewActivityToolbarPost.setVisibility(View.VISIBLE);
         textViewActivityToolbarPost.setText(this.getResources().getString(R.string.save));
 
-        if(Preferences.get(General.FIRST_NAME).equalsIgnoreCase("")){
+        if (Preferences.get(General.FIRST_NAME).equalsIgnoreCase("")) {
             et_firstname.setText("");
-        }else {
+        } else {
             et_firstname.setText(Preferences.get(General.FIRST_NAME));
         }
         et_lastname.setText(Preferences.get(General.LAST_NAME));
         et_username.setText(Preferences.get(General.USERNAME));
         et_email.setText(Preferences.get(General.EMAIL));
-        textViewEditProfileDOB.setText(Preferences.get(General.BIRTDATE));
+        //textViewEditProfileDOB.setText(Preferences.get(General.BIRTDATE));
         textViewEditProfileDOB.setOnClickListener(this);
         textViewActivityToolbarPost.setOnClickListener(this);
 
@@ -138,6 +157,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        getUserProfile();
     }
 
     @Override
@@ -389,12 +410,53 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void getUserProfile() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, Actions_.GET_PROFILE);
+        requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
+
+        String url = Preferences.get(General.DOMAIN) + Urls_.MOBILE_PROFILE;
+
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getApplicationContext(), this);
+
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, getApplicationContext(), this);
+                if (response != null) {
+
+                    Gson gson = new Gson();
+
+                    GetProfileResponse mGetProfileResponse = gson.fromJson(response, GetProfileResponse.class);
+
+                    String dob = "";
+
+                    if (mGetProfileResponse != null) {
+                        if (!mGetProfileResponse.getGet_profile().isEmpty()) {
+                            for (GetProfile mobj : mGetProfileResponse.getGet_profile()) {
+                                dob = mobj.getDob();
+                            }
+                        }
+                    }
+
+                    if (!dob.isEmpty()) {
+                        textViewEditProfileDOB.setText(dob);
+                    }
+
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void submitUserSetting() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.EDIT_PROFILE);
+        requestMap.put(General.DOB, textViewEditProfileDOB.getText().toString().trim());
         requestMap.put(General.FIRST_NAME, et_firstname.getText().toString().trim());
         requestMap.put(General.LAST_NAME, et_lastname.getText().toString().trim());
-        requestMap.put(General.DOB, textViewEditProfileDOB.getText().toString().trim());
+
 
         int posCounrty = spinnerCountryList.getSelectedItemPosition();
         int counrtyId = countryArrayList.get(posCounrty).getId();
@@ -420,6 +482,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
 
         String url = Preferences.get(General.DOMAIN) + Urls_.MOBILE_USER_SETTING;
+
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getApplicationContext(), this);
 
         if (requestBody != null) {
@@ -435,7 +498,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                         Preferences.save(General.STATE_ID, stateId);
                         Preferences.save(General.CITY_ID, cityId);
                     } else {
-                        Toast.makeText(EditProfileActivity.this, jsonAddJournal.get(General.ERROR).getAsString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditProfileActivity.this,
+                                jsonAddJournal.get(General.ERROR).getAsString(),
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             } catch (Exception e) {

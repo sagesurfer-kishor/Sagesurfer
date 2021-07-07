@@ -6,26 +6,19 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
 
     <application
         android:name=".Application"
@@ -40,7 +33,7 @@
         android:theme="@style/AppThemechat"
         tools:replace="android:allowBackup,icon,theme,label,name"
         tools:targetApi="q">
-
+        <activity android:name=".DemoKotlin"></activity>
         <!-- android:hardwareAccelerated="false" -->
         <activity
             android:name="com.modules.support.NewFaqActivity"
@@ -65,7 +58,6 @@
         <activity
             android:name="com.modules.selfgoal.LogBookActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <!--
             <service
             android:name="services.CCSubscribeService"
@@ -84,7 +76,6 @@
         <activity
             android:name="com.modules.team.gallery.activity.CreateGalleryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
@@ -95,7 +86,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SignUpActivity"
             android:screenOrientation="portrait"
@@ -119,7 +109,6 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -153,9 +142,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.modules.postcard.CreateMailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- Wall -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Wall -->
         <activity
             android:name="com.modules.team.TeamDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -262,16 +249,12 @@
         <activity
             android:name="com.modules.selfgoal.SelfGoalDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name="com.modules.selfgoal.SenjamSelfGoalDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name="com.modules.selfgoal.SageSelfGoalDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- Consent -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Consent -->
         <!-- Blog -->
         <!-- Mood -->
         <!--
@@ -538,17 +521,14 @@
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="io.fabric.ApiKey"
             tools:node="remove" />
 
         <service android:name="com.sagesurfer.services.CounterService" />
-
         <service
             android:name="com.sagesurfer.services.DownloadNotificationService"
             android:label="@string/app_name"
@@ -557,8 +537,6 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
-
         <service
             android:name=".MyFirebaseMessagingService"
             android:enabled="true"
@@ -567,31 +545,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-       <!-- <service
-            android:name=".FinalNotificationReceived"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>-->
-
-<!--                <service android:name=".MessagingService"
-                    android:exported="false">
-                    <intent-filter>
-                        <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                    </intent-filter>
-                </service>-->
-
-
-<!--        <service android:name=".service.MyFirebaseMessagingService"-->
-<!--            android:exported="false">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
-
 
         <receiver android:name="com.firebase.CallNotificationAction" />
 
@@ -607,14 +560,14 @@
         </provider>
 
         <activity
-            android:name="com.sagesurfer.collaborativecares.BlockedMembersActivity"
+            android:name=".BlockedMembersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name="com.firebase.SyncJCometchatService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <!--<provider
+        <!--
+<provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.sagesurfer.senjam.provider"
             android:exported="false"
@@ -623,17 +576,14 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />
-        </provider>-->
-
-
+        </provider>
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_sage_icon" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimaryDark" />
-
-
     </application>
 
 </manifest>

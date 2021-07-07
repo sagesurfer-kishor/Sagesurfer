@@ -45,7 +45,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
-import com.firebase.MessagingService;
+
 /*
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -1245,7 +1245,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });*/
 
-        CometChat.registerTokenForPushNotification(Preferences.get("regId"), new CometChat.CallbackListener<String>() {
+        CometChat.registerTokenForPushNotification(StorageHelper.geTOKEN(LoginActivity.this), new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
                 Toast.makeText(LoginActivity.this, s, Toast.LENGTH_LONG).show();

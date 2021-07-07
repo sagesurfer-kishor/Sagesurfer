@@ -60,8 +60,11 @@ public class Urls_ {
     public static final String MOBILE_SIGN_UP = "mobile_sign_up.php";
     public static final String MOBILE_QUOTES = "mobile_quotes.php";
 
+
+
     public static final String COMETCHAT_URL = "cometchat7.0.36/";
     public static final String MOBILE_CASELOAD = "mobile_caseload.php";
+    public static final String MOBILE_PROFILE = "mobile_profile.php";
     public static final String ACTIVITY_REVIEW_API = "activity_review_api.php";
     public static final String MOBILE_TEAM_DATA = "mobile_team_data.php";
     public static final String MOBILE_TEAM_COUNTER = "mobile_team_counter.php";

@@ -400,6 +400,11 @@ public class Actions_ {
     public static final String GET_PEER_STAFF_TEAM_PROGRAM_DIRECTOR = "get_peer_staff_team_program_director";
 
     public static final String EDIT_PROFILE = "edit_profile";
+    public static final String GET_PROFILE = "get_profile";
+
+
+
+
     public static final String GET_ASSIGNED_STUDENT = "get_assigned_student";
     public static final String GET_REASSIGNMENT_LISTING = "get_reassignment_listing";
     public static final String EDIT_GOAL = "edit_goal";

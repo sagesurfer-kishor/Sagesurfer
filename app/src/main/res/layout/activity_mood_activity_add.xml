@@ -230,49 +230,49 @@
 
                 </LinearLayout>
 
-<!--
-                <LinearLayout
-                    android:id="@+id/linearlayout_activity_meal"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    android:weightSum="1">
+                <!--
+                                <LinearLayout
+                                    android:id="@+id/linearlayout_activity_meal"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:visibility="gone"
+                                    android:weightSum="1">
 
-                    <RelativeLayout
-                        android:id="@+id/relativelayout_activity_meal"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/circle_gray_corners"
-                        android:gravity="center"
-                        android:visibility="visible">
+                                    <RelativeLayout
+                                        android:id="@+id/relativelayout_activity_meal"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="0.8"
+                                        android:background="@drawable/circle_gray_corners"
+                                        android:gravity="center"
+                                        android:visibility="visible">
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imageview_activity_meal"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/vi_mood_meal" />
-                    </RelativeLayout>
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:id="@+id/imageview_activity_meal"
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/vi_mood_meal" />
+                                    </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/textview_activity_meal"
-                        style="@style/CustomFontStylePrimary"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:layout_weight="0.2"
-                        android:gravity="center"
-                        android:paddingLeft="3dp"
-                        android:paddingRight="3dp"
-                        android:text="@string/meal"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_11" />
-                </LinearLayout>-->
+                                    <TextView
+                                        android:id="@+id/textview_activity_meal"
+                                        style="@style/CustomFontStylePrimary"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="0dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/margin_4"
+                                        android:layout_weight="0.2"
+                                        android:gravity="center"
+                                        android:paddingLeft="3dp"
+                                        android:paddingRight="3dp"
+                                        android:text="@string/meal"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/text_size_11" />
+                                </LinearLayout>-->
             </LinearLayout>
 
             <LinearLayout
@@ -688,48 +688,48 @@
 
 
 
-               <!-- <LinearLayout
-                    android:id="@+id/linearlayout_activity_meal"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    android:weightSum="1">
+                <!-- <LinearLayout
+                     android:id="@+id/linearlayout_activity_meal"
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="1"
+                     android:orientation="vertical"
+                     android:visibility="gone"
+                     android:weightSum="1">
 
-                    <RelativeLayout
-                        android:id="@+id/relativelayout_activity_meal"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/circle_gray_corners"
-                        android:gravity="center"
-                        android:visibility="visible">
+                     <RelativeLayout
+                         android:id="@+id/relativelayout_activity_meal"
+                         android:layout_width="match_parent"
+                         android:layout_height="0dp"
+                         android:layout_alignParentStart="true"
+                         android:layout_gravity="center"
+                         android:layout_weight="0.8"
+                         android:background="@drawable/circle_gray_corners"
+                         android:gravity="center"
+                         android:visibility="visible">
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imageview_activity_meal"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/vi_mood_meal" />
-                    </RelativeLayout>
+                         <androidx.appcompat.widget.AppCompatImageView
+                             android:id="@+id/imageview_activity_meal"
+                             android:layout_width="20dp"
+                             android:layout_height="20dp"
+                             android:src="@drawable/vi_mood_meal" />
+                     </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/textview_activity_meal"
-                        style="@style/CustomFontStylePrimary"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:layout_weight="0.2"
-                        android:gravity="center"
-                        android:paddingLeft="3dp"
-                        android:paddingRight="3dp"
-                        android:text="@string/meal"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_11" />
-                </LinearLayout>-->
+                     <TextView
+                         android:id="@+id/textview_activity_meal"
+                         style="@style/CustomFontStylePrimary"
+                         android:layout_width="match_parent"
+                         android:layout_height="0dp"
+                         android:layout_gravity="center"
+                         android:layout_marginTop="@dimen/margin_4"
+                         android:layout_weight="0.2"
+                         android:gravity="center"
+                         android:paddingLeft="3dp"
+                         android:paddingRight="3dp"
+                         android:text="@string/meal"
+                         android:textColor="@color/white"
+                         android:textSize="@dimen/text_size_11" />
+                 </LinearLayout>-->
             </LinearLayout>
 
             <LinearLayout

@@ -66,6 +66,7 @@ import butterknife.Unbinder;
 
 public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener {
     private static final String TAG = AddGoalFragmentTwo.class.getSimpleName();
+
     @BindView(R.id.textview_addgoalactivity_bubble_one)
     TextView textViewAddGoalActivityBubbleOne;
     @BindView(R.id.textview_addgoalactivity_bubble_three)

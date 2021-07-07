@@ -976,6 +976,17 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textview_mood"
+                style="@style/CustomFontStylePrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="@string/what_have_you_been_up_to"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:textSize="@dimen/text_size_16" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     <!--<ScrollView

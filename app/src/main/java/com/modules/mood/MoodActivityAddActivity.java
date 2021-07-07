@@ -52,111 +52,165 @@ import okhttp3.RequestBody;
 
 public class MoodActivityAddActivity extends AppCompatActivity implements View.OnClickListener , MoodActivityAdapter.moodListActivityAdapterListener {
     private static final String TAG = MoodActivityAddActivity.class.getSimpleName();
-    @BindView(R.id.imageview_mood)
-    ImageView imageViewMood;
-    @BindView(R.id.textview_mood)
-    TextView textViewMood;
+
+//    @BindView(R.id.imageview_mood)
+//    ImageView imageViewMood;
+//
+//    @BindView(R.id.textview_mood)
+//    TextView textViewMood;
+
     @BindView(R.id.linearlayout_activity_cleaning)
     LinearLayout linearLayoutActivityCleaning;
+
     @BindView(R.id.relativelayout_activity_cleaning)
     RelativeLayout relativeLayoutActivityCleaning;
+
     @BindView(R.id.imageview_activity_cleaning)
     AppCompatImageView imageViewActivityCleaning;
+
     @BindView(R.id.linearlayout_activity_date)
     LinearLayout linearLayoutActivityDate;
+
     @BindView(R.id.relativelayout_activity_date)
     RelativeLayout relativeLayoutActivityDate;
+
     @BindView(R.id.imageview_activity_date)
     AppCompatImageView imageViewActivityDate;
+
     @BindView(R.id.linearlayout_activity_friends)
     LinearLayout linearLayoutActivityFriends;
+
     @BindView(R.id.relativelayout_activity_friends)
     RelativeLayout relativeLayoutActivityFriends;
+
     @BindView(R.id.imageview_activity_friends)
     AppCompatImageView imageViewActivityFriends;
+
     @BindView(R.id.linearlayout_activity_gaming)
     LinearLayout linearLayoutActivityGaming;
+
     @BindView(R.id.relativelayout_activity_gaming)
     RelativeLayout relativeLayoutActivityGaming;
+
     @BindView(R.id.imageview_activity_gaming)
     AppCompatImageView imageViewActivityGaming;
+
     @BindView(R.id.linearlayout_activity_meal)
     LinearLayout linearLayoutActivityMeal;
+
     @BindView(R.id.relativelayout_activity_meal)
     RelativeLayout relativeLayoutActivityMeal;
+
     @BindView(R.id.imageview_activity_meal)
     AppCompatImageView imageViewActivityMeal;
+
     @BindView(R.id.linearlayout_activity_movie)
     LinearLayout linearLayoutActivityMovie;
+
     @BindView(R.id.relativelayout_activity_movie)
     RelativeLayout relativeLayoutActivityMovie;
+
     @BindView(R.id.imageview_activity_movie)
     AppCompatImageView imageViewActivityMovie;
+
     @BindView(R.id.linearlayout_activity_music)
     LinearLayout linearLayoutActivityMusic;
+
     @BindView(R.id.relativelayout_activity_music)
     RelativeLayout relativeLayoutActivityMusic;
+
     @BindView(R.id.imageview_activity_music)
     AppCompatImageView imageViewActivityMusic;
+
     @BindView(R.id.linearlayout_activity_reading)
     LinearLayout linearLayoutActivityReading;
+
     @BindView(R.id.relativelayout_activity_reading)
     RelativeLayout relativeLayoutActivityReading;
+
     @BindView(R.id.imageview_activity_reading)
     AppCompatImageView imageViewActivityReading;
+
     @BindView(R.id.linearlayout_activity_shopping)
     LinearLayout linearLayoutActivityShopping;
+
     @BindView(R.id.relativelayout_activity_shopping)
     RelativeLayout relativeLayoutActivityShopping;
+
     @BindView(R.id.imageview_activity_shopping)
     AppCompatImageView imageViewActivityShopping;
+
     @BindView(R.id.linearlayout_activity_sports)
     LinearLayout linearLayoutActivitySports;
+
     @BindView(R.id.relativelayout_activity_sports)
     RelativeLayout relativeLayoutActivitySports;
+
     @BindView(R.id.imageview_activity_sports)
     AppCompatImageView imageViewActivitySports;
+
     @BindView(R.id.linearlayout_activity_travel)
     LinearLayout linearLayoutActivityTravel;
+
     @BindView(R.id.relativelayout_activity_travel)
     RelativeLayout relativeLayoutActivityTravel;
+
     @BindView(R.id.imageview_activity_travel)
     AppCompatImageView imageViewActivityTravel;
+
     @BindView(R.id.linearlayout_activity_work)
     LinearLayout linearLayoutActivityWork;
+
     @BindView(R.id.relativelayout_activity_work)
     RelativeLayout relativeLayoutActivityWork;
+
     @BindView(R.id.imageview_activity_work)
     AppCompatImageView imageViewActivityWork;
+
     @BindView(R.id.linearlayout_activity_relax)
     LinearLayout linearLayoutActivityRelax;
+
     @BindView(R.id.relativelayout_activity_relax)
     RelativeLayout relativeLayoutActivityRelax;
+
     @BindView(R.id.imageview_activity_relax)
     AppCompatImageView imageViewActivityRelax;
+
     @BindView(R.id.linearlayout_activity_other)
     LinearLayout linearLayoutActivityOther;
-    @BindView(R.id.linearlayout_activity_school)
-    LinearLayout linearLayoutActivitySchool;
+
+//    @BindView(R.id.linearlayout_activity_school)
+//    LinearLayout linearLayoutActivitySchool;
+
     @BindView(R.id.relativelayout_activity_other)
     RelativeLayout relativeLayoutActivityOther;
-    @BindView(R.id.relativelayout_activity_school)
-    RelativeLayout relativeLayoutActivitySchool;
+
+//    @BindView(R.id.relativelayout_activity_school)
+//    RelativeLayout relativeLayoutActivitySchool;
+
     @BindView(R.id.imageview_activity_other)
     AppCompatImageView imageViewActivityOther;
-    @BindView(R.id.imageview_activity_school)
-    AppCompatImageView imageViewActivitySchool;
+
+//    @BindView(R.id.imageview_activity_school)
+//    AppCompatImageView imageViewActivitySchool;
+
     @BindView(R.id.edittext_add_other_activity)
     EditText editTextOthetActivity;
+
     @BindView(R.id.edittext_add_note)
     EditText editTextNote;
+
     @BindView(R.id.textview_add_location)
     TextView textViewLocation;
+
     @BindView(R.id.imageview_submit)
     ImageView imageViewSubmit;
+
     @BindView(R.id.back_img)
     ImageView BackImg;
+
     private String mood, date, time, moodActivity = "", intensity;
+
     public ArrayList<MoodStats_> addMoodArrayList = new ArrayList<MoodStats_>();
 
 //    @BindView(R.id.linearlayout_recycler_activity)
@@ -229,7 +283,9 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         linearLayoutActivityWork.setOnClickListener(this);
         linearLayoutActivityRelax.setOnClickListener(this);
         linearLayoutActivityOther.setOnClickListener(this);
-        linearLayoutActivitySchool.setOnClickListener(this);
+
+        //linearLayoutActivitySchool.setOnClickListener(this);
+
         textViewLocation.setOnClickListener(this);
         imageViewSubmit.setOnClickListener(this);
 
@@ -266,86 +322,87 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
 
     private void setMood(int mood) {
         String moodString = "";
+        activityID=""+mood;
         switch (mood) {
             case 1:
                 //imageViewMood.setImageResource(R.drawable.mood_happy);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.happy);
-                textViewMood.setText(moodString);
+               // textViewMood.setText(moodString);
                 break;
             case 2:
                 //imageViewMood.setImageResource(R.drawable.mood_laugh);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.laugh);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 3:
                 //imageViewMood.setImageResource(R.drawable.mood_neutral);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.neutral);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 4:
                 //imageViewMood.setImageResource(R.drawable.mood_worried);
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
                     moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.anxious);
-                    textViewMood.setText(moodString);
+                    //textViewMood.setText(moodString);
                 } else {
                     moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.worried);
-                    textViewMood.setText(moodString);
+                    //textViewMood.setText(moodString);
                 }
                 break;
             case 5:
                 //imageViewMood.setImageResource(R.drawable.mood_cry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.cry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 6:
                 //imageViewMood.setImageResource(R.drawable.mood_sad);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.sad);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 7:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.angry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 8:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.excited);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 9:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.bored);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 10:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.fearful);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 11:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.angry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 13:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.excited);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 14:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.confused);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 12:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.frustrated);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
         }
 
@@ -367,82 +424,82 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
             case 1:
                 //imageViewMood.setImageResource(R.drawable.mood_happy);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_happy);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 2:
                 //imageViewMood.setImageResource(R.drawable.mood_laugh);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.laugh);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 3:
                 //imageViewMood.setImageResource(R.drawable.mood_neutral);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.neutral);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 4:
                 //imageViewMood.setImageResource(R.drawable.mood_worried);
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
                     moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_anxious);
-                    textViewMood.setText(moodString);
+                    //textViewMood.setText(moodString);
                 } else {
                     moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_worried);
-                    textViewMood.setText(moodString);
+                    //textViewMood.setText(moodString);
                 }
                 break;
             case 5:
                 //imageViewMood.setImageResource(R.drawable.mood_cry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.cry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 6:
                 //imageViewMood.setImageResource(R.drawable.mood_sad);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_sad);
-                textViewMood.setText(moodString);
+               // textViewMood.setText(moodString);
                 break;
             case 7:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_angry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 8:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_excited);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 9:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_bored);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 10:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_fearful);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 11:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_angry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 13:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_excited);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 14:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_confused);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 12:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_frustrated);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
         }
     }
@@ -453,81 +510,81 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
             case 1:
                 //imageViewMood.setImageResource(R.drawable.mood_happy);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_happy);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 2:
                 //imageViewMood.setImageResource(R.drawable.mood_laugh);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.laugh);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 3:
                 //imageViewMood.setImageResource(R.drawable.mood_neutral);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.neutral);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 4:
                 //imageViewMood.setImageResource(R.drawable.mood_worried);
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
                     moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_anxious);
-                    textViewMood.setText(moodString);
+                    //textViewMood.setText(moodString);
                 } else {
                     moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_worried);
-                    textViewMood.setText(moodString);
+                    //textViewMood.setText(moodString);
                 }
 
                 break;
             case 5:
                 //imageViewMood.setImageResource(R.drawable.mood_cry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.cry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 6:
                 //imageViewMood.setImageResource(R.drawable.mood_sad);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_sad);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 7:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_angry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 8:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_excited);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 9:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_bored);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 10:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_fearful);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 11:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_angry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 13:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_excited);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 14:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_confused);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 12:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.very_frustrated);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
         }
     }
@@ -538,81 +595,81 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
             case 1:
                 //imageViewMood.setImageResource(R.drawable.mood_happy);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_happy);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 2:
                 //imageViewMood.setImageResource(R.drawable.mood_laugh);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.laugh);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 3:
                 //imageViewMood.setImageResource(R.drawable.mood_neutral);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.neutral);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 4:
                 //imageViewMood.setImageResource(R.drawable.mood_worried);
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
                     moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_anxious);
-                    textViewMood.setText(moodString);
+                    //textViewMood.setText(moodString);
                 } else {
                     moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_worried);
-                    textViewMood.setText(moodString);
+                    //textViewMood.setText(moodString);
                 }
                 break;
             case 5:
                 //imageViewMood.setImageResource(R.drawable.mood_cry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.cry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 6:
                 //imageViewMood.setImageResource(R.drawable.mood_sad);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_sad);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 7:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_angry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 8:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_excited);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 9:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_bored);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 10:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_fearful);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 11:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_angry);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
             case 13:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_excited);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 14:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_confused);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
 
             case 12:
                 //imageViewMood.setImageResource(R.drawable.mood_excited);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_frustrated);
-                textViewMood.setText(moodString);
+                //textViewMood.setText(moodString);
                 break;
         }
     }
@@ -620,46 +677,46 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     public void setMoodLow() {
         switch (Integer.valueOf(mood)) {
             case 1:
-                imageViewMood.setImageResource(R.drawable.mood_happy_low);
+                //imageViewMood.setImageResource(R.drawable.mood_happy_low);
                 break;
             case 2:
-                imageViewMood.setImageResource(R.drawable.mood_laugh_low);
+                //imageViewMood.setImageResource(R.drawable.mood_laugh_low);
                 break;
             case 3:
-                imageViewMood.setImageResource(R.drawable.mood_neutral_low);
+                //imageViewMood.setImageResource(R.drawable.mood_neutral_low);
                 break;
             case 4:
-                imageViewMood.setImageResource(R.drawable.mood_worried_low);
+                //imageViewMood.setImageResource(R.drawable.mood_worried_low);
                 break;
             case 5:
-                imageViewMood.setImageResource(R.drawable.mood_cry_low);
+                //imageViewMood.setImageResource(R.drawable.mood_cry_low);
                 break;
             case 6:
-                imageViewMood.setImageResource(R.drawable.mood_sad_low);
+                //imageViewMood.setImageResource(R.drawable.mood_sad_low);
                 break;
             case 7:
-                imageViewMood.setImageResource(R.drawable.mood_angry_low);
+                //imageViewMood.setImageResource(R.drawable.mood_angry_low);
                 break;
             case 8:
-                imageViewMood.setImageResource(R.drawable.mood_excited_low);
+                //imageViewMood.setImageResource(R.drawable.mood_excited_low);
                 break;
             case 9:
-                imageViewMood.setImageResource(R.drawable.mood_bored_low);
+                //imageViewMood.setImageResource(R.drawable.mood_bored_low);
                 break;
             case 10:
-                imageViewMood.setImageResource(R.drawable.mood_fearful_low);
+                //imageViewMood.setImageResource(R.drawable.mood_fearful_low);
                 break;
             case 11:
-                imageViewMood.setImageResource(R.drawable.mood_angry_low);
+                //imageViewMood.setImageResource(R.drawable.mood_angry_low);
                 break;
             case 13:
-                imageViewMood.setImageResource(R.drawable.mood_excited_low);
+                //imageViewMood.setImageResource(R.drawable.mood_excited_low);
                 break;
             case 14:
-                imageViewMood.setImageResource(R.drawable.mood_confused_low);
+                //imageViewMood.setImageResource(R.drawable.mood_confused_low);
                 break;
             case 12:
-                imageViewMood.setImageResource(R.drawable.mood_frustrated_low);
+                //imageViewMood.setImageResource(R.drawable.mood_frustrated_low);
                 break;
         }
     }
@@ -667,46 +724,46 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     public void setMoodModerate() {
         switch (Integer.valueOf(mood)) {
             case 1:
-                imageViewMood.setImageResource(R.drawable.mood_happy_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_happy_moderate);
                 break;
             case 2:
-                imageViewMood.setImageResource(R.drawable.mood_laugh_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_laugh_moderate);
                 break;
             case 3:
-                imageViewMood.setImageResource(R.drawable.mood_neutral_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_neutral_moderate);
                 break;
             case 4:
-                imageViewMood.setImageResource(R.drawable.mood_worried_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_worried_moderate);
                 break;
             case 5:
-                imageViewMood.setImageResource(R.drawable.mood_cry_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_cry_moderate);
                 break;
             case 6:
-                imageViewMood.setImageResource(R.drawable.mood_sad_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_sad_moderate);
                 break;
             case 7:
-                imageViewMood.setImageResource(R.drawable.mood_angry_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_angry_moderate);
                 break;
             case 8:
-                imageViewMood.setImageResource(R.drawable.mood_excited_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_excited_moderate);
                 break;
             case 9:
-                imageViewMood.setImageResource(R.drawable.mood_bored_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_bored_moderate);
                 break;
             case 10:
-                imageViewMood.setImageResource(R.drawable.mood_fearful_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_fearful_moderate);
                 break;
             case 11:
-                imageViewMood.setImageResource(R.drawable.mood_angry_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_angry_moderate);
                 break;
             case 13:
-                imageViewMood.setImageResource(R.drawable.mood_excited_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_excited_moderate);
                 break;
             case 14:
-                imageViewMood.setImageResource(R.drawable.mood_confused_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_confused_moderate);
                 break;
             case 12:
-                imageViewMood.setImageResource(R.drawable.mood_frustrated_moderate);
+                //imageViewMood.setImageResource(R.drawable.mood_frustrated_moderate);
                 break;
         }
     }
@@ -714,46 +771,46 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     public void setMoodHigh() {
         switch (Integer.valueOf(mood)) {
             case 1:
-                imageViewMood.setImageResource(R.drawable.mood_happy_high);
+                //imageViewMood.setImageResource(R.drawable.mood_happy_high);
                 break;
             case 2:
-                imageViewMood.setImageResource(R.drawable.mood_laugh_high);
+                //imageViewMood.setImageResource(R.drawable.mood_laugh_high);
                 break;
             case 3:
-                imageViewMood.setImageResource(R.drawable.mood_neutral_high);
+                //imageViewMood.setImageResource(R.drawable.mood_neutral_high);
                 break;
             case 4:
-                imageViewMood.setImageResource(R.drawable.mood_worried_high);
+                //imageViewMood.setImageResource(R.drawable.mood_worried_high);
                 break;
             case 5:
-                imageViewMood.setImageResource(R.drawable.mood_cry_high);
+                //imageViewMood.setImageResource(R.drawable.mood_cry_high);
                 break;
             case 6:
-                imageViewMood.setImageResource(R.drawable.mood_sad_high);
+                //imageViewMood.setImageResource(R.drawable.mood_sad_high);
                 break;
             case 7:
-                imageViewMood.setImageResource(R.drawable.mood_angry_high);
+                //imageViewMood.setImageResource(R.drawable.mood_angry_high);
                 break;
             case 8:
-                imageViewMood.setImageResource(R.drawable.mood_excited_high);
+                //imageViewMood.setImageResource(R.drawable.mood_excited_high);
                 break;
             case 9:
-                imageViewMood.setImageResource(R.drawable.mood_bored_high);
+                //imageViewMood.setImageResource(R.drawable.mood_bored_high);
                 break;
             case 10:
-                imageViewMood.setImageResource(R.drawable.mood_fearful_high);
+                //imageViewMood.setImageResource(R.drawable.mood_fearful_high);
                 break;
             case 11:
-                imageViewMood.setImageResource(R.drawable.mood_angry_high);
+                //imageViewMood.setImageResource(R.drawable.mood_angry_high);
                 break;
             case 13:
-                imageViewMood.setImageResource(R.drawable.mood_excited_high);
+                //imageViewMood.setImageResource(R.drawable.mood_excited_high);
                 break;
             case 14:
-                imageViewMood.setImageResource(R.drawable.mood_confused_high);
+                //imageViewMood.setImageResource(R.drawable.mood_confused_high);
                 break;
             case 12:
-                imageViewMood.setImageResource(R.drawable.mood_frustrated_high);
+                //imageViewMood.setImageResource(R.drawable.mood_frustrated_high);
                 break;
         }
     }
@@ -863,8 +920,8 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
             case R.id.linearlayout_activity_school:
                 moodActivity = "15";
                 setActivityLayouts();
-                imageViewActivitySchool.setColorFilter(color);
-                relativeLayoutActivitySchool.setBackgroundResource(R.drawable.circle_mood_activity_selected);
+                //imageViewActivitySchool.setColorFilter(color);
+               // relativeLayoutActivitySchool.setBackgroundResource(R.drawable.circle_mood_activity_selected);
                 break;
 
             case R.id.textview_add_location:
@@ -880,10 +937,13 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     }
 
     public boolean validate() {
+        activityID=moodActivity;
+
         if (activityID == null || activityID.length() == 0) {
             ShowToast.toast("Select Activity", getApplicationContext());
             return false;
         }
+
         if(BuildConfig.FLAVOR.equalsIgnoreCase("senjam")){
 
         }else{
@@ -915,16 +975,33 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         int status = 11;
         String actionName = editTextOthetActivity.getText().toString().trim();
         HashMap<String, String> requestMap = new HashMap<>();
+
         requestMap.put(General.ACTION, Actions_.ADD_MOOD);
+
         requestMap.put(General.INTENSITY, intensity);
+
         requestMap.put(General.LOCATION, textViewLocation.getText().toString());
+
         requestMap.put(General.MOOD, mood);
-        requestMap.put(General.ACTIVITY, String.valueOf(selectedMoodModel.getId()));
-        if (selectedMoodModel.getName().equalsIgnoreCase("Other")) {
+
+//        requestMap.put(General.ACTIVITY, String.valueOf(selectedMoodModel.getId()));
+
+        requestMap.put(General.ACTIVITY, activityID);
+
+
+
+//        if (selectedMoodModel.getName().equalsIgnoreCase("Other")) {
+//            requestMap.put(General.OTHER_COMMENT, actionName);
+//        } else {
+//            requestMap.put(General.OTHER_COMMENT, "");
+//        }
+
+        if (!actionName.isEmpty()) {
             requestMap.put(General.OTHER_COMMENT, actionName);
         } else {
             requestMap.put(General.OTHER_COMMENT, "");
         }
+
         requestMap.put(General.COMMENT, editTextNote.getText().toString());
         requestMap.put(General.DATE, date);
         requestMap.put(General.TIME, time);
@@ -1028,8 +1105,9 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         imageViewActivityRelax.setImageResource(R.drawable.vi_mood_relax);
         imageViewActivityOther.setColorFilter(color);
         imageViewActivityOther.setImageResource(R.drawable.vi_mood_other);
-        imageViewActivitySchool.setColorFilter(color);
-        imageViewActivitySchool.setImageResource(R.drawable.vi_mood_school);
+
+//        imageViewActivitySchool.setColorFilter(color);
+//        imageViewActivitySchool.setImageResource(R.drawable.vi_mood_school);
 
         relativeLayoutActivityCleaning.setBackgroundResource(R.drawable.circle_gray_corners);
         relativeLayoutActivityDate.setBackgroundResource(R.drawable.circle_gray_corners);
@@ -1045,7 +1123,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         relativeLayoutActivityWork.setBackgroundResource(R.drawable.circle_gray_corners);
         relativeLayoutActivityRelax.setBackgroundResource(R.drawable.circle_gray_corners);
         relativeLayoutActivityOther.setBackgroundResource(R.drawable.circle_gray_corners);
-        relativeLayoutActivitySchool.setBackgroundResource(R.drawable.circle_gray_corners);
+       // relativeLayoutActivitySchool.setBackgroundResource(R.drawable.circle_gray_corners);
 
        /* editTextOthetActivity.setText("");
         if (moodActivity.equalsIgnoreCase("14")) {
@@ -1126,7 +1204,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     @Override
     public void moodDetailLayoutClicked(MoodModel moodModel) {
         activityID = String.valueOf(moodModel.getId());
-        activityID = moodModel.getName();
+       // activityID = moodModel.getName();
         selectedMoodModel = moodModel;
         editTextOthetActivity.setText("");
         if (moodModel.getName().equalsIgnoreCase("Other")) {

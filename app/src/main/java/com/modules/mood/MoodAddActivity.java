@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -59,37 +60,52 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
  * Created by kailash karankal
  */
 
-public class MoodAddActivity extends AppCompatActivity implements View.OnClickListener, GoalDetailsInterface ,MoodAdapter.moodListAdapterListener{
+public class MoodAddActivity extends AppCompatActivity implements View.OnClickListener, GoalDetailsInterface, MoodAdapter.moodListAdapterListener {
     @BindView(R.id.imageview_mood)
     ImageView imageViewMood;
+
     @BindView(R.id.textview_mood)
     TextView moodText;
+
     @BindView(R.id.seekBar)
     SeekBarHint seekBar;
+
     @BindView(R.id.textview_date)
     TextView dateText;
+
     @BindView(R.id.textview_time)
     TextView timeText;
+
     @BindView(R.id.linearlayout_mood_happy)
     LinearLayout linearLayoutMoodHappy;
+
     @BindView(R.id.linearlayout_mood_good)
     LinearLayout linearLayoutMoodGood;
+
     @BindView(R.id.linearlayout_mood_cry)
     LinearLayout linearLayoutMoodCry;
+
     @BindView(R.id.linearlayout_mood_worried)
     LinearLayout linearLayoutMoodWorried;
+
     @BindView(R.id.linearlayout_mood_sad)
     LinearLayout linearLayoutMoodSad;
+
     @BindView(R.id.linearlayout_mood_angry)
     LinearLayout linearLayoutMoodAngry;
+
     @BindView(R.id.linearlayout_mood_neutral)
     LinearLayout linearLayoutMoodNeutral;
+
     @BindView(R.id.linearlayout_mood_excited)
     LinearLayout linearLayoutMoodExcited;
+
     @BindView(R.id.imageview_next)
     ImageView imageViewNext;
+
     @BindView(R.id.linearlayout_mood)
     LinearLayout moodStatusLayout;
+
     @BindView(R.id.back_img)
     ImageView BackImg;
 
@@ -210,7 +226,7 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
         seekbarProgress(seekBar);
 
 //        mRecycleViewMood.setBackgroundColor(this.getResources().getColor(R.color.screen_background));
-        mLinearLayoutManager = new GridLayoutManager(this,4);
+        mLinearLayoutManager = new GridLayoutManager(this, 4);
         mRecycleViewMood.setLayoutManager(mLinearLayoutManager);
         moodListAPICalled();
     }
@@ -284,8 +300,8 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setMood(String intensity) {
 
-        if (selectedMood != null){
-            if(selectedMood.getIs_intensity() == 1){
+        if (selectedMood != null) {
+            if (selectedMood.getIs_intensity() == 1) {
                 if (intensity.equalsIgnoreCase("33")) {
                     moodText.setText("Really " + selectedMood.getName());
                 } else if (intensity.equalsIgnoreCase("66")) {
@@ -293,7 +309,7 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
                 } else if (intensity.equalsIgnoreCase("100")) {
                     moodText.setText("Extremely " + selectedMood.getName());
                 }
-            }else {
+            } else {
                 moodText.setText(selectedMood.getName());
             }
         }
@@ -391,7 +407,8 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.textview_date:
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage030)) ||
-                        Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031))){
+                        Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031))
+                ) {
 
                     DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                             new DatePickerDialog.OnDateSetListener() {
@@ -417,7 +434,7 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
                     datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                     datePickerDialog.show();
 
-                }else{
+                } else {
                     DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                             new DatePickerDialog.OnDateSetListener() {
                                 @Override
@@ -811,9 +828,9 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
 
     public boolean validate() {
 
-        if(BuildConfig.FLAVOR.equalsIgnoreCase("senjam")){
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
 
-        }else {
+        } else {
             if (intensity == null || intensity.length() == 0 || intensity.equalsIgnoreCase("0")) {
                 ShowToast.toast("Select Intensity", getApplicationContext());
                 return false;
@@ -849,6 +866,8 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
             currentUnit = "AM";
         else
             currentUnit = "PM";
+
+
         String currentDateTime = currentYear + "-" + currentMonth + "-" + currentDay + " " + currentHour + ":" + currentMin + ":" + currentSecond + " " + currentUnit;
         String strDate = dateText.getText().toString();
         try {//2018-11-1 12:11:00 AM,2018-11-1 06:11:00 PM  2018-11-01 12:11:00 PM
@@ -897,8 +916,7 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
     public void setDurationTime(String time) {
     }
 
-    public void moodListAPICalled()
-    {
+    public void moodListAPICalled() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.GET_MOODS);
 
@@ -915,14 +933,14 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
                         if (moodModelArrayList.get(0).getStatus() == 1) {
 //                            showError(false, 1);
 //                            notesCount.setText(progressList.size() + " Notes Found");
-                            moodAdapter = new MoodAdapter(this,moodModelArrayList,this);
+                            moodAdapter = new MoodAdapter(this, moodModelArrayList, this);
                             mRecycleViewMood.setAdapter(moodAdapter);
                         } else {
-                            Log.e("ErrorMood",""+moodModelArrayList.get(0).getStatus());
+                            Log.e("ErrorMood", "" + moodModelArrayList.get(0).getStatus());
                         }
                     } else {
 //                        showError(true, progressList.get(0).getStatus());
-                        Log.e("ErrorMood_1",""+moodModelArrayList.get(0).getStatus());
+                        Log.e("ErrorMood_1", "" + moodModelArrayList.get(0).getStatus());
                     }
                 }
             } catch (Exception e) {

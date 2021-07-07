@@ -80,13 +80,27 @@ public class MoodFragment_ extends Fragment implements View.OnClickListener, Bot
         imageViewAdd.setColorFilter(color);
         imageViewAdd.setImageResource(R.drawable.vi_mood_add);
         imageViewAdd.setOnClickListener(this);
-        bottomNavigationViewLeft = (BottomNavigationView) view.findViewById(R.id.bottomnav_left);
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationViewLeft);
+
+        bottomNavigationViewLeft = view.findViewById(R.id.bottomnav_left);
+        try {
+            BottomNavigationViewHelper.disableShiftMode(bottomNavigationViewLeft);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         bottomNavigationViewLeft.setOnNavigationItemSelectedListener(this);
         bottomNavigationViewLeft.setItemTextColor(colorStateListText);
         bottomNavigationViewLeft.setItemIconTintList(colorStateListIcon);
-        bottomNavigationViewRight = (BottomNavigationView) view.findViewById(R.id.bottomnav_right);
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationViewRight);
+
+        bottomNavigationViewRight = view.findViewById(R.id.bottomnav_right);
+
+        try {
+            BottomNavigationViewHelper.disableShiftMode(bottomNavigationViewRight);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         bottomNavigationViewRight.setItemTextColor(colorStateListText);
         bottomNavigationViewRight.setItemIconTintList(colorStateListIcon);
         bottomNavigationViewRight.setOnNavigationItemSelectedListener(this);

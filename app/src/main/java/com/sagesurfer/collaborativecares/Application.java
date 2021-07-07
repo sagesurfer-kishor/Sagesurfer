@@ -58,6 +58,7 @@ public class Application extends MultiDexApplication {
         crashlytics = FirebaseCrashlytics.getInstance();
         crashlytics.log("Start logging!");
 
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -74,11 +75,11 @@ public class Application extends MultiDexApplication {
                         //StorageHelper.setTOKEN(getApplicationContext(), token);
                         Log.i(Application.class.getSimpleName(), "Token: " + token);
 
-                        Preferences.save("regId_save", false);
-                        Preferences.initialize(getApplicationContext());
-                        Preferences.save("regId", token);
-
                         StorageHelper.setTOKEN(getApplicationContext(), token);
+
+                        Preferences.initialize(getApplicationContext());
+                        Preferences.save("regId_save", false);
+                        Preferences.save("regId", token);
 
                     }
                 });
@@ -104,13 +105,7 @@ public class Application extends MultiDexApplication {
 
         CometChatCallListener.addCallListener(TAG, this);
 
-       /* FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String deviceToken = instanceIdResult.getToken();
-                Log.e("+++", deviceToken);
-            }
-        });*/
+
 
     }
 
