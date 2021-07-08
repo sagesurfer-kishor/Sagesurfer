@@ -161,7 +161,6 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
             fetchAllConsumers();
         }
     }
-
     private final AdapterView.OnItemSelectedListener onConsumerSelected = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
