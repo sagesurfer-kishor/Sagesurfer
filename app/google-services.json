@@ -1,34 +1,114 @@
 {
   "project_info": {
-    "project_number": "733445431147",
-    "project_id": "sagesurfer-9f089",
-    "storage_bucket": "sagesurfer-9f089.appspot.com"
+    "project_number": "154616175696",
+    "firebase_url": "https://collaborative-care-connection.firebaseio.com",
+    "project_id": "collaborative-care-connection",
+    "storage_bucket": "collaborative-care-connection.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:733445431147:android:fcf9970f9c9fb1f674762e",
+        "mobilesdk_app_id": "1:154616175696:android:92a41d11c38f32a3",
         "android_client_info": {
           "package_name": "com.sagesurfer.collaborativecares"
         }
       },
       "oauth_client": [
         {
-          "client_id": "733445431147-nmjf69ajqvmcvl92ufhc30r0pdof8h8h.apps.googleusercontent.com",
+          "client_id": "154616175696-b3b2har32kqcf11vducg3nkscuplgthn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAiFx7I2rpnYWwAZ2iVIc4yQZ8TMyJHc38"
+          "current_key": "AIzaSyB9jfnauzo4SH9yWgmMAldA9vQPUqmoy50"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "733445431147-nmjf69ajqvmcvl92ufhc30r0pdof8h8h.apps.googleusercontent.com",
+              "client_id": "154616175696-tta3mhgsdni0sv0vskifkue0fupd8lrb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "154616175696-utdgcqqmpdenn5iv03njrk0ou0sdohv6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "sagesurfer.CollborativeCareConnection"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154616175696:android:5739fb49741396bb990555",
+        "android_client_info": {
+          "package_name": "com.sagesurfer.senjam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154616175696-b3b2har32kqcf11vducg3nkscuplgthn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9jfnauzo4SH9yWgmMAldA9vQPUqmoy50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154616175696-tta3mhgsdni0sv0vskifkue0fupd8lrb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "154616175696-utdgcqqmpdenn5iv03njrk0ou0sdohv6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "sagesurfer.CollborativeCareConnection"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154616175696:android:2c1848afb6349809",
+        "android_client_info": {
+          "package_name": "com.sagesurfer.vetran"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154616175696-b3b2har32kqcf11vducg3nkscuplgthn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9jfnauzo4SH9yWgmMAldA9vQPUqmoy50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154616175696-tta3mhgsdni0sv0vskifkue0fupd8lrb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "154616175696-utdgcqqmpdenn5iv03njrk0ou0sdohv6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "sagesurfer.CollborativeCareConnection"
+              }
             }
           ]
         }

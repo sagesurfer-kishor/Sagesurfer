@@ -123,6 +123,7 @@ public class SelfGoalListAdapter extends RecyclerView.Adapter {
                 goalListAdapterListener.onGoalItemClicked(position, goal_);
             }
         });
+
         applyReadStatus(viewHolder, goalArrayList.get(position));
     }
 

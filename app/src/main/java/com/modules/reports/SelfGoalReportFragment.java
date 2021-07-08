@@ -141,9 +141,11 @@ public class SelfGoalReportFragment extends Fragment implements View.OnClickList
             fetchAllSelfGoals();
             Log.i(TAG, "onResume: ");
         } else {
-            if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))) {
+            if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
+             || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))) {
                 mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.peer_participant_report));
-            } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
+            } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
+                    || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
                 mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.guest_report));
             } else if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024)) 
 			|| Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage026))

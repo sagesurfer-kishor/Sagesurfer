@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
@@ -35,6 +38,7 @@ import com.sagesurfer.parser.Dashboards_;
 import com.sagesurfer.snack.SubmitSnackResponse;
 import com.storage.preferences.Preferences;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -124,6 +128,7 @@ public class NoteListFragment extends Fragment implements View.OnClickListener, 
         errorLayout = (LinearLayout) view.findViewById(R.id.note_list_error_view_layout);
 
         Bundle data = getArguments();
+
         if (data.containsKey(General.ID)) {
             consumer_id = data.getString(General.ID);
         }
@@ -169,6 +174,12 @@ public class NoteListFragment extends Fragment implements View.OnClickListener, 
         errorLayout.setVisibility(View.VISIBLE);
         listWarning.setText(message);
         errorIcon.setImageResource(image);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchData();
     }
 
     @Override

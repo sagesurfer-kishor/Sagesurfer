@@ -147,7 +147,9 @@ public class CalendarFragment extends Fragment implements View.OnClickListener, 
             fab.setOnClickListener(this);
 
             //Changed after discussion with Sagar and Nirmal as Sagar have implemented owner_id and isModerator on backend for all instances
-            if ((Preferences.get(General.GROUP_OWNER_ID) != null && Preferences.get(General.GROUP_OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID)))
+            if ((Preferences.get(General.GROUP_OWNER_ID) != null
+                    &&
+                    Preferences.get(General.GROUP_OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID)))
                     || (Preferences.get(General.IS_MODERATOR) != null && Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1"))
                     || (Preferences.get(General.IS_CASE_MANAGER) != null && Preferences.get(General.IS_CASE_MANAGER).equalsIgnoreCase("1"))
                     || (Preferences.get(General.IS_CC) != null && Preferences.get(General.IS_CC).equalsIgnoreCase("1"))
@@ -156,6 +158,8 @@ public class CalendarFragment extends Fragment implements View.OnClickListener, 
             } else {
                 fab.setVisibility(View.GONE);
             }
+
+            fab.setVisibility(View.VISIBLE);
 
             errorText = (TextView) rootView.findViewById(R.id.textview_error_message);
             errorIcon = (AppCompatImageView) rootView.findViewById(R.id.imageview_error_icon);

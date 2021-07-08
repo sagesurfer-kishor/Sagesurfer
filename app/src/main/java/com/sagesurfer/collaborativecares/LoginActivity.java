@@ -117,17 +117,24 @@ import screen.messagelist.NetworkCall_;
  */
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, AuthorizationCallbacks, TokenCallbacks {
+
     private static final String TAG = LoginActivity.class.getSimpleName();
+
     @BindView(R.id.edittext_login_user_name)
     EditText editTextUserName;
+
     @BindView(R.id.edittext_login_user_password)
     EditText editTextUserPassword;
+
     @BindView(R.id.edittext_login_server_code)
     EditText editTextServerCode;
+
     @BindView(R.id.button_login)
     Button buttonLogin;
+
     @BindView(R.id.textview_login_forgot_password)
     TextView textViewForgotPassword;
+
     @BindView(R.id.saveLoginCheckBox)
     CheckBox saveLoginDetailsCheckBox;
 

@@ -113,7 +113,11 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
         imageViewAdd.setOnClickListener(this);
 
         if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
-                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))) {
+
             textViewToolbarTitle.setText(getResources().getString(R.string.note));
             recyclerView.setVisibility(View.GONE);
             linearLayoutPeerNote.setVisibility(View.VISIBLE);
@@ -126,12 +130,12 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
             tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.approved)));
             tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.rejected)));
 
-            if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
-                imageViewAdd.setVisibility(View.VISIBLE);
-                tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.draft)));
-            } else {
-                imageViewAdd.setVisibility(View.GONE);
-            }
+//            if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
+//                imageViewAdd.setVisibility(View.VISIBLE);
+//                tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.draft)));
+//            } else {
+//                imageViewAdd.setVisibility(View.GONE);
+//            }
 
         } else {
             textViewToolbarTitle.setText(getResources().getString(R.string.progress_note));
@@ -152,7 +156,9 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
         switch (v.getId()) {
             case R.id.imageview_add:
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
-                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013))
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
                     Intent detailsIntent = new Intent(activity.getApplicationContext(), PeerAddNoteActivity.class);
                     startActivity(detailsIntent);
                 } else {
