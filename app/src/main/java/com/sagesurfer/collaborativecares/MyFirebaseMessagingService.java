@@ -118,6 +118,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         AppLog.d(TAG, "FROM: " + remoteMessage.getFrom());
         AppLog.d(TAG, "data: " + remoteMessage.getData());
 
+
         preferencesCheckCurrentActivity = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
         isChatScreen = preferencesCheckCurrentActivity.getBoolean("IsChatScreen", false);
         IsFriendListingPage = preferencesCheckCurrentActivity.getBoolean("IsFriendListingPage", false);
@@ -142,32 +143,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             AppLog.i(TAG, "From notification" + remoteMessage.getFrom());
         }
 
+        try {
+            count++;
+            json = new JSONObject(remoteMessage.getData());
+            messageData = new JSONObject(json.getString("message"));
+            String title = messageData.getString("receiver");
+            String receiverType = messageData.getString("receiverType");
 
-//        try {
-//            count++;
-//            json = new JSONObject(remoteMessage.getData());
-//            messageData = new JSONObject(json.getString("message"));
-//            String title = messageData.getString("receiver");
-//            String receiverType = messageData.getString("receiverType");
-//
-//            Log.e(TAG, "received push notification JSONObject: " + messageData);
-//
-//            BaseMessage baseMessage = CometChatHelper.processMessage(new JSONObject(remoteMessage.getData().get("message")));
-//            if (baseMessage instanceof Call) {
-//                call = (Call) baseMessage;
-//                isCall = true;
-//                //if (!AppInfo.isAppRunning(getApplicationContext(), "com.sagesurfer.collaborativecares")) {
-//                showNotifcation(baseMessage);
-//                //}
-//            } else {
-//
-//                showNotifcation(baseMessage);
-//            }
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.i(TAG, "onMessageReceived: error " + e.getMessage());
-//        }
+            Log.e(TAG, "received push notification JSONObject: " + messageData);
+
+            BaseMessage baseMessage = CometChatHelper.processMessage(new JSONObject(remoteMessage.getData().get("message")));
+            if (baseMessage instanceof Call) {
+                call = (Call) baseMessage;
+                isCall = true;
+                //if (!AppInfo.isAppRunning(getApplicationContext(), "com.sagesurfer.collaborativecares")) {
+                showNotifcation(baseMessage);
+                //}
+            } else {
+
+                showNotifcation(baseMessage);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.i(TAG, "onMessageReceived: error " + e.getMessage());
+        }
 
     }
 
@@ -184,6 +184,131 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationUtils.playNotificationSound();
         }
     }
+
+    private void handleDataMessage(RemoteMessage json) {
+        try {
+            Map<String, String> datas = json.getData();
+            JSONObject object = new JSONObject(datas);
+
+            AppLog.e(TAG, "JSON_OBJECT" + object.toString());
+            String yourString = object.toString().replaceAll("\\\\", "");
+
+            // Get the index
+            int index = 8;
+            String ch = "";
+
+            yourString = yourString.substring(0, index) + ch
+                    + yourString.substring(index + 1);
+
+            index = yourString.length() - 2;
+
+            yourString = yourString.substring(0, index) + ch
+                    + yourString.substring(index + 1);
+
+            AppLog.e(TAG, "JSON_OBJECT jsonObject" + yourString);
+
+            Preferences.initialize(getApplicationContext());
+
+            JSONObject mainobj = new JSONObject(yourString);
+
+            JSONObject data = mainobj.getJSONObject("data");
+
+            AppLog.e(TAG, "Jdata" + data.toString());
+
+            String title = data.optString("title");
+            String message = data.optString("message");
+
+//            String message = "This is demo app";
+            String imageUrl = data.optString("image");
+            String type = data.optString("menu_id");
+            String timestamp = data.optString("timestamp");
+            String groupId = data.optString("groupid");
+            String isModerator = data.optString("ismodrator");
+            String ampm = data.optString("ampm");
+
+            Preferences.save(General.GROUP_ID, groupId);
+            Preferences.save(General.IS_MODERATOR, isModerator);
+            Preferences.save(General.IS_PUSH_NOTIFICATION, true);
+            Preferences.save(General.GOAL_AM_PM, ampm);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            timestamp = sdf.format(new Date());
+
+            //List<String> post1Comments = new ArrayList<>();
+            // Collect comments of a certain post
+            //post1Comments.add(groupId);
+            // Attach comments to post
+            List<String> notificationValues = new ArrayList<String>();
+            notificationValues.add(0, title);
+            notificationValues.add(1, message);
+            notificationValues.add(2, type);
+            notificationValues.add(3, groupId);
+            Config.mapOfPosts.put(timestamp, notificationValues);
+
+//            for (Map.Entry<String, List<String>> entry : Config.mapOfPosts.entrySet()) {
+//                String key = entry.getKey();
+//                //String value = entry.getValue();
+//                System.out.printf("%s -> %s%n", entry.getKey(), entry.getValue().get(0) + "-" + entry.getValue().get(1) + "-" + entry.getValue().get(2) + "-" + entry.getValue().get(3));
+//            }
+
+//            if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+//                // app is in foreground, broadcast the push message
+//                Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
+//                pushNotification.putExtra(General.MESSAGE, message);
+//                pushNotification.putExtra(General.TIMESTAMP, timestamp);
+//                pushNotification.putExtra(General.TITLE, title);
+//                pushNotification.putExtra(General.TYPE, type);
+//                //pushNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+//
+//                // play notification sound
+//                NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+//                notificationUtils.playNotificationSound();
+//
+//                if (TextUtils.isEmpty(imageUrl)) {
+//                    showNotificationMessage(getApplicationContext(),
+//                            title,
+//                            message,
+//                            timestamp, type, pushNotification);
+//                } else {
+//                    // if image is present, show notification with image
+//                    showNotificationMessageWithBigImage(getApplicationContext(),
+//                            title, message, timestamp, type, pushNotification, imageUrl);
+//                }
+//
+//            } else {
+            // app is in background, show the notification in notification tray
+            Intent resultIntent;
+            //commented on 29/04/19 as need to redirect on team announcement, team task list and team events
+                /*if(Integer.parseInt(Preferences.get(General.GROUP_ID)) != 0) {
+                    resultIntent = new Intent(getApplicationContext(), TeamDetailsActivity.class);
+                } else {
+                    resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+                }*/
+            resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+            resultIntent.putExtra(General.GROUP_ID, Preferences.get(General.GROUP_ID));
+            resultIntent.putExtra(General.MESSAGE, message);
+            resultIntent.putExtra(General.TIMESTAMP, timestamp);
+            resultIntent.putExtra(General.TITLE, title);
+            resultIntent.putExtra(General.TYPE, type);
+            // check for image attachment
+
+            AppLog.i(TAG, "Condition");
+            if (TextUtils.isEmpty(imageUrl)) {
+                AppLog.i(TAG, "Image URL without");
+                showNotificationMessage(getApplicationContext(), title, message, timestamp, type, resultIntent);
+            } else {
+                AppLog.i(TAG, "Image URL with");
+                // if image is present, show notification with image
+                showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, type, resultIntent, imageUrl);
+            }
+            //}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void handleDataMessage(Map<String, String> datamap) {
         try {
 
@@ -527,7 +652,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("receiverType", messageData.optString("receiverType"));
                             intentMain.putExtra("username", "" + json.get("title"));
                             intentMain.putExtra("type", "groupMember");
-                        } else {
+                        } else if (type.equals("extension_whiteboard")) {
+                            Log.i(TAG, "getIntent: extension_whiteboard block");
+                            String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
+                            intentMain.putExtra("team_logs_id ", team_logs_id);
+                            intentMain.putExtra("receiver ", messageData.optString("receiver"));
+                            intentMain.putExtra("sender ", messageData.optString("sender"));
+                            intentMain.putExtra("receiverType ", messageData.optString("receiverType"));
+                            intentMain.putExtra("username ", "" + json.get("title"));
+                            intentMain.putExtra("type ", type);
+                        }else {
                             String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
                             /*This is a broad cast for refreshing the unread messages*/
                             if (team_logs_id.equals("0")) {
@@ -588,6 +722,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intentMain.putExtra("status", "" + status);
                     intentMain.putExtra("callType", "" + callType);
                     intentMain.putExtra("sessionid", "" + sessionid);
+                    intentMain.putExtra("category" ,"call");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

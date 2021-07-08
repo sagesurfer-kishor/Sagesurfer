@@ -38,7 +38,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 @SuppressWarnings("ConstantConditions")
 public class NetworkCall_ {
-
     private static final String TAG = NetworkCall_.class.getSimpleName();
     private static RefreshToken refreshToken;
     static SharedPreferences UserInfoForUIKitPref;

@@ -2109,7 +2109,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else {
                 Log.i(TAG, "handleIntent: else");
                 if (mainIntent.hasExtra("category")) {
-                    if (mainIntent.getStringExtra("category").equals("call")) {
+                    if (mainIntent.getStringExtra("category").equalsIgnoreCase("call")) {
                         /*Here we are getting intent  for call redirection*/
                         Log.i(TAG, "handleIntent: call block");
                         Bundle bundle = new Bundle();

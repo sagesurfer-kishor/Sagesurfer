@@ -56,6 +56,7 @@ import utils.Utils;
  * This file contains firebase messaging service to get firabase push messages
  * Methods is added to parse and show push notifications code co
  */
+
 public class MessagingService extends FirebaseMessagingService {
     private static final String TAG = MessagingService.class.getSimpleName();
     private NotificationUtils notificationUtils;
@@ -83,7 +84,7 @@ public class MessagingService extends FirebaseMessagingService {
         intentMain = new Intent(this, MainActivity.class);
         callingIntent = new Intent(this, FragmentLastConversation.class);
 
-        Log.e(TAG , " notification received.. "+ remoteMessage.toString());
+
         Logger.error("Debug", "Firebase Notification payload : " + remoteMessage.getData().toString(), getApplicationContext());
         Preferences.save(General.IS_PUSH_NOTIFICATION_SENT, false);
 
@@ -102,7 +103,7 @@ public class MessagingService extends FirebaseMessagingService {
                 } else {
                     Logger.error("Debug", "Firebase Notification payload12 : " + remoteMessage.getData().toString(), getApplicationContext());
                     JSONObject json = new JSONObject(remoteMessage.getData());
-                    Log.i(TAG, "onMessageReceived: data " + json.toString());
+                    //Log.i(TAG, "onMessageReceived: data " + json.toString());
                     handleDataMessage(json);
                 }
             } catch (Exception e) {
@@ -118,7 +119,7 @@ public class MessagingService extends FirebaseMessagingService {
             String title = messageData.getString("receiver");
             String receiverType = messageData.getString("receiverType");
 
-            Log.e(TAG, "received push notification JSONObject: " + messageData);
+            Logger.info(TAG, "received push notification JSONObject: " + messageData,getApplicationContext());
 
             BaseMessage baseMessage = CometChatHelper.processMessage(new JSONObject(remoteMessage.getData().get("message")));
             if (baseMessage instanceof Call) {
@@ -134,7 +135,7 @@ public class MessagingService extends FirebaseMessagingService {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.i(TAG, "onMessageReceived: error " + e.getMessage());
+
         }
     }
 
@@ -355,12 +356,12 @@ public class MessagingService extends FirebaseMessagingService {
                     notificationManager.notify(0, summaryBuilder.build());
                 }
             } else {
-                Log.i(TAG, "showNotifcation: Is chat screen");
+                Logger.debug(TAG, "showNotifcation: Is chat screen",getApplicationContext());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Log.i(TAG, "showNotifcation: error 2" + e.getMessage());
+            Logger.debug(TAG, "showNotifcation: error 2" + e.getMessage(),getApplicationContext());
 
         }
     }
@@ -392,7 +393,7 @@ public class MessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("username", "" + json.get("title"));
                             intentMain.putExtra("type", "groupMember");
                         } else if (type.equals("extension_whiteboard")) {
-                            Log.i(TAG, "getIntent: extension_whiteboard block");
+
                             String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
                             intentMain.putExtra("team_logs_id ", team_logs_id);
                             intentMain.putExtra("receiver ", messageData.optString("receiver"));

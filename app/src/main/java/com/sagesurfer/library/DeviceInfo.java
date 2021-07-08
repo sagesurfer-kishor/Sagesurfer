@@ -31,7 +31,6 @@ import java.util.TimeZone;
 
 public class DeviceInfo {
     private static final String LINE_SEPARATOR = ",";
-
     public static String get(Activity activity) {
 
         return "DeviceId:" + getDeviceId(activity) + LINE_SEPARATOR +

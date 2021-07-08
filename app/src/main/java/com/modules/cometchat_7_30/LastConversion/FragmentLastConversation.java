@@ -1,4 +1,5 @@
 package com.modules.cometchat_7_30.LastConversion;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -48,12 +49,14 @@ import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.interfaces.MainActivityInterface;
+import com.sagesurfer.logger.Logger;
 import com.sagesurfer.models.GetGroupsCometchat;
 import com.sagesurfer.models.Members_;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
 import com.sagesurfer.secure.GroupTeam_;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,6 +72,7 @@ import constant.StringContract;
 import listeners.OnItemClickListener;
 import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
+import screen.messagelist.LogInfo;
 import utils.Utils;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -95,7 +99,7 @@ public class FragmentLastConversation extends Fragment {
     private SharedPreferences sp;
     AlertDialog.Builder builder;
     AlertDialog alert;
-    String ClickedUserId,groups_members;
+    String ClickedUserId, groups_members;
     EditText ed_search_friend;
     ArrayList<User> arrayListUsers;
     int gotProviderCountOnlineStatus, gotMemberCountOnlineStatus;
@@ -111,6 +115,7 @@ public class FragmentLastConversation extends Fragment {
     ArrayList<String> myTeamArrayList = new ArrayList<>();
     ArrayList<String> joinTeamArrayList = new ArrayList<>();
     LinearLayout linealayout_error;
+
     public FragmentLastConversation() {
         // Required empty public constructor
     }
@@ -219,8 +224,7 @@ public class FragmentLastConversation extends Fragment {
                     }
                 }
             }
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -321,7 +325,7 @@ public class FragmentLastConversation extends Fragment {
             @Override
             public void onSuccess(List<Conversation> conversations) {
                 for (Conversation conversation : conversations) {
-                    Log.i(TAG, "onSuccess: conversation "+conversation);
+                    Logger.info(TAG, "onSuccess: conversation " + conversation,getActivity());
                     if (conversation.getConversationType().equals("user")) {
                         conversationList.add(conversation);
                     } else if (conversation.getConversationType().equals("group")) {
@@ -337,8 +341,7 @@ public class FragmentLastConversation extends Fragment {
                     adapter = new AdapterLastConversation(FragmentLastConversation.this, conversationList, getActivity(), FragmentLastConversation.this);
                     cardview_actions.setVisibility(View.VISIBLE);
                     recyclerView.setAdapter(adapter);
-
-                    Intent mainIntent=requireActivity().getIntent();
+                    Intent mainIntent = requireActivity().getIntent();
                     if (requireActivity().getIntent().getExtras() != null) {
                         if (mainIntent.hasExtra("category")) {
                             if (mainIntent.getStringExtra("category").equals("call")) {
@@ -363,11 +366,15 @@ public class FragmentLastConversation extends Fragment {
                                 Utils.startCallIntent(getActivity(), user, callType, false, sessionid);
                                 clearIntent();
                             }
-                        }else{
-                            checkIntent(conversationList.get(0));
+                        } else {
+                            if (mainIntent.hasExtra("type")) {
+                                if (mainIntent.getStringExtra("type").equalsIgnoreCase("whiteboard_push")) {
+                                    checkIntent(conversationList.get(0));
+                                    requireActivity().getIntent().removeExtra("type");
+                                }
+                            }
                         }
                     }
-
                 } else {
                     handler.post(new Runnable() {
                         @Override
@@ -396,6 +403,7 @@ public class FragmentLastConversation extends Fragment {
         requireActivity().getIntent().removeExtra("status");
         requireActivity().getIntent().removeExtra("callType");
         requireActivity().getIntent().removeExtra("sessionid");
+
 
     }
 
@@ -549,7 +557,7 @@ public class FragmentLastConversation extends Fragment {
      * added by rahul maske
      *  */
     public void onLastConversationListUserClicked(Conversation conversation, String team_id) {
-        Log.i(TAG, "onLastConversationListUserClicked: team_id "+team_id);
+        Log.i(TAG, "onLastConversationListUserClicked: team_id " + team_id);
         Preferences.save(General.BANNER_IMG, "");
         Preferences.save(General.TEAM_ID, team_id);
         Preferences.save(General.TEAM_NAME, "");
@@ -581,7 +589,7 @@ public class FragmentLastConversation extends Fragment {
 
     /*team user related method*/
     public void getUserTeamDetails(String clickedUserId, String userType, Conversation conversation, String teamId) {
-        Log.i(TAG, "getUserTeamDetails: team_id "+teamId);
+        Log.i(TAG, "getUserTeamDetails: team_id " + teamId);
         CometChat.getUser(clickedUserId, new CometChat.CallbackListener<User>() {
             @Override
             public void onSuccess(User user) {
@@ -619,7 +627,7 @@ public class FragmentLastConversation extends Fragment {
             }
         });
     }
-     
+
     private void showProviderOnlineDialogForTeam(Conversation conversation, String clickedUserId, String teamId) {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getActivity());
@@ -660,7 +668,7 @@ public class FragmentLastConversation extends Fragment {
             public void handleMessage(Message message) {
                 Log.i(TAG, "handleMessage: " + message.getData());
                 Log.i(TAG, "handleMessage: " + message.getWhen());
-                Log.i(TAG, "handleMessage: teamId "+teamId);
+                Log.i(TAG, "handleMessage: teamId " + teamId);
                 progressBar.setVisibility(View.GONE);
             }
         };
@@ -911,9 +919,9 @@ public class FragmentLastConversation extends Fragment {
                     Log.i(TAG, "checkOtherMemberAvailable: " + success);
                     if (success.equalsIgnoreCase("success") || success.equalsIgnoreCase("fail")) {
                         Intent intent = new Intent(getActivity(), CometChatMessageListActivity.class);
-                        Log.i(TAG, "checkOtherMemberAvailable: name "+ ((User) conversation.getConversationWith()).getName());
-                        Log.i(TAG, "checkOtherMemberAvailable: SENDER_ID "+ ((User) conversation.getConversationWith()).getUid());
-                        Log.i(TAG, "checkOtherMemberAvailable: teamId "+ sp.getString("teamIds", null) +" member id "+sp.getString("membersIds", null));
+                        Log.i(TAG, "checkOtherMemberAvailable: name " + ((User) conversation.getConversationWith()).getName());
+                        Log.i(TAG, "checkOtherMemberAvailable: SENDER_ID " + ((User) conversation.getConversationWith()).getUid());
+                        Log.i(TAG, "checkOtherMemberAvailable: teamId " + sp.getString("teamIds", null) + " member id " + sp.getString("membersIds", null));
                         intent.putExtra(StringContract.IntentStrings.TYPE, "user");
                         intent.putExtra(StringContract.IntentStrings.NAME, (((User) conversation.getConversationWith()).getName()));
                         intent.putExtra(StringContract.IntentStrings.SENDER_ID, (((User) conversation.getConversationWith()).getUid()));
@@ -968,7 +976,7 @@ public class FragmentLastConversation extends Fragment {
         }
     }
 
-        private void groupClickServerCall(String GID, Conversation conversation,  GetGroupsCometchat group) {
+    private void groupClickServerCall(String GID, Conversation conversation, GetGroupsCometchat group) {
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
         String DomainCode = UserInfoForUIKitPref.getString(screen.messagelist.General.DOMAIN_CODE, null);
@@ -1033,7 +1041,7 @@ public class FragmentLastConversation extends Fragment {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                prepareToSendGroupChatScreen(group,conversation);
+                prepareToSendGroupChatScreen(group, conversation);
                 alertDialog.dismiss();
             }
         });
@@ -1101,7 +1109,7 @@ public class FragmentLastConversation extends Fragment {
         }
     }
 
-    private void showMembersDialog( ArrayList<UserModel> userModelsArrayList) {
+    private void showMembersDialog(ArrayList<UserModel> userModelsArrayList) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_group_members, null);
@@ -1110,7 +1118,7 @@ public class FragmentLastConversation extends Fragment {
         Log.i(TAG, "showMembersDialog: ");
         RecyclerView rv_members_list = view.findViewById(R.id.rv_members_list);
         ImageView iv_close_dialog = view.findViewById(R.id.iv_close_dialog);
-        AdapterMembersList adapterMembersList=new AdapterMembersList(userModelsArrayList,getActivity());
+        AdapterMembersList adapterMembersList = new AdapterMembersList(userModelsArrayList, getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rv_members_list.setLayoutManager(mLayoutManager);
         rv_members_list.setItemAnimator(new DefaultItemAnimator());
@@ -1463,7 +1471,7 @@ public class FragmentLastConversation extends Fragment {
         intent.putExtra(StringContract.IntentStrings.GROUP_DESC, "");
         intent.putExtra(StringContract.IntentStrings.GROUP_PASSWORD, GroupPass);
         intent.putExtra(StringContract.IntentStrings.TABS, "2");
-        intent.putExtra(StringContract.IntentStrings.ALL_MEMBERS_STRING, groups_members );
+        intent.putExtra(StringContract.IntentStrings.ALL_MEMBERS_STRING, groups_members);
         getActivity().startActivity(intent);
     }
 

@@ -22,6 +22,7 @@ import com.sagesurfer.network.MakeCall;
 import com.sagesurfer.network.Urls_;
 import com.sagesurfer.secure.KeyMaker_;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
 
 import java.util.HashMap;
 
@@ -94,8 +95,8 @@ public class PerformLogoutTask {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             //logoutFromCometchat(activity);
-
-            unSubscribeUserFromCometchat(activity);
+            logoutFromCometchat(activity);
+            //unSubscribeUserFromCometchat(activity);
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
             }
@@ -112,13 +113,14 @@ public class PerformLogoutTask {
                 CometChat.logout(new CometChat.CallbackListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        Log.i(TAG, "cometchat logout onSuccess: ");
+                        AppLog.i(TAG, "cometchat logout onSuccess: ");
                         /*safeLogout includes all the preferences and other things and we are clearing after that*/
+                        unSubscribeUserFromCometchat(activity);
                     }
 
                     @Override
                     public void onError(CometChatException e) {
-                        Log.i(TAG, "cometchat logout failed: " + e.getMessage());
+                        AppLog.i(TAG, "cometchat logout failed: " + e.getMessage());
                     }
                 });
             }
@@ -136,7 +138,7 @@ public class PerformLogoutTask {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.e(TAG, Preferences.get(General.COMET_CHAT_ID) + " Unsubscribed Success");
-                logoutFromCometchat(activity);
+                //logoutFromCometchat(activity);
             }
         });
     }
@@ -174,12 +176,12 @@ public class PerformLogoutTask {
     /*    CometChat.logout(new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
-                Log.i(TAG, "cometchat logout onSuccess: ");
+                AppLog.i(TAG, "cometchat logout onSuccess: ");
             }
 
             @Override
             public void onError(CometChatException e) {
-                Log.i(TAG, "cometchat logout failed: " + e.getMessage());
+                AppLog.i(TAG, "cometchat logout failed: " + e.getMessage());
             }
         });
 

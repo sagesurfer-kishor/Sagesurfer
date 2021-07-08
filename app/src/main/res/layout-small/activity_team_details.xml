@@ -20,7 +20,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_toolbar_layout">
 
-        <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/team_details_toolbar"
@@ -1080,7 +1081,6 @@
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:src="@drawable/elections_icon"
             fab:fab_label="@string/poll" />
 
@@ -1088,7 +1088,6 @@
             android:id="@+id/fab_message_board"
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:src="@drawable/email_icon"
             fab:fab_label="@string/message_board" />
@@ -1098,7 +1097,6 @@
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:src="@drawable/megaphone_icon"
             fab:fab_label="@string/announcements" />
 
@@ -1107,7 +1105,6 @@
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:src="@drawable/talk_icon"
             fab:fab_label="@string/team_talk" />
 
@@ -1116,7 +1113,6 @@
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:src="@drawable/gallery_icon"
             fab:fab_label="@string/gallery" />
 
@@ -1125,7 +1121,6 @@
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:src="@drawable/share_icon"
             fab:fab_label="@string/file_share" />
 
@@ -1134,7 +1129,6 @@
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:src="@drawable/events_icon"
             fab:fab_label="@string/events" />
 
