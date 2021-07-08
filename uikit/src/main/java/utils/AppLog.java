@@ -1,8 +1,9 @@
-package com.utils;
+package utils;
 
 import android.util.Log;
 
-import com.sagesurfer.collaborativecares.BuildConfig;
+import com.cometchat.pro.uikit.BuildConfig;
+
 
 public class AppLog {
     public static void i(String tag, String message) {

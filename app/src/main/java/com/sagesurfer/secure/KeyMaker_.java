@@ -21,7 +21,6 @@ import java.util.Random;
  */
 
 public class KeyMaker_ {
-
     public static HashMap<String, String> getKey() {
         HashMap<String, String> params = new HashMap<>();
         String SecretKey = randomString();
