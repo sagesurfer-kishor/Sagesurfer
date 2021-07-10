@@ -18,6 +18,7 @@ import com.sagesurfer.secure._Base64;
 import com.sagesurfer.snack.ShowSnack;
 import com.sagesurfer.snack.ShowToast;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
 
 import java.util.HashMap;
 
@@ -25,14 +26,14 @@ import okhttp3.RequestBody;
 
 /**
  * @author Girish Mane(girish@sagesurfer.com)
- *         Created on 01-08-2017
- *         Last Modified on 13-12-2017
+ * Created on 01-08-2017
+ * Last Modified on 13-12-2017
  **/
 
 /*
-* This file is used to make all file operations like view,download,delete,etc
-* Network call is made to perform respective file operations
-*/
+ * This file is used to make all file operations like view,download,delete,etc
+ * Network call is made to perform respective file operations
+ */
 
 public class FileSharingOperations {
 
@@ -56,6 +57,7 @@ public class FileSharingOperations {
                         status = jsonObject.get(General.STATUS).getAsInt();
                         if (status == 1) {
                             url = jsonObject.get("url").getAsString(); //11/09/18 changed "link" to "url" acc. to the response
+                            AppLog.i(FileSharingOperations.class.getSimpleName(), "URL :-" + url);
                             url = _Base64.decode(url);
                         }
                     } else {
@@ -101,7 +103,7 @@ public class FileSharingOperations {
                 + Urls_.FMS_DOWNLOAD_URL, TAG, context, activity);
         try {
             String response = NetworkCall_.post(Preferences.get(General.DOMAIN)
-                            .replaceAll(General.INSATNCE_NAME, "") + Urls_.FMS_DOWNLOAD_URL, requestBody, TAG, context, activity);
+                    .replaceAll(General.INSATNCE_NAME, "") + Urls_.FMS_DOWNLOAD_URL, requestBody, TAG, context, activity);
             if (response != null) {
                 if (Error_.oauth(response, context) != 13) {
                     JsonObject jsonObject = GetJson_.getJson(response);

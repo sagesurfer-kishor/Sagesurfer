@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,9 @@ import com.storage.preferences.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -257,7 +261,9 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
         String del_mile_id = AddGoalPreferences.get("del_mile_id");
         String mile_id = AddGoalPreferences.get(General.MILESTONE_ID);
         String notify = AddGoalPreferences.get(General.NOTE);
+
         String notify_time = convertTime(AddGoalPreferences.get(General.NOTIFY_HOUR), AddGoalPreferences.get(General.NOTIFY_UNIT)) + ":" + AddGoalPreferences.get(General.NOTIFY_MINUTE);
+
         if (notify_time.equalsIgnoreCase("null") || notify_time.equalsIgnoreCase(":null")) {
             notify_time = "0";
         }
@@ -268,31 +274,61 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
         requestMap.put("action_type", action_type);
         requestMap.put(General.NAME, name);
         requestMap.put(General.GOAL_TYPE, "" + goalType);
+
         requestMap.put(General.UNITS, unit);
-        requestMap.put(General.FREQUENCY, frequency);
+//        requestMap.put(General.UNITS, "");
+
+
         requestMap.put(General.START_DATE, AddGoalPreferences.get(General.START_DATE));
         requestMap.put(General.END_DATE, AddGoalPreferences.get(General.END_DATE));
         requestMap.put(General.DESCRIPTION, description);
-        requestMap.put(General.IMPACT, impact);
+
+        //requestMap.put(General.IMPACT, impact);
+
         if (AddGoalPreferences.contains(General.ID) && (!AddGoalPreferences.get(General.ID).equalsIgnoreCase("0") || AddGoalPreferences.get(General.ID).trim().length() > 0)) {
             requestMap.put(General.ID, AddGoalPreferences.get(General.ID));
         } else {
             requestMap.put(General.ID, "0");
         }
         requestMap.put(General.MILESTONE_ID, mile_id);
+
+        if (del_mile_id == null || del_mile_id.isEmpty()) {
+            del_mile_id = "0";
+        }
+
         requestMap.put("del_mile_id", del_mile_id);
         requestMap.put(General.MILESTONE, milestone_names);
         requestMap.put(General.MILESTONE_DATE, milestone_dates);
         requestMap.put("notification", notify);
+
+//        DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+//        Calendar cal = Calendar.getInstance();
+//        notify_time= dateFormat.format(cal.getTime());
+
+
         requestMap.put("notify_at", notify_time);
         requestMap.put("frequency_unit", FrequencyUnit_.getFrequencyUnit(frequency, getTime(frequency), getApplicationContext()));
+
         requestMap.put("occurrences", occurrences);
+
+
         requestMap.put("quantity", count);
         requestMap.put("checked_noti", checked_noti);
         requestMap.put("img_gallery_id", image_id);
-        if (!frequency.equalsIgnoreCase("minute") || !frequency.equalsIgnoreCase("hour")) {
-            requestMap.put(General.START_TIME, time);
+
+//        if (!frequency.equalsIgnoreCase("minute")
+//                || !frequency.equalsIgnoreCase("hour")) {
+//            requestMap.put(General.START_TIME, time);
+//        }
+
+        requestMap.put(General.START_TIME, time);
+        if (!frequency.equals("weekly")) {
+
+            requestMap.put(General.FREQUENCY, frequency);
+        } else {
+            requestMap.put(General.FREQUENCY, "week");
         }
+
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_SELF_GOAL;
 
@@ -405,7 +441,10 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
         //Page two
         AddGoalPreferences.save(General.GOAL_TYPE, String.valueOf(goal.getGoal_type()), TAG);
         AddGoalPreferences.save(General.COUNT, String.valueOf(goal.getQuantity()), TAG);
-        AddGoalPreferences.save(General.UNITS, goal.getUnits(), TAG);
+
+//        AddGoalPreferences.save(General.UNITS, goal.getUnits(), TAG);
+
+
         AddGoalPreferences.save("frequency_sub_unit_days", goal.getFrequency_sub_unit_days(), TAG);
         AddGoalPreferences.save(General.FREQUENCY, goal.getFrequency(), TAG);
         AddGoalPreferences.save(General.START_DATE, goal.getStart_date(), TAG);

@@ -110,7 +110,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-
     @Override
     public void onMessageReceived(@NonNull @NotNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -312,7 +311,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleDataMessage(Map<String, String> datamap) {
         try {
 
-            String dataobj=datamap.get("data");
+            String dataobj = datamap.get("data");
 
             JSONObject data = new JSONObject(dataobj);
 
@@ -322,6 +321,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String message = data.optString("message");
 
 //            String message = "This is demo app";
+
+            if (message.isEmpty())
+                message = "There is a new notification.";
+
             String imageUrl = data.optString("image");
             String type = data.optString("menu_id");
             String timestamp = data.optString("timestamp");
@@ -661,7 +664,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("receiverType ", messageData.optString("receiverType"));
                             intentMain.putExtra("username ", "" + json.get("title"));
                             intentMain.putExtra("type ", type);
-                        }else {
+                        } else {
                             String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
                             /*This is a broad cast for refreshing the unread messages*/
                             if (team_logs_id.equals("0")) {
@@ -722,7 +725,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intentMain.putExtra("status", "" + status);
                     intentMain.putExtra("callType", "" + callType);
                     intentMain.putExtra("sessionid", "" + sessionid);
-                    intentMain.putExtra("category" ,"call");
+                    intentMain.putExtra("category", "call");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
