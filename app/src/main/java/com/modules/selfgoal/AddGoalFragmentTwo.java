@@ -788,6 +788,16 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
             textViewFragmentAddGoalTwoStartDate.setText(GetTime.month_DdYyyy(start_date));
             textViewFragmentAddGoalTwoEndDate.setText(GetTime.month_DdYyyy(end_date));
 
+
+            if (AddGoalPreferences.get(General.START_DATE)!=null && !AddGoalPreferences.get(General.START_DATE).isEmpty()) {
+                textViewFragmentAddGoalTwoStartDate.setText(GetTime.month_DdYyyy(AddGoalPreferences.get(General.START_DATE)));
+            }
+
+            if (AddGoalPreferences.get(General.END_DATE)!=null && !AddGoalPreferences.get(General.END_DATE).isEmpty()) {
+                textViewFragmentAddGoalTwoEndDate.setText(GetTime.month_DdYyyy(AddGoalPreferences.get(General.END_DATE)));
+            }
+
+
         } else {
 
             start_date = AddGoalPreferences.get(General.START_DATE);
@@ -1248,8 +1258,10 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
 
     //
     private void setData() {
-        if (AddGoalPreferences.contains(General.ACTION) && !AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext()
-                .getResources().getString(R.string.add_goal))) {
+        if (AddGoalPreferences.contains(General.ACTION)
+                &&
+                !AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext()
+                        .getResources().getString(R.string.add_goal))) {
             textViewCountMandatory.setVisibility(View.GONE);
             frequency = ChangeCase.toSentenceCase(AddGoalPreferences.get(General.FREQUENCY));
             textViewFragmentAddGoalTwoFrequency.setText(frequency);

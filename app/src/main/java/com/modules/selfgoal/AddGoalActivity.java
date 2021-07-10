@@ -79,6 +79,7 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
     NonSwipeableViewPager nonSwipeableViewPagerAddGoalActivityPager;
 
     private Goal_ goal;
+
     TextView textViewActivityToolbarPost;
 
     Toolbar activityToolbar;
@@ -98,8 +99,14 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         ButterKnife.bind(this);
 
+
+
+
         Preferences.initialize(getApplicationContext());
         AddGoalPreferences.initialize(getApplicationContext());
+
+        AddGoalPreferences.save(General.START_DATE,"","");
+        AddGoalPreferences.save(General.END_DATE,"","");
 
         activityToolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
         //activityToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.screen_background));
@@ -145,6 +152,7 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
         PagerAdapter mPagerAdapter = new AddGoalPagerAdapter(getApplicationContext(), getSupportFragmentManager());
         nonSwipeableViewPagerAddGoalActivityPager.setAdapter(mPagerAdapter);
         nonSwipeableViewPagerAddGoalActivityPager.addOnPageChangeListener(onPageChange);
+
 
         textViewAddGoalActivityBubbleOne.setOnClickListener(this);
         textViewAddGoalActivityBubbleTwo.setOnClickListener(this);
