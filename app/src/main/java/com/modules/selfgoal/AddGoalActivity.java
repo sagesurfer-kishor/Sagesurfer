@@ -52,18 +52,25 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
 
     @BindView(R.id.textview_addgoalactivity_bubble_one)
     TextView textViewAddGoalActivityBubbleOne;
+
     @BindView(R.id.view_addgoalactivity_line_zero)
     View viewAddGoalActivityLineZero;
+
     @BindView(R.id.view_addgoalactivity_line_one)
     View viewAddGoalActivityLineOne;
+
     @BindView(R.id.view_addgoalactivity_line_two)
     View viewAddGoalActivityLineTwo;
+
     @BindView(R.id.textview_addgoalactivity_bubble_two)
     TextView textViewAddGoalActivityBubbleTwo;
+
     @BindView(R.id.view_addgoalactivity_line_three)
     View viewAddGoalActivityLineThree;
+
     @BindView(R.id.textview_addgoalactivity_bubble_three)
     TextView textViewAddGoalActivityBubbleThree;
+
     @BindView(R.id.nonswipeableviewpager_addgoalactivity_pager)
     NonSwipeableViewPager nonSwipeableViewPagerAddGoalActivityPager;
 
@@ -288,6 +295,7 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_SELF_GOAL;
+
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this, this);
         if (requestBody != null) {
             try {

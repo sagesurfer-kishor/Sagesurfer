@@ -120,7 +120,8 @@ public class FileSharingListFragment extends Fragment implements View.OnClickLis
         }*/
 
         if (Preferences.get(General.OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID))
-                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1") || General.isCurruntUserHasPermissionToCreateFMS()   ) {
+                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
+                || General.isCurruntUserHasPermissionToCreateFMS()   ) {
             fab.setVisibility(View.VISIBLE);
         } else {
             fab.setVisibility(View.GONE);

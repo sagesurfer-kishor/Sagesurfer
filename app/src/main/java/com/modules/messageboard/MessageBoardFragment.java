@@ -105,8 +105,16 @@ public class MessageBoardFragment extends Fragment implements SwipeRefreshLayout
 
 
 
-        // MAYUR TERAIYA ADDED
-        fab.setVisibility(View.VISIBLE);
+        // added by mayur
+        if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Coach")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")) {
+            fab.setVisibility(View.VISIBLE);
+        }
+
 
         listView = (SwipeMenuListView) view.findViewById(R.id.swipe_menu_listview);
         listView.setPadding(0,10,0,0);

@@ -106,12 +106,26 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
             viewHolder.imageViewSelfCareContentListItemComment = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_comment);
             viewHolder.imageViewSelfCareContentListItemShare = (ImageButton) view.findViewById(R.id.btn_share);
             viewHolder.relativeLayoutSelfCareContentListItemIcon = (RelativeLayout) view.findViewById(R.id.relativelayout_selfcarecontentlistitem_icon);
+
             viewHolder.mLinearLayoutShare = (LinearLayout) view.findViewById(R.id.linear_share);
+
+
+            viewHolder.topmainlayout =view.findViewById(R.id.topmainlayout);
+
+
 
             view.setTag(viewHolder);
         }
 
-        if (contentList.get(position).getStatus() == 1) {
+
+        viewHolder.topmainlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.get().onItemClicked(position, "listItem");
+            }
+        });
+
+       // if (contentList.get(position).getStatus() == 1) {
             viewHolder.textViewSelfCareContentListItemTitle.setText(contentList.get(position).getTitle());
             viewHolder.textViewSelfCareContentListItemDescription.setText(contentList.get(position).getDescription());
             viewHolder.textViewSelfCareContentListItemCategory.setText(contentList.get(position).getType());
@@ -151,6 +165,7 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
             viewHolder.imageViewSelfCareContentListItemShare.setOnClickListener(onClick);
             viewHolder.imageViewSelfCareContentListItemShare.setTag(position);
 
+
             // added by kishor k 09-09-2020
             Glide.with(activity.getApplicationContext())
                     .load(contentList.get(position).getThumb_path())
@@ -162,7 +177,7 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
                     .into(viewHolder.imageViewSelfCareContentListItemIcon);
 
             applyReadStatus(viewHolder, contentList.get(position), position);
-        }
+        //}
         return view;
     }
 
@@ -188,6 +203,9 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
             Content_ content_ = contentList.get(position);
             switch (v.getId()) {
                 case R.id.imageview_selfcarecontentlistitem_comment:
+
+                    listener.get().onItemClicked(position, "listItem");
+
                     break;
 
                 case R.id.btn_like:
@@ -346,5 +364,7 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
         AppCompatImageView imageViewSelfCareContentListItemTypeIcon, imageViewSelfCareContentListItemComment;
         RelativeLayout relativeLayoutCaseloadDetails, relativeLayoutSelfCareContentListItemIcon;
         LinearLayout mLinearLayoutShare;
+
+        RelativeLayout topmainlayout;
     }
 }

@@ -203,7 +203,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-
 //        int status = FileSharingOperations.upload("" + file_id,
 //                "" + group_id,
 //                user_access_array(),
@@ -219,7 +218,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         int status = FileSharingOperations.upload("" + file_id,
                 "" + group_id,
                 user_access_array(),
-"1",
+                "1",
                 "" + folder_id,
                 description,
                 comment,
@@ -370,7 +369,9 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         //   folderText.setVisibility(View.VISIBLE);
         //    folderName.setVisibility(View.GONE);
         selectFolder.setEnabled(false);
-        iv_addFolder.setVisibility(View.GONE);
+
+        //iv_addFolder.setVisibility(View.GONE);
+
         if (file_.getIsDefault() == 1) {
             defaultRadio.setChecked(true);
             customRadio.setChecked(false);
@@ -470,7 +471,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             String file_name = FileOperations.getFileName(path);
             String url = Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, "") + Urls_.MOBILE_UPLOADER;
 
-            Log.i(UploadFileActivity.class.getSimpleName(),"File Upload URL: "+url);
+            Log.i(UploadFileActivity.class.getSimpleName(), "File Upload URL: " + url);
 
             String user_id = Preferences.get(General.USER_ID);
             try {
@@ -619,13 +620,33 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     // set add folder visibility based on accessibility
     private void toggleAddFolder() {
-        if (Preferences.get(General.USER_ID).equalsIgnoreCase(Preferences.get(General.OWNER_ID)) ||
-                Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
-                ||Preferences.get(General.IS_CC).equalsIgnoreCase("1")) {
+
+        if ((Preferences.get(General.GROUP_OWNER_ID) != null
+                &&
+                Preferences.get(General.GROUP_OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID)))
+                || (Preferences.get(General.IS_MODERATOR) != null && Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1"))
+                || (Preferences.get(General.IS_CASE_MANAGER) != null && Preferences.get(General.IS_CASE_MANAGER).equalsIgnoreCase("1"))
+                || (Preferences.get(General.IS_CC) != null && Preferences.get(General.IS_CC).equalsIgnoreCase("1"))
+                || (Preferences.get(General.IS_COACH) != null && Preferences.get(General.IS_COACH).equalsIgnoreCase("1"))
+                || General.isCurruntUserHasPermissionToCreateEvent()) {
             iv_addFolder.setVisibility(View.VISIBLE);
         } else {
             iv_addFolder.setVisibility(View.GONE);
         }
+
+
+
+        // added by mayur
+        if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Coach")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")) {
+            iv_addFolder.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     //open users selector dialog

@@ -159,7 +159,18 @@ public class CalendarFragment extends Fragment implements View.OnClickListener, 
                 fab.setVisibility(View.GONE);
             }
 
-            fab.setVisibility(View.VISIBLE);
+
+
+
+            // added by mayur
+            if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
+                    || Preferences.get(General.ROLE).equalsIgnoreCase("Coach")
+                    || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
+                    || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
+                    || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
+                    || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")) {
+                fab.setVisibility(View.VISIBLE);
+            }
 
             errorText = (TextView) rootView.findViewById(R.id.textview_error_message);
             errorIcon = (AppCompatImageView) rootView.findViewById(R.id.imageview_error_icon);

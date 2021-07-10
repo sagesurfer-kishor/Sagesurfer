@@ -62,7 +62,7 @@ public class PollListFragment extends Fragment implements View.OnClickListener, 
     private static Activity activity;
     private MainActivityInterface mainActivityInterface;
 
-    
+
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
@@ -132,8 +132,15 @@ public class PollListFragment extends Fragment implements View.OnClickListener, 
         }
 
 
-        // MAYUR TERAIYA
-        fab.setVisibility(View.VISIBLE);
+        // added by mayur
+        if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Coach")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")) {
+            fab.setVisibility(View.VISIBLE);
+        }
 
 
         return view;
@@ -155,9 +162,9 @@ public class PollListFragment extends Fragment implements View.OnClickListener, 
         mainActivityInterface.setToolbarBackgroundColor();
         fab.setBackgroundTintList(ColorStateList.valueOf(GetColor.getHomeIconBackgroundColorColorParse(true)));
 
-        try{
+        try {
             ((TeamDetailsActivity) getActivity()).inviteButtonSetVisibility();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

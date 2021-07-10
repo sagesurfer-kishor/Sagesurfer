@@ -48,6 +48,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.sagesurfer.collaborativecares.BuildConfig;
+import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
@@ -55,13 +56,18 @@ import com.sagesurfer.datetime.GetTime;
 import com.sagesurfer.library.FileOperations;
 import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetCounters;
+import com.sagesurfer.library.GetErrorResources;
+import com.sagesurfer.library.GetSelected;
 import com.sagesurfer.library.GetThumbnails;
 import com.sagesurfer.models.Comments_;
 import com.sagesurfer.models.Content_;
+import com.sagesurfer.models.Friends_;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
 import com.sagesurfer.parser.SelfCare_;
+import com.sagesurfer.selectors.MultiUserSelectorDialog;
 import com.sagesurfer.snack.SubmitSnackResponse;
+import com.sagesurfer.tasks.PerformGetUsersTask;
 import com.sagesurfer.tasks.PerformReadTask;
 import com.sagesurfer.views.AttachmentViewer;
 import com.sagesurfer.views.CircleTransform;
@@ -82,7 +88,7 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
  * @author Kailash Karankal
  */
 
-public class SelfCareDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SelfCareDetailsActivity extends AppCompatActivity implements View.OnClickListener , MultiUserSelectorDialog.SelectedUsers {
     private static final String TAG = SelfCareDetailsActivity.class.getSimpleName();
     @BindView(R.id.relativelayout_activityselfcaredetails_action)
     RelativeLayout relativeLayoutActivitySelfCareDetailsAction;
@@ -106,10 +112,18 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
     @BindView(R.id.imageview_activityselfcaredetails_like)
     AppCompatImageView imageViewActivitySelfCareDetailsLike;
 
+    @BindView(R.id.imageview_activityselfcaredetails_share)
+    AppCompatImageView imageview_activityselfcaredetails_share;
+
+
+
     @BindView(R.id.textview_activityselfcaredetails_like_count)
     TextView textViewActivitySelfCareDetailsLikeCount;
+
     @BindView(R.id.imageview_activityselfcaredetails_comment)
     AppCompatImageView imageViewActivitySelfCareDetailsComment;
+
+
     @BindView(R.id.textview_activityselfcaredetails_comment_count)
     TextView textViewActivitySelfCareDetailsCommentCount;
     @BindView(R.id.textview_activityselfcaredetails_shared_with)
@@ -143,6 +157,10 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
     long sentTimestamp = 01;
     private LinearLayout mLinearLayoutShare;
 
+    private ArrayList<Friends_> friendsArrayList;
+
+
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +191,45 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
             }
         });
 
+
+        imageViewActivitySelfCareDetailsLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int status = 11;
+
+                status = SelfCareOperations.likeUnlike("" + content_.getId(), TAG,
+                        imageViewActivitySelfCareDetailsLike,
+                        SelfCareDetailsActivity.this, SelfCareDetailsActivity.this);
+                showResponses(status, imageViewActivitySelfCareDetailsLike);
+
+                if (status == 1) {
+                    toggleLike(0, content_.getIs_like());
+
+                }
+            }
+        });
+
+
+        imageview_activityselfcaredetails_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                friendsArrayList = PerformGetUsersTask.get(Actions_.MY_FRIENDS,
+                        content_.getShared_to_ids(),
+                        SelfCareDetailsActivity.this,
+                        TAG,
+                        SelfCareDetailsActivity.this);
+
+                Bundle bundle = new Bundle();
+                android.app.DialogFragment dialogFrag = new MultiUserSelectorDialog();
+                bundle.putSerializable(Actions_.MY_FRIENDS, friendsArrayList);
+                bundle.putString(General.ID, "" + content_.getId());
+                dialogFrag.setArguments(bundle);
+                dialogFrag.show(getFragmentManager().beginTransaction(), Actions_.MY_FRIENDS);
+            }
+        });
+
+
        /* View myView = findViewById(R.id.imageview_activityselfcaredetails_footer_send);
         int[] attrs = new int[]{R.attr.selectableItemBackground};
         TypedArray typedArray = this.obtainStyledAttributes(attrs);
@@ -197,7 +254,16 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
             mLinearLayoutShare.setVisibility(View.VISIBLE);
         }
     }
-
+    // toggle like button based on user action
+    private void toggleLike(int position, int is_like) {
+        if (is_like == 1) {
+            textViewActivitySelfCareDetailsLikeCount.setTextColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
+            imageViewActivitySelfCareDetailsLike.setImageResource(R.drawable.vi_like_blue);
+        } else {
+            textViewActivitySelfCareDetailsLikeCount.setTextColor(getApplicationContext().getResources().getColor(R.color.text_color_primary));
+            imageViewActivitySelfCareDetailsLike.setImageResource(R.drawable.vi_like_gray);
+        }
+    }
     // set values to respective field from received data
     private void setData() {
         imageViewActivitySelfCareDetailsFullScreen.setOnClickListener(this);
@@ -687,6 +753,22 @@ public class SelfCareDetailsActivity extends AppCompatActivity implements View.O
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
                 break;
+        }
+    }
+
+    @Override
+    public void selectedUsers(ArrayList<Friends_> users_arrayList, String id, boolean isSelected) {
+        if (isSelected) {
+            String user_id = GetSelected.wallUsers(users_arrayList);
+            if (!user_id.equalsIgnoreCase("0")) {
+                int status = SelfCareOperations.share("" + id,
+                        user_id,
+                        TAG,
+                        getApplicationContext(), this);
+                if (status == 1) {
+                    GetErrorResources.showError(status, SelfCareDetailsActivity.this);
+                }
+            }
         }
     }
 }

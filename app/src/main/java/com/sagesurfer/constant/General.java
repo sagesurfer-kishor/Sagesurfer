@@ -821,6 +821,7 @@ public class General {
     public static final String IS_CASE_MANAGER = "Case Manager";
     public static final String MY_TEST_TAG = "my_test_tag";
     public static final String IS_STUDENT = "Student";
+    public static final String IS_COACH = "coach";
     public static final String USER_COMETCHAT_ID = "cometchat_uid";
     public static final String FROM_TIMEH = "from_timeh";
     public static final String FROM_TIMEM = "from_timem";

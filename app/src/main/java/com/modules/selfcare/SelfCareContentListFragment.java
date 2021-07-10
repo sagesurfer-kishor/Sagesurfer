@@ -195,7 +195,8 @@ public class SelfCareContentListFragment extends Fragment implements SelfCareCon
                     if (contentArrayList.size() > 0) {
                         if (contentArrayList.get(0).getStatus() == 1) {
                             showError(false, 1);
-                            SelfCareContentListAdapter careContentListAdapter = new SelfCareContentListAdapter(activity, contentArrayList, this);
+                            SelfCareContentListAdapter careContentListAdapter =
+                                    new SelfCareContentListAdapter(activity, contentArrayList, this);
                             swipeMenuListView.setAdapter(careContentListAdapter);
                             return;
                         } else {
@@ -216,6 +217,7 @@ public class SelfCareContentListFragment extends Fragment implements SelfCareCon
 
     @Override
     public void onItemClicked(int position, String itemView) {
+        Content_ content_ = contentArrayList.get(position);
         if (itemView.equalsIgnoreCase("mainContainer")) {
             friendsArrayList = PerformGetUsersTask.get(Actions_.MY_FRIENDS, contentArrayList.get(position).getShared_to_ids(), activity.getApplicationContext(), TAG, activity);
             Bundle bundle = new Bundle();
@@ -224,6 +226,11 @@ public class SelfCareContentListFragment extends Fragment implements SelfCareCon
             bundle.putString(General.ID, "" + contentArrayList.get(position).getId());
             dialogFrag.setArguments(bundle);
             dialogFrag.show(activity.getFragmentManager().beginTransaction(), Actions_.MY_FRIENDS);
+        } else if (itemView.equalsIgnoreCase("listItem")) {
+            Intent detailsIntent = new Intent(activity.getApplicationContext(), SelfCareDetailsActivity.class);
+            detailsIntent.putExtra(Actions_.GET_DATA, content_);
+            startActivity(detailsIntent);
+            activity.overridePendingTransition(0, 0);
         }
     }
 }

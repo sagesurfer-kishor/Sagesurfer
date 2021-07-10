@@ -213,6 +213,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         newUserRegistration = findViewById(R.id.register_layout);
         newUserRegistration.setOnClickListener(this);
+
+        if(BuildConfig.DEBUG)
+        {
+            editTextUserPassword.setText("Sag&#2539!");
+        }
+
+
+
     }
 
     @Override
@@ -1177,7 +1185,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Preferences.save(General.IS_CASE_MANAGER, 1);
         } else if (userInfo.getRole().equalsIgnoreCase("Student")) {
             Preferences.save(General.IS_STUDENT, 1);
+        } else if (userInfo.getRole().toLowerCase().equalsIgnoreCase("coach")) {
+            Preferences.save(General.IS_COACH, 1);
         }
+
+
         AppLog.e(TAG, "saveData: is_case_manager " + Preferences.get(General.IS_CASE_MANAGER));
 
         if (userInfo.getLati_longi() != null) {
