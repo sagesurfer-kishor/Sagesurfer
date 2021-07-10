@@ -178,6 +178,8 @@ import com.sagesurfer.views.CircleTransform;
 import com.sagesurfer.webservices.Teams;
 import com.storage.preferences.AddGoalPreferences;
 import com.storage.preferences.Preferences;
+import com.storage.preferences.StorageHelper;
+import com.utils.AppLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -562,6 +564,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Thread myJoinThread = new Thread(joinTeams);
             myJoinThread.start();
         }
+
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                AppLog.i(TAG, "registerPushNotificationToken : "+Preferences.get("regId"));
+//                RegisterFirebaseTokenToServer(Preferences.get("regId"));
+                RegisterFirebaseTokenToServer(StorageHelper.geTOKEN(MainActivity.this));
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     private void createNotificationChannel() {
@@ -2659,6 +2673,42 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             replaceFragment(50, drawerMenuList.get(1).getMenu(), null);
         }
         fetchNotification();
+    }
+
+    private void RegisterFirebaseTokenToServer(String token) {
+
+        SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+        String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, "");
+        SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
+        String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, "");
+
+        String url = screen.messagelist.Urls_.MOBILE_FIREBASE_REGISTER;
+
+        AppLog.i(TAG, "RegisterFirebaseTokenToServer: Token at submit :"+token);
+
+        AppLog.i(TAG, "RegisterFirebaseTokenToServer: " + DomainURL + " -> " + url +" Token :"+token);
+
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(screen.messagelist.General.FIREBASE_ID, "" + token);
+        requestMap.put(screen.messagelist.General.USER_ID, "" + UserId);
+
+        RequestBody requestBody = screen.messagelist.NetworkCall_.make(requestMap, DomainURL + url, TAG, this);
+
+        try {
+            if (requestBody != null) {
+                String response = screen.messagelist.NetworkCall_.post(DomainURL + url, requestBody, TAG, this);
+                if (response != null) {
+                    AppLog.i(TAG, "RegisterFirebaseTokenToServer:  response " + response);
+                } else {
+                    AppLog.i(TAG, "RegisterFirebaseTokenToServer:  null  ");
+                }
+            } else {
+                AppLog.i(TAG, "RegisterFirebaseTokenToServer:  null2");
+            }
+        } catch (Exception e) {
+            AppLog.i(TAG, "RegisterFirebaseTokenToServer: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
