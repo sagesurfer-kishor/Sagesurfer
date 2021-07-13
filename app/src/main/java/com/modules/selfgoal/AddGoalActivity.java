@@ -100,13 +100,11 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
         ButterKnife.bind(this);
 
 
-
-
         Preferences.initialize(getApplicationContext());
         AddGoalPreferences.initialize(getApplicationContext());
 
-        AddGoalPreferences.save(General.START_DATE,"","");
-        AddGoalPreferences.save(General.END_DATE,"","");
+        AddGoalPreferences.save(General.START_DATE, "", "");
+        AddGoalPreferences.save(General.END_DATE, "", "");
 
         activityToolbar = (Toolbar) findViewById(R.id.activity_toolbar_layout);
         //activityToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.screen_background));
@@ -254,10 +252,20 @@ public class AddGoalActivity extends AppCompatActivity implements View.OnClickLi
         String impact = AddGoalPreferences.get(General.IMPACT);
 
         boolean goal_type = AddGoalPreferences.getBoolean(General.GOAL_TYPE);
+
         int goalType = 1;
+
         if (goal_type) {
             goalType = 0;
         }
+
+
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage024))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage052))) {
+
+            goalType = 1;
+        }
+
 
         String count = AddGoalPreferences.get(General.COUNT);
         String occurrences = AddGoalPreferences.get("occurrences");
