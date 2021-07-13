@@ -2,6 +2,7 @@ package com.modules.team;
 
 import android.content.Context;
 
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.cometchat.pro.constants.CometChatConstants;
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
+import com.cometchat.pro.models.User;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.library.GetThumbnails;
 import com.sagesurfer.models.CometChatTeamMembers_;
 import com.sagesurfer.views.CircleTransform;
+import com.utils.AppLog;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 /**
@@ -31,7 +38,7 @@ public class ContactRecycleViewAdapter extends RecyclerView.Adapter<ContactRecyc
     private final Context mContext;
     private ArrayList<CometChatTeamMembers_> contactList = new ArrayList<>();
     private final ContactRecycleViewAdapterListener listener;
-
+    private static final String TAG = "ContactRecycleViewAdapt";
     class MyViewHolder extends RecyclerView.ViewHolder {
         final TextView textViewUsername;
         final TextView textViewRole;
@@ -46,7 +53,6 @@ public class ContactRecycleViewAdapter extends RecyclerView.Adapter<ContactRecyc
             statusImage = (ImageView) view.findViewById(R.id.member_list_item_status_icon);
         }
     }
-
 
     ContactRecycleViewAdapter(Context mContext, ArrayList<CometChatTeamMembers_> contactList, ContactRecycleViewAdapterListener listener) {
         this.mContext = mContext;
@@ -82,6 +88,30 @@ public class ContactRecycleViewAdapter extends RecyclerView.Adapter<ContactRecyc
                     .into(holder.profileImage);
 
             holder.textViewUsername.setText(contact.getName());
+            SharedPreferences UserInfoForUIKitPref = mContext.getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+            String DomainCode = UserInfoForUIKitPref.getString(screen.messagelist.General.DOMAIN_CODE, null);
+            String UID = ""+contact.getU_member_id()+"_"+DomainCode;
+            AppLog.i(TAG, "User details fetched for user id: " + UID);
+            CometChat.getUser(UID, new CometChat.CallbackListener<User>() {
+                @Override
+                public void onSuccess(User user) {
+
+                    if (user.getStatus().equals(CometChatConstants.USER_STATUS_ONLINE)) {
+
+                        holder.statusImage.setImageResource(R.drawable.online_sta);
+                        //holder.activeUser.setImageResource(R.drawable.online_sta);
+                    } else {
+                        holder.statusImage.setImageResource(R.drawable.offline_sta);
+                    }
+                }
+
+                @Override
+                public void onError(CometChatException e)
+                {
+                    AppLog.e(TAG, ""+e.getMessage());
+                }
+            });
+            //holder.statusImage.setImageResource(contact.get);
             if(contact.getRole() != null) {
                 holder.textViewRole.setText("(" + contact.getRole() + ")");
             } /*else {

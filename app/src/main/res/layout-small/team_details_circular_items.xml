@@ -72,8 +72,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:maxLines="3"
-            android:text=""
+            android:minLines="2"
+            android:text="@string/care_coordinator"
+
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_10" />
     </LinearLayout>
@@ -144,7 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:maxLines="3"
+            android:minLines="2"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_10" />
     </LinearLayout>
@@ -217,7 +218,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:maxLines="3"
+            android:minLines="2"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_10" />
     </LinearLayout>
@@ -288,7 +289,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:maxLines="3"
+            android:minLines="2"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_10" />
     </LinearLayout>
@@ -359,7 +360,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:maxLines="3"
+            android:minLines="2"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_10" />
     </LinearLayout>
@@ -430,7 +431,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:maxLines="3"
+            android:minLines="2"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_10" />
     </LinearLayout>

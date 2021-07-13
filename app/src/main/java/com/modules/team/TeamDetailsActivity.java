@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.cometchat.pro.constants.CometChatConstants;
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
+import com.cometchat.pro.models.User;
 import com.firebase.Config;
 import com.firebase.NotificationUtils;
 import com.github.clans.fab.FloatingActionMenu;
@@ -72,8 +77,10 @@ import com.sagesurfer.views.CircleTransform;
 import com.storage.preferences.Preferences;
 import com.szugyi.circlemenu.view.CircleImageView;
 import com.szugyi.circlemenu.view.CircleLayout;
+import com.utils.AppLog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -371,7 +378,6 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         menuArrayList.add(new ModelTeamMenu("Message Board",getResources().getDrawable(R.drawable.email_icon)));
         menuArrayList.add(new ModelTeamMenu("Poll",getResources().getDrawable(R.drawable.elections_icon)));
 
-
         Log.i(TAG, "createMenuList: 1");
         adapterTeamMenu=new AdapterTeamMenu(this,menuArrayList);
         rv_team_menus.setAdapter(adapterTeamMenu);
@@ -414,13 +420,13 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         memberStatusIcon6 = (ImageView) findViewById(R.id.member_status_icon6);
 
         // MAYUR TERAIYA ADDED
-        memberStatusIcon0.setVisibility(View.GONE);
+        /*memberStatusIcon0.setVisibility(View.GONE);
         memberStatusIcon1.setVisibility(View.GONE);
         memberStatusIcon2.setVisibility(View.GONE);
         memberStatusIcon3.setVisibility(View.GONE);
         memberStatusIcon4.setVisibility(View.GONE);
         memberStatusIcon5.setVisibility(View.GONE);
-        memberStatusIcon6.setVisibility(View.GONE);
+        memberStatusIcon6.setVisibility(View.GONE);*/
 
 
         imageViewStats.setColorFilter(color);
@@ -762,7 +768,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                         }
                     }
                     for (int i = 0; i < cometChatTeamMemberList.size(); i++) {
-                        int index = 0;
+                         int index = 0;
                         if (cometChatTeamMemberList.size() == 1 || !isConsumerView0) {
                             index = i;
                         } else {
@@ -787,7 +793,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
 
 
                             } else {
-//                                textViewUsername0.setText(cometChatTeamMemberList.get(i).getFirstname());
+//                              textViewUsername0.setText(cometChatTeamMemberList.get(i).getFirstname());
                                 circleTextViewUsername[index].setText(cometChatTeamMemberList.get(i).getFirstname());
                                 if (cometChatTeamMemberList.get(i).getRole() != null) {
                                     circleTextViewRole[index].setText("(" + cometChatTeamMemberList.get(i).getRole() + ")");
@@ -803,7 +809,31 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                                                 .transform(new CircleTransform(getApplicationContext())))
                                         .into(circleImageView[index]);
 
+                                AppLog.i(TAG,"User details fetched for user cometChat id "+cometChatTeamMemberList.get(i).getU_member_id());
 
+                                // check user is online or offline
+                                SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+                                String DomainCode = UserInfoForUIKitPref.getString(screen.messagelist.General.DOMAIN_CODE, null);
+                                String UID = ""+cometChatTeamMemberList.get(i).getU_member_id()+"_"+DomainCode;
+                                Log.i(TAG, "getCometChatTeamMembers: "+DomainCode);
+                                int finalIndex = index;
+                                CometChat.getUser(UID, new CometChat.CallbackListener<User>() {
+                                    @Override
+                                    public void onSuccess(User user) {
+                                       AppLog.i(TAG, "User details fetched for user: " + user.toString());
+                                        if (user.getStatus().equals(CometChatConstants.USER_STATUS_ONLINE)) {
+                                            memberStatusIcon[finalIndex].setImageResource(R.drawable.online_sta);
+                                            //holder.activeUser.setImageResource(R.drawable.online_sta);
+                                        } else {
+                                            memberStatusIcon[finalIndex].setImageResource(R.drawable.offline_sta);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(CometChatException e)
+                                    {
+                                    }
+                                });
                             }
                         } else {
                             String id = String.valueOf(cometChatTeamMemberList.get(i).getId());
@@ -1066,6 +1096,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         }
         switch (view.getId()) {
             case R.id.linearlayout_member1:
+                AppLog.i(TAG,"linearlayout_member1");
                 if (CheckRole.isYouth(Integer.parseInt(Preferences.get(General.ROLE_ID))) || !isConsumerPresent) {
                     onItemClicked(0, true);
                 } else {
@@ -1352,8 +1383,56 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
 
     @Override
     public void onItemClicked(int position, boolean isFromCircularView) {
-        if (cometChatTeamMemberList.get(position).getId() != Integer.parseInt(Preferences.get(General.USER_ID))) {
-            final String contactId = String.valueOf(cometChatTeamMemberList.get(position).getId());
+        if (cometChatTeamMemberList.get(position).getU_member_id() != Integer.parseInt(Preferences.get(General.USER_ID))) {
+            final String contactId = String.valueOf(cometChatTeamMemberList.get(position).getU_member_id());
+            Log.i(TAG, "onItemClicked: User Details "+contactId +" "+cometChatTeamMemberList.get(position).getFirstname());
+
+            /*Fetching myteam and join team members ids to check user is from my team or join team and
+            below code is added by rahul maske on 10-07-2021*/
+            SharedPreferences preferencesTeamsData = getSharedPreferences("prefrencesPushRedirection", MODE_PRIVATE);
+            String JoinTeam = preferencesTeamsData.getString("JoinTeam", null);
+            String MyTeam = preferencesTeamsData.getString("MyTeams", null);
+            ArrayList<String> myTeamArrayList = new ArrayList<>();
+            ArrayList<String> joinTeamArrayList = new ArrayList<>();
+            if (MyTeam!=null ) {
+                String[] joinTeam = MyTeam.split(",");
+                myTeamArrayList.addAll(Arrays.asList(joinTeam));
+            }
+
+            if (JoinTeam != null ) {
+                String[] joinTeam = JoinTeam.split(",");
+                joinTeamArrayList.addAll(Arrays.asList(joinTeam));
+            }
+
+            /*creating intent to open chat screen*/
+            SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
+            String receiver = UserInfoForUIKitPref.getString(General.COMET_CHAT_ID,"");
+            String sender = String.valueOf(cometChatTeamMemberList.get(position).getU_member_id()+"_"+UserInfoForUIKitPref.getString(General.DOMAIN_CODE,""));
+            String receiverType = "user";
+            String username = ""+cometChatTeamMemberList.get(position).getFirstname();
+            String team_id = ""+cometChatTeamMemberList.get(position).getGid();
+            int tab=0;
+            if (myTeamArrayList.contains(team_id)){
+               tab=3;
+            }else if (joinTeamArrayList.contains(team_id)){
+                tab=4;
+            }
+
+
+            String team_logs_id=receiver+"_-"+team_id+"_-"+tab;
+            AppLog.i(TAG, "onItemClicked: sender"+sender);
+            AppLog.i(TAG, "onItemClicked: receiverType"+receiverType);
+            AppLog.i(TAG, "onItemClicked: username"+username);
+            AppLog.i(TAG, "onItemClicked: team_logs_id"+team_logs_id);
+            AppLog.i(TAG, "onItemClicked: sender"+sender);
+
+            Intent intent=new Intent(TeamDetailsActivity.this,MainActivity.class);
+            intent.putExtra("team_logs_id",team_logs_id);
+            intent.putExtra("receiver",receiver);
+            intent.putExtra("sender",sender);
+            intent.putExtra("receiverType",receiverType);
+            intent.putExtra("username",username);
+           startActivity(intent);
         }
     }
 

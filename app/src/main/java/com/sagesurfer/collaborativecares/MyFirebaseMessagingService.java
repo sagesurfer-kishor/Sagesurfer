@@ -16,15 +16,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-
 import com.cometchat.pro.core.Call;
 import com.cometchat.pro.helpers.CometChatHelper;
 import com.cometchat.pro.models.BaseMessage;
@@ -32,7 +29,6 @@ import com.cometchat.pro.models.User;
 import com.firebase.CallNotificationAction;
 import com.firebase.Config;
 import com.firebase.NotificationUtils;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -41,11 +37,9 @@ import com.sagesurfer.logger.Logger;
 import com.sagesurfer.utilities.AppInfo;
 import com.storage.preferences.Preferences;
 import com.utils.AppLog;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -57,30 +51,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import constant.StringContract;
 import utils.Utils;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
     private static final String TAG = "MyFirebaseMsgService";
-
     private static int count = 0;
-
     private NotificationUtils notificationUtils;
-
     private JSONObject json;
     private Call call;
-
     Intent intentMain;
     JSONObject messageData;
     public static String token;
     private static final int REQUEST_CODE = 12;
-
-
     private boolean isCall;
     private boolean isChatScreen, IsFriendListingPage, IsGroupListingPage;
-
     SharedPreferences preferencesCheckCurrentActivity;
     SharedPreferences.Editor editor;
 
@@ -109,7 +94,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onTaskRemoved(rootIntent);
     }
 
-
     @Override
     public void onMessageReceived(@NonNull @NotNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -117,27 +101,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         AppLog.d(TAG, "FROM: " + remoteMessage.getFrom());
         AppLog.d(TAG, "data: " + remoteMessage.getData());
 
-
         preferencesCheckCurrentActivity = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
         isChatScreen = preferencesCheckCurrentActivity.getBoolean("IsChatScreen", false);
         IsFriendListingPage = preferencesCheckCurrentActivity.getBoolean("IsFriendListingPage", false);
         IsGroupListingPage = preferencesCheckCurrentActivity.getBoolean("IsGroupListingPage", false);
-
         intentMain = new Intent(this, MainActivity.class);
+
         Preferences.save(General.IS_PUSH_NOTIFICATION_SENT, false);
-
-
         if (remoteMessage.getData().size() > 0) {
-
             Map<String, String> data = remoteMessage.getData();
-
             AppLog.i(TAG, "From DATA" + remoteMessage.getFrom());
-
             Logger.error("Debug", "Firebase Notification payload12 : " + remoteMessage.getData().toString(), getApplicationContext());
             JSONObject json = new JSONObject(remoteMessage.getData());
             AppLog.i(TAG, "onMessageReceived: data " + json.toString());
             handleDataMessage(data);
-
         } else {
             AppLog.i(TAG, "From notification" + remoteMessage.getFrom());
         }
@@ -148,18 +125,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             messageData = new JSONObject(json.getString("message"));
             String title = messageData.getString("receiver");
             String receiverType = messageData.getString("receiverType");
-
             Log.e(TAG, "received push notification JSONObject: " + messageData);
-
             BaseMessage baseMessage = CometChatHelper.processMessage(new JSONObject(remoteMessage.getData().get("message")));
             if (baseMessage instanceof Call) {
                 call = (Call) baseMessage;
                 isCall = true;
+                AppLog.i(TAG, "isCall"+isCall );
                 //if (!AppInfo.isAppRunning(getApplicationContext(), "com.sagesurfer.collaborativecares")) {
                 showNotifcation(baseMessage);
                 //}
             } else {
-
                 showNotifcation(baseMessage);
             }
 
@@ -167,7 +142,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             e.printStackTrace();
             Log.i(TAG, "onMessageReceived: error " + e.getMessage());
         }
-
     }
 
     private void handleNotification(String message) {
@@ -307,24 +281,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-
     private void handleDataMessage(Map<String, String> datamap) {
         try {
-
-            String dataobj = datamap.get("data");
-
+            String dataobj=datamap.get("data");
             JSONObject data = new JSONObject(dataobj);
-
             AppLog.e(TAG, "Jdata" + data.toString());
-
             String title = data.optString("title");
             String message = data.optString("message");
 
 //            String message = "This is demo app";
-
-            if (message.isEmpty())
-                message = "There is a new notification.";
-
             String imageUrl = data.optString("image");
             String type = data.optString("menu_id");
             String timestamp = data.optString("timestamp");
@@ -648,6 +613,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                          * added by rahul*/
                         String type = messageData.getString("type");
                         if (type.equals("groupMember")) {
+                            AppLog.i(TAG, "type is group member");
                             String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
                             intentMain.putExtra("team_logs_id", team_logs_id);
                             intentMain.putExtra("receiver", messageData.optString("receiver"));
@@ -656,7 +622,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("username", "" + json.get("title"));
                             intentMain.putExtra("type", "groupMember");
                         } else if (type.equals("extension_whiteboard")) {
-                            Log.i(TAG, "getIntent: extension_whiteboard block");
+
+                            AppLog.i(TAG, "getIntent: extension_whiteboard block");
                             String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
                             intentMain.putExtra("team_logs_id ", team_logs_id);
                             intentMain.putExtra("receiver ", messageData.optString("receiver"));
@@ -664,7 +631,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("receiverType ", messageData.optString("receiverType"));
                             intentMain.putExtra("username ", "" + json.get("title"));
                             intentMain.putExtra("type ", type);
-                        } else {
+                        }else {
+                            AppLog.i(TAG, "refresh unread messages on friend list and group listing page");
                             String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
                             /*This is a broad cast for refreshing the unread messages*/
                             if (team_logs_id.equals("0")) {
@@ -698,10 +666,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     /*Here in this we are preparing for call push notification redirection
                      * on click of notification user will redirect on calling screen
                      * added by rahul maske*/
-                    String team_logs_id = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on")
-                            .getJSONObject("entity").getJSONObject("data").getJSONObject("metadata").getString("team_logs_id");
+                    AppLog.i(TAG, "getIntent: call block");
+                    //String team_logs_id = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on")
+                       //     .getJSONObject("entity").getJSONObject("data").getJSONObject("metadata").getString("team_logs_id");
                     String receiver = messageData.getString("receiver");
-
                     String sender = messageData.getJSONObject("data").getJSONObject("entities").
                             getJSONObject("by").getJSONObject("entity").getString("uid");
 
@@ -714,7 +682,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String sessionid = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on").getJSONObject("entity").getString("sessionid");
 
                     String callType = messageData.getString("type");
-                    AppLog.i(TAG, "getIntent: teamLogID " + team_logs_id + " receiver" + receiver + " sender" + sender);
+
                     /*intentMain.putExtra("receiver", ""+receiver);
                     intentMain.putExtra("sender", ""+sender);*/
                     intentMain.putExtra("lastActiveAt", "" + lastActiveAt);
@@ -725,7 +693,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intentMain.putExtra("status", "" + status);
                     intentMain.putExtra("callType", "" + callType);
                     intentMain.putExtra("sessionid", "" + sessionid);
-                    intentMain.putExtra("category", "call");
+                    intentMain.putExtra("category" ,"call");
+                   // AppLog.i(TAG, "getIntent: teamLogID " + team_logs_id + " receiver" + receiver + " sender" + sender);
+                    AppLog.i(TAG, "getIntent: callType " + callType + " status" + status + " role" + role);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

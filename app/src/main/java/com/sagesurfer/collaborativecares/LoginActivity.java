@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,6 +39,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.utils.AppLog;
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -1244,7 +1248,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void run() {
                 AppLog.i(TAG, "registerPushNotificationToken : "+Preferences.get("regId"));
 //                RegisterFirebaseTokenToServer(Preferences.get("regId"));
-                RegisterFirebaseTokenToServer(StorageHelper.geTOKEN(LoginActivity.this));
+                RegisterFirebaseTokenToServer(Preferences.get("regId"));
             }
         };
         Thread thread = new Thread(runnable);
@@ -1255,16 +1259,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            AppLog.i(TAG, "Fetching FCM registration token failed"+ task.getException());
                             return;
                         }
                         // Get new FCM registration token
                         firebaseToken = task.getResult();
-                        Log.i(TAG, "onComplete: token " + firebaseToken);
+                        AppLog.i(TAG, "onComplete: token " + firebaseToken);
                     }
                 });*/
-
-        CometChat.registerTokenForPushNotification(StorageHelper.geTOKEN(LoginActivity.this), new CometChat.CallbackListener<String>() {
+        AppLog.i(TAG, "registerPushNotification Token is "+StorageHelper.geTOKEN(LoginActivity.this));
+        AppLog.i(TAG, "registerPushNotification Token is 2nd "+firebaseToken);
+        CometChat.registerTokenForPushNotification(Preferences.get("regId"), new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
                 Toast.makeText(LoginActivity.this, s, Toast.LENGTH_LONG).show();
@@ -1274,14 +1279,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onError(CometChatException e) {
                 AppLog.e("onErrorPN: ", e.getMessage());
-                AppLog.e(TAG, "registerPushNotification onSuccess: token register successfully");
+                AppLog.e(TAG, "registerPushNotification onSuccess: failed");
             }
         });
     }
 
-
     private void RegisterFirebaseTokenToServer(String token) {
-
         SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, "");
         SharedPreferences domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);

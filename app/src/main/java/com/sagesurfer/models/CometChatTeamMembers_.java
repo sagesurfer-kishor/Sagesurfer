@@ -14,6 +14,9 @@ public class CometChatTeamMembers_ implements Serializable {
     @SerializedName(General.ID)
     private int id;
 
+    @SerializedName(General.U_MEMBER_ID)
+    private int u_member_id;
+
     @SerializedName(General.N)
     private String n;
 
@@ -200,5 +203,13 @@ public class CometChatTeamMembers_ implements Serializable {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public int getU_member_id() {
+        return u_member_id;
+    }
+
+    public void setU_member_id(int u_member_id) {
+        this.u_member_id = u_member_id;
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -54,6 +55,7 @@ import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
 import screen.messagelist.NetworkCall_;
 import screen.messagelist.Urls_;
+import utils.AppLog;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -654,24 +656,49 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
                 String receiverType = getActivity().getIntent().getStringExtra("receiverType");
                 if (receiverType.equals("user")) {
                     String team_logs_id = getActivity().getIntent().getStringExtra("team_logs_id");
+                    String ids[] = team_logs_id.split(Pattern.quote("_"));
+                    onTeamClickFetchTeamData(Integer.parseInt(ids[2].substring(1)));
                     if (team_logs_id != null && !team_logs_id.isEmpty()) {
                         if (team_logs_id.endsWith("4")) {
                             tabs = "4";
                         } else if (team_logs_id.endsWith("3")) {
                             tabs = "3";
                         }
-                        String ids[] = team_logs_id.split(Pattern.quote("_"));
+
                         Log.i(TAG, "checkIntent: teamIdIs " + Integer.parseInt(ids[2].substring(1)));
                         Log.i(TAG, "checkIntent: memberId: " + ids[0].substring(0));
                         SharedPreferences.Editor editor = preferenOpenActivity.edit();
                         editor.putBoolean("checkIntent", false);
                         editor.apply();
-                        openChatActivity(
+
+                        for (Teams_ teams_ : al_friends){
+                            AppLog.i(TAG, "team id "+teams_.getId() +" team name "+teams_.getName());
+                            if(ids[2].substring(1).equalsIgnoreCase(String.valueOf(teams_.getId()))){
+
+                                ArrayList<Members_> membersArrayList= teams_.getMembersArrayList();
+                                for(int i=0; i< membersArrayList.size(); i++){
+                                    if (membersArrayList.get(i).getComet_chat_id().equalsIgnoreCase( getActivity().getIntent().getStringExtra("sender"))) {
+                                        Handler handler=new Handler();
+                                        int finalI = i;
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                onMemberRelativeLayoutClicked(finalI, teams_);
+                                            }
+                                        },1500);
+
+                                    }
+                                }
+                                break;
+                            }
+                        }
+
+                        /*openChatActivity(
                                 "" + getActivity().getIntent().getStringExtra("username"),
                                 "" + getActivity().getIntent().getStringExtra("sender"),
                                 0,
                                 "" + Integer.parseInt(ids[2].substring(1)),
-                                "" + ids[0].substring(0));
+                                "" + ids[0].substring(0));*/
 
 
                         /*openChatActivity(""+username,
@@ -714,7 +741,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
      * created by rahul maske*/
 
     @Override
-    public void onTeamClickFetchTeamData(Teams_ item) {
+    public void onTeamClickFetchTeamData(int team_id) {
         Runnable runnableUserArray = new Runnable() {
             @Override
             public void run() {
@@ -725,7 +752,7 @@ public class CometChatMyTeamsFragment_ extends Fragment implements LoaderManager
                 String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
                 HashMap<String, String> requestMap = new HashMap<>();
                 requestMap.put(screen.messagelist.General.ACTION, "get_team_members_array");
-                requestMap.put(screen.messagelist.General.TEAM_ID, "" + item.getId());
+                requestMap.put(screen.messagelist.General.TEAM_ID, "" + team_id);
                 requestMap.put(screen.messagelist.General.USER_ID, UserId);
                 // Log.i(TAG, "onTeamClickFetchTeamData: User Id " + UserId);
                 RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());

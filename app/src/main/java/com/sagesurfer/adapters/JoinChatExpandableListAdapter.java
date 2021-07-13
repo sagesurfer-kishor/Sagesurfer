@@ -158,7 +158,7 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
                     mExpandableListView.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = groupPosition;
-                teamsChatExpandableListAdapterListener.onTeamClickFetchTeamData( primaryList.get(groupPosition));
+                teamsChatExpandableListAdapterListener.onTeamClickFetchTeamData( primaryList.get(groupPosition).getId());
             }
         });
         /*viewHolderTeam.linearLayoutFriendListItem.setOnClickListener(new View.OnClickListener() {
@@ -360,7 +360,7 @@ public class JoinChatExpandableListAdapter extends BaseExpandableListAdapter imp
     public interface JoinChatExpandableListAdapterListener {
         void onMemberRelativeLayoutClicked(int childPosition, Teams_ team_);
 
-        void onTeamClickFetchTeamData(Teams_ item);
+        void onTeamClickFetchTeamData(int item);
     }
 
     @Override

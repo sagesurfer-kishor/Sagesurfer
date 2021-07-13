@@ -18,7 +18,6 @@ public final class DatabaseDeleteRecord_ {
     public DatabaseDeleteRecord_(Context context) {
         databaseHelper = new MainDatabase(context);
     }
-
     public final void deleteRecord(String table_name, String id, String column) {
         databaseHelper.deleteEntry(table_name, id, column);
         databaseHelper.close();

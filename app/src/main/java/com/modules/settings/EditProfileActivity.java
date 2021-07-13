@@ -457,7 +457,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         requestMap.put(General.FIRST_NAME, et_firstname.getText().toString().trim());
         requestMap.put(General.LAST_NAME, et_lastname.getText().toString().trim());
 
-
         int posCounrty = spinnerCountryList.getSelectedItemPosition();
         int counrtyId = countryArrayList.get(posCounrty).getId();
         requestMap.put(General.COUNTRY, String.valueOf(counrtyId));

@@ -7,13 +7,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#D8DFE2"
     tools:context="com.modules.cometchat_7_30.LastConversion.FragmentLastConversation">
+
    <LinearLayout
        android:id="@+id/cardview_actions"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_marginTop="5dp"
+       android:layout_marginTop="10dp"
        android:layout_marginBottom="5dp"
-       android:padding="5dp"
+
        android:background="@drawable/message_rounded_border"
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +25,9 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:background="@null"
-       android:drawablePadding="@dimen/margin_10"
+       android:drawablePadding="@dimen/margin_5"
+       android:drawableStart="@drawable/search_icon"
+       android:drawableTint="@color/grey"
        android:gravity="start|center_vertical"
        android:hint="search"
        android:imeOptions="actionSearch"
@@ -39,7 +42,7 @@
        android:id="@+id/rv_last_conversion"
        android:layout_width="match_parent"
        android:layout_height="0dp"
-       android:layout_marginTop="8dp"
+       android:layout_marginTop="5dp"
        app:layout_constraintBottom_toBottomOf="parent"
        app:layout_constraintEnd_toEndOf="parent"
        app:layout_constraintStart_toStartOf="parent"

@@ -12,12 +12,10 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
@@ -28,16 +26,12 @@ import com.cometchat.pro.models.User;
 import com.modules.cometchat_7_30.ModelUserCount;
 import com.sagesurfer.collaborativecares.R;
 import com.storage.preferences.Preferences;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import utils.Utils;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastConversation.MyViewHolder> implements Filterable {
@@ -50,7 +44,8 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
     private FragmentLastConversation currentFragment;
     SharedPreferences sp;
 
-    public AdapterLastConversation(FragmentLastConversation fragment, List<Conversation> conversationList, Context mContext, FragmentLastConversation fragmentLastConversation) {
+    public AdapterLastConversation(FragmentLastConversation fragment, List<Conversation> conversationList,
+                                   Context mContext, FragmentLastConversation fragmentLastConversation) {
         this.mContext = mContext;
         this.conversationList = new ArrayList<>(conversationList);
         this.fullConversationList = new ArrayList<>(conversationList);
@@ -106,7 +101,6 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                                                 Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
 
                                                 if (messageTranslatedString.length() > 25) {
-
                                                     holder.friend_list_item_statusmessage.setText(messageTranslatedString.substring(0, 24)+"...");
                                                 } else {
                                                     holder.friend_list_item_statusmessage.setText(messageTranslatedString);
@@ -242,9 +236,9 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                                                 try {
                                                     String messageTranslatedString = null;
                                                     messageTranslatedString = jsonObject.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("message_translated");
-                                                    Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
+                                                   // Log.i(TAG, "filterBaseMessages: onSuccess at block 3 messageTranslatedString " + messageTranslatedString);
                                                     if (messageTranslatedString.length() > 25) {
-                                                        Log.i(TAG, "onBindViewHolder: name " + name.substring(0, 19));
+//
                                                         holder.friend_list_item_statusmessage.setText(messageTranslatedString.substring(0, 24)+"...");
                                                     } else {
                                                         holder.friend_list_item_statusmessage.setText(messageTranslatedString);
@@ -257,8 +251,7 @@ public class AdapterLastConversation extends RecyclerView.Adapter<AdapterLastCon
                                             @Override
                                             public void onError(CometChatException e) {
                                                 // Some error occured
-                                                Log.i(TAG, "onError: " + e.getMessage());
-                                                Log.i(TAG, "filterBaseMessages: edited at block 4");
+
                                             }
                                         });
                                 holder.messageTime.setText(Utils.getLastMessageDate(((TextMessage) conversation.getLastMessage()).getSentAt()));

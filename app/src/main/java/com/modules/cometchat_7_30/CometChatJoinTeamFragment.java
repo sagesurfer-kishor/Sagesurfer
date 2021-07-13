@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +33,7 @@ import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
 import com.sagesurfer.library.GetErrorResources;
+import com.sagesurfer.models.Members_;
 import com.sagesurfer.models.Teams_;
 import com.sagesurfer.tasks.PerformGetTeamsTask;
 import com.sagesurfer.views.TextWatcherExtended;
@@ -50,6 +52,7 @@ import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
 import screen.messagelist.NetworkCall_;
 import screen.messagelist.Urls_;
+import utils.AppLog;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -167,11 +170,11 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
         editor.putString("teamIds", teamId);
         editor.apply();
         Log.e("userName", username);
-        Log.i(TAG, "openChatActivity: Username "+username);
-        Log.i(TAG, "openChatActivity: UID "+userId);
-        Log.i(TAG, "openChatActivity: STATUS "+status);
-        Log.i(TAG, "openChatActivity: teamId "+teamId);
-        Log.i(TAG, "openChatActivity: memberId "+memberId);
+        AppLog.i(TAG, "openChatActivity: Username "+username);
+        AppLog.i(TAG, "openChatActivity: UID "+userId);
+        AppLog.i(TAG, "openChatActivity: STATUS "+status);
+        AppLog.i(TAG, "openChatActivity: teamId "+teamId);
+        AppLog.i(TAG, "openChatActivity: memberId "+memberId);
         Intent intent = new Intent(getContext(), CometChatMessageListActivity.class);
         intent.putExtra(StringContract.IntentStrings.NAME, username);
         intent.putExtra(StringContract.IntentStrings.UID, userId);
@@ -206,6 +209,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
             expandableListView.setVisibility(View.VISIBLE);
             cardview_actions.setVisibility(View.VISIBLE);
             searchList.addAll(primaryList);
+            AppLog.i(TAG , "Members id is " + primaryList.get(0).getMembersArrayList().get(0).getComet_chat_id());
             tv_team_count.setText("No. of Teams : " + primaryList.size());
             teamsListAdapter = new JoinChatExpandableListAdapter(getContext(), primaryList, searchList, this, getActivity());
             expandableListView.setAdapter(teamsListAdapter);
@@ -245,20 +249,20 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
 
         String[] ProviderArray = team_provider.split(",");
         String[] MemberArray = team_member_id.split(",");
-        Log.i(TAG, "onMemberRelativeLayoutClicked: team_provider"+team_provider +" team_member_id "+team_member_id);
-        Log.i(TAG, "onMemberRelativeLayoutClicked: clicked user id "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+        AppLog.i(TAG, "onMemberRelativeLayoutClicked: team_provider"+team_provider +" team_member_id "+team_member_id);
+        AppLog.i(TAG, "onMemberRelativeLayoutClicked: clicked user id "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
         if (Arrays.asList(ProviderArray).contains( team_.getMembersArrayList().get(memberPosition).getComet_chat_id())){
             //if user is provider
             getUserDetails(team_.getMembersArrayList().get(memberPosition).getComet_chat_id(), team_, memberPosition,"provider");
-            Log.i(TAG, "onMemberRelativeLayoutClicked: this is provider --> "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+            AppLog.i(TAG, "onMemberRelativeLayoutClicked: this is provider --> "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
         }else if (Arrays.asList(MemberArray).contains( team_.getMembersArrayList().get(memberPosition).getComet_chat_id())){
             //if user is member selected by admin dashboard
             getUserDetails(team_.getMembersArrayList().get(memberPosition).getComet_chat_id(), team_, memberPosition,"member");
-            Log.i(TAG, "onMemberRelativeLayoutClicked: This is member --> "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+            AppLog.i(TAG, "onMemberRelativeLayoutClicked: This is member --> "+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
         }
         else{
             //if user is normal user
-            Log.i(TAG, "onMemberRelativeLayoutClicked: ");
+            AppLog.i(TAG, "onMemberRelativeLayoutClicked: ");
             final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
             final String username = team_.getMembersArrayList().get(memberPosition).getUsername();
             final int status = team_.getMembersArrayList().get(memberPosition).getStatus();
@@ -272,12 +276,12 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
 
        /* for (String providerId : ProviderArray) {
             //  If provider
-            Log.i(TAG, "onMemberRelativeLayoutClicked checking new : 2 from provider id" + providerId +
+            AppLog.i(TAG, "onMemberRelativeLayoutClicked checking new : 2 from provider id" + providerId +
                     " from list clicked" + team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
             String[] spitId = providerId.split("_");
-            Log.i(TAG, "onMemberRelativeLayoutClicked checking new : memberCometchatId"+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
+            AppLog.i(TAG, "onMemberRelativeLayoutClicked checking new : memberCometchatId"+team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
             if (spitId[0].equals("" + team_.getMembersArrayList().get(memberPosition).getUser_id())) {
-                Log.i(TAG, "onMemberRelativeLayoutClicked: 3 -" + spitId[0]);
+                AppLog.i(TAG, "onMemberRelativeLayoutClicked: 3 -" + spitId[0]);
                 getUserDetails(providerId, team_, memberPosition);
                 //if (team_.getMembersArrayList().get(memberPosition).getStatus())
             } else {
@@ -321,7 +325,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
         SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
         String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
-        Log.i(TAG, "checkOtherMemberAvailable: 1");
+        AppLog.i(TAG, "checkOtherMemberAvailable: 1");
         String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
         HashMap<String, String> requestMap = new HashMap<>();
 
@@ -336,7 +340,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
             if (requestBody != null) {
                 String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
                 if (response != null) {
-                    Log.i(TAG, "checkOtherMemberAvailable:  response " + response);
+                    AppLog.i(TAG, "checkOtherMemberAvailable:  response " + response);
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray provider_time_check_in_db = jsonObject.getJSONArray("other_members_time_check_in_db");
                     String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
@@ -345,8 +349,8 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                         final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(position).getComet_chat_id());
                         final String username = team_.getMembersArrayList().get(position).getUsername();
                         final int status = team_.getMembersArrayList().get(position).getStatus();
-                        Log.i(TAG, "checkOtherMemberAvailable: CometchatIdOfSender "+CometchatIdOfSender);
-                        Log.i(TAG, "checkOtherMemberAvailable: teamId "+team_.getId());
+                        AppLog.i(TAG, "checkOtherMemberAvailable: CometchatIdOfSender "+CometchatIdOfSender);
+                        AppLog.i(TAG, "checkOtherMemberAvailable: teamId "+team_.getId());
                         openChatActivity("" + username,
                                 "" + CometchatIdOfSender,
                                 status,
@@ -356,13 +360,13 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                         showDialogForMember(success, position, team_);
                     }
                 } else {
-                    Log.i(TAG, "checkOtherMemberAvailable:  null  ");
+                    AppLog.i(TAG, "checkOtherMemberAvailable:  null  ");
                 }
             } else {
-                Log.i(TAG, "checkOtherMemberAvailable:  null2");
+                AppLog.i(TAG, "checkOtherMemberAvailable:  null2");
             }
         } catch (Exception e) {
-            Log.i(TAG, "checkOtherMemberAvailable: " + e.getMessage());
+            AppLog.i(TAG, "checkOtherMemberAvailable: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -402,7 +406,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
     }
 
     private void showDialogForOfflineProvider(Teams_ team_, int memberPosition) {
-        Log.i(TAG, " onMemberRelativeLayoutClicked: reached showDialogForOfflineProvider:");
+        AppLog.i(TAG, " onMemberRelativeLayoutClicked: reached showDialogForOfflineProvider:");
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getActivity());
         //Setting message manually and performing action on button click
@@ -449,7 +453,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
 
                         showOnlineDialogForProvider(team_, memberPosition);
                     }else{
-                        Log.i(TAG, "getUserDetails -> status if offline  -> " + statuss);
+                        AppLog.i(TAG, "getUserDetails -> status if offline  -> " + statuss);
                         /*below code is running code for this checkProviderTimeOnServer() method
                          * and previously we were checking the data on server for the offiline user when that user is available
                          * but now after discuss with team we are showing static message for offline user
@@ -496,7 +500,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
         String UserId = UserInfoForUIKitPref.getString(screen.messagelist.General.USER_ID, null);
         SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
         String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
-        Log.i(TAG, "checkProviderAvailableTime: 1");
+        AppLog.i(TAG, "checkProviderAvailableTime: 1");
         String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
         HashMap<String, String> requestMap = new HashMap<>();
 
@@ -505,32 +509,32 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
         requestMap.put(screen.messagelist.General.RECEIVER_ID, "" + team_.getMembersArrayList().get(memberPosition).getComet_chat_id());
 
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
-        Log.i(TAG, "checkProviderAvailableTime: 2");
-        Log.i(TAG, "checkProviderAvailableTime: Domain " + DomainURL + url);
+        AppLog.i(TAG, "checkProviderAvailableTime: 2");
+        AppLog.i(TAG, "checkProviderAvailableTime: Domain " + DomainURL + url);
         try {
             if (requestBody != null) {
                 String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, getActivity());
                 if (response != null) {
-                    Log.i(TAG, "checkProviderAvailableTime:  response " + response);
+                    AppLog.i(TAG, "checkProviderAvailableTime:  response " + response);
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray provider_time_check_in_db = jsonObject.getJSONArray("provider_time_check_in_db");
                     String success = provider_time_check_in_db.getJSONObject(0).getString("Success");
                     showDialog(success, memberPosition, team_);
                 } else {
-                    Log.i(TAG, "checkProviderAvailableTime:  null  ");
+                    AppLog.i(TAG, "checkProviderAvailableTime:  null  ");
                 }
             } else {
-                Log.i(TAG, "checkProviderAvailableTime:  null2");
+                AppLog.i(TAG, "checkProviderAvailableTime:  null2");
             }
         } catch (Exception e) {
-            Log.i(TAG, "checkProviderAvailableTime: " + e.getMessage());
+            AppLog.i(TAG, "checkProviderAvailableTime: " + e.getMessage());
             e.printStackTrace();
         }
 
     }
 
     private void showDialog(String success, int position, Teams_ team_) {
-        Log.i(TAG, "showDialog: ");
+        AppLog.i(TAG, "showDialog: ");
         final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(position).getComet_chat_id());
         final String username = team_.getMembersArrayList().get(position).getUsername();
         final int status = team_.getMembersArrayList().get(position).getStatus();
@@ -550,7 +554,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.i(TAG, "onClick: team inclued data "+ team_.toString());
+                        AppLog.i(TAG, "onClick: team inclued data "+ team_.toString());
                         //team_.getMembersArrayList().get(memberPosition).getComet_chat_id()
                         alert.dismiss();
                         openChatActivity(""+username,
@@ -577,7 +581,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
     }
 
     private void showDialogForMember(String success, int position, Teams_ team_) {
-        Log.i(TAG, "showDialog: ");
+        AppLog.i(TAG, "showDialog: ");
         final String CometchatIdOfSender = String.valueOf(team_.getMembersArrayList().get(position).getComet_chat_id());
         final String username = team_.getMembersArrayList().get(position).getUsername();
         final int status = team_.getMembersArrayList().get(position).getStatus();
@@ -591,7 +595,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.i(TAG, "onClick: team inclued data "+ team_.toString());
+                        AppLog.i(TAG, "onClick: team inclued data "+ team_.toString());
                         //team_.getMembersArrayList().get(memberPosition).getComet_chat_id()
                         alert.dismiss();
                         openChatActivity(""+username,
@@ -618,7 +622,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
     }
 
     @Override
-    public void onTeamClickFetchTeamData(Teams_ item)
+    public void onTeamClickFetchTeamData(int team_Id)
     {
         Runnable runnable=new Runnable() {
             @Override
@@ -628,10 +632,10 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                 SharedPreferences domainUrlPref = getActivity().getSharedPreferences("domainUrlPref", MODE_PRIVATE);
                 String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, null);
                 String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
-                Log.i(TAG, "run: team_id "+ item.getId() +" name "+item.getId());
+
                 HashMap<String, String> requestMap = new HashMap<>();
                 requestMap.put(screen.messagelist.General.ACTION, "get_team_members_array");
-                requestMap.put(screen.messagelist.General.TEAM_ID, "" + item.getId());
+                requestMap.put(screen.messagelist.General.TEAM_ID, "" + team_Id);
                 requestMap.put(screen.messagelist.General.USER_ID, UserId);
 
                 RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
@@ -644,7 +648,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                             JSONArray get_team_members_array = jsonObject.getJSONArray("get_team_members_array");
                             team_member_id = get_team_members_array.getJSONObject(0).getString("team_member_id");
                             team_provider = get_team_members_array.getJSONObject(0).getString("team_provider");
-                            Log.i(TAG, " run: onTeamClickFetchTeamData team_member_id "+team_member_id+" team_provider "+team_provider +"team_id "+item.getId());
+                            AppLog.i(TAG, " run: onTeamClickFetchTeamData team_member_id "+team_member_id+" team_provider "+team_provider +"team_id "+team_Id);
                         }
                     }
                 } catch (Exception e) {
@@ -676,6 +680,8 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                 String receiverType = getActivity().getIntent().getStringExtra("receiverType");
                 if (receiverType.equals("user")) {
                     String team_logs_id = getActivity().getIntent().getStringExtra("team_logs_id");
+                    String ids[] = team_logs_id.split(Pattern.quote("_"));
+                    onTeamClickFetchTeamData(Integer.parseInt(ids[2].substring(1)));
                     if (team_logs_id != null && !team_logs_id.isEmpty()) {
                        /* if (team_logs_id.endsWith("3")) {*/
                         if (team_logs_id.endsWith("4")) {
@@ -684,21 +690,46 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
                             tabs="3";
                         }
 
-                            String ids[] = team_logs_id.split(Pattern.quote("_"));
-                            Log.i(TAG, "checkIntent: teamIdIs " + ids[2].substring(1));
-                            Log.i(TAG, "checkIntent: memberId: " + ids[0].substring(0));
+
+                            AppLog.i(TAG, "checkIntent: teamIdIs " + ids[2].substring(1));
+                            AppLog.i(TAG, "checkIntent: memberId: " + ids[0].substring(0));
 
                             SharedPreferences.Editor editor = preferenOpenActivity.edit();
                             editor.putBoolean("checkIntent", false);
                             editor.apply();
-
-                            openChatActivity(
+                        /*This working code and with this code we were directly opening the user chat and skipping the set availability scinario
+                         * but we need set availability scinario so we are commenting this code and opening activity with set availability all scinario
+                         * commented and created by rahul maske on 10-07-2021
+                         * */
+                        /*openChatActivity(
                                     "" + getActivity().getIntent().getStringExtra("username"),
                                     "" + getActivity().getIntent().getStringExtra("sender"),
                                     0,
                                     "" + Integer.parseInt(ids[2].substring(1)),
-                                    "" + ids[0].substring(0));
+                                    "" + ids[0].substring(0));*/
                       /*  }*/
+
+                        for (Teams_ teams_ : primaryList){
+                            AppLog.i(TAG, "team id "+teams_.getId() +" team name "+teams_.getName());
+                            if(ids[2].substring(1).equalsIgnoreCase(String.valueOf(teams_.getId()))){
+
+                                ArrayList<Members_> membersArrayList= teams_.getMembersArrayList();
+                                for(int i=0; i< membersArrayList.size(); i++){
+                                    if (membersArrayList.get(i).getComet_chat_id().equalsIgnoreCase( getActivity().getIntent().getStringExtra("sender"))) {
+                                        Handler handler=new Handler();
+                                        int finalI = i;
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                onMemberRelativeLayoutClicked(finalI, teams_);
+                                            }
+                                        },1500);
+
+                                    }
+                                }
+                                break;
+                            }
+                        }
                     }
                 }
             }
