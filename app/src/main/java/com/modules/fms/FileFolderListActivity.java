@@ -102,7 +102,6 @@ public class FileFolderListActivity extends AppCompatActivity implements View.On
         errorLayout = (LinearLayout) findViewById(R.id.linealayout_error);
         listView = (ListView) findViewById(R.id.swipe_menu_listview);
         listView.setDividerHeight(3);
-
         fab = (FloatingActionButton) findViewById(R.id.fab_listview);
         fab.setOnClickListener(this);
         fab.setImageResource(R.drawable.ic_add_white);
