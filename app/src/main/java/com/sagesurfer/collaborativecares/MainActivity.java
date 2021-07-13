@@ -1998,9 +1998,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
-
-
-
     public void showHideBellIcon2(boolean showHide) {
         if (showHide) {
             mainToolBarBellLayout.setVisibility(View.GONE);
@@ -3090,8 +3087,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage006)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage026)) ||
                 Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage027)) ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage030)) ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031))) {
+                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage030))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage031))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage047))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage049))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage050))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage051))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage052))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage053))) {
+
             if (clickEvent) {
                 helpDialogActivity();
             } else if (showFilterIcon) {
@@ -3582,6 +3587,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void onClick(View view) {
         if (view != null) {
             switch (view.getId()) {
+
+                case R.id.main_toolbar_add:
+                    addButtonClick(view);
+                    break;
                 case R.id.imageview_toolbar_left_arrorw:
                     CustomCalendar.previousOnClick(imageViewToolbarLeftArrow, moodTitleText);
                     replaceFragmentMood();
@@ -3690,10 +3699,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     public void hideHelpIcon(boolean showHide) {
         if (showHide) {
+            clickEvent = true;
             addButton.setVisibility(View.VISIBLE);
             addButton.setImageResource(R.drawable.help_icon);
+            addButton.setOnClickListener(this);
 //            addButton.setImageResource(R.drawable.log_book_white_icon);
-            clickEvent = true;
+
         } else {
             addButton.setVisibility(View.GONE);
         }
