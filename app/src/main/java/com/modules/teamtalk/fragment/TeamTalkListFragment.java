@@ -111,8 +111,8 @@ public class TeamTalkListFragment extends Fragment implements View.OnClickListen
             }
         });
 
-        fab = (FloatingActionButton) view.findViewById(R.id.fab_listview);
-        fab.setImageResource(R.drawable.ic_add_white);
+        fab = view.findViewById(R.id.fab_listview);
+        //fab.setImageResource(R.drawable.ic_add_white);
         fab.setOnClickListener(this);
 
        /* if (CheckRole.showInviteMember(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
@@ -122,12 +122,25 @@ public class TeamTalkListFragment extends Fragment implements View.OnClickListen
         }*/
 
         if (Preferences.get(General.OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID))
-                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1") || General.isCurruntUserHasPermissionToTeamTalkActions()) {
+                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
+                || General.isCurruntUserHasPermissionToTeamTalkActions()) {
             fab.setVisibility(View.VISIBLE);
         } else {
             fab.setVisibility(View.GONE);
         }
 
+
+        // added by mayur
+        if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Coach")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Consumer-Adult")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Parent/Guardian")) {
+            fab.setVisibility(View.VISIBLE);
+        }
 
 
         errorText = (TextView) view.findViewById(R.id.textview_error_message);
@@ -142,7 +155,16 @@ public class TeamTalkListFragment extends Fragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
 
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage047))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage049))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage050))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage051))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage052))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage053))) {
             mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.team_discussion));
         } else {
             mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.team_talk));
@@ -154,9 +176,9 @@ public class TeamTalkListFragment extends Fragment implements View.OnClickListen
 
         getList();
 
-        try{
+        try {
             ((TeamDetailsActivity) getActivity()).inviteButtonSetVisibility();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

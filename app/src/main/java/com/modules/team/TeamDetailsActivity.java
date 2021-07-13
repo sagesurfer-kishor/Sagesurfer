@@ -98,7 +98,9 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public class TeamDetailsActivity extends AppCompatActivity implements MainActivityInterface, ContactRecycleViewAdapter.ContactRecycleViewAdapterListener,
         CircleLayout.OnCenterClickListener, CircleLayout.OnItemClickListener {
+
     private static final String TAG = TeamDetailsActivity.class.getSimpleName();
+
     @BindView(R.id.linearlayout_team)
     LinearLayout linearLayoutTeam;
     @BindView(R.id.view_vertical_one)
@@ -419,15 +421,6 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         memberStatusIcon5 = (ImageView) findViewById(R.id.member_status_icon5);
         memberStatusIcon6 = (ImageView) findViewById(R.id.member_status_icon6);
 
-        // MAYUR TERAIYA ADDED
-        /*memberStatusIcon0.setVisibility(View.GONE);
-        memberStatusIcon1.setVisibility(View.GONE);
-        memberStatusIcon2.setVisibility(View.GONE);
-        memberStatusIcon3.setVisibility(View.GONE);
-        memberStatusIcon4.setVisibility(View.GONE);
-        memberStatusIcon5.setVisibility(View.GONE);
-        memberStatusIcon6.setVisibility(View.GONE);*/
-
 
         imageViewStats.setColorFilter(color);
         imageViewStats.setImageResource(R.drawable.vi_drawer_teams);
@@ -515,7 +508,9 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         viewHorizontalOne.setBackgroundColor(color);
         viewHorizontalTwo.setBackgroundColor(color);
 
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021)) || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
             textViewTeamTalk.setText(getResources().getString(R.string.team_discussion));
         } else {
             textViewTeamTalk.setText(getResources().getString(R.string.team_talk));
@@ -1242,7 +1237,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                 replaceFragment(fragment);
                 break;
 
-            case "TeamTalk":
+            case "Team Talk":
                 fromFragment = true;
                 fragment = new TeamTalkListFragment();
                 replaceFragment(fragment);
@@ -1346,7 +1341,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         Preferences.save(General.GROUP_ID, String.valueOf(team_id));
     }
 
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(final Fragment fragment) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -1358,6 +1353,10 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         if (oldFragment != null) {
             ft.remove(oldFragment);
         }
+
+        //ft.addToBackStack(null);
+
+
         ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
         ft.replace(R.id.app_bar_main_container, fragment, Actions_.GET_PROFILE_DATA);
         ft.commit();

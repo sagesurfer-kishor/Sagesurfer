@@ -65,6 +65,7 @@ import butterknife.Unbinder;
  */
 
 public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener {
+
     private static final String TAG = AddGoalFragmentTwo.class.getSimpleName();
 
     @BindView(R.id.textview_addgoalactivity_bubble_one)
@@ -690,12 +691,17 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
                     frequency = "";
                     textViewFragmentAddGoalTwoFrequency.setText(frequency);
                 }
-                if (AddGoalPreferences.contains(General.ACTION) && AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext()
+
+                if (AddGoalPreferences.contains(General.ACTION)
+                        && AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext()
                         .getResources().getString(R.string.add_goal))) {
                     clearTimePreferences();
                 }
+
                 toggleFrequencyLayout();
+
                 toggleAdvance();
+
                 return true;
             }
         });
@@ -757,6 +763,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
             linearLayoutFragmentAddGoalTwoOccurrences.setVisibility(View.GONE);
             linearLayoutFragmentAddGoalTwoOccurrences.setVisibility(View.VISIBLE);
             editTextFragmentAddGoalTwoOccurrence.setText("1");
+
         } else if (frequency.equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.weekly))) {
             linearLayoutFragmentAddGoalTwoFrequencyDays.setVisibility(View.GONE);
             textViewFragmentAddGoalTwoNumberPicker.setVisibility(View.GONE);
@@ -765,6 +772,7 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
             linearLayoutFragmentAddGoalTwoFrequencyMonth.setVisibility(View.GONE);
             linearLayoutFragmentAddGoalTwoOccurrences.setVisibility(View.VISIBLE);
             editTextFragmentAddGoalTwoOccurrence.setText("1");
+
         }
         setDates();
         if (AddGoalPreferences.get(General.ACTION).equalsIgnoreCase(activity.getApplicationContext()
@@ -789,11 +797,11 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
             textViewFragmentAddGoalTwoEndDate.setText(GetTime.month_DdYyyy(end_date));
 
 
-            if (AddGoalPreferences.get(General.START_DATE)!=null && !AddGoalPreferences.get(General.START_DATE).isEmpty()) {
+            if (AddGoalPreferences.get(General.START_DATE) != null && !AddGoalPreferences.get(General.START_DATE).isEmpty()) {
                 textViewFragmentAddGoalTwoStartDate.setText(GetTime.month_DdYyyy(AddGoalPreferences.get(General.START_DATE)));
             }
 
-            if (AddGoalPreferences.get(General.END_DATE)!=null && !AddGoalPreferences.get(General.END_DATE).isEmpty()) {
+            if (AddGoalPreferences.get(General.END_DATE) != null && !AddGoalPreferences.get(General.END_DATE).isEmpty()) {
                 textViewFragmentAddGoalTwoEndDate.setText(GetTime.month_DdYyyy(AddGoalPreferences.get(General.END_DATE)));
             }
 
@@ -881,13 +889,18 @@ public class AddGoalFragmentTwo extends Fragment implements View.OnClickListener
         editTextFragmentAddGoalTwoFrequencyMonthDayCount.setText("20");
         editTextFragmentAddGoalTwoOccurrence.setText("");
 
-        if (frequency.equalsIgnoreCase(activity.getApplicationContext()
-                .getResources().getString(R.string.daily))
-                || frequency.equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.weekly))) {
-
-        } else {
+        if (frequency.equalsIgnoreCase("Hourly")) {
             textViewFragmentAddGoalTwoOccurrenceTime.setText("");
         }
+
+
+//        if (frequency.equalsIgnoreCase(activity.getApplicationContext()
+//                .getResources().getString(R.string.daily))
+//                || frequency.equalsIgnoreCase(activity.getApplicationContext().getResources().getString(R.string.weekly))) {
+//
+//        } else {
+//            textViewFragmentAddGoalTwoOccurrenceTime.setText("");
+//        }
 
         editTextFragmentAddGoalTwoFrequencyMonthCount.setText("1");
         editTextFragmentAddGoalTwoFrequencyMonthCountTwo.setText("1");

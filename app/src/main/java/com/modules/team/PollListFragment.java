@@ -138,7 +138,9 @@ public class PollListFragment extends Fragment implements View.OnClickListener, 
                 || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
-                || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")) {
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Consumer-Adult")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Parent/Guardian")) {
             fab.setVisibility(View.VISIBLE);
         }
 

@@ -19,6 +19,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 public class AdapterTeamMenu extends RecyclerView.Adapter<AdapterTeamMenu.ViewHolderTeamMenu> {
+
     Context mContext;
     ArrayList<ModelTeamMenu> teamMenuList, list;
     private static final String TAG = "AdapterTeamMenu";

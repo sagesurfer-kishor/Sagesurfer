@@ -127,8 +127,19 @@ public class FileSharingListFragment extends Fragment implements View.OnClickLis
             fab.setVisibility(View.GONE);
         }
 
-        //MAYUR TERAIYA
-        fab.setVisibility(View.VISIBLE);
+
+
+        // added by mayur
+        if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Coach")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Consumer-Adult")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Parent/Guardian")) {
+            fab.setVisibility(View.VISIBLE);
+        }
 
 
         getHeight(fab);

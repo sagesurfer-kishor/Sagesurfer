@@ -31,6 +31,7 @@ import com.sagesurfer.snack.ShowLoader;
 import com.sagesurfer.snack.ShowSnack;
 import com.sagesurfer.snack.SubmitSnackResponse;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
 
 import java.util.HashMap;
 
@@ -101,7 +102,11 @@ public class PostAnnouncementActivity extends AppCompatActivity implements View.
         descriptionBoxValidate.setVisibility(View.GONE);
         EditText descriptionBox = (EditText) findViewById(R.id.et_team_talk_description);
         descriptionBox.setVisibility(View.GONE);
-        teamSelector = (TextView) findViewById(R.id.tv_selected_team_name);
+
+        teamSelector =  findViewById(R.id.tv_selected_team_name);
+        teamSelector.setText(""+Preferences.get(General.TEAM_NAME));
+
+
     }
 
     // Validate if all necessary fields for valid data
@@ -183,7 +188,7 @@ public class PostAnnouncementActivity extends AppCompatActivity implements View.
         super.onResume();
         group_id = Integer.parseInt(Preferences.get(General.GROUP_ID));
         String group_name = Preferences.get(General.GROUP_NAME);
-        teamSelector.setText(group_name);
+       // teamSelector.setText(group_name);
     }
 
     @Override

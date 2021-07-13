@@ -120,7 +120,6 @@
                 android:id="@+id/main_filter_add"
                 android:layout_width="@dimen/actionBarSize"
                 android:layout_height="@dimen/actionBarSize"
-                android:onClick="onAppointmentFilter"
                 android:padding="15dp"
                 android:visibility="gone"
                 app:srcCompat="@drawable/ic_filter_filled_tool_symbol_white" />
@@ -132,6 +131,15 @@
                 android:padding="15dp"
                 android:visibility="gone"
                 app:srcCompat="@drawable/vi_search_white" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview_add"
+                android:layout_width="@dimen/actionBarSize"
+                android:layout_height="@dimen/actionBarSize"
+                android:padding="15dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_add_white"
+                app:srcCompat="@drawable/ic_add_white" />
 
             <RelativeLayout
                 android:id="@+id/main_toolbar_bell_layout"
@@ -156,7 +164,6 @@
                     android:layout_marginTop="6dp"
                     android:visibility="visible"
                     android:gravity="center"
-
                     android:textSize="@dimen/text_size_8"/>
                 <!--<Button
                     android:id="@+id/main_toolbar_bell_counter"

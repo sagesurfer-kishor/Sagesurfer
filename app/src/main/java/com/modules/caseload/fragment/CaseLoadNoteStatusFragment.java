@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -13,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.tabs.TabLayout;
 import com.modules.caseload.PeerAddNoteActivity;
 import com.modules.caseload.ProgressAddNoteActivity;
+import com.modules.caseload.fragment.PeerNoteAllFragment;
 import com.modules.caseload.observer.ObserverID;
 import com.sagesurfer.adapters.CaseloadProgressNoteAdapter;
 import com.sagesurfer.collaborativecares.Application;
@@ -41,6 +46,8 @@ import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetCounters;
 import com.sagesurfer.models.CaseloadProgressNote_;
 import com.storage.preferences.Preferences;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -88,6 +95,39 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
         activity = getActivity();
         application = (Application) activity.getApplication();
         application.getObserver().addObserver(this);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu,
+                                    @NonNull @NotNull MenuInflater inflater) {
+        menu.clear();
+
+        // Add the new menu items
+        inflater.inflate(R.menu.menuadd, menu);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+
+        if (item.getItemId()==R.id.filemenuadd)
+        {
+            if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
+                    || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013))
+                    || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
+                    || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))
+                    || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))) {
+                Intent detailsIntent = new Intent(activity.getApplicationContext(), PeerAddNoteActivity.class);
+                startActivity(detailsIntent);
+            } else {
+                Intent detailsIntent = new Intent(activity.getApplicationContext(), ProgressAddNoteActivity.class);
+                startActivity(detailsIntent);
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressLint("InflateParams")
@@ -117,7 +157,6 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
                 || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
                 || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))
                 || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))) {
-
             textViewToolbarTitle.setText(getResources().getString(R.string.note));
             recyclerView.setVisibility(View.GONE);
             linearLayoutPeerNote.setVisibility(View.VISIBLE);
@@ -130,12 +169,12 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
             tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.approved)));
             tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.rejected)));
 
-//            if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
-//                imageViewAdd.setVisibility(View.VISIBLE);
-//                tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.draft)));
-//            } else {
-//                imageViewAdd.setVisibility(View.GONE);
-//            }
+            if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
+                imageViewAdd.setVisibility(View.VISIBLE);
+                tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.draft)));
+            } else {
+                imageViewAdd.setVisibility(View.GONE);
+            }
 
         } else {
             textViewToolbarTitle.setText(getResources().getString(R.string.progress_note));
@@ -158,7 +197,8 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013))
                         || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
-                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))) {
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))) {
                     Intent detailsIntent = new Intent(activity.getApplicationContext(), PeerAddNoteActivity.class);
                     startActivity(detailsIntent);
                 } else {

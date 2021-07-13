@@ -122,6 +122,21 @@ public class TeamTaskListFragment extends Fragment implements SwipeRefreshLayout
             fab.setVisibility(View.GONE);
         }
 
+        // added by mayur
+        if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Coach")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Consumer-Adult")
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Parent/Guardian")) {
+            fab.setVisibility(View.VISIBLE);
+        }
+
+
+
+
         listView = (SwipeMenuListView) view.findViewById(R.id.swipe_menu_listview);
         listView.setDividerHeight(0);
 
