@@ -341,13 +341,26 @@ public class CaseloadActionsDialogFragment extends DialogFragment implements Vie
             case R.id.imageview_caseload_progress_note:
                 //if(!Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))) {
                 dismiss();
+
                 Preferences.save(General.CONSUMER_ID, caseload_.getUser_id());
                 Preferences.save(General.CONSUMER_NAME, caseload_.getUsername());
                 Preferences.save(General.GROUP_ID, "" + caseload_.getGroup_id());
                 Preferences.save(General.TEAM_ID, "" + caseload_.getGroup_id());
-                detailsIntent = new Intent(activity.getApplicationContext(), CaseloadProgressNoteActivity.class);
-                activity.startActivity(detailsIntent);
-                activity.overridePendingTransition(0, 0);
+
+                if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013))
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage022))
+                        || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage048))) {
+
+                    detailsIntent = new Intent(activity.getApplicationContext(), PeerAddNoteActivity.class);
+                    activity.startActivity(detailsIntent);
+                    activity.overridePendingTransition(0, 0);
+                }else {
+                    detailsIntent = new Intent(activity.getApplicationContext(), CaseloadProgressNoteActivity.class);
+                    activity.startActivity(detailsIntent);
+                    activity.overridePendingTransition(0, 0);
+                }
                 //}
                 break;
 
