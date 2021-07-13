@@ -230,7 +230,6 @@ public class AnnouncementListFragment extends Fragment implements View.OnClickLi
         }
         swipeRefreshLayout.setRefreshing(false);
     }
-
     // Save newly added records to database
     private void saveAnnouncement(final ArrayList<Announcement_> list) {
         final Handler handler = new Handler();  //Optional. Define as a variable in your activity.
