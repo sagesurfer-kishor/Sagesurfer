@@ -288,6 +288,7 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
         DialogFragment dialogFrag = new CommentDialog();
         Bundle bundle = new Bundle();
         bundle.putInt(General.ID, feedList.get(position).getId());
+        bundle.putString(General.FROM, "Wall");
         dialogFrag.setArguments(bundle);
         dialogFrag.show(activity.getFragmentManager().beginTransaction(), General.COMMENT_COUNT);
     }

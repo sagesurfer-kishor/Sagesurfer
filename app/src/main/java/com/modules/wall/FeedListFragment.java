@@ -511,7 +511,7 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onResume();
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.wall));
         mainActivityInterface.setToolbarBackgroundColor();
-
+        getFeed();
     }
 
     // make network call to fetch all wall feed

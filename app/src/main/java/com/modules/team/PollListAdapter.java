@@ -200,6 +200,7 @@ public class PollListAdapter extends RecyclerView.Adapter<PollListAdapter.MyView
         DialogFragment dialogFrag = new CommentDialog();
         Bundle bundle = new Bundle();
         bundle.putInt(General.ID, (int) poll_id);
+        bundle.putString(General.FROM, "Poll");
         dialogFrag.setArguments(bundle);
         dialogFrag.show(activity.getFragmentManager().beginTransaction(), General.COMMENT_COUNT);
     }

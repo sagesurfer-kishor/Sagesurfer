@@ -50,6 +50,14 @@ public class UserInfo_ {
     @SerializedName(General.GROUP_NAME)
     private String group_name;
 
+    public String getUserTimezone() {
+        return userTimezone;
+    }
+
+    public void setUserTimezone(String userTimezone) {
+        this.userTimezone = userTimezone;
+    }
+
     @SerializedName("login_log_id")
     private String login_log_id;
 

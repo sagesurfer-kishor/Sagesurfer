@@ -810,7 +810,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                                 SharedPreferences UserInfoForUIKitPref = getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);
                                 String DomainCode = UserInfoForUIKitPref.getString(screen.messagelist.General.DOMAIN_CODE, null);
                                 String UID = ""+cometChatTeamMemberList.get(i).getU_member_id()+"_"+DomainCode;
-                                Log.i(TAG, "getCometChatTeamMembers: "+DomainCode);
+                                Log.i(TAG, "getCometChatTeamMembers: "+DomainCode +" UID "+UID);
                                 int finalIndex = index;
                                 CometChat.getUser(UID, new CometChat.CallbackListener<User>() {
                                     @Override
@@ -827,6 +827,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                                     @Override
                                     public void onError(CometChatException e)
                                     {
+                                        AppLog.e(TAG, "onError "+e.getMessage());
                                     }
                                 });
                             }
@@ -937,7 +938,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
         requestMap.put(General.GROUP_ID, String.valueOf(team_id));
 
-        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_TEAM_ALL_DATA;
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this.getApplicationContext(), this);
         if (requestBody != null) {
             try {
@@ -946,7 +947,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                 if (response != null) {
                     //team data parsing
                     Preferences.save(General.GROUP_ID, String.valueOf(team_id));
-                    al_team = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
+                    al_team = PerformGetTeamsTask.get(Actions_.ALL_TEAMS_CHAT, this, TAG, true, this);
 
                     if (Preferences.getBoolean(General.IS_PUSH_NOTIFICATION)) {
                         Preferences.save(General.IS_PUSH_NOTIFICATION, false);

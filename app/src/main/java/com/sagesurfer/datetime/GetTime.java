@@ -1,10 +1,12 @@
 package com.sagesurfer.datetime;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.sagesurfer.library.Age;
 import com.sagesurfer.library.AgeCalculator;
 import com.sagesurfer.library.GetCounters;
+import com.utils.AppLog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,7 +26,7 @@ import java.util.Locale;
  */
 
 public class GetTime {
-
+    private static final String TAG = "GetTime";
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
@@ -36,43 +38,54 @@ public class GetTime {
     }
 
     public static String wallTime(long time) {
-
         long now = System.currentTimeMillis();
         if (time < 1000000000000L) {
             time *= 1000;
         }
-        if (time > now || time <= 0) {
+       /* if (time > now || time <= 0) {
+            AppLog.i(TAG, "wallTime:  time > now || time <= 0 and time = "+time +" and now = "+now);
             return "now";
-        }
+        }*/
+        AppLog.i(TAG,"now "+now +" time "+time);
         final long diff = now - time;
+
         if (diff < MINUTE_MILLIS) {
+            AppLog.i(TAG, "wallTime: diff < MINUTE_MILLIS "+diff);
             return "now";
         } else if (diff < 2 * MINUTE_MILLIS) {
+            AppLog.i(TAG, "wallTime: diff < 2 * MINUTE_MILLIS "+diff);
             return "1 min";
         } else if (diff < 50 * MINUTE_MILLIS) {
+            AppLog.i(TAG, "wallTime: diff < 50 * MINUTE_MILLIS "+diff);
             return diff / MINUTE_MILLIS + " min";
         } else if (diff < 90 * MINUTE_MILLIS) {
+            AppLog.i(TAG, "diff < 90 * MINUTE_MILLIS "+diff);
             return "1 hr";
         } else if (diff < 24 * HOUR_MILLIS) {
+            AppLog.i(TAG, "wallTime: diff < 24 * HOUR_MILLIS "+diff);
             return diff / HOUR_MILLIS + " hr";
         } else if (diff < 48 * HOUR_MILLIS) {
+            AppLog.i(TAG, "wallTime: diff < 24 * HOUR_MILLIS "+diff);
             return "1 day";
         } else if ((diff / DAY_MILLIS) > 3) {
+            AppLog.i(TAG, "wallTime: diff < MINUTE_MILLIS "+diff);
             return getDate(time);
         } else {
+            AppLog.i(TAG, "wallTime: diff / DAY_MILLIS) > 3 "+diff);
             return diff / DAY_MILLIS + " days";
         }
     }
 
     public static String dueTime(long time) {
-
         long now = System.currentTimeMillis();
         if (time < 1000000000000L) {
             time *= 1000;
         }
+
         if (time > now || time <= 0) {
             return "due now";
         }
+
         final long diff = now - time;
         if (diff < MINUTE_MILLIS) {
             return "Due now";

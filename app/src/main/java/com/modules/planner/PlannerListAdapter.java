@@ -1,8 +1,10 @@
 package com.modules.planner;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +24,16 @@ import com.sagesurfer.library.GetColor;
 import com.sagesurfer.models.DailyPlanner_;
 import com.sagesurfer.snack.SubmitSnackResponse;
 import com.sagesurfer.tasks.PerformGetTeamsTask;
+import com.utils.AppLog;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Monika M(monikam@sagesurfer.com)
@@ -84,6 +95,7 @@ public class PlannerListAdapter extends RecyclerView.Adapter<PlannerListAdapter.
         return new MyViewHolder(itemView);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
@@ -116,7 +128,9 @@ public class PlannerListAdapter extends RecyclerView.Adapter<PlannerListAdapter.
                     }
                     break;
                 case 5:
-                    holder.time.setText(GetTime.wallTime(dailyPlanner_.getGoal().getLast_updated()));
+                    holder.time.setText(GetTime.wallTime(convertDateToMills(dailyPlanner_.getGoal().getC_date())));
+                    ;
+                    //2021-07-14 10:10:42
                     holder.title.setText(dailyPlanner_.getGoal().getName());
                     break;
             }
@@ -297,4 +311,26 @@ public class PlannerListAdapter extends RecyclerView.Adapter<PlannerListAdapter.
             }
         }
     };*/
+
+
+    public long convertDateToMills(String date){
+       /* DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a");
+        LocalDateTime localDate = LocalDateTime.parse(date, formatter);
+        long timeInMilliseconds = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli();
+        AppLog.d(TAG, "Date in milli :: FOR API >= 26 >>> " + timeInMilliseconds);*/
+        long timeInMilliseconds=0;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+        try
+        {
+            Date mDate = sdf.parse(date);
+            timeInMilliseconds = mDate.getTime();
+            System.out.println("Date in milli :: " + timeInMilliseconds);
+            return timeInMilliseconds;
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return timeInMilliseconds;
+    }
 }

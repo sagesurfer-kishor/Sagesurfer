@@ -225,14 +225,22 @@ public class CommentDialog extends DialogFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.comment_dialog_back:
-                Log.i(TAG, "onClick: comment_dialog_back");
-                Fragment fragment = GetFragments.get(1, null);
-                FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
-                ft.replace(R.id.app_bar_main_container, fragment, TAG);
-                ft.commit();
-                dismiss();
-
+                //dismiss();
+                if (getArguments().get(General.FROM).equals("Poll")){
+                    Fragment fragment = new PollListFragment();
+                    FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                    ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                    ft.commit();
+                    dismiss();
+                }else {
+                    Fragment fragment = GetFragments.get(1, null);
+                    FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                    ft.replace(R.id.app_bar_main_container, fragment, TAG);
+                    ft.commit();
+                    dismiss();
+                }
                 break;
             case R.id.comment_dialog_send:
                 String comment = commentBox.getText().toString();

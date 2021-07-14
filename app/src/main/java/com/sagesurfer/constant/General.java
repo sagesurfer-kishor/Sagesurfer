@@ -40,6 +40,7 @@ public class General {
     public static final String TIMESTAMP = "timestamp";
     public static final String CHECK = "check";
     public static final String TIMEZONE = "tz";
+    public static final String TIMEZONE_SERVER = "userTimezone";
     public static final String EMAIL = "email";
     public static final String NAME = "name";
     public static final String CUSTOM_MSG = "custom_msg";
@@ -66,6 +67,7 @@ public class General {
     public static final String ROLE_ID = "role_id";
     public static final String GROUP_ID = "group_id";
     public static final String GROUP_NAME = "group_name";
+    public static final String USERTIMEZONE = "userTimezone";
     public static final String ERROR = "error";
     public static final String TEAM = "team";
     public static final String TEAM_NAME = "team_name";
@@ -831,6 +833,7 @@ public class General {
     public static final String TOTIMES = "totimes";
     public static final String IS_TEST_USER = "is_test_user";
     public static final String U_MEMBER_ID = "u_member_id";
+    public static final String FROM ="from";
 
 
     public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {

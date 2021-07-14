@@ -830,12 +830,12 @@ public class DailyPlannerFragment extends Fragment implements PlannerListAdapter
     // Sagesurfer planner call
     /*updated by rahul for background threading..*/
     private void getSagesurfer(DailyPlannerFragment dailyPlannerFragment) {
-
         setHeader();
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.TIMEZONE, Preferences.get(General.TIMEZONE));
         requestMap.put(General.ACTION, Actions_.GET_DATA);
         requestMap.put("fetch_date", date);
+
         //requestMap.put(General.SEARCH, date);
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_DAY_PLANNER;

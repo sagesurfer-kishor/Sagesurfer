@@ -77,6 +77,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.cometchat.pro.core.CometChat;
+import com.cometchat.pro.exceptions.CometChatException;
 import com.cometchat.pro.models.User;
 import com.firebase.Config;
 import com.firebase.NotificationUtils;
@@ -159,6 +161,7 @@ import com.sagesurfer.models.Goal_;
 import com.sagesurfer.models.HomeMenu_;
 import com.sagesurfer.models.LanguageList;
 import com.sagesurfer.models.Teams_;
+import com.sagesurfer.network.AppConfig;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
 import com.sagesurfer.parser.Error_;
@@ -575,6 +578,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     }
 
+    public class RunnableLoginToCometchat implements Runnable {
+        @Override
+        public void run() {
+            cometChatLogin();
+        }
+    }
+    private void cometChatLogin() {
+        AppLog.i(TAG, " UserId " + Preferences.get(General.USER_COMETCHAT_ID));
+        if (CometChat.getLoggedInUser() == null) {
+            CometChat.login(Preferences.get(General.USER_COMETCHAT_ID), AppConfig.AppDetails.AUTH_KEY, new CometChat.CallbackListener<User>() {
+                @Override
+                public void onSuccess(User user) {
+                    AppLog.e(TAG, "Cometchat Login Successful : " + user.toString());
+                    CometChat.getLoggedInUser().setUid(Preferences.get(General.USER_COMETCHAT_ID));
+                    Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
+                    MessagingService.subscribeUserNotification(user.getUid());
+                    AppLog.e(TAG, "subscribe : " + user.getUid());
+                }
+
+                @Override
+                public void onError(CometChatException e) {
+                    AppLog.d(TAG, "Cometchat Login failed with exception: " + e.getMessage());
+                    Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
+                }
+            });
+        }
+    }
+
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -591,6 +623,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+
+        RunnableLoginToCometchat loginToCometchat = new RunnableLoginToCometchat();
+        Thread loginThread = new Thread(loginToCometchat);
+        loginThread.start();
     }
 
 

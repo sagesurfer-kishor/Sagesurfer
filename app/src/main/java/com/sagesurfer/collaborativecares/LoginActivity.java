@@ -1156,6 +1156,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         AppLog.e(TAG, "saveData: screen.messagelist.Preferences timezone " + screen.messagelist.Preferences.get(General.TIMEZONE));
         AppLog.e(TAG, "saveData: screen.messagelist.Preferences Domain code " + screen.messagelist.Preferences.get(General.DOMAIN_CODE));
         Preferences.save(General.TIMEZONE, DeviceInfo.getTimeZone());
+        Preferences.save(General.TIMEZONE_SERVER, userInfo.getUserTimezone());
         Preferences.save(General.NAME, userInfo.getName());
         Preferences.save(General.FIRST_NAME, userInfo.getFirstName());
         Preferences.save(General.LAST_NAME, userInfo.getLastName());
@@ -1213,34 +1214,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
         } else {
             try {
-                cometChatLogin(userInfo.getComet_chat_id());
+                //cometChatLogin(userInfo.getComet_chat_id());
+                registerPushNotificationToken();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void cometChatLogin(String Uid) {
-        if (CometChat.getLoggedInUser() == null) {
-            CometChat.login(Uid, AppConfig.AppDetails.AUTH_KEY, new CometChat.CallbackListener<User>() {
-                @Override
-                public void onSuccess(User user) {
-                    AppLog.e(TAG, "Login Successful : " + user.toString());
-                    CometChat.getLoggedInUser().setUid(Uid);
-                    Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
-                    MessagingService.subscribeUserNotification(user.getUid());
-                    AppLog.e(TAG, "subscribe : " + user.getUid());
-                    registerPushNotificationToken();
-                }
 
-                @Override
-                public void onError(CometChatException e) {
-                    AppLog.d(TAG, "Login failed with exception: " + e.getMessage());
-                    Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
-                }
-            });
-        }
-    }
 
     private void registerPushNotificationToken() {
         Runnable runnable = new Runnable() {

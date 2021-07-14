@@ -152,13 +152,14 @@ public class PollListFragment extends Fragment implements View.OnClickListener, 
     public void onStart() {
         super.onStart();
         fab.setBackgroundTintList(ColorStateList.valueOf(GetColor.getHomeIconBackgroundColorColorParse(true)));
-        getPoll();
+
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
+        getPoll();
         Log.i(TAG, "onResume: called");
         mainActivityInterface.setMainTitle(activity.getApplicationContext().getResources().getString(R.string.poll));
         mainActivityInterface.setToolbarBackgroundColor();

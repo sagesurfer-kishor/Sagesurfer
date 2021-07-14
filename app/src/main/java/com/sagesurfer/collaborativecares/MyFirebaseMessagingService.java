@@ -25,6 +25,7 @@ import androidx.work.WorkManager;
 import com.cometchat.pro.core.Call;
 import com.cometchat.pro.helpers.CometChatHelper;
 import com.cometchat.pro.models.BaseMessage;
+import com.cometchat.pro.models.TextMessage;
 import com.cometchat.pro.models.User;
 import com.firebase.CallNotificationAction;
 import com.firebase.Config;
@@ -108,17 +109,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intentMain = new Intent(this, MainActivity.class);
 
         Preferences.save(General.IS_PUSH_NOTIFICATION_SENT, false);
-        if (remoteMessage.getData().size() > 0) {
-            Map<String, String> data = remoteMessage.getData();
-            AppLog.i(TAG, "From DATA" + remoteMessage.getFrom());
-            Logger.error("Debug", "Firebase Notification payload12 : " + remoteMessage.getData().toString(), getApplicationContext());
-            JSONObject json = new JSONObject(remoteMessage.getData());
-            AppLog.i(TAG, "onMessageReceived: data " + json.toString());
-            handleDataMessage(data);
-        } else {
-            AppLog.i(TAG, "From notification" + remoteMessage.getFrom());
-        }
-
         try {
             count++;
             json = new JSONObject(remoteMessage.getData());
@@ -132,15 +122,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 isCall = true;
                 AppLog.i(TAG, "isCall"+isCall );
                 //if (!AppInfo.isAppRunning(getApplicationContext(), "com.sagesurfer.collaborativecares")) {
-                showNotifcation(baseMessage);
+                //if(!((TextMessage) baseMessage).getText().trim().isEmpty()){
+                    showNotifcation(baseMessage);
+                //}
                 //}
             } else {
-                showNotifcation(baseMessage);
+               // if(!((TextMessage) baseMessage).getText().trim().isEmpty()){
+                    showNotifcation(baseMessage);
+                //}
             }
-
+        return;
         } catch (JSONException e) {
             e.printStackTrace();
             Log.i(TAG, "onMessageReceived: error " + e.getMessage());
+        }
+
+        if (remoteMessage.getData().size() > 0) {
+            Map<String, String> data = remoteMessage.getData();
+            AppLog.i(TAG, "From DATA" + remoteMessage.getFrom());
+            Logger.error("Debug", "Firebase Notification payload12 : " + remoteMessage.getData().toString(), getApplicationContext());
+            JSONObject json = new JSONObject(remoteMessage.getData());
+            AppLog.i(TAG, "onMessageReceived: data " + json.toString());
+            handleDataMessage(data);
+        } else {
+            AppLog.i(TAG, "From notification" + remoteMessage.getFrom());
         }
     }
 
@@ -289,7 +294,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String title = data.optString("title");
             String message = data.optString("message");
 
-//            String message = "This is demo app";
+//         String message = "This is demo app";
             String imageUrl = data.optString("image");
             String type = data.optString("menu_id");
             String timestamp = data.optString("timestamp");
@@ -378,7 +383,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             e.printStackTrace();
         }
     }
-
 
     // Show text notification
     private void showNotificationMessage(Context context,

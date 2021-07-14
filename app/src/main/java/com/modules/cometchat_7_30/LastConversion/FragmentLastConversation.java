@@ -69,6 +69,7 @@ import java.util.List;
 import java.util.Objects;
 
 import constant.StringContract;
+import de.measite.minidns.record.A;
 import listeners.OnItemClickListener;
 import okhttp3.RequestBody;
 import screen.messagelist.CometChatMessageListActivity;
@@ -295,6 +296,7 @@ public class FragmentLastConversation extends Fragment {
             }
         });
         threadMakeConversation.start();*/
+        conversationsRequest=null;
         fetchConversationList();
         Thread threadGetGroupList = new Thread(new Runnable() {
             @Override
@@ -316,23 +318,23 @@ public class FragmentLastConversation extends Fragment {
     private void fetchConversationList() {
         if (conversationsRequest == null) {
             conversationsRequest = new ConversationsRequest.ConversationsRequestBuilder().setLimit(50).build();
-            if (conversationListType != null)
-                conversationsRequest = new ConversationsRequest.ConversationsRequestBuilder()
-                        .setConversationType(conversationListType).setLimit(50).build();
+            //if (conversationListType != null)
+                /*conversationsRequest = new ConversationsRequest.ConversationsRequestBuilder()
+                        .setConversationType(conversationListType).setLimit(50).build();*/
+                /*conversationsRequest = new ConversationsRequest.ConversationsRequestBuilder()
+                        .setLimit(50).build();*/
         }
 
         conversationsRequest.fetchNext(new CometChat.CallbackListener<List<Conversation>>() {
             @Override
             public void onSuccess(List<Conversation> conversations) {
                 for (Conversation conversation : conversations) {
-                    Logger.info(TAG, "onSuccess: conversation " + conversation,getActivity());
+                    AppLog.i(TAG, "onSuccess: conversation " + conversation);
                     if (conversation.getConversationType().equals("user")) {
                         conversationList.add(conversation);
                     } else if (conversation.getConversationType().equals("group")) {
                         conversationList.add(conversation);
-                        if (((Group) conversation.getConversationWith()).getName().equals("test1234")) {
-                            Log.i(TAG, "onSuccess: test1234 group" + conversation);
-                        }
+
                     }
                 }
 
@@ -389,7 +391,7 @@ public class FragmentLastConversation extends Fragment {
 
             @Override
             public void onError(CometChatException e) {
-                Log.i(TAG, "makeConversationList onError: ");
+                Log.i(TAG, "makeConversationList onError: "+e.getMessage());
             }
         });
     }

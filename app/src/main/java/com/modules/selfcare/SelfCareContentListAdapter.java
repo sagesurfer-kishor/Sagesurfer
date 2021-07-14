@@ -102,7 +102,7 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
             viewHolder.textViewSelfCareContentListItemShareCount = (TextView) view.findViewById(R.id.textview_selfcarecontentlistitem_share_count);
             viewHolder.imageViewSelfCareContentListItemIcon = (ImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_icon);
             viewHolder.imageViewSelfCareContentListItemTypeIcon = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_type_icon);
-            viewHolder.imageViewSelfCareContentListItemLike = (AppCompatImageButton) view.findViewById(R.id.btn_like);
+            viewHolder.imageViewSelfCareContentListItemLike = (AppCompatImageView) view.findViewById(R.id.btn_like);
             viewHolder.imageViewSelfCareContentListItemComment = (AppCompatImageView) view.findViewById(R.id.imageview_selfcarecontentlistitem_comment);
             viewHolder.imageViewSelfCareContentListItemShare = (ImageButton) view.findViewById(R.id.btn_share);
             viewHolder.relativeLayoutSelfCareContentListItemIcon = (RelativeLayout) view.findViewById(R.id.relativelayout_selfcarecontentlistitem_icon);
@@ -359,7 +359,7 @@ class SelfCareContentListAdapter extends ArrayAdapter<Content_> {
     private class ViewHolder {
         TextView textViewSelfCareContentListItemTitle, textViewSelfCareContentListItemDescription, textViewSelfCareContentListItemCategory, textViewSelfCareContentListItemLikeCount, textViewSelfCareContentListItemCommentCount, textViewSelfCareContentListItemShareCount;
         ImageView imageViewSelfCareContentListItemIcon;
-        AppCompatImageButton imageViewSelfCareContentListItemLike;
+        AppCompatImageView imageViewSelfCareContentListItemLike;
         ImageButton imageViewSelfCareContentListItemShare;
         AppCompatImageView imageViewSelfCareContentListItemTypeIcon, imageViewSelfCareContentListItemComment;
         RelativeLayout relativeLayoutCaseloadDetails, relativeLayoutSelfCareContentListItemIcon;

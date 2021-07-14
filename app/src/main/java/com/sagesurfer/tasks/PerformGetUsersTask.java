@@ -16,6 +16,7 @@ import com.sagesurfer.network.Urls_;
 import com.sagesurfer.parser.GetJson_;
 import com.sagesurfer.parser.Users_;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +78,7 @@ public class PerformGetUsersTask {
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, tag, context, activity);
-                Log.e("response",response);
+                AppLog.e("getCometChatTeamMembers response",response);
                 if (response != null) {
                     teamMemberList = Users_.parseCometChatTeamMembers(response, action, context, tag);
 

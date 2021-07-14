@@ -420,6 +420,7 @@ public class NetworkCall_ {
         map.put(General.KEY, keyMap.get(General.KEY));
         map.put(General.USER_ID, Preferences.get(General.USER_ID)); //logged in user id
         map.put(General.TIMEZONE, Preferences.get(General.TIMEZONE));
+        map.put(General.TIMEZONE_SERVER, Preferences.get(General.TIMEZONE_SERVER));
         map.put(General.DOMAIN_CODE, Preferences.get(General.DOMAIN_CODE));
         Set keys = map.keySet();
         FormBody.Builder formBuilder = new FormBody.Builder();
