@@ -575,7 +575,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Thread myJoinThread = new Thread(joinTeams);
             myJoinThread.start();
         }
+        registerPushNotificationToken();
+    }
 
+    private void registerPushNotificationToken() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                AppLog.i(TAG, "registerPushNotificationToken : " + Preferences.get("regId"));
+//                RegisterFirebaseTokenToServer(Preferences.get("regId"));
+                RegisterFirebaseTokenToServer(StorageHelper.geTOKEN(MainActivity.this));
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     public class RunnableLoginToCometchat implements Runnable {
