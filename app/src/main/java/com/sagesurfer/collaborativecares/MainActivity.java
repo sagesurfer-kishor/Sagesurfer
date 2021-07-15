@@ -2076,6 +2076,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     //For cometchat push notification onclick events
     public void handleIntent(Intent mainIntent) {
+        AppLog.i(TAG, "handleIntent started...");
         if (mainIntent.getExtras() != null) {
             String firstNotification = emergencyMessagePreferences.getString("firstNotification", null);
             /*we are checking 2 conditions here
@@ -2087,13 +2088,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (firstNotification == null && !mainIntent.hasExtra("direct")) {
                 // Do first run stuff here then set 'firstrun' as false
                 // using the following line to edit/commit prefs
+                AppLog.i(TAG, "handleIntent  first message ever...");
                 emergencyMessagePreferences.edit().putString("firstNotification", "shown").apply();
                 androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
                 LayoutInflater inflater = this.getLayoutInflater();
                 View view = inflater.inflate(R.layout.dialog_emergency, null);
                 builder.setView(view);
                 androidx.appcompat.app.AlertDialog dialog = builder.create();
-                AppLog.i(TAG, "showMembersDialog: ");
+                AppLog.i(TAG, " handleIntent showMembersDialog: ");
                 //Button btn_cancel = view.findViewById(R.id.btn_cancel);
                 Button ok_btn = view.findViewById(R.id.ok_btn);
 
@@ -2107,9 +2109,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 ok_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        AppLog.i(TAG, "handleIntent btn clicked");
                         if (mainIntent.hasExtra("receiver")){
                         moveToTheActivity(mainIntent);
                         }else{
+
                             nonCometchatPushRedirection(mainIntent);
                         }
                         dialog.dismiss();
@@ -2119,9 +2123,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 dialog.show();
                 dialog.setCanceledOnTouchOutside(true);
             } else
+                AppLog.i(TAG, "handleIntent direct message");
             if (mainIntent.hasExtra("receiver")){
+                AppLog.i(TAG, "handleIntent direct message has receiver");
                 moveToTheActivity(mainIntent);
             }else{
+                AppLog.i(TAG, "handleIntent direct message non cometchat message");
                 nonCometchatPushRedirection(mainIntent);
             }
         }
@@ -2184,6 +2191,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (mainIntent.getStringExtra("category").equalsIgnoreCase("call")) {
                         /*Here we are getting intent  for call redirection*/
                         AppLog.i(TAG, "handleIntent: call block");
+                        AppLog.i(TAG, "handleIntent: call block categoty "+mainIntent.getStringExtra("category"));
+                        AppLog.i(TAG, "handleIntent: call block lastActiveAt"+mainIntent.getStringExtra("lastActiveAt"));
+                        AppLog.i(TAG, "handleIntent: call block uid"+mainIntent.getStringExtra("uid"));
+                        AppLog.i(TAG, "handleIntent: call block name"+mainIntent.getStringExtra("name"));
+                        AppLog.i(TAG, "handleIntent: call block role"+mainIntent.getStringExtra("role"));
+                        AppLog.i(TAG, "handleIntent: call block name"+mainIntent.getStringExtra("name"));
+                        AppLog.i(TAG, "handleIntent: call block avatar"+mainIntent.getStringExtra("avatar"));
+                        AppLog.i(TAG, "handleIntent: call block status"+mainIntent.getStringExtra("status"));
+                        AppLog.i(TAG, "handleIntent: call block sessionid"+mainIntent.getStringExtra("sessionid"));
+
+
+
                         Bundle bundle = new Bundle();
                         bundle.putString("category", mainIntent.getStringExtra("category"));
                         bundle.putString("lastActiveAt", mainIntent.getStringExtra("lastActiveAt"));
@@ -2252,9 +2271,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 /*    //
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override*/
+
     public void nonCometchatPushRedirection(Intent intent) {
        // super.onNewIntent(intent);
         if (intent.hasExtra(General.TYPE)) {
+            AppLog.i(TAG, "nonCometchatPushRedirection has type");
             String type = intent.getStringExtra(General.TYPE);
             String consumer_id = "";
             String mentor_id = "";
@@ -2280,10 +2301,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             String appointment_report_id = "";
             String senjam_patient_id = "";
             if (type.contains("_")) {
+                AppLog.i(TAG, "nonCometchatPushRedirection contains _");
                 String[] splitStr = type.trim().split("_");
                 type = splitStr[0];
                 if (Integer.parseInt(Preferences.get(General.GROUP_ID)) != 0) {
                     if (Integer.parseInt(type) == 15) {
+                        AppLog.i(TAG, "nonCometchatPushRedirection 15 type");
                         team_annouoncement_id = splitStr[1];
                     } else if (Integer.parseInt(type) == 16) {
                         tasklist_id = splitStr[1];
@@ -2355,10 +2378,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             //all the home main functions will redirect from here
             if (type.trim().length() > 0) {
                 if (Integer.parseInt(type) == 52) {
+
                 } else {
                     if (Integer.parseInt(Preferences.get(General.GROUP_ID)) != 0) {
-                        ArrayList<Teams_> teamsArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
-                        AppLog.i(TAG, "onNewIntent: teamArrayList" + teamsArrayList);
+                        //ArrayList<Teams_> teamsArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
+                        ArrayList<Teams_> teamsArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.TEAM_DATA, this, TAG, true, this);
+                        //AppLog.i(TAG, "onNewIntent: teamArrayList team name" + teamsArrayList.get(0).getName());
                         if (teamsArrayList.size() > 0) {
                             if (teamsArrayList.get(0).getStatus() == 1) {
                                 Preferences.save(General.BANNER_IMG, teamsArrayList.get(0).getBanner());
@@ -2367,7 +2392,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 Preferences.save(General.HOME_ICON_NUMBER, "0");
 
                                 if (Integer.parseInt(type) == 15) {                                            // (15 code) Team Announcement fragment redirect
-                                    AppLog.i(TAG, "onNewIntent:15 Team Announcement fragment redirect");
+                                    AppLog.i(TAG, "non Cometchat Push Redirection announcement ");
                                     Preferences.save(General.TEAM_ANNOUNCEMENT_ID, team_annouoncement_id);
                                     replaceFragment(15, intent.getStringExtra(General.TYPE), new Bundle());
 

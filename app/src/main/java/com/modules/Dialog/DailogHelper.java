@@ -47,7 +47,7 @@ public class DailogHelper {
     private ServiceStaffListAdapter serviceStaffListAdapter;
     private Activity activity;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     public void appointmentReminderDialog(String appointment_id, Activity activity) {
         activity = activity;
         View view = activity.getLayoutInflater().inflate(R.layout.appointment_dialog_layout, null);

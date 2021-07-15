@@ -463,8 +463,8 @@ public class MessagingService extends FirebaseMessagingService {
                     /*Here in this we are preparing for call push notification redirection
                      * on click of notification user will redirect on calling screen
                      * added by rahul maske*/
-                    String team_logs_id = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on")
-                            .getJSONObject("entity").getJSONObject("data").getJSONObject("metadata").getString("team_logs_id");
+
+                    //String team_logs_id = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on").getJSONObject("entity").getJSONObject("data").getJSONObject("metadata").getString("team_logs_id");
                     String receiver = messageData.getString("receiver");
                     String sender = messageData.getJSONObject("data").getJSONObject("entities").
                             getJSONObject("by").getJSONObject("entity").getString("uid");
@@ -477,7 +477,7 @@ public class MessagingService extends FirebaseMessagingService {
                     String sessionid = messageData.getJSONObject("data").getJSONObject("entities").getJSONObject("on").getJSONObject("entity").getString("sessionid");
                     String callType = messageData.getString("type");
                     String category = messageData.getString("category");
-                    Log.i(TAG, "getIntent: teamLogID " + team_logs_id + " receiver" + receiver + " sender" + sender);
+                    Log.i(TAG, "getIntent: " + " receiver" + receiver + " sender" + sender);
 
                     intentMain.putExtra("receiver", "" + receiver);
                     intentMain.putExtra("sender", "" + sender);
