@@ -25,6 +25,7 @@ import static org.webrtc.ContextUtils.getApplicationContext;
  * CometChatCallListener.class is used to add and remove CallListener in app.
  * It also has method to make call to user passed in parameter;
  */
+
 public class CometChatCallListener {
 
     public static boolean isInitialized;

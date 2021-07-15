@@ -7,7 +7,6 @@ import com.storage.preferences.Preferences;
 /**
  * @author Kailash Karankal
  */
-
 /*
  * This class returns drawer menu icon based on menu id
  */
@@ -64,7 +63,7 @@ public class   GetDrawerIcon {
             case 50:
                 return R.drawable.home_side;
             case 51:
-                return R.drawable.mood_drawer_icon;
+                return R.drawable.mood_side;
             case 52:
                 return R.drawable.vi_drawer_uplift;
             case 53:
@@ -76,7 +75,7 @@ public class   GetDrawerIcon {
                     return R.drawable.vi_drawer_notes;
                 }
             case 64:
-                return R.drawable.vi_drawer_notes;
+                return R.drawable.notess;
             case 65:
                 return R.drawable.journaling_icon;
             case 66:
@@ -84,12 +83,12 @@ public class   GetDrawerIcon {
             case 67:
                 return R.drawable.set_leave_icon;
             case 68:
-                return R.drawable.leave_management_icon;
+                return R.drawable.leave_manage;
             case 71:
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027")){
                     return R.drawable.ic_mhaw_home_selfcare;
                 }else {
-                    return R.drawable.self_care_home_icon;
+                    return R.drawable.self_care;
                 }
             case 72:
                 return R.drawable.multiple_user_regi_icon;
@@ -104,9 +103,9 @@ public class   GetDrawerIcon {
             case 79:
                 return R.drawable.invite_friends;
             case 81:
-                return R.drawable.vi_home_appintment;
+                return R.drawable.appointment_manage;
             case 82:
-                return R.drawable.vi_home_appintment;
+                return R.drawable.appointment_manage;
             default:
                 return R.drawable.primary_circle;
         }

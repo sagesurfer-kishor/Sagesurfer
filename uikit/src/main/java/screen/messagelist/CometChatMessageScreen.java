@@ -5384,7 +5384,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: ");
+        checkOnGoingCall();
         //forward broadcast broadcast
         /*bm = LocalBroadcastManager.getInstance(requireActivity());
         IntentFilter actionReceiver = new IntentFilter();
@@ -5393,11 +5393,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         messageAdapter = null;
         messagesRequest = null;
         rvChatListView.removeItemDecoration(stickyHeaderDecoration);
-        checkOnGoingCall();
+
         fetchMessage();
-
         AppLog.i(TAG, "onResume: called");
-
 
         addMessageListener();
         if (messageActionFragment != null)
@@ -5414,8 +5412,6 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 new Thread(this::getMember).start();
             }
         }
-
-
     }
 
     @Override

@@ -9,9 +9,7 @@ import java.util.Date;
 
 public class StorageHelper {
 
-
     public static void setTOKEN(Context context, String token) {
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(ConstantData.PREF_FCM);

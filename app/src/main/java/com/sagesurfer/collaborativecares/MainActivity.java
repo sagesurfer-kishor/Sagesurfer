@@ -414,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             navigationHeaderSettingIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i(TAG, "onClick: we reached on setting onclick... ");
+                    AppLog.i(TAG, "onClick: we reached on setting onclick... ");
                     drawerLayout.closeDrawer(Gravity.START);
                     Bundle bundle = new Bundle();
                     Fragment fragment = GetFragments.get(53, bundle);
@@ -575,7 +575,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Thread myJoinThread = new Thread(joinTeams);
             myJoinThread.start();
         }
-        registerPushNotificationToken();
+       // registerPushNotificationToken();
     }
 
     private void registerPushNotificationToken() {
@@ -599,7 +599,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     private void cometChatLogin() {
         AppLog.i(TAG, " UserId " + Preferences.get(General.USER_COMETCHAT_ID));
+
         if (CometChat.getLoggedInUser() == null) {
+
             CometChat.login(Preferences.get(General.USER_COMETCHAT_ID), AppConfig.AppDetails.AUTH_KEY, new CometChat.CallbackListener<User>() {
                 @Override
                 public void onSuccess(User user) {
@@ -607,6 +609,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     CometChat.getLoggedInUser().setUid(Preferences.get(General.USER_COMETCHAT_ID));
                     Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
                     MessagingService.subscribeUserNotification(user.getUid());
+                    MessagingService.subscribeGroupNotification("424255274905");
                     AppLog.e(TAG, "subscribe : " + user.getUid());
                 }
 
@@ -675,15 +678,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (Preferences.get(General.ROLE_ID).equals("28")) {
             if (menuIteSetAvailability != null) {
                 menuIteSetAvailability.setVisible(true);
-                Log.i(TAG, "getSetAvailabilityRolesFromServer: 1");
+                AppLog.i(TAG, "getSetAvailabilityRolesFromServer: 1");
             }
         } else if (domainUrlPref.getString("other_user_id", null).equals("1")) {
             if (menuIteSetAvailability != null) {
                 menuIteSetAvailability.setVisible(true);
-                Log.i(TAG, "getSetAvailabilityRolesFromServer: 2");
+                AppLog.i(TAG, "getSetAvailabilityRolesFromServer: 2");
             }
         } else {
-            Log.i(TAG, "getSetAvailabilityRolesFromServer: 3");
+            AppLog.i(TAG, "getSetAvailabilityRolesFromServer: 3");
             if (menuIteSetAvailability != null) {
                 menuIteSetAvailability.setVisible(false);
             }
@@ -729,7 +732,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         btnsubmitLang.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Log.i(TAG, "onClick: " + selectedReason);
+                                AppLog.i(TAG, "onClick: " + selectedReason);
                                 getUpdateLanguage("update_language", selectedReason, Preferences.get(General.USER_ID));
                                 dialog.dismiss();
                             }
@@ -775,7 +778,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     /*public void hideSetAvailabilityMenu(boolean toggle){
         if (menuIteSetAvailability != null) {
-            Log.i(TAG, "hideSetAvailabilityMenu: ");
+            AppLog.i(TAG, "hideSetAvailabilityMenu: ");
             menuIteSetAvailability.setVisible(toggle);
         }
     }*/
@@ -916,8 +919,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public String ConvertTimeIn12hr(String time) throws ParseException {
         final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
         final Date dateObj = sdf.parse(time);
-        Log.i(TAG, "ConvertTimeIn12hr: dateObj" + dateObj);
-        Log.i(TAG, "ConvertTimeIn12hr: new SimpleDateFormat " + new SimpleDateFormat("K:mm a").format(dateObj));
+        AppLog.i(TAG, "ConvertTimeIn12hr: dateObj" + dateObj);
+        AppLog.i(TAG, "ConvertTimeIn12hr: new SimpleDateFormat " + new SimpleDateFormat("K:mm a").format(dateObj));
         return new SimpleDateFormat("K:mm a").format(dateObj);
     }
 
@@ -942,7 +945,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                     JSONObject injectedObject = new JSONObject(response);
                     JSONArray array = injectedObject.getJSONArray("provider_time");
-                    Log.i(TAG, "saveProviderSlot: " + array.getJSONObject(0).getString("msg"));
+                    AppLog.i(TAG, "saveProviderSlot: " + array.getJSONObject(0).getString("msg"));
                     Toast.makeText(getApplicationContext(), "" + array.getJSONObject(0).getString("msg"), Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
@@ -962,7 +965,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
-        Log.i(TAG, "fetchPreviousSavedAvailavleSlot: userId " + Preferences.get(General.USER_ID));
+        AppLog.i(TAG, "fetchPreviousSavedAvailavleSlot: userId " + Preferences.get(General.USER_ID));
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this);
         if (requestBody != null) {
@@ -974,7 +977,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                     JSONObject injectedObject = new JSONObject(response);
                     JSONArray array = injectedObject.getJSONArray("old_time_provider");
-                    Log.i(TAG, "fetchPreviousSavedAvailavleSlot  " + array.getJSONObject(0).getString("msg"));
+                    AppLog.i(TAG, "fetchPreviousSavedAvailavleSlot  " + array.getJSONObject(0).getString("msg"));
                     et_startTime.setText("" + array.getJSONObject(0).getString("from_date"));
                     et_endTime.setText("" + array.getJSONObject(0).getString("to_date"));
                     //Toast.makeText(getApplicationContext(), ""+array.getJSONObject(0).getString("msg"), Toast.LENGTH_SHORT).show();
@@ -1031,7 +1034,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put(General.USER_ID, UserId);
-        Log.i(TAG, "getCurrentLanguage: ");
+        AppLog.i(TAG, "getCurrentLanguage: ");
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this);
         if (requestBody != null) {
@@ -1080,7 +1083,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 String response = NetworkCall_.post(url, requestBody, TAG, this);
 
                 if (response != null) {
-                    Log.i(TAG, "getUpdateLanguage success response" + response);
+                    AppLog.i(TAG, "getUpdateLanguage success response" + response);
                     getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
                     Toast.makeText(MainActivity.this, "Language changed successfully", Toast.LENGTH_SHORT).show();
 //                    CometChatMessageScreen messageScreen = new CometChatMessageScreen();
@@ -2090,7 +2093,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 View view = inflater.inflate(R.layout.dialog_emergency, null);
                 builder.setView(view);
                 androidx.appcompat.app.AlertDialog dialog = builder.create();
-                Log.i(TAG, "showMembersDialog: ");
+                AppLog.i(TAG, "showMembersDialog: ");
                 //Button btn_cancel = view.findViewById(R.id.btn_cancel);
                 Button ok_btn = view.findViewById(R.id.ok_btn);
 
@@ -2117,11 +2120,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     public void moveToTheActivity(Intent mainIntent) {
-        Log.i(TAG, "handleIntent: main activity");
-        Log.i(TAG, "handleIntent: " + mainIntent.hasExtra("type"));
+        AppLog.i(TAG, "handleIntent: main activity");
+        AppLog.i(TAG, "handleIntent: " + mainIntent.hasExtra("type"));
         if (mainIntent.getExtras() != null) {
             if (mainIntent.hasExtra("team_logs_id")) {
-                Log.i(TAG, "handleIntent: has team id ");
+                AppLog.i(TAG, "handleIntent: has team id ");
                 String team_logs_id = mainIntent.getStringExtra("team_logs_id");
                 String receiver = mainIntent.getStringExtra("receiver");
                 String sender = mainIntent.getStringExtra("sender");
@@ -2135,12 +2138,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 } else {
                     type = "";
                 }
-                Log.i(TAG, "handleIntent: team_logs_id" + team_logs_id);
-                Log.i(TAG, "handleIntent: receiver" + receiver);
-                Log.i(TAG, "handleIntent: sender" + sender);
-                Log.i(TAG, "handleIntent: receiverType" + receiverType);
-                Log.i(TAG, "handleIntent: username" + username);
-                Log.i(TAG, "handleIntent: type" + type);
+                AppLog.i(TAG, "handleIntent: team_logs_id" + team_logs_id);
+                AppLog.i(TAG, "handleIntent: receiver" + receiver);
+                AppLog.i(TAG, "handleIntent: sender" + sender);
+                AppLog.i(TAG, "handleIntent: receiverType" + receiverType);
+                AppLog.i(TAG, "handleIntent: username" + username);
+                AppLog.i(TAG, "handleIntent: type" + type);
 
                 if (team_logs_id != null && !type.equals("extension_whiteboard")) {
                     Bundle bundle = new Bundle();
@@ -2159,7 +2162,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                     editor.putBoolean("checkIntent", true);
                     editor.apply();
-                    Log.i(TAG, "handleIntent: checkIntent" + preferenOpenActivity.getBoolean("checkIntent", false));
+                    AppLog.i(TAG, "handleIntent: checkIntent" + preferenOpenActivity.getBoolean("checkIntent", false));
                     Fragment fragment = GetFragments.get(9, bundle);
                     fragment.setArguments(bundle);
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -2168,11 +2171,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ft.commit();
                 }
             } else {
-                Log.i(TAG, "handleIntent: else");
+                AppLog.i(TAG, "handleIntent: else");
                 if (mainIntent.hasExtra("category")) {
                     if (mainIntent.getStringExtra("category").equalsIgnoreCase("call")) {
                         /*Here we are getting intent  for call redirection*/
-                        Log.i(TAG, "handleIntent: call block");
+                        AppLog.i(TAG, "handleIntent: call block");
                         Bundle bundle = new Bundle();
                         bundle.putString("category", mainIntent.getStringExtra("category"));
                         bundle.putString("lastActiveAt", mainIntent.getStringExtra("lastActiveAt"));
@@ -2209,7 +2212,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);*/
                     }
                 } else /*if (mainIntent.hasExtra("type"))*/ {
-                    Log.i(TAG, "handleIntent: whiteboard block");
+                    AppLog.i(TAG, "handleIntent: whiteboard block");
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "whiteboard_push");
 
@@ -2346,7 +2349,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 } else {
                     if (Integer.parseInt(Preferences.get(General.GROUP_ID)) != 0) {
                         ArrayList<Teams_> teamsArrayList = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
-                        Log.i(TAG, "onNewIntent: teamArrayList" + teamsArrayList);
+                        AppLog.i(TAG, "onNewIntent: teamArrayList" + teamsArrayList);
                         if (teamsArrayList.size() > 0) {
                             if (teamsArrayList.get(0).getStatus() == 1) {
                                 Preferences.save(General.BANNER_IMG, teamsArrayList.get(0).getBanner());
@@ -2355,7 +2358,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 Preferences.save(General.HOME_ICON_NUMBER, "0");
 
                                 if (Integer.parseInt(type) == 15) {                                            // (15 code) Team Announcement fragment redirect
-                                    Log.i(TAG, "onNewIntent:15 Team Announcement fragment redirect");
+                                    AppLog.i(TAG, "onNewIntent:15 Team Announcement fragment redirect");
                                     Preferences.save(General.TEAM_ANNOUNCEMENT_ID, team_annouoncement_id);
                                     replaceFragment(15, intent.getStringExtra(General.TYPE), new Bundle());
 
@@ -2368,7 +2371,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                     if (oldFragment != null) {
                                         ft.remove(oldFragment);
                                     }
-                                    Log.i(TAG, "onNewIntent: 16 TeamTaskListFragment fragment redirect");
+                                    AppLog.i(TAG, "onNewIntent: 16 TeamTaskListFragment fragment redirect");
                                     oldFragment = fragmentManager.findFragmentByTag(Actions_.GET_PROFILE_DATA);
                                     if (oldFragment != null) {
                                         ft.remove(oldFragment);
@@ -2380,7 +2383,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                     ArrayList<Event_> eventArrayList = Teams.getEventDetails(TAG, String.valueOf(event_id), this);
                                     if (eventArrayList.size() > 0) {
                                         if (eventArrayList.get(0).getStatus() == 1) {
-                                            Log.i(TAG, "onNewIntent:18 EventsDetailsActivity redirect");
+                                            AppLog.i(TAG, "onNewIntent:18 EventsDetailsActivity redirect");
                                             Intent addIntent = new Intent(getApplicationContext(), EventDetailsActivity.class);
                                             addIntent.putExtra(Actions_.GET_EVENTS, eventArrayList.get(0));
                                             startActivity(addIntent);
@@ -2428,7 +2431,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     } else if (Integer.parseInt(type) == 65) {                                       //Journaling  => JournalDetailsActivity
                         Preferences.save(General.HOME_ICON_NUMBER, "0");
-                        Log.i(TAG, "onNewIntent: 65 JournalDetailsActivity redirection");
+                        AppLog.i(TAG, "onNewIntent: 65 JournalDetailsActivity redirection");
                         if (CheckRole.isWerHope(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
                             ArrayList<Journal_> journalArrayList = Teams.getJournalDetails(TAG, journal_id, MainActivity.this);
                             if (journalArrayList.size() > 0) {
@@ -2448,12 +2451,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             replaceFragment(Integer.parseInt(type), intent.getStringExtra(General.TYPE), new Bundle());
                         } else if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
                             Preferences.save(General.CONSUMER_ID, consumer_id);
-                            Log.i(TAG, "onNewIntent:34 51CCMoodActivity redirection");
+                            AppLog.i(TAG, "onNewIntent:34 51CCMoodActivity redirection");
                             Intent detailsIntent = new Intent(getApplicationContext(), CCMoodActivity.class);             // CCMoodActivity
                             startActivity(detailsIntent);
                             overridePendingTransition(0, 0);
                         } else {
-                            Log.i(TAG, "onNewIntent: 34 51 MainActivity redirection");
+                            AppLog.i(TAG, "onNewIntent: 34 51 MainActivity redirection");
                             Intent detailsIntent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(detailsIntent);
                             overridePendingTransition(0, 0);
@@ -2461,21 +2464,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     } else if (Integer.parseInt(type) == 7) {
                         Intent detailsIntent = new Intent(getApplicationContext(), FormShowActivity.class);// FormShowActivity
-                        Log.i(TAG, "onNewIntent: 7 FormShowActivity redirection");
+                        AppLog.i(TAG, "onNewIntent: 7 FormShowActivity redirection");
                         detailsIntent.putExtra(General.ASSESSMENT_RECORD_ID, assessment_record_id);
                         detailsIntent.putExtra("assessment_form_name", assessment_form_name);
                         startActivity(detailsIntent);
                         overridePendingTransition(0, 0);
                     } else if (Integer.parseInt(type) == 24) {
                         if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {              // showing dialog showDailyDosingComplianceDialog
-                            Log.i(TAG, "onNewIntent:24 flavor : senjam = showing dialog showDailyDosingComplianceDialog");
+                            AppLog.i(TAG, "onNewIntent:24 flavor : senjam = showing dialog showDailyDosingComplianceDialog");
                             String message = intent.getStringExtra(General.MESSAGE);
                             String timeStamp = intent.getStringExtra(General.TIMESTAMP);
                             String date = dateCaps(timeStamp);
                             showDailyDosingComplianceDialog(date, selfgoal_id, AM_PM, message, activity);
                         } else {
                             if (set_unset_id.equals("1")) {                                         // SelfGoalDetailsActivity
-                                Log.i(TAG, "onNewIntent: 24 SelfGoalDetailsActivity redirection");
+                                AppLog.i(TAG, "onNewIntent: 24 SelfGoalDetailsActivity redirection");
                                 ArrayList<Goal_> goalArrayList = Teams.getGoalDetails(TAG, String.valueOf(selfgoal_id), this);
                                 if (goalArrayList.size() > 0) {
                                     if (goalArrayList.get(0).getStatus() == 1) {
@@ -2488,7 +2491,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
 
                     } else if (Integer.parseInt(type) == 18) {                                      //My Events => EventDetailsActivity
-                        Log.i(TAG, "onNewIntent:My Events => 18 EventDetailsActivity redirection");
+                        AppLog.i(TAG, "onNewIntent:My Events => 18 EventDetailsActivity redirection");
                         ArrayList<Event_> eventArrayList = Teams.getEventDetails(TAG, String.valueOf(event_id), this);
                         if (eventArrayList.size() > 0) {
                             if (eventArrayList.get(0).getStatus() == 1) {
@@ -2498,7 +2501,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             }
                         }
                     } else if (Integer.parseInt(type) == 82) {                                      //platform_youth_message
-                        Log.i(TAG, "onNewIntent:My Events => 82 platform_youth_message redirection");
+                        AppLog.i(TAG, "onNewIntent:My Events => 82 platform_youth_message redirection");
                         HashMap<String, String> requestMap = new HashMap<>();
                         requestMap.put(General.ACTION, Actions_.CLIENT_OUTREACH);
                         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
@@ -2530,15 +2533,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
 
                     } else if (Integer.parseInt(type) == 80) {                                      //appointment reminder dialog
-                        Log.i(TAG, "onNewIntent:appointment reminder dialog 80 redirection");
+                        AppLog.i(TAG, "onNewIntent:appointment reminder dialog 80 redirection");
 
                         if (appointmentType.equals("24")) {
-                            Log.i(TAG, "onNewIntent:appointment reminder dialog 24 redirection");
+                            AppLog.i(TAG, "onNewIntent:appointment reminder dialog 24 redirection");
                             DailogHelper dailogHelper = new DailogHelper();
                             dailogHelper.appointmentReminderDialog(appointment_id, this);
                         }
                     } else if (Integer.parseInt(type) == 74) {
-                        Log.i(TAG, "onNewIntent:74 behavioral tracking(WRH) redirection");
+                        AppLog.i(TAG, "onNewIntent:74 behavioral tracking(WRH) redirection");
                         //behavioral tracking(WRH)
                         Preferences.save(General.HOME_ICON_NUMBER, "0");
                        /* ArrayList<BehaviouralHealth> behaviouralHealthArrayList = Teams.getBHSDetails(TAG, bhs_id, MainActivity.this);
@@ -2565,7 +2568,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                     } else if (Integer.parseInt(type) == 3) {                                       // Message => MailDetailsActivity
                         Preferences.save(General.HOME_ICON_NUMBER, "0");
-                        Log.i(TAG, "onNewIntent: MailDetailsActivity redirection");
+                        AppLog.i(TAG, "onNewIntent: MailDetailsActivity redirection");
                         ArrayList<Postcard_> mailArrayList = Teams.getMessageDetails(TAG, message_id, MainActivity.this);
                         if (mailArrayList.size() > 0) {
                             for (int i = 0; mailArrayList.size() > 0; i++) {
@@ -2581,7 +2584,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             }
                         }
                     } else if ((Integer.parseInt(type) == 83)) {                                    // Redirect to CaseLoad Fragment
-                        Log.i(TAG, "onNewIntent:Redirect to CaseLoad Fragment");
+                        AppLog.i(TAG, "onNewIntent:Redirect to CaseLoad Fragment");
                         CaseloadFragment caseloadFragment = new CaseloadFragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("senjam_patient_id", senjam_patient_id);
@@ -2591,7 +2594,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         ft.commit();
 
                     } else if ((Integer.parseInt(type) == 84)) {                                    // Covid 19 - Daily Survery popup
-                        Log.i(TAG, "onNewIntent : Daily Survery popup");
+                        AppLog.i(TAG, "onNewIntent : Daily Survery popup");
                         if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
                             String date = intent.getStringExtra(General.TIMESTAMP);
                             try {
@@ -2918,7 +2921,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             childList.put(drawerMenuList.get(i).getMenu(), drawerMenuList.get(i).getSubMenu());
         }
         for (DrawerMenu_ homeMenu_ : drawerMenuList) {
-            Log.i(TAG, "setDrawerMenuList: " + homeMenu_.getMenu());
+            AppLog.i(TAG, "setDrawerMenuList: " + homeMenu_.getMenu());
         }
         drawerListAdapter = new DrawerListAdapter(getApplicationContext(), drawerMenuList, childList);
         expandableDrawerListView.setAdapter(drawerListAdapter);
@@ -2990,7 +2993,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     public void onDrawerMenuItemClickListner(DrawerMenu_ drawerMenu_) {
-        Log.i(TAG, "onDrawerMenuItemClickListner: id " + drawerMenu_.getId() + " name " + drawerMenu_.getMenu());
+        AppLog.i(TAG, "onDrawerMenuItemClickListner: id " + drawerMenu_.getId() + " name " + drawerMenu_.getMenu());
         drawerLayout.closeDrawer(Gravity.LEFT);
         Preferences.save(General.HOME_ICON_NUMBER, "0");
         setTitle(drawerMenu_.getMenu());
@@ -3054,7 +3057,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         //Kailash added to move to team details page if user has only 1 team(no intermediate team listing screen required)
         ArrayList<Teams_> teamsArrayList = new ArrayList<Teams_>();
-        Log.i(TAG, "replaceFragment: only one team");
+        AppLog.i(TAG, "replaceFragment: only one team");
         boolean isMoveToTeamDetails = false;
         if (id == 8 || id == 47 || id == 60) {
             teamsArrayList = PerformGetTeamsTask.getNormalTeams(Actions_.ALL_TEAMS, this, TAG, false, this);
@@ -3106,7 +3109,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Preferences.save(General.BANNER_IMG, teamsArrayList.get(0).getBanner());
                 Preferences.save(General.TEAM_ID, teamsArrayList.get(0).getId());
                 Preferences.save(General.TEAM_NAME, teamsArrayList.get(0).getName());
-                Log.i(TAG, "replaceFragment: single teams intent");
+                AppLog.i(TAG, "replaceFragment: single teams intent");
                 Intent detailsIntent = new Intent(getApplicationContext(), TeamDetailsActivity.class);
                 detailsIntent.putExtra(General.TEAM, teamsArrayList.get(0));
                 startActivity(detailsIntent);
@@ -3854,7 +3857,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (status == 1 && counter != 0) {
 
             notificationCounterButton.setVisibility(View.VISIBLE);
-            Log.i(TAG, "fetchNotification: counterAfterConverted " + GetCounters.convertCounterLimit9(counter));
+            AppLog.i(TAG, "fetchNotification: counterAfterConverted " + GetCounters.convertCounterLimit9(counter));
             notificationCounterButton.setText(GetCounters.convertCounterLimit9(counter));
 
         } else {
@@ -3893,35 +3896,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         requestMap.put(General.ACTION, "get_admin_set_role_new");
         requestMap.put(General.IS_TEST_USER, "" + 0);
         requestMap.put(General.USER_ID, "" + Preferences.get(General.USER_ID));
-        Log.i(TAG, "getSetAvailabilityRolesFromServer: uid comechat " + Preferences.get(General.USER_COMETCHAT_ID));
-        Log.i(TAG, "getSetAvailabilityRolesFromServer: uid" + Preferences.get(General.USER_ID));
-        Log.i(TAG, "getSetAvailabilityRolesFromServer: " + Preferences.get(General.DOMAIN));
+        AppLog.i(TAG, "getSetAvailabilityRolesFromServer: uid comechat " + Preferences.get(General.USER_COMETCHAT_ID));
+        AppLog.i(TAG, "getSetAvailabilityRolesFromServer: uid" + Preferences.get(General.USER_ID));
+        AppLog.i(TAG, "getSetAvailabilityRolesFromServer: " + Preferences.get(General.DOMAIN));
         RequestBody requestBody = screen.messagelist.NetworkCall_.make(requestMap, DomainURL + url, TAG, MainActivity.this);
-        Log.i(TAG, "getSetAvailabilityRolesFromServer: Domain " + DomainURL + url);
+        AppLog.i(TAG, "getSetAvailabilityRolesFromServer: Domain " + DomainURL + url);
         try {
             if (requestBody != null) {
                 String response = screen.messagelist.NetworkCall_.post(DomainURL + url, requestBody, TAG, MainActivity.this);
                 if (response != null) {
-                    Log.i(TAG, "getSetAvailabilityRolesFromServer:  response " + response);
-                    Log.i(TAG, "getSetAvailabilityRolesFromServer: role " + Preferences.get(General.ROLE_ID));
+                    AppLog.i(TAG, "getSetAvailabilityRolesFromServer:  response " + response);
+                    AppLog.i(TAG, "getSetAvailabilityRolesFromServer: role " + Preferences.get(General.ROLE_ID));
                     //{"get_admin_set_role_new":[{"status":1,"msg":"other members set from admin list fetch successfully.","other_user_id":"1"}]}
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray provider_time_check_in_db = jsonObject.getJSONArray("get_admin_set_role_new");
                     other_user_id = provider_time_check_in_db.getJSONObject(0).getString("other_user_id");
-                    Log.i(TAG, "getSetAvailabilityRolesFromServer: other_user_id" + other_user_id);
+                    AppLog.i(TAG, "getSetAvailabilityRolesFromServer: other_user_id" + other_user_id);
 
                     domainUrlPref = getSharedPreferences("domainUrlPref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = domainUrlPref.edit();
                     editor.putString("other_user_id", "" + other_user_id);
                     editor.apply();
                 } else {
-                    Log.i(TAG, "getSetAvailabilityRolesFromServer:  null  ");
+                    AppLog.i(TAG, "getSetAvailabilityRolesFromServer:  null  ");
                 }
             } else {
-                Log.i(TAG, "getSetAvailabilityRolesFromServer:  null2");
+                AppLog.i(TAG, "getSetAvailabilityRolesFromServer:  null2");
             }
         } catch (Exception e) {
-            Log.i(TAG, "getSetAvailabilityRolesFromServer: " + e.getMessage());
+            AppLog.i(TAG, "getSetAvailabilityRolesFromServer: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -3945,7 +3948,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
 
-        Log.i(TAG, "Team -> getMyTeamsFromServer: " + stringBuffer);
+        AppLog.i(TAG, "Team -> getMyTeamsFromServer: " + stringBuffer);
         preferencesTeamsData = getSharedPreferences("prefrencesPushRedirection", MODE_PRIVATE);
         teamDataEditor = preferencesTeamsData.edit();
         teamDataEditor.putString("MyTeams", "" + stringBuffer);
@@ -3971,7 +3974,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
 
-        Log.i(TAG, "Team -> getJoinTeamFromServer: " + stringBuffer);
+        AppLog.i(TAG, "Team -> getJoinTeamFromServer: " + stringBuffer);
         preferencesTeamsData = getSharedPreferences("prefrencesPushRedirection", MODE_PRIVATE);
         teamDataEditor = preferencesTeamsData.edit();
         teamDataEditor.putString("JoinTeam", "" + stringBuffer);

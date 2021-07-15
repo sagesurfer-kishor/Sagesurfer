@@ -218,11 +218,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         newUserRegistration = findViewById(R.id.register_layout);
         newUserRegistration.setOnClickListener(this);
 
-        if(BuildConfig.DEBUG)
-        {
+        if (BuildConfig.DEBUG) {
             editTextUserPassword.setText("Sag&#2539!");
         }
-
 
 
     }
@@ -1068,6 +1066,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             ShowSnack.buttonWarning(buttonLogin, Warnings.AUTHENTICATION_FAILED, getApplicationContext());
         }
+
     }
 
     //onSuccessful oAuth token generation, store user details and move to HomeRecentUpdates_ page
@@ -1214,23 +1213,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
         } else {
             try {
-                //cometChatLogin(userInfo.getComet_chat_id());
+                //registering token to our server
                 registerPushNotificationToken();
+                //login to cometchat
+                cometChatLogin();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+    private void cometChatLogin() {
+        AppLog.i(TAG, " UserId " + Preferences.get(General.USER_COMETCHAT_ID));
 
+        if (CometChat.getLoggedInUser() == null) {
 
+            CometChat.login(Preferences.get(General.USER_COMETCHAT_ID), AppConfig.AppDetails.AUTH_KEY, new CometChat.CallbackListener<User>() {
+                @Override
+                public void onSuccess(User user) {
+                    AppLog.e(TAG, "Cometchat info = Cometchat Login Successful : " + user.toString());
+                    CometChat.getLoggedInUser().setUid(Preferences.get(General.USER_COMETCHAT_ID));
+                    Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
+                    //registering token to our server
+                    registerPushNotificationToken();
+                    //MessagingService.subscribeUserNotification(user.getUid());
+                    //MessagingService.subscribeGroupNotification("424255274905");
+                    AppLog.e(TAG, "Cometchat info = subscribe : " + user.getUid());
+                }
+
+                @Override
+                public void onError(CometChatException e) {
+                    AppLog.d(TAG, "Cometchat Login failed with exception: " + e.getMessage());
+                    Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, false);
+                }
+            });
+        }
+    }
 
     private void registerPushNotificationToken() {
+        SharedPreferences tokenPreferences = getSharedPreferences("firebaseToken", MODE_PRIVATE);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                AppLog.i(TAG, "registerPushNotificationToken : "+Preferences.get("regId"));
-//                RegisterFirebaseTokenToServer(Preferences.get("regId"));
-                RegisterFirebaseTokenToServer(Preferences.get("regId"));
+                AppLog.i(TAG, "registerPushNotificationToken " + tokenPreferences.getString("token", ""));
+                RegisterFirebaseTokenToServer(tokenPreferences.getString("token", ""));
             }
         };
         Thread thread = new Thread(runnable);
@@ -1249,9 +1275,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         AppLog.i(TAG, "onComplete: token " + firebaseToken);
                     }
                 });*/
-        AppLog.i(TAG, "registerPushNotification Token is "+StorageHelper.geTOKEN(LoginActivity.this));
-        AppLog.i(TAG, "registerPushNotification Token is 2nd "+firebaseToken);
-        CometChat.registerTokenForPushNotification(Preferences.get("regId"), new CometChat.CallbackListener<String>() {
+        AppLog.i(TAG, "registerPushNotification Token is " + tokenPreferences.getString("token", ""));
+
+        CometChat.registerTokenForPushNotification(tokenPreferences.getString("token", ""), new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String s) {
                 Toast.makeText(LoginActivity.this, s, Toast.LENGTH_LONG).show();
@@ -1273,10 +1299,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String DomainURL = domainUrlPref.getString(screen.messagelist.General.DOMAIN, "");
 
         String url = screen.messagelist.Urls_.MOBILE_FIREBASE_REGISTER;
-
-        AppLog.i(TAG, "RegisterFirebaseTokenToServer: Token at submit :"+token);
-
-        AppLog.i(TAG, "RegisterFirebaseTokenToServer: " + DomainURL + " -> " + url +" Token :"+token);
+        AppLog.i(TAG, "Cometchat info = RegisterFirebaseTokenToServer: Token at submit :" + token);
+        AppLog.i(TAG, "Cometchat info = RegisterFirebaseTokenToServer: " + DomainURL + " -> " + url + " Token :" + token);
 
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(screen.messagelist.General.FIREBASE_ID, "" + token);
@@ -1288,15 +1312,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (requestBody != null) {
                 String response = NetworkCall_.post(DomainURL + url, requestBody, TAG, this);
                 if (response != null) {
-                    AppLog.i(TAG, "RegisterFirebaseTokenToServer:  response " + response);
+                    AppLog.i(TAG, "Cometchat info = RegisterFirebaseTokenToServer:  response " + response);
                 } else {
-                    AppLog.i(TAG, "RegisterFirebaseTokenToServer:  null  ");
+                    AppLog.i(TAG, "Cometchat info = RegisterFirebaseTokenToServer:  null  ");
                 }
             } else {
-                AppLog.i(TAG, "RegisterFirebaseTokenToServer:  null2");
+                AppLog.i(TAG, "Cometchat info = RegisterFirebaseTokenToServer:  null2");
             }
         } catch (Exception e) {
-            AppLog.i(TAG, "RegisterFirebaseTokenToServer: " + e.getMessage());
+            AppLog.i(TAG, "Cometchat info = RegisterFirebaseTokenToServer: " + e.getMessage());
             e.printStackTrace();
         }
     }

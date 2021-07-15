@@ -106,7 +106,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         AppLog.d(TAG, "FROM: " + remoteMessage.getFrom());
         AppLog.d(TAG, "data: " + remoteMessage.getData());
-
         preferencesCheckCurrentActivity = getSharedPreferences("preferencesCheckCurrentActivity", MODE_PRIVATE);
         isChatScreen = preferencesCheckCurrentActivity.getBoolean("IsChatScreen", false);
         IsFriendListingPage = preferencesCheckCurrentActivity.getBoolean("IsFriendListingPage", false);
@@ -542,63 +541,47 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 AppLog.e(TAG, "showNotifcation: " + json.toString());
                 int m = (int) ((new Date().getTime()));
                 String GROUP_ID = "group_id";
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "2")
+                        .setSmallIcon(R.drawable.cc)
+                        .setContentTitle(json.getString("title"))
+                        .setContentText(json.getString("alert"))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setColor(getResources().getColor(R.color.colorPrimary))
+                        .setLargeIcon(getBitmapFromURL(baseMessage.getSender().getAvatar()))
+                        .setGroup(GROUP_ID)
+                        .setContentIntent(getIntent())
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
-                if(json.getString("alert").isEmpty()) {
+                NotificationCompat.Builder summaryBuilder = new NotificationCompat.Builder(this, "2")
+                        .setContentTitle("CometChat")
+                        .setContentText(count + " messages")
+                        .setSmallIcon(R.drawable.cc)
+                        .setGroup(GROUP_ID)
+                        .setGroupSummary(true);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "2")
-                            .setSmallIcon(R.drawable.ic_sage_icon)
-                            .setContentTitle(json.getString("title"))
-                            .setContentText(json.getString("alert"))
-                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-                            .setColor(getResources().getColor(R.color.colorPrimary))
-                            .setLargeIcon(getBitmapFromURL(baseMessage.getSender().getAvatar()))
-                            .setGroup(GROUP_ID)
-                            .setAutoCancel(true)
-                            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                            .setContentIntent(getIntent())
-                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-                    NotificationCompat.Builder summaryBuilder = new NotificationCompat.Builder(this, "2")
-                            .setContentTitle("CometChat")
-                            .setContentText(count + " messages")
-                            .setSmallIcon(R.drawable.ic_sage_icon)
-                            .setGroup(GROUP_ID)
-                            .setAutoCancel(true)
-                            .setGroupSummary(true);
-
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                    if (isCall) {
-                        builder.setGroup(GROUP_ID + "Call");
-                        //intentMain.putExtra("callJson", (Parcelable) json);
-                        Utils.startCallIntent(getApplicationContext(), (User) call.getCallInitiator(), call.getType(),
-                                false, call.getSessionId());
-
-                        //intentMain.putExtra("CallInitiator",""+)
-                        if (json.getString("alert").equals("Incoming audio call") || json.getString("alert").equals("Incoming video call")) {
-                            builder.setOngoing(true);
-                            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-                            builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
-                            builder.addAction(0, "Answers", PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE, getCallIntent("Answers"), PendingIntent.FLAG_UPDATE_CURRENT));
-                            builder.addAction(0, "Decline", PendingIntent.getBroadcast(getApplicationContext(), 1, getCallIntent("Decline"), PendingIntent.FLAG_UPDATE_CURRENT));
-                        }
-                        notificationManager.notify(05, builder.build());
-                    } else {
-                        notificationManager.notify(baseMessage.getId(), builder.build());
-                        notificationManager.notify(0, summaryBuilder.build());
+                if (isCall) {
+                    builder.setGroup(GROUP_ID + "Call");
+                    if (json.getString("alert").equals("Incoming audio call") || json.getString("alert").equals("Incoming video call")) {
+                        builder.setOngoing(true);
+                        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+                        builder.addAction(0, "Answers", PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE, getCallIntent("Answer"), PendingIntent.FLAG_UPDATE_CURRENT));
+                        builder.addAction(0, "Decline", PendingIntent.getBroadcast(getApplicationContext(), 1, getCallIntent("Decline"), PendingIntent.FLAG_UPDATE_CURRENT));
                     }
+                    notificationManager.notify(05, builder.build());
+                } else {
+                    AppLog.i(TAG, "showNotifcation: Is chat screen");
                 }
-            } else {
-                AppLog.i(TAG, "showNotifcation: Is chat screen");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             AppLog.i(TAG, "showNotifcation: error 2" + e.getMessage());
 
         }
     }
-
 
     private Intent getCallIntent(String title) {
         AppLog.e(TAG, "getCallIntent: ");
