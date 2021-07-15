@@ -114,6 +114,9 @@ public class Notification {
     @SerializedName("title2")
     private String title1;
 
+    @SerializedName("title1")
+    private String title_1_other;
+
     @SerializedName("description1")
     private String description1;
 
@@ -188,6 +191,14 @@ public class Notification {
     private Event_ event_;
     private Goal_ goal_;
     private Content_ selfCare_;
+
+    public String getTitle_1_other() {
+        return title_1_other;
+    }
+
+    public void setTitle_1_other(String title_1_other) {
+        this.title_1_other = title_1_other;
+    }
 
     public int getHigh_priority() {
         return high_priority;

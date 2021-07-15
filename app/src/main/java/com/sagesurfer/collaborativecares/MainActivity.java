@@ -2107,7 +2107,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 ok_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (mainIntent.hasExtra("receiver")){
                         moveToTheActivity(mainIntent);
+                        }else{
+                            nonCometchatPushRedirection(mainIntent);
+                        }
                         dialog.dismiss();
                     }
                 });
@@ -2115,7 +2119,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 dialog.show();
                 dialog.setCanceledOnTouchOutside(true);
             } else
+            if (mainIntent.hasExtra("receiver")){
                 moveToTheActivity(mainIntent);
+            }else{
+                nonCometchatPushRedirection(mainIntent);
+            }
         }
     }
 
@@ -2210,6 +2218,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         user.setAvatar(avatar);
                         user.setStatus(status);
                         Utils.startCallIntent(MainActivity.this, user, callType, false, sessionid);*/
+
                     }
                 } else /*if (mainIntent.hasExtra("type"))*/ {
                     AppLog.i(TAG, "handleIntent: whiteboard block");
@@ -2240,11 +2249,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         notificationMessage = matcher.group(1);
     }
 
-    //
+/*    //
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+    @Override*/
+    public void nonCometchatPushRedirection(Intent intent) {
+       // super.onNewIntent(intent);
         if (intent.hasExtra(General.TYPE)) {
             String type = intent.getStringExtra(General.TYPE);
             String consumer_id = "";

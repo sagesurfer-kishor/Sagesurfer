@@ -70,7 +70,6 @@ public class MessagingService extends FirebaseMessagingService {
     public static String token;
     private static final int REQUEST_CODE = 12;
     private boolean isCall;
-
     private boolean isChatScreen, IsFriendListingPage, IsGroupListingPage;
     SharedPreferences preferencesCheckCurrentActivity;
     SharedPreferences.Editor editor;
@@ -93,7 +92,7 @@ public class MessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             handleNotification(remoteMessage.getNotification().getBody());
         }
-
+        /*code for comechat and noncometchat are sorting here update */
         json = new JSONObject(remoteMessage.getData());
             //messageData = new JSONObject(json.getString("message"));
             if (json.has("message")){

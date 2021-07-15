@@ -666,10 +666,12 @@ class NotificationAdapter extends ArrayAdapter<Notification> {
                 break;
 
             case 58://add_appointment
-                message = notification.getTitle1();
-                holder.titleText.setText(Html.fromHtml(message));
-                holder.descriptionText.setVisibility(View.GONE);
-                holder.typeText.setVisibility(View.GONE);
+                message = notification.getTitle_1_other();
+                if (message != null) {
+                    holder.titleText.setText(Html.fromHtml(message));
+                    holder.descriptionText.setVisibility(View.GONE);
+                    holder.typeText.setVisibility(View.GONE);
+                }
                 break;
 
             case 59://updated_appointment
@@ -687,10 +689,14 @@ class NotificationAdapter extends ArrayAdapter<Notification> {
                 break;
 
             case 61://rescheduled_appointment
-                message = notification.getTitle1();
-                holder.titleText.setText(Html.fromHtml(message));
-                holder.descriptionText.setVisibility(View.GONE);
-                holder.typeText.setVisibility(View.GONE);
+                /*changed by rahul maske on 15-07-2021
+                * because of some crashing issue for */
+                message = notification.getTitle_1_other();
+                if (message != null) {
+                    holder.titleText.setText(Html.fromHtml(message));
+                    holder.descriptionText.setVisibility(View.GONE);
+                    holder.typeText.setVisibility(View.GONE);
+                }
                 break;
 
             case 62://delete_appointment
@@ -754,7 +760,7 @@ class NotificationAdapter extends ArrayAdapter<Notification> {
             case 70:// new Cometchat-pro group invitation  // 13-11-2020
                 message = notification.getTitle();
                 holder.titleText.setText(Html.fromHtml(message));
-                Log.i(TAG, "setText: notification type cometchat_request message "+Html.fromHtml(message));
+                Log.i(TAG, "setText: notification type cometchat_request message " + Html.fromHtml(message));
 //                holder.descriptionText.setText("Goal title: " + notification.getDescription());
                 holder.descriptionText.setVisibility(View.GONE);
                 holder.typeText.setVisibility(View.GONE);
