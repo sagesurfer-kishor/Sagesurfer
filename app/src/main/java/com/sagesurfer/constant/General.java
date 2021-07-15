@@ -914,9 +914,11 @@ public class General {
             hasPermission = true;
         }
 
-        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027") ||
-                Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) {
+        if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage023")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage025")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027")
+                || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage024")) {
 
             hasPermission = (isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction()) ? false : hasPermission;
         }

@@ -95,7 +95,9 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
         activity = getActivity();
         application = (Application) activity.getApplication();
         application.getObserver().addObserver(this);
-        setHasOptionsMenu(true);
+        if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
+            setHasOptionsMenu(true);
+        }
     }
 
     @Override
@@ -103,8 +105,10 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
                                     @NonNull @NotNull MenuInflater inflater) {
         menu.clear();
 
-        // Add the new menu items
-        inflater.inflate(R.menu.menuadd, menu);
+        if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
+            // Add the new menu items
+            inflater.inflate(R.menu.menuadd, menu);
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -112,8 +116,7 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
     @Override
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
 
-        if (item.getItemId()==R.id.filemenuadd)
-        {
+        if (item.getItemId() == R.id.filemenuadd) {
             if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage015))
                     || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage013))
                     || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage021))
@@ -132,7 +135,8 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
 
     @SuppressLint("InflateParams")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         //For setting status bar color
         Window window = getActivity().getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -171,7 +175,7 @@ public class CaseLoadNoteStatusFragment extends Fragment implements View.OnClick
 
             if (CheckRole.isCoordinator(Integer.parseInt(Preferences.get(General.ROLE_ID)))) {
                 imageViewAdd.setVisibility(View.VISIBLE);
-                tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.draft)));
+                //tabLayoutPeerNote.addTab(tabLayoutPeerNote.newTab().setText(getResources().getString(R.string.draft)));
             } else {
                 imageViewAdd.setVisibility(View.GONE);
             }

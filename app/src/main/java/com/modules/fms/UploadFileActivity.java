@@ -635,10 +635,9 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-
-
-
         if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
+                || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
+                || Preferences.get(General.IS_CASE_MANAGER).equalsIgnoreCase("1")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Coach")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("System Administrator")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Peer Mentor")
@@ -646,9 +645,12 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Consumer-Adult")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Parent/Guardian")) {
-            iv_addFolder.setVisibility(View.VISIBLE);
+            if ((Preferences.get(General.GROUP_OWNER_ID) != null
+                    &&
+                    Preferences.get(General.GROUP_OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID)))) {
+                iv_addFolder.setVisibility(View.VISIBLE);
+            }
         }
-
 
 
     }
