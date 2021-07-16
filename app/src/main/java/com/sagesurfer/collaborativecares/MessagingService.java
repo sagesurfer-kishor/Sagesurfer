@@ -420,16 +420,25 @@ public class MessagingService extends FirebaseMessagingService {
                             intentMain.putExtra("receiverType", messageData.optString("receiverType"));
                             intentMain.putExtra("username", "" + json.get("title"));
                             intentMain.putExtra("type", "groupMember");
-                        } else if (type.equals("extension_whiteboard")) {
-
+                        }
+                        else if (type.equals("extension_whiteboard")) {
                             String team_logs_id = messageData.getJSONObject("data").optString("team_logs_id");
-                            intentMain.putExtra("team_logs_id ", team_logs_id);
-                            intentMain.putExtra("receiver ", messageData.optString("receiver"));
-                            intentMain.putExtra("sender ", messageData.optString("sender"));
-                            intentMain.putExtra("receiverType ", messageData.optString("receiverType"));
-                            intentMain.putExtra("username ", "" + json.get("title"));
-                            intentMain.putExtra("type ", type);
-                        } else {
+
+                            //intentMain.putExtra("team_logs_id", team_logs_id);
+                            intentMain.putExtra("receiver", messageData.optString("receiver"));
+                            intentMain.putExtra("sender", messageData.optString("sender"));
+                            intentMain.putExtra("receiverType", "" + messageData.optString("receiverType"));
+                            intentMain.putExtra("username", "" + json.get("title"));
+                            intentMain.putExtra("type", type);
+
+                            AppLog.i(TAG, "team_logs_id "+team_logs_id);
+                            AppLog.i(TAG, "receiver "+ intentMain.getStringExtra("receiver"));
+                            AppLog.i(TAG, "sender "+messageData.optString("sender"));
+                            AppLog.i(TAG, "receiverType "+messageData.optString("receiverType"));
+                            AppLog.i(TAG, "username "+messageData.optString("title"));
+
+                        }
+                        else {
                             String team_logs_id = messageData.getJSONObject("data").getJSONObject("metadata").optString("team_logs_id");
                             /*This is a broad cast for refreshing the unread messages*/
                             if (team_logs_id.equals("0")) {

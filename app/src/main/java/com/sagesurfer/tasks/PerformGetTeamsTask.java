@@ -25,7 +25,6 @@ import okhttp3.RequestBody;
  * Last Modified on 15-12-2017
  */
 
-
 public class PerformGetTeamsTask {
     private static final String TAG = "PerformGetTeamsTask";
     public static ArrayList<Teams_> get(String action,  Context context, String tag, boolean isTeamDetails, Activity activity) {
@@ -136,7 +135,6 @@ public class PerformGetTeamsTask {
         }
         return groupList;
     }
-
 
     public static ArrayList<Teams_> getTeams(String action, String teamType, Context context, String tag, boolean isTeamDetails, Activity activity) {
         ArrayList<Teams_> groupList = new ArrayList<>();
@@ -316,6 +314,4 @@ public class PerformGetTeamsTask {
         }
         return groupList;
     }
-
-
 }

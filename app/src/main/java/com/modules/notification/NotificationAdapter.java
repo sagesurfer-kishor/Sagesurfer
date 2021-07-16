@@ -675,7 +675,7 @@ class NotificationAdapter extends ArrayAdapter<Notification> {
                 break;
 
             case 59://updated_appointment
-                message = notification.getTitle1();
+                message = notification.getTitle_1_other();
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.descriptionText.setVisibility(View.GONE);
                 holder.typeText.setVisibility(View.GONE);

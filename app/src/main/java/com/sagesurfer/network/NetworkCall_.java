@@ -49,8 +49,6 @@ import okio.Buffer;
 
 @SuppressWarnings("ConstantConditions")
 public class NetworkCall_ {
-
-
     private static ProgressDialog pDialog;
 
     public static void showDialog(Context _context) {

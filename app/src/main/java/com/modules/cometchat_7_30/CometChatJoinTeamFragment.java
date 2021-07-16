@@ -209,7 +209,7 @@ public class CometChatJoinTeamFragment extends Fragment implements JoinChatExpan
             expandableListView.setVisibility(View.VISIBLE);
             cardview_actions.setVisibility(View.VISIBLE);
             searchList.addAll(primaryList);
-            AppLog.i(TAG , "Members id is " + primaryList.get(0).getMembersArrayList().get(0).getComet_chat_id());
+//            AppLog.i(TAG , "Members id is " + primaryList.get(0).getMembersArrayList().get(0).getComet_chat_id());
             tv_team_count.setText("No. of Teams : " + primaryList.size());
             teamsListAdapter = new JoinChatExpandableListAdapter(getContext(), primaryList, searchList, this, getActivity());
             expandableListView.setAdapter(teamsListAdapter);

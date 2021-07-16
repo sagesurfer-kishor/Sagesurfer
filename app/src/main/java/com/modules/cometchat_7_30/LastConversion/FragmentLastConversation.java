@@ -369,8 +369,11 @@ public class FragmentLastConversation extends Fragment {
                                 clearIntent();
                             }
                         } else {
+                            AppLog.i(TAG,"has type " +mainIntent.getStringExtra("type"));
                             if (mainIntent.hasExtra("type")) {
-                                if (mainIntent.getStringExtra("type").equalsIgnoreCase("whiteboard_push")) {
+                                if (mainIntent.getStringExtra("type").equalsIgnoreCase("whiteboard_push")
+                                ||mainIntent.getStringExtra("type").equalsIgnoreCase("extension_whiteboard")) {
+                                    AppLog.i(TAG,"has type");
                                     checkIntent(conversationList.get(0));
                                     requireActivity().getIntent().removeExtra("type");
                                 }
@@ -458,7 +461,9 @@ public class FragmentLastConversation extends Fragment {
                     Log.e(TAG, "getProvider provider response " + response);
                     try {
                         JSONObject injectedObject = new JSONObject(response);
-                        Preferences.save("providers", injectedObject.getJSONArray("provider_user_id").getJSONObject(0).getString("provider_id"));
+                        if (injectedObject.getJSONArray("provider_user_id").getJSONObject(0).has("provider_id")) {
+                            Preferences.save("providers", injectedObject.getJSONArray("provider_user_id").getJSONObject(0).getString("provider_id"));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

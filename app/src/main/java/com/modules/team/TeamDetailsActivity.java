@@ -938,7 +938,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
         requestMap.put(General.GROUP_ID, String.valueOf(team_id));
 
-        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_TEAM_ALL_DATA;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this.getApplicationContext(), this);
         if (requestBody != null) {
             try {
@@ -947,7 +947,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                 if (response != null) {
                     //team data parsing
                     Preferences.save(General.GROUP_ID, String.valueOf(team_id));
-                    al_team = PerformGetTeamsTask.get(Actions_.ALL_TEAMS_CHAT, this, TAG, true, this);
+                    al_team = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
 
                     if (Preferences.getBoolean(General.IS_PUSH_NOTIFICATION)) {
                         Preferences.save(General.IS_PUSH_NOTIFICATION, false);
@@ -978,6 +978,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
 
                     //team at a glance parsing
                     JsonArray jsonArray = GetJson_.getArray(response, Actions_.AT_A_GLANCE);
+
                     if (jsonArray != null) {
                         JsonObject object = jsonArray.get(0).getAsJsonObject();
                         setTeamAtAGlance(object);

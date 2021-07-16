@@ -2077,6 +2077,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     //For cometchat push notification onclick events
     public void handleIntent(Intent mainIntent) {
         AppLog.i(TAG, "handleIntent started...");
+        if (mainIntent.getExtras() != null){
+            AppLog.i(TAG,"handleIntent started receiver "+mainIntent.getStringExtra("receiver"));
+            AppLog.i(TAG,"handleIntent started team_logs_id "+mainIntent.getStringExtra("team_logs_id"));
+            AppLog.i(TAG,"handleIntent started receiver "+mainIntent.getStringExtra("receiver"));
+            AppLog.i(TAG,"handleIntent started sender "+mainIntent.getStringExtra("sender"));
+            AppLog.i(TAG,"handleIntent started receiverType "+mainIntent.getStringExtra("receiverType"));
+            AppLog.i(TAG,"handleIntent started username "+mainIntent.getStringExtra("title"));
+        }
+
         if (mainIntent.getExtras() != null) {
             String firstNotification = emergencyMessagePreferences.getString("firstNotification", null);
             /*we are checking 2 conditions here
@@ -2099,13 +2108,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 //Button btn_cancel = view.findViewById(R.id.btn_cancel);
                 Button ok_btn = view.findViewById(R.id.ok_btn);
 
-               /* btn_cancel.setOnClickListener(new View.OnClickListener() {
+              /*  btn_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
                     }
-                });*/
-
+                });
+*/
                 ok_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -2202,7 +2211,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         AppLog.i(TAG, "handleIntent: call block sessionid"+mainIntent.getStringExtra("sessionid"));
 
 
-
                         Bundle bundle = new Bundle();
                         bundle.putString("category", mainIntent.getStringExtra("category"));
                         bundle.putString("lastActiveAt", mainIntent.getStringExtra("lastActiveAt"));
@@ -2243,7 +2251,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     AppLog.i(TAG, "handleIntent: whiteboard block");
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "whiteboard_push");
-
+                    bundle.putString("type", "whiteboard_push");
                     Fragment fragment = GetFragments.get(82, bundle);
                     fragment.setArguments(bundle);
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
