@@ -180,6 +180,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog = new ProgressDialog(LoginActivity.this);
         serverList = new ArrayList<>();
 
+
         textViewForgotPassword.setOnClickListener(this);
         buttonLogin.setOnClickListener(this);
 
