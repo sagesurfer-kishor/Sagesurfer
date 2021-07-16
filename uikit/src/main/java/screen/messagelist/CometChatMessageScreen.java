@@ -6219,9 +6219,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
      * From friend, group, team data will send data with there info
      *created by rahul maske
      * */
-    private void saveChatLogToTheServer(String ChatType, String Message, String
-            chat_group_id,
-                                        int chat_message_id) {
+    private void saveChatLogToTheServer(String ChatType, String Message, String chat_group_id, int chat_message_id) {
         String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
         HashMap<String, String> requestMap = new HashMap<>();
         SharedPreferences UserInfoForUIKitPref = getActivity().getSharedPreferences("UserInfoForUIKitPref", MODE_PRIVATE);

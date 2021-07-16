@@ -27,6 +27,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.Buffer;
+import utils.AppLog;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -44,7 +45,7 @@ public class NetworkCall_ {
     SharedPreferences.Editor editor;
     public static RequestBody make(HashMap<String, String> map, String url, String tag, Context _context) {
         map.put("IMEI", DeviceInfo.getDeviceId(_context));
-        Log.e(TAG, "make: 1" );
+
         refreshToken = new RefreshToken(_context);
 
         UserInfoForUIKitPref =_context.getSharedPreferences("UserInfoForUIKitPref",MODE_PRIVATE);
@@ -60,8 +61,9 @@ public class NetworkCall_ {
                 .tag(tag)
                 .build();
         String body = bodyToString(request);
-        Log.i(TAG, "request body : "+body);
+        AppLog.i(TAG, "request body : "+body);
         String token = getToken(_context);
+        AppLog.i(TAG, "request token : "+token);
         if (token != null) {
             return finalBody(body, token);
         }
@@ -313,9 +315,13 @@ public class NetworkCall_ {
         String i = OauthPreferences.get(Oauth.EXPIRES_AT);
         try {
             if (System.currentTimeMillis() >= Long.parseLong(OauthPreferences.get(Oauth.EXPIRES_AT))) {
-                token = refreshToken.getRefreshToken(Preferences.get(Oauth.CLIENT_ID), Preferences.get(Oauth.CLIENT_SECRET), 
+                AppLog.i(TAG,"Network main client "+Preferences.get(Oauth.CLIENT_ID));
+                AppLog.i(TAG,"Network main secret "+Preferences.get(Oauth.CLIENT_SECRET));
+                AppLog.i(TAG,"Network main domain "+Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, ""));
+
+                token = refreshToken.getRefreshToken(Preferences.get(Oauth.CLIENT_ID), Preferences.get(Oauth.CLIENT_SECRET),
                         Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, ""), _context);
-                Log.i(TAG, "getToken: ");
+                AppLog.i(TAG, "getToken: ");
                 if (token.getStatus() == 1) {
                     access_token = token.getAccessToken();
                 } else if (token.getStatus() == 12) {

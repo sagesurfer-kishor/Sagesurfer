@@ -78,7 +78,6 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 public class UploadFileActivity extends AppCompatActivity implements View.OnClickListener,
         PermissionSelectorDialog.PermissionList, FolderListDialog.SelectedFolder,
         CreateFolderDialog.FinalFolderList {
-
     private static final String TAG = UploadFileActivity.class.getSimpleName();
     private ArrayList<AllFolder_> allFolderArrayList;
     private ArrayList<Friends_> friendsArrayList;

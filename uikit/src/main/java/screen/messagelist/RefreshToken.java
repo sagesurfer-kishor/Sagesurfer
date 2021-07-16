@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
+import utils.AppLog;
 
 public class RefreshToken {
 
@@ -22,7 +23,7 @@ public class RefreshToken {
     }
 
     public Token_ getRefreshToken(String user_name, String password, String domain, Context _context) {
-
+        AppLog.i("RefreshToken",user_name +" "+password+"  "+OauthPreferences.get(Oauth.REFRESH_TOKEN));
         RequestBody authBody = new FormBody.Builder()
                 .add("client_id", user_name)
                 .add("client_secret", password)

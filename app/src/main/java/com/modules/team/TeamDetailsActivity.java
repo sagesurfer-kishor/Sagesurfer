@@ -947,7 +947,7 @@ public class TeamDetailsActivity extends AppCompatActivity implements MainActivi
                 if (response != null) {
                     //team data parsing
                     Preferences.save(General.GROUP_ID, String.valueOf(team_id));
-                    al_team = PerformGetTeamsTask.get(Actions_.TEAM_DATA, this, TAG, true, this);
+                    al_team = PerformGetTeamsTask.getTeam(Actions_.TEAM_DATA, this, TAG, true, this);
 
                     if (Preferences.getBoolean(General.IS_PUSH_NOTIFICATION)) {
                         Preferences.save(General.IS_PUSH_NOTIFICATION, false);

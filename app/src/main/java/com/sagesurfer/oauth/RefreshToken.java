@@ -9,6 +9,7 @@ import com.sagesurfer.models.Token_;
 import com.sagesurfer.network.Call_;
 import com.sagesurfer.network.Urls_;
 import com.storage.preferences.OauthPreferences;
+import com.utils.AppLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,10 +36,10 @@ public class RefreshToken {
     }
 
     public Token_ getRefreshToken(String user_name, String password, String domain, Context _context) {
-        Log.i(TAG, "getRefreshToken: user_name "+user_name);
-        Log.i(TAG, "getRefreshToken: password "+password);
-        Log.i(TAG, "getRefreshToken: domain "+domain);
-        Log.i(TAG, "getRefreshToken: refresh_token "+OauthPreferences.get(Oauth.REFRESH_TOKEN));
+        AppLog.i(TAG, "getRefreshToken: user_name "+user_name);
+        AppLog.i(TAG, "getRefreshToken: password "+password);
+        AppLog.i(TAG, "getRefreshToken: domain "+domain);
+        AppLog.i(TAG, "getRefreshToken: refresh_token "+OauthPreferences.get(Oauth.REFRESH_TOKEN));
 
 
         RequestBody authBody = new FormBody.Builder()
