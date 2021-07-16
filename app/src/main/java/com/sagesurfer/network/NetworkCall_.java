@@ -153,7 +153,11 @@ public class NetworkCall_ {
         return null;
     }
 
-    public static String post(String url, RequestBody formBody, String tag, Context _context, Activity activity) throws Exception {
+    public static String post(String url,
+                              RequestBody formBody,
+                              String tag,
+                              Context _context,
+                              Activity activity) throws Exception {
         try {
 
             MyCall myCall = new MyCall(url, formBody, tag, _context, activity);

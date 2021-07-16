@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
+import com.sagesurfer.logger.Logger;
 import com.sagesurfer.models.Teams_;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
@@ -28,7 +29,8 @@ import okhttp3.RequestBody;
 
 public class PerformGetTeamsTask {
     private static final String TAG = "PerformGetTeamsTask";
-    public static ArrayList<Teams_> get(String action,  Context context, String tag, boolean isTeamDetails, Activity activity) {
+
+    public static ArrayList<Teams_> get(String action, Context context, String tag, boolean isTeamDetails, Activity activity) {
         ArrayList<Teams_> groupList = new ArrayList<>();
         Preferences.initialize(context);
 
@@ -37,15 +39,88 @@ public class PerformGetTeamsTask {
         requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
         requestMap.put(General.CODE, Preferences.get(General.DOMAIN_CODE));
         requestMap.put(General.ISFORTEAMCHAT, "0");
+
         if (isTeamDetails) {
             requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
             requestMap.put(General.GROUP_ID, Preferences.get(General.GROUP_ID));
         }
+
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMETCHAT_TEAMS;
+
         RequestBody requestBody = NetworkCall_.make(requestMap, url, tag, context, activity);
+
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, tag, context, activity);
+
+                AppLog.i(PerformGetTeamsTask.class.getSimpleName(), "url:-" + url);
+                AppLog.i(PerformGetTeamsTask.class.getSimpleName(), "Response:-" + response);
+
+                if (response != null) {
+                    groupList = Team_.parseTeams(response, action, context, tag);
+                    if (isTeamDetails) {
+                        if (groupList.size() > 0) {
+                            if (isTeamDetails) {
+                                for (int i = 0; i < groupList.size(); i++) {
+                                    Teams_ objTeam = groupList.get(i);
+                                    if (String.valueOf(objTeam.getId()).equals(Preferences.get(General.GROUP_ID))) {
+                                        Preferences.save(General.GROUP_ID, "" + objTeam.getId());
+                                        Preferences.save(General.GROUP_NAME, objTeam.getName());
+                                        Preferences.save(General.OWNER_ID, objTeam.getOwnerId());
+                                        Preferences.save(General.MODERATOR, objTeam.getModerator());
+                                        Preferences.save(General.PERMISSION, objTeam.getPermission());
+                                        Preferences.save(General.IS_MODERATOR, objTeam.getIs_moderator());
+                                        break;
+                                    }
+                                }
+
+                            } else {
+                                Preferences.save(General.GROUP_ID, "" + groupList.get(0).getId());
+                                Preferences.save(General.GROUP_NAME, groupList.get(0).getName());
+                                Preferences.save(General.OWNER_ID, groupList.get(0).getOwnerId());
+                                Preferences.save(General.MODERATOR, groupList.get(0).getModerator());
+                                Preferences.save(General.PERMISSION, groupList.get(0).getPermission());
+                                Preferences.save(General.IS_MODERATOR, groupList.get(0).getIs_moderator());
+                            }
+
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return groupList;
+    }
+
+
+    public static ArrayList<Teams_> getTeam(String action, Context context, String tag, boolean isTeamDetails, Activity activity) {
+        ArrayList<Teams_> groupList = new ArrayList<>();
+        Preferences.initialize(context);
+
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, action);
+        requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
+        requestMap.put(General.CODE, Preferences.get(General.DOMAIN_CODE));
+        requestMap.put(General.ISFORTEAMCHAT, "0");
+
+        if (isTeamDetails) {
+            requestMap.put(General.USER_ID, Preferences.get(General.USER_ID));
+            requestMap.put(General.GROUP_ID, Preferences.get(General.GROUP_ID));
+        }
+
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_TEAM_ALL_DATA;
+
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, tag, context, activity);
+
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, tag, context, activity);
+
+                AppLog.i(PerformGetTeamsTask.class.getSimpleName(), "url:-" + url);
+                AppLog.i(PerformGetTeamsTask.class.getSimpleName(), "Response:-" + response);
+
+
                 if (response != null) {
                     groupList = Team_.parseTeams(response, action, context, tag);
                     if (isTeamDetails) {
@@ -255,7 +330,7 @@ public class PerformGetTeamsTask {
         return groupList;
     }
 
-    public static ArrayList<Teams_>getMyteam(String action, String team_type, Context context, String tag, boolean isTeamDetails, Activity activity) {
+    public static ArrayList<Teams_> getMyteam(String action, String team_type, Context context, String tag, boolean isTeamDetails, Activity activity) {
         ArrayList<Teams_> groupList = new ArrayList<>();
         Preferences.initialize(context);
 
@@ -275,7 +350,7 @@ public class PerformGetTeamsTask {
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMETCHAT_TEAMS;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, tag, context, activity);
         if (requestBody != null) {
-            Log.i(TAG, "getMyteam: request"+requestBody);
+            Log.i(TAG, "getMyteam: request" + requestBody);
             try {
                 String response = NetworkCall_.post(url, requestBody, tag, context, activity);
                 if (response != null) {

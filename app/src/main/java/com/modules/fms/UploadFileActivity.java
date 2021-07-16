@@ -60,6 +60,7 @@ import com.sagesurfer.snack.ShowSnack;
 import com.sagesurfer.snack.ShowToast;
 import com.sagesurfer.snack.SubmitSnackResponse;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -633,6 +634,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             iv_addFolder.setVisibility(View.GONE);
         }
 
+        AppLog.i(TAG,"OWNDER ID:-"+Preferences.get(General.GROUP_OWNER_ID)+" USERID:-"+Preferences.get(General.USER_ID));
 
         if (Preferences.get(General.ROLE).equalsIgnoreCase("Lead Peer Support Specialist")
                 || Preferences.get(General.IS_MODERATOR).equalsIgnoreCase("1")
@@ -643,7 +645,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Care Coordinator")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Case Manager")
                 || Preferences.get(General.ROLE).equalsIgnoreCase("Consumer-Adult")
-                || Preferences.get(General.ROLE).equalsIgnoreCase("Parent/Guardian")) {
+                || Preferences.get(General.ROLE).equalsIgnoreCase("Parent/Guardian")
+                || General.isCurruntUserHasPermissionToCreateEvent()) {
             if ((Preferences.get(General.GROUP_OWNER_ID) != null
                     &&
                     Preferences.get(General.GROUP_OWNER_ID).equalsIgnoreCase(Preferences.get(General.USER_ID)))) {
