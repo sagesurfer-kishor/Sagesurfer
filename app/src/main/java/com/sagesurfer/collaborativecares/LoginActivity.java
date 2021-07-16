@@ -174,7 +174,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login_layout);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ButterKnife.bind(this);
-
         Preferences.initialize(getApplicationContext());
 
         progressDialog = new ProgressDialog(LoginActivity.this);
@@ -187,7 +186,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginPrefsEditor = loginPreferences.edit();
 
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
-
         if (saveLogin) {
             editTextUserName.setText(loginPreferences.getString("username", ""));
             editTextServerCode.setText(loginPreferences.getString("server_code", ""));
@@ -221,8 +219,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (BuildConfig.DEBUG) {
             editTextUserPassword.setText("Sag&#2539!");
         }
-
-
     }
 
     @Override
