@@ -998,9 +998,13 @@ public class MoodActivityAddActivity extends BaseActivity implements View.OnClic
         requestMap.put(General.COMMENT, editTextNote.getText().toString());
         requestMap.put(General.DATE, date);
         requestMap.put(General.TIME, time);
+
         Log.e("requestMap", requestMap.toString());
+
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_MOOD_DASHBOARD;
+
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this, this);
+
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this, this);
