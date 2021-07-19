@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -23,6 +24,7 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.BaseActivity;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,6 +40,7 @@ import com.sagesurfer.network.Urls_;
 import com.sagesurfer.parser.MoodParser_;
 import com.sagesurfer.snack.ShowToast;
 import com.storage.preferences.Preferences;
+import com.utils.MessageUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,12 +48,13 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.RequestBody;
+import utils.Utils;
 
 /**
  * Created by Monika on 12/20/2018.
  */
 
-public class MoodActivityAddActivity extends AppCompatActivity implements View.OnClickListener , MoodActivityAdapter.moodListActivityAdapterListener {
+public class MoodActivityAddActivity extends BaseActivity implements View.OnClickListener, MoodActivityAdapter.moodListActivityAdapterListener {
     private static final String TAG = MoodActivityAddActivity.class.getSimpleName();
 
     @BindView(R.id.imageViewMood)
@@ -247,9 +251,9 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
 
         ButterKnife.bind(this);
 
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")){
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
             editTextNote.setVisibility(View.GONE);
-        }else {
+        } else {
             editTextNote.setVisibility(View.VISIBLE);
         }
 
@@ -267,7 +271,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
 
 
         mRecycleViewMood = findViewById(R.id.mood_activity_recycler_view);
-        mLinearLayoutManager = new GridLayoutManager(this,5);
+        mLinearLayoutManager = new GridLayoutManager(this, 5);
         mRecycleViewMood.setLayoutManager(mLinearLayoutManager);
         moodActivityListAPICalled();
 
@@ -294,7 +298,6 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         setActivityLayouts();
         setMood(Integer.valueOf(mood));
         textViewLocation.setText(getResources().getString(R.string.select_location));
-
 
 
         BackImg.setOnClickListener(new View.OnClickListener() {
@@ -324,7 +327,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
 
     private void setMood(int mood) {
         String moodString = "";
-        activityID=""+mood;
+        activityID = "" + mood;
 
         switch (Integer.valueOf(mood)) {
             case 1:
@@ -405,7 +408,6 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         }
 
 
-
         if (intensity.equalsIgnoreCase("33")) {
             setMoodLow();
             setMoodOne(Integer.valueOf(mood));
@@ -454,7 +456,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
             case 6:
                 //imageViewMood.setImageResource(R.drawable.mood_sad);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.extremely_sad);
-               // textViewMood.setText(moodString);
+                // textViewMood.setText(moodString);
                 break;
             case 7:
                 //imageViewMood.setImageResource(R.drawable.mood_angry);
@@ -593,7 +595,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         String moodString = "";
         switch (mood) {
             case 1:
-                //imageViewMood.setImageResource(R.drawable.mood_happy);
+                // imageViewMood.setImageResource(R.drawable.mood_happy);
                 moodString = getResources().getString(R.string.which_activity_you_are_doing_for) + getResources().getString(R.string.really_happy);
                 //textViewMood.setText(moodString);
                 break;
@@ -677,46 +679,46 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     public void setMoodLow() {
         switch (Integer.valueOf(mood)) {
             case 1:
-                //imageViewMood.setImageResource(R.drawable.mood_happy_low);
+                imageViewMood.setImageResource(R.drawable.mood_happy_low);
                 break;
             case 2:
-                //imageViewMood.setImageResource(R.drawable.mood_laugh_low);
+                imageViewMood.setImageResource(R.drawable.mood_laugh_low);
                 break;
             case 3:
-                //imageViewMood.setImageResource(R.drawable.mood_neutral_low);
+                imageViewMood.setImageResource(R.drawable.mood_neutral_low);
                 break;
             case 4:
-                //imageViewMood.setImageResource(R.drawable.mood_worried_low);
+                imageViewMood.setImageResource(R.drawable.mood_worried_low);
                 break;
             case 5:
-                //imageViewMood.setImageResource(R.drawable.mood_cry_low);
+                imageViewMood.setImageResource(R.drawable.mood_cry_low);
                 break;
             case 6:
-                //imageViewMood.setImageResource(R.drawable.mood_sad_low);
+                imageViewMood.setImageResource(R.drawable.mood_sad_low);
                 break;
             case 7:
-                //imageViewMood.setImageResource(R.drawable.mood_angry_low);
+                imageViewMood.setImageResource(R.drawable.mood_angry_low);
                 break;
             case 8:
-                //imageViewMood.setImageResource(R.drawable.mood_excited_low);
+                imageViewMood.setImageResource(R.drawable.mood_excited_low);
                 break;
             case 9:
-                //imageViewMood.setImageResource(R.drawable.mood_bored_low);
+                imageViewMood.setImageResource(R.drawable.mood_bored_low);
                 break;
             case 10:
-                //imageViewMood.setImageResource(R.drawable.mood_fearful_low);
+                imageViewMood.setImageResource(R.drawable.mood_fearful_low);
                 break;
             case 11:
-                //imageViewMood.setImageResource(R.drawable.mood_angry_low);
+                imageViewMood.setImageResource(R.drawable.mood_angry_low);
                 break;
             case 13:
-                //imageViewMood.setImageResource(R.drawable.mood_excited_low);
+                imageViewMood.setImageResource(R.drawable.mood_excited_low);
                 break;
             case 14:
-                //imageViewMood.setImageResource(R.drawable.mood_confused_low);
+                imageViewMood.setImageResource(R.drawable.mood_confused_low);
                 break;
             case 12:
-                //imageViewMood.setImageResource(R.drawable.mood_frustrated_low);
+                imageViewMood.setImageResource(R.drawable.mood_frustrated_low);
                 break;
         }
     }
@@ -724,46 +726,46 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     public void setMoodModerate() {
         switch (Integer.valueOf(mood)) {
             case 1:
-                //imageViewMood.setImageResource(R.drawable.mood_happy_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_happy_moderate);
                 break;
             case 2:
-                //imageViewMood.setImageResource(R.drawable.mood_laugh_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_laugh_moderate);
                 break;
             case 3:
-                //imageViewMood.setImageResource(R.drawable.mood_neutral_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_neutral_moderate);
                 break;
             case 4:
-                //imageViewMood.setImageResource(R.drawable.mood_worried_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_worried_moderate);
                 break;
             case 5:
-                //imageViewMood.setImageResource(R.drawable.mood_cry_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_cry_moderate);
                 break;
             case 6:
-                //imageViewMood.setImageResource(R.drawable.mood_sad_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_sad_moderate);
                 break;
             case 7:
-                //imageViewMood.setImageResource(R.drawable.mood_angry_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_angry_moderate);
                 break;
             case 8:
-                //imageViewMood.setImageResource(R.drawable.mood_excited_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_excited_moderate);
                 break;
             case 9:
-                //imageViewMood.setImageResource(R.drawable.mood_bored_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_bored_moderate);
                 break;
             case 10:
-                //imageViewMood.setImageResource(R.drawable.mood_fearful_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_fearful_moderate);
                 break;
             case 11:
-                //imageViewMood.setImageResource(R.drawable.mood_angry_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_angry_moderate);
                 break;
             case 13:
-                //imageViewMood.setImageResource(R.drawable.mood_excited_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_excited_moderate);
                 break;
             case 14:
-                //imageViewMood.setImageResource(R.drawable.mood_confused_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_confused_moderate);
                 break;
             case 12:
-                //imageViewMood.setImageResource(R.drawable.mood_frustrated_moderate);
+                imageViewMood.setImageResource(R.drawable.mood_frustrated_moderate);
                 break;
         }
     }
@@ -817,103 +819,100 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
-        int color = Color.parseColor("#ffffff"); //white
         switch (v.getId()) {
             case R.id.linearlayout_activity_cleaning:
                 moodActivity = "1";
                 setActivityLayouts();
-                imageViewActivityCleaning.setColorFilter(color);
                 relativeLayoutActivityCleaning.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_date:
                 moodActivity = "2";
                 setActivityLayouts();
-                imageViewActivityDate.setColorFilter(color);
                 relativeLayoutActivityDate.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_friends:
                 moodActivity = "3";
                 setActivityLayouts();
-                imageViewActivityFriends.setColorFilter(color);
+
                 relativeLayoutActivityFriends.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_gaming:
                 moodActivity = "4";
                 setActivityLayouts();
-                imageViewActivityGaming.setColorFilter(color);
+
                 relativeLayoutActivityGaming.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_meal:
                 moodActivity = "5";
                 setActivityLayouts();
-                imageViewActivityMeal.setColorFilter(color);
+
                 relativeLayoutActivityMeal.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_movie:
                 moodActivity = "6";
                 setActivityLayouts();
-                imageViewActivityMovie.setColorFilter(color);
+
                 relativeLayoutActivityMovie.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_music:
                 moodActivity = "7";
                 setActivityLayouts();
-                imageViewActivityMusic.setColorFilter(color);
+
                 relativeLayoutActivityMusic.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_reading:
                 moodActivity = "8";
                 setActivityLayouts();
-                imageViewActivityReading.setColorFilter(color);
+
                 relativeLayoutActivityReading.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_shopping:
                 moodActivity = "9";
                 setActivityLayouts();
-                imageViewActivityShopping.setColorFilter(color);
+
                 relativeLayoutActivityShopping.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_sports:
                 moodActivity = "10";
                 setActivityLayouts();
-                imageViewActivitySports.setColorFilter(color);
+
                 relativeLayoutActivitySports.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_travel:
                 moodActivity = "11";
                 setActivityLayouts();
-                imageViewActivityTravel.setColorFilter(color);
+
                 relativeLayoutActivityTravel.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_work:
                 moodActivity = "12";
                 setActivityLayouts();
-                imageViewActivityWork.setColorFilter(color);
+
                 relativeLayoutActivityWork.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_relax:
                 moodActivity = "13";
                 setActivityLayouts();
-                imageViewActivityRelax.setColorFilter(color);
+
                 relativeLayoutActivityRelax.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
             case R.id.linearlayout_activity_other:
                 moodActivity = "14";
                 setActivityLayouts();
-                imageViewActivityOther.setColorFilter(color);
+
                 relativeLayoutActivityOther.setBackgroundResource(R.drawable.square_moodselection);
                 break;
 
@@ -921,7 +920,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
                 moodActivity = "15";
                 setActivityLayouts();
                 //imageViewActivitySchool.setColorFilter(color);
-               // relativeLayoutActivitySchool.setBackgroundResource(R.drawable.circle_mood_activity_selected);
+                // relativeLayoutActivitySchool.setBackgroundResource(R.drawable.circle_mood_activity_selected);
                 break;
 
             case R.id.textview_add_location:
@@ -937,27 +936,30 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     }
 
     public boolean validate() {
-        activityID=moodActivity;
+        activityID = moodActivity;
 
         if (activityID == null || activityID.length() == 0) {
-            ShowToast.toast("Select Activity", getApplicationContext());
+            showAlert("Please Select Activity");
             return false;
-        }
-
-        if(BuildConfig.FLAVOR.equalsIgnoreCase("senjam")){
-
-        }else{
-            if (editTextNote == null || editTextNote.getText().toString().trim().length() <= 0) {
-                ShowToast.toast("Enter Comment", getApplicationContext());
-                return false;
-            }
         }
 
         if (textViewLocation == null || textViewLocation.getText().toString().trim().length() <= 0
                 || textViewLocation.getText().toString().trim().equalsIgnoreCase(getResources().getString(R.string.select_location))) {
-            ShowToast.toast(getResources().getString(R.string.select_location), getApplicationContext());
+            showAlert(getResources().getString(R.string.select_location));
             return false;
         }
+
+
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("senjam")) {
+
+        } else {
+            if (editTextNote == null || editTextNote.getText().toString().trim().length() <= 0) {
+                showAlert("Please provide comment");
+                return false;
+            }
+        }
+
+
 
         return true;
     }
@@ -981,7 +983,6 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         requestMap.put(General.ACTIVITY, activityID);
 
 
-
 //        if (selectedMoodModel.getName().equalsIgnoreCase("Other")) {
 //            requestMap.put(General.OTHER_COMMENT, actionName);
 //        } else {
@@ -997,7 +998,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         requestMap.put(General.COMMENT, editTextNote.getText().toString());
         requestMap.put(General.DATE, date);
         requestMap.put(General.TIME, time);
-        Log.e("requestMap",requestMap.toString());
+        Log.e("requestMap", requestMap.toString());
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_MOOD_DASHBOARD;
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this, this);
         if (requestBody != null) {
@@ -1012,29 +1013,28 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
                         if (addMoodArrayList.get(0).getStatus() == 1) {
                             showError(false, 1, "");
                         } else {
-                            if(jsonArray.size()>0) {
+                            if (jsonArray.size() > 0) {
                                 JsonObject objectMsg = jsonArray.get(0).getAsJsonObject();
                                 showError(true, addMoodArrayList.get(0).getStatus(), objectMsg.get("msg").getAsString());
-                            }
-                            else {
+                            } else {
                                 showError(true, addMoodArrayList.get(0).getStatus(), "");
                             }
 
                         }
                     } else {
-                        if(jsonArray.size()>0) {
+                        if (jsonArray.size() > 0) {
                             JsonObject objectMsg = jsonArray.get(0).getAsJsonObject();
                             showError(true, addMoodArrayList.get(0).getStatus(), objectMsg.get("msg").getAsString());
                         }
                     }
                 } else {
-                    showError(true, 11,"");
+                    showError(true, 11, "");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            showError(true, status,"");
+            showError(true, status, "");
         }
     }
 
@@ -1044,19 +1044,17 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         finish();
         if (isError) {
             if (status == 3) {
-                if(msg.equals("")){
+                if (msg.equals("")) {
                     ShowToast.successful(getResources().getString(R.string.you_can_add_only_3_mood_per_day), getApplicationContext());
-                }
-                else {
-                    ShowToast.successful(msg,getApplicationContext());
+                } else {
+                    ShowToast.successful(msg, getApplicationContext());
                 }
 
             } else if (status == 2) {
-                if(msg.equals("")){
+                if (msg.equals("")) {
                     ShowToast.successful(getResources().getString(R.string.error_while_adding_mood), getApplicationContext());
-                }
-                else {
-                    ShowToast.successful(msg,getApplicationContext());
+                } else {
+                    ShowToast.successful(msg, getApplicationContext());
                 }
 
             } else {
@@ -1068,7 +1066,6 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     }
 
     private void setActivityLayouts() {
-
 
 
         relativeLayoutActivityCleaning.setBackgroundResource(R.drawable.circle_gray_corners);
@@ -1086,14 +1083,15 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
         relativeLayoutActivityRelax.setBackgroundResource(R.drawable.circle_gray_corners);
         relativeLayoutActivityOther.setBackgroundResource(R.drawable.circle_gray_corners);
 
-       // relativeLayoutActivitySchool.setBackgroundResource(R.drawable.circle_gray_corners);
+        // relativeLayoutActivitySchool.setBackgroundResource(R.drawable.circle_gray_corners);
 
-       /* editTextOthetActivity.setText("");
+        editTextOthetActivity.setText("");
+
         if (moodActivity.equalsIgnoreCase("14")) {
             editTextOthetActivity.setVisibility(View.VISIBLE);
         } else {
             editTextOthetActivity.setVisibility(View.GONE);
-        }*/
+        }
     }
 
     //open task status menu
@@ -1119,8 +1117,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     }
 
 
-    public void moodActivityListAPICalled()
-    {
+    public void moodActivityListAPICalled() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, Actions_.GET_ACTIVITY);
 
@@ -1138,8 +1135,8 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
 //                            showError(false, 1);
 //                            notesCount.setText(progressList.size() + " Notes Found");
                             MoodModel moodModel = new MoodModel();
-                            for(int i = 0; i < moodModelArrayList.size() ; i++){
-                                if (moodModelArrayList.get(i).getName().equalsIgnoreCase("Other")){
+                            for (int i = 0; i < moodModelArrayList.size(); i++) {
+                                if (moodModelArrayList.get(i).getName().equalsIgnoreCase("Other")) {
                                     moodModel = moodModelArrayList.get(i);
                                     moodModelArrayList.remove(i);
                                     break;
@@ -1147,14 +1144,14 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
                             }
                             moodModelArrayList.add(moodModel);
 
-                            moodAdapter = new MoodActivityAdapter(this,moodModelArrayList,this);
+                            moodAdapter = new MoodActivityAdapter(this, moodModelArrayList, this);
                             mRecycleViewMood.setAdapter(moodAdapter);
                         } else {
-                            Log.e("ErrorMood",""+moodModelArrayList.get(0).getStatus());
+                            Log.e("ErrorMood", "" + moodModelArrayList.get(0).getStatus());
                         }
                     } else {
 //                        showError(true, progressList.get(0).getStatus());
-                        Log.e("ErrorMood_1",""+moodModelArrayList.get(0).getStatus());
+                        Log.e("ErrorMood_1", "" + moodModelArrayList.get(0).getStatus());
                     }
                 }
             } catch (Exception e) {
@@ -1167,7 +1164,7 @@ public class MoodActivityAddActivity extends AppCompatActivity implements View.O
     @Override
     public void moodDetailLayoutClicked(MoodModel moodModel) {
         activityID = String.valueOf(moodModel.getId());
-       // activityID = moodModel.getName();
+        // activityID = moodModel.getName();
         selectedMoodModel = moodModel;
         editTextOthetActivity.setText("");
         if (moodModel.getName().equalsIgnoreCase("Other")) {

@@ -916,6 +916,8 @@
                     android:background="@drawable/ic_bottom_line_gray_white"
                     android:gravity="start|center_vertical"
                     android:hint="@string/activity_name"
+                    android:drawableLeft="@drawable/ic_activity"
+                    android:drawableStart="@drawable/ic_activity"
                     android:imeOptions="actionNext"
                     android:padding="@dimen/text_size_12"
                     android:textColor="@color/white"

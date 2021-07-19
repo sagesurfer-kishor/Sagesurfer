@@ -273,6 +273,9 @@
     <string name="very_confused">Very Confused</string>
     <string name="extremely_confused">Extremely Confused</string>
 
+    <string name="lbl_please_wait">Loading..</string>
+
+    <string name="common_btn_ok">OK</string>
     <string name="add_note_hint">Add Note</string>
     <string name="how_are_you_feeling_today">How are you feeling today?</string>
     <string name="what_have_you_been_up_to">What have you been up to?</string>

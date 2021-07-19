@@ -158,17 +158,8 @@ public class MoodAddActivity extends AppCompatActivity implements View.OnClickLi
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, GetColor.getHomeIconBackgroundColorColorParse(false)));
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-       /* if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase(getResources().getString(R.string.sage023))) {
-            setContentView(R.layout.activity_werhope_mood_add);
-        } else {
-            setContentView(R.layout.activity_mood_add);
-        }*/
-
         setContentView(R.layout.activity_mood_add);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ButterKnife.bind(this);
         moodAddFragment = this;
         Preferences.initialize(this);
