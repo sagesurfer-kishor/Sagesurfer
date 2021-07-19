@@ -276,7 +276,7 @@
     <string name="add_note_hint">Add Note</string>
     <string name="how_are_you_feeling_today">How are you feeling today?</string>
     <string name="what_have_you_been_up_to">What have you been up to?</string>
-    <string name="which_activity_you_are_doing_for">Which activity are you doing? : </string>
+    <string name="which_activity_you_are_doing_for">Which activity are you doing? :&#160;</string>
     <string name="how_your_mood_has_been_for_past_few_days">How your mood has been for past few days</string>
     <string name="journal">Journal</string>
     <string name="stats">Stats</string>
