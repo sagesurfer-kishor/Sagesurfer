@@ -17,8 +17,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.camera2" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+
 
     <application
         android:name=".Application"
@@ -32,8 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemechat"
         tools:replace="android:allowBackup,icon,theme,label,name"
-        tools:targetApi="q">
-        <activity android:name=".DemoKotlin"></activity>
+        tools:targetApi="m">
         <!-- android:hardwareAccelerated="false" -->
         <activity
             android:name="com.modules.support.NewFaqActivity"
