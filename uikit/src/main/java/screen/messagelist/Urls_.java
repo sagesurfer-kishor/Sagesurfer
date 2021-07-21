@@ -20,7 +20,7 @@ public class Urls_ {
     public static final String MOBILE_TEAMS = "mobile_teams.php";
 
     public static final String MOBILE_COMET_CHAT_TEAMS = "mobile_cometchat.php";
-
+    public static final String DELETE_MOBILE_WALL_FEEDS = "mobile_wall_feeds.php";
     public static final String SOS_SEND_URL = "mobile_sos_new.php";
     public static final String FETCH_SOS_URL = "mobile_sos_fetch.php";
     public static final String MOBILE_POSTCARD = "mobile_postcard.php";

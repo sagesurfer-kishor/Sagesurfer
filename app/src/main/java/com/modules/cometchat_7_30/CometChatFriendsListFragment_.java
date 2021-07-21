@@ -200,7 +200,8 @@ public class CometChatFriendsListFragment_ extends Fragment {
         usersRequest.fetchNext(new CometChat.CallbackListener<List<User>>() {
             @Override
             public void onSuccess(List<User> list) {
-                if (!list.isEmpty()) {
+                if (!list.isEmpty())
+                {
                     ArrayList<ModelUserCount> al_unreadCountList = new ArrayList<>();
                     Log.e(TAG, "User list received: " + list.toString());
                     // set all friend list to friend adapter
@@ -213,9 +214,7 @@ public class CometChatFriendsListFragment_ extends Fragment {
                     rv_conversionList.setLayoutManager(mLayoutManager);
                     rv_conversionList.setItemAnimator(new DefaultItemAnimator());
                     rv_conversionList.setAdapter(adapter);
-
                     checkIntent();
-
                 }
             }
 

@@ -30,7 +30,6 @@
         android:layout_marginRight="@dimen/margin_16"
         android:src="@drawable/setting_icon"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

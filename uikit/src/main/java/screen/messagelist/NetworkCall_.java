@@ -45,7 +45,6 @@ public class NetworkCall_ {
     SharedPreferences.Editor editor;
     public static RequestBody make(HashMap<String, String> map, String url, String tag, Context _context) {
         map.put("IMEI", DeviceInfo.getDeviceId(_context));
-
         refreshToken = new RefreshToken(_context);
 
         UserInfoForUIKitPref =_context.getSharedPreferences("UserInfoForUIKitPref",MODE_PRIVATE);

@@ -33,7 +33,6 @@ public class DrawerMenuAdapter extends RecyclerView.Adapter<DrawerMenuAdapter.Dr
     public DrawerMenuAdapter(@NonNull Context context, List<DrawerMenu_> headerList) {
         this._context = context;
         this.headerList = headerList;
-
     }
 
     @NonNull

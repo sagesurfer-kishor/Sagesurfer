@@ -31,6 +31,7 @@ import com.sagesurfer.snack.SubmitSnackResponse;
 import com.sagesurfer.tasks.PerformWallTask;
 import com.sagesurfer.views.CircleTransform;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
 
 import java.util.Calendar;
 import java.util.List;
@@ -48,12 +49,14 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
     private final List<Feed_> feedList;
     private final Context mContext;
     private final Activity activity;
-
-    FeedListAdapter(Activity activity, List<Feed_> feedList) {
+    private static final String TAG = "FeedListAdapter";
+    FeedListFragment feedListFragment;
+    FeedListAdapter(Activity activity, List<Feed_> feedList,FeedListFragment feedListFragment) {
         super(activity, 0, feedList);
         this.feedList = feedList;
         this.mContext = activity.getApplicationContext();
         this.activity = activity;
+        this.feedListFragment=feedListFragment;
     }
 
     @Override
@@ -71,7 +74,7 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
 
     @Override
     public long getItemId(int position) {
-        return feedList.get(position).getId();
+        return feedList.get(position).getWall_id();
     }
 
     @NonNull
@@ -104,6 +107,7 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
             viewHolder.commentButton = (AppCompatImageView) view.findViewById(R.id.feed_list_item_comment);
             viewHolder.likeButton = (AppCompatImageView) view.findViewById(R.id.feed_list_item_like);
             viewHolder.shareButton = (AppCompatImageView) view.findViewById(R.id.feed_list_item_share);
+            viewHolder.iv_post_option = (AppCompatImageView) view.findViewById(R.id.iv_post_option);
 
             view.setTag(viewHolder);
         } else {
@@ -113,6 +117,7 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
         viewHolder.commentButton.setTag(position);
         viewHolder.shareButton.setTag(position);
         viewHolder.attachmentLayout.setTag(position);
+        viewHolder.iv_post_option.setTag(position);
 
         if (feedList.get(position).getStatus() == 1) {
             viewHolder.feedText.setText(feedList.get(position).getFeed());
@@ -123,7 +128,11 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
             viewHolder.likeCountText.setText(GetCounters.convertCounter(feedList.get(position).getLikeCount()));
             viewHolder.commentCountText.setText(GetCounters.convertCounter(feedList.get(position).getCommentCount()));
             viewHolder.shareCountText.setText(GetCounters.convertCounter(feedList.get(position).getShare_count()));
-
+            if (Preferences.get(General.USER_ID).equalsIgnoreCase(String.valueOf(feedList.get(position).getUser_id()))){
+                viewHolder.iv_post_option.setVisibility(View.VISIBLE);
+            }else{
+                viewHolder.iv_post_option.setVisibility(View.GONE);
+            }
             if (feedList.get(position).getTotalUpload() > 0) {
                 viewHolder.attachmentLayout.setVisibility(View.VISIBLE);
                 setAttachment(viewHolder, position);
@@ -188,6 +197,7 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
         viewHolder.commentButton.setOnClickListener(onClick);
         viewHolder.shareButton.setOnClickListener(onClick);
         viewHolder.attachmentLayout.setOnClickListener(onClick);
+        viewHolder.iv_post_option.setOnClickListener(onClick);
         return view;
     }
 
@@ -221,16 +231,23 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
                 case R.id.feed_list_item_comment:
                     openComment(position);
                     break;
+
                 case R.id.feed_list_item_like:
-                    int status[] = PerformWallTask.like(feedList.get(position).getId(), mContext, activity);
+                    int status[] = PerformWallTask.like(feedList.get(position).getWall_id(), mContext, activity);
                     showResponses(status, v, position);
+                    break;
+
+                case R.id.iv_post_option:
+                    feedListFragment.onOptionClicked(feedList.get(position),position);
+                    //int status[] = PerformWallTask.like(feedList.get(position).getId(), mContext, activity);
+                    //showResponses(status, v, position);
                     break;
 
                 case R.id.feed_list_item_share:
                     int userID = Integer.parseInt(Preferences.get(General.USER_ID));
                     if (feedList.get(position).getUser_id() == userID) {
                         Intent friendTeamIntent = new Intent(mContext, FriendsTeamActivity.class);
-                        friendTeamIntent.putExtra("wall_id", feedList.get(position).getId());
+                        friendTeamIntent.putExtra("wall_id", feedList.get(position).getWall_id());
                         activity.startActivity(friendTeamIntent);
                     }
                     break;
@@ -287,16 +304,22 @@ class FeedListAdapter extends ArrayAdapter<Feed_> {
     private void openComment(int position) {
         DialogFragment dialogFrag = new CommentDialog();
         Bundle bundle = new Bundle();
-        bundle.putInt(General.ID, feedList.get(position).getId());
+        bundle.putInt(General.ID, feedList.get(position).getWall_id());
         bundle.putString(General.FROM, "Wall");
         dialogFrag.setArguments(bundle);
         dialogFrag.show(activity.getFragmentManager().beginTransaction(), General.COMMENT_COUNT);
     }
 
+    public void removeItem(String position) {
+        AppLog.i(TAG, "remove item");
+        feedList.remove(Integer.parseInt(position));
+        
+    }
+
     private class ViewHolder {
         TextView feedText, nameText, dateText, likeCountText, commentCountText, shareCountText, attachmentCount;
         ImageView profile;
-        AppCompatImageView commentButton, likeButton, shareButton, attachmentOne, attachmentTwo, attachmentThree;
+        AppCompatImageView commentButton, likeButton, shareButton, attachmentOne, attachmentTwo, attachmentThree,iv_post_option;
         LinearLayout attachmentLayout;
     }
 }

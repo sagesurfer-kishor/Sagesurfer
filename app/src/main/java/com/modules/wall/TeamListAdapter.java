@@ -62,7 +62,7 @@ public class TeamListAdapter extends ArrayAdapter<Feed_> {
 
     @Override
     public long getItemId(int position) {
-        return teamList.get(position).getId();
+        return teamList.get(position).getWall_id();
     }
 
     @NonNull
@@ -117,7 +117,7 @@ public class TeamListAdapter extends ArrayAdapter<Feed_> {
     // Apply read/unread status to UI items
     private void applyReadStatus(TeamListAdapter.ViewHolder holder, Feed_ feed_) {
         if (Preferences.get(General.TEAM_ANNOUNCEMENT_ID) != null && !Preferences.get(General.TEAM_ANNOUNCEMENT_ID).equalsIgnoreCase("")) {
-            if (Preferences.get(General.TEAM_ANNOUNCEMENT_ID).equalsIgnoreCase(String.valueOf(feed_.getId()))) {
+            if (Preferences.get(General.TEAM_ANNOUNCEMENT_ID).equalsIgnoreCase(String.valueOf(feed_.getWall_id()))) {
                 holder.mainLayout.setBackground(activity.getResources().getDrawable(R.drawable.white_rounded_rectangle_blue_border));
                 Preferences.save(General.TEAM_ANNOUNCEMENT_ID, "");
             }

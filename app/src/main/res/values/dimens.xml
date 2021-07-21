@@ -77,5 +77,6 @@
     <dimen name="margin_25">25dp</dimen>
     <dimen name="margin_14">14dp</dimen>
     <dimen name="margin_35">35dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
 
 </resources>

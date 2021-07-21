@@ -258,7 +258,6 @@ public class PerformGetTeamsTask {
     public static ArrayList<Teams_>getMyteam(String action, String team_type, Context context, String tag, boolean isTeamDetails, Activity activity) {
         ArrayList<Teams_> groupList = new ArrayList<>();
         Preferences.initialize(context);
-
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
         requestMap.put("user_id", Preferences.get(General.USER_ID));

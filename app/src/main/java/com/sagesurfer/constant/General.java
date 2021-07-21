@@ -832,6 +832,8 @@ public class General {
     public static final String TOTIMEM = "totimem";
     public static final String TOTIMES = "totimes";
     public static final String IS_TEST_USER = "is_test_user";
+    public static final String WALL_SHARED_ID = "wall_shared_id";
+    public static final String SHARE_ID = "share_id";
     public static final String U_MEMBER_ID = "u_member_id";
     public static final String FROM ="from";
 

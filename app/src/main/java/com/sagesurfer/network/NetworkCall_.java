@@ -57,8 +57,6 @@ public class NetworkCall_ {
             pDialog.setCancelable(false);
             pDialog.setMessage("Loading...");
             pDialog.setCanceledOnTouchOutside(false);
-
-
             pDialog.show();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -118,7 +116,6 @@ public class NetworkCall_ {
         String deviceMAC = DeviceInfo.getDeviceMAC(activity);
         String deviceIDMEI = DeviceInfo.getImei(activity);
         String deviceId = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);*/
-
         map.put(General.IMEI, DeviceInfo.getDeviceId(activity));
         map.put(General.VERSION, DeviceInfo.getVersion());
         map.put(General.MODELNO, DeviceInfo.getDeviceName());
@@ -205,10 +202,9 @@ public class NetworkCall_ {
                     JsonElement jelement = new JsonParser().parse(res);
 
                     if (jelement != null) {
-
                         JsonObject jsonObject1 = jelement.getAsJsonObject();
-
                         JSONObject jsonObject = new JSONObject(res);
+
                         Logger.debug(tag, res, _context);
                         if (response.isSuccessful()) {
                             if (jsonObject.has(General.STATUS) && jsonObject.getInt(General.STATUS) == 13) {
@@ -369,7 +365,11 @@ public class NetworkCall_ {
         String i = OauthPreferences.get(Oauth.EXPIRES_AT);
         try {
             if (System.currentTimeMillis() >= Long.parseLong(OauthPreferences.get(Oauth.EXPIRES_AT))) {
-                token = refreshToken.getRefreshToken(Preferences.get(Oauth.CLIENT_ID), Preferences.get(Oauth.CLIENT_SECRET), Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, ""), _context);
+                token = refreshToken.getRefreshToken(Preferences.get(Oauth.CLIENT_ID),
+                        Preferences.get(Oauth.CLIENT_SECRET),
+                        Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, ""),
+                        _context);
+
                 if (token.getStatus() == 1) {
                     access_token = token.getAccessToken();
                 } else if (token.getStatus() == 12) {

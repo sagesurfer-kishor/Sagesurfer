@@ -58,8 +58,8 @@ public class Alerts_ {
         ArrayList<Feed_> feedArrayList = new ArrayList<>();
         if (response != null && Error_.oauth(response, _context) != 13) {
             if (Error_.noData(response, Actions_.GET_SHARE_LIST_TEAM, _context) == 2) {
-                Feed_ feed_ = new Feed_();
-                feed_.setStatus(2);
+                Feed_ feed_ = new Feed_(2);
+                //feed_.setStatus(2);
                 feedArrayList.add(feed_);
                 return feedArrayList;
             }
@@ -77,8 +77,7 @@ public class Alerts_ {
         ArrayList<Feed_> feedArrayList = new ArrayList<>();
         if (response != null && Error_.oauth(response, _context) != 13) {
             if (Error_.noData(response, Actions_.GET_SHARE_LIST_FRIEND, _context) == 2) {
-                Feed_ feed_ = new Feed_();
-                feed_.setStatus(2);
+                Feed_ feed_ = new Feed_(2);
                 feedArrayList.add(feed_);
                 return feedArrayList;
             }

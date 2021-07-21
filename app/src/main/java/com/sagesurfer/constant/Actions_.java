@@ -13,6 +13,8 @@ public class Actions_ {
     public static final String GET_INSTANCES = "get_instances";
     public static final String WALL_FEEDS = "wall_feeds";
     public static final String GET_FEED = "get_feeds";
+    public static final String DELETE_FEED = "delete_wall";
+    public static final String GET_WALL_FEED = "get_wall_feed";
     public static final String GET_USER_DATA = "get_user_data";
     public static final String GET_FAQ = "faq";
     public static final String GET_TERMS = "terms_condtions";

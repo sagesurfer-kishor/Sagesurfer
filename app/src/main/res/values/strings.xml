@@ -1100,5 +1100,7 @@
     <string name="blocked_member">Blocked Member</string>
     <string name="emergency_message">SageSurfer is not designed to be used for emergencies. If you are experiencing behavioral health or medical emergency, please dial 911.</string>
     <string name="delete_message">This message was deleted</string>
+    <string name="edit_post">Edit Post</string>
+    <string name="delete_post">Delete Post</string>
 
 </resources>

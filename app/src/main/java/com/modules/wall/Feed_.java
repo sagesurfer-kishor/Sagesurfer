@@ -1,5 +1,8 @@
 package com.modules.wall;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 import com.sagesurfer.constant.General;
 
@@ -11,10 +14,9 @@ import java.util.ArrayList;
  *         Last Modified on 10-07-2017
  */
 
-public class Feed_ {
-
+public class Feed_ implements Parcelable {
     @SerializedName("wall_id")
-    private int id;
+    private int wall_id;
 
     @SerializedName(General.NAME)
     private String name;
@@ -49,6 +51,36 @@ public class Feed_ {
     @SerializedName("totalUploads")
     private int total_upload;
 
+    public Feed_ (int status){
+        this.status=status;
+    }
+
+    protected Feed_(Parcel in) {
+        wall_id = in.readInt();
+        name = in.readString();
+        profile_photo = in.readString();
+        date = in.readLong();
+        feed = in.readString();
+        user_id = in.readInt();
+        like_count = in.readInt();
+        comment_count = in.readInt();
+        share_count = in.readInt();
+        is_like = in.readInt();
+        status = in.readInt();
+        total_upload = in.readInt();
+    }
+
+    public static final Creator<Feed_> CREATOR = new Creator<Feed_>() {
+        @Override
+        public Feed_ createFromParcel(Parcel in) {
+            return new Feed_(in);
+        }
+
+        @Override
+        public Feed_[] newArray(int size) {
+            return new Feed_[size];
+        }
+    };
 
     public int getUser_id() {
         return user_id;
@@ -69,8 +101,8 @@ public class Feed_ {
         this.share_count = share_count;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setWall_id(int wall_id) {
+        this.wall_id = wall_id;
     }
 
     public void setName(String name) {
@@ -114,8 +146,8 @@ public class Feed_ {
     }
     /*Getter Method*/
 
-    public int getId() {
-        return this.id;
+    public int getWall_id() {
+        return this.wall_id;
     }
 
     public String getName() {
@@ -156,5 +188,26 @@ public class Feed_ {
 
     public ArrayList<Attachment_> getAttachmentList() {
         return this.attachmentList;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(wall_id);
+        parcel.writeString(name);
+        parcel.writeString(profile_photo);
+        parcel.writeLong(date);
+        parcel.writeString(feed);
+        parcel.writeInt(user_id);
+        parcel.writeInt(like_count);
+        parcel.writeInt(comment_count);
+        parcel.writeInt(share_count);
+        parcel.writeInt(is_like);
+        parcel.writeInt(status);
+        parcel.writeInt(total_upload);
     }
 }

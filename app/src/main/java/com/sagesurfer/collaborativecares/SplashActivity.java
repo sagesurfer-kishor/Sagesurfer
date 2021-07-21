@@ -1,4 +1,4 @@
- package com.sagesurfer.collaborativecares;
+package com.sagesurfer.collaborativecares;
 
 import android.annotation.SuppressLint;
 
@@ -71,16 +71,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initializeCometChat() {
-        AppSettings appSettings=new AppSettings.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(AppConfig.AppDetails.REGION).build();
+        AppSettings appSettings = new AppSettings.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(AppConfig.AppDetails.REGION).build();
 
-        CometChat.init(this, AppConfig.AppDetails.AUTH_KEY,appSettings, new CometChat.CallbackListener<String>() {
+        CometChat.init(this, AppConfig.AppDetails.AUTH_KEY, appSettings, new CometChat.CallbackListener<String>() {
             @Override
             public void onSuccess(String successMessage) {
                 UIKitSettings.setAPIKey(AppConfig.AppDetails.API_KEY);
-                CometChat.setSource("ui-kit","android","java");
+                CometChat.setSource("ui-kit", "android", "java");
                 Log.d(TAG, "Initialization completed successfully");
 
             }
+
             @Override
             public void onError(CometChatException e) {
                 Log.d(TAG, "Initialization failed with exception: " + e.getMessage());
@@ -114,7 +115,7 @@ public class SplashActivity extends AppCompatActivity {
     private void mainIntent() {
         MakeDirectory.makeDirectories();
         if (Preferences.getBoolean(General.IS_COMETCHAT_LOGIN_SUCCESS)) {
-            String domainCode=Preferences.get(General.DOMAIN_CODE);
+            String domainCode = Preferences.get(General.DOMAIN_CODE);
             if (domainCode.equalsIgnoreCase("sage013")
                     || domainCode.equalsIgnoreCase("sage016")
                     || domainCode.equalsIgnoreCase("sage021")
@@ -124,6 +125,7 @@ public class SplashActivity extends AppCompatActivity {
                     || domainCode.equalsIgnoreCase("sage006")
                     || domainCode.equalsIgnoreCase("sage026")
                     || domainCode.equalsIgnoreCase("sage027")
+                    || domainCode.equalsIgnoreCase("sage049")
                     || domainCode.equalsIgnoreCase("sage047")
                     || domainCode.equalsIgnoreCase("sage036")) {
                 Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
@@ -159,7 +161,7 @@ public class SplashActivity extends AppCompatActivity {
     private void moveToDashboard() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         if (getIntent().getExtras() != null) {
-            // App has data from bundle. Need to check if its from push notification
+            //App has data from bundle. Need to check if its from push notification
             Bundle bundle = getIntent().getExtras();
             //bundle must contain all info sent in "data" field of the notification
             if (bundle.getString("message") != null && !bundle.getString("message").isEmpty()) {
@@ -171,7 +173,6 @@ public class SplashActivity extends AppCompatActivity {
                     intent.putExtra("sender", messageData.optString("sender"));
                     intent.putExtra("receiverType", messageData.optString("receiverType"));
                 } catch (Exception ignored) {
-
                 }
             }
         }

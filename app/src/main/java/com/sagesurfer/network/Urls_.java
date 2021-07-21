@@ -16,6 +16,8 @@ public class Urls_ {
     public static final String MOBILE_USER_SYNC = "mobile_user_synch.php";
     public static final String COUNTER_URL = "mobile_sos_counter.php";
     public static final String WALL_URL = "mobile_wall_feeds.php";
+    public static final String DELETE_WALL_URL = "mobile_wall_feeds.php";
+    public static final String GET_SINGLE_WALL_URL = "mobile_wall_feeds.php";
     public static final String MOBILE_NORMAL_TEAMS = "mobile_teams.php";
     public static final String MOBILE_COMETCHAT_TEAMS = "mobile_cometchat.php";
     //public static final String MOBILE_TEAMS = "mobile_teams.php";

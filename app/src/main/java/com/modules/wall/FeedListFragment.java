@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,19 +27,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.modules.wall.update.EditWallPost;
+import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.General;
@@ -49,7 +51,6 @@ import com.sagesurfer.interfaces.MainActivityInterface;
 import com.sagesurfer.library.GetColor;
 import com.sagesurfer.library.GetCounters;
 import com.sagesurfer.library.GetErrorResources;
-import com.sagesurfer.library.GetFragments;
 import com.sagesurfer.network.NetworkCall_;
 import com.sagesurfer.network.Urls_;
 import com.sagesurfer.parser.Wall_;
@@ -57,6 +58,10 @@ import com.sagesurfer.snack.ShowSnack;
 import com.sagesurfer.views.CircleTransform;
 import com.sagesurfer.views.TextWatcherExtended;
 import com.storage.preferences.Preferences;
+import com.utils.AppLog;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -74,11 +79,10 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
  */
 
 public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
-        View.OnClickListener {
+        View.OnClickListener,IOptionClickedListner {
 
     private static final String TAG = FeedListFragment.class.getSimpleName();
     private ArrayList<Feed_> feedArrayList, searchFeedArrayList;
-
     private ListView listView;
     private ImageView profilePhoto;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -135,7 +139,7 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
         imageButtonFilter = (ImageButton) view.findViewById(R.id.notification_filter);
         imageButtonFilter.setVisibility(View.VISIBLE);
 
-        feedListAdapter = new FeedListAdapter(activity, feedArrayList);
+        feedListAdapter = new FeedListAdapter(activity, feedArrayList,this);
         listView.setAdapter(feedListAdapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -173,10 +177,9 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
         });
 
         setProfilePhoto();
-
         subSrearchFunctiaonality(view);
-
         feedFilterData();
+
 
         return view;
     }
@@ -401,7 +404,7 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
                     if (feedArrayList.size() > 0) {
                         if (feedArrayList.get(0).getStatus() == 1) {
                             showError(false, 1);
-                            feedListAdapter = new FeedListAdapter(getActivity(), feedArrayList);
+                            feedListAdapter = new FeedListAdapter(getActivity(), feedArrayList,this);
                             listView.setAdapter(feedListAdapter);
                             popupWindow.dismiss();
                         } else {
@@ -461,6 +464,7 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
             InputMethodManager in = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             in.hideSoftInputFromWindow(editTextSearch.getWindowToken(), 0);
         }
+
         for (Feed_ feed : feedArrayList) {
             if (feed.getName() != null && feed.getName().toLowerCase().contains(searchText.toLowerCase())) {
                 searchFeedArrayList.add(feed);
@@ -470,7 +474,7 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
         if (searchFeedArrayList.size() > 0) {
             showError(false, 1);
-            FeedListAdapter feedListAdapter = new FeedListAdapter(getActivity(), searchFeedArrayList);
+            FeedListAdapter feedListAdapter = new FeedListAdapter(getActivity(), searchFeedArrayList,this);
             listView.setAdapter(feedListAdapter);
         } else {
             showError(true, 2);
@@ -536,7 +540,7 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
                         return;
                     } else {
                         swipeRefreshLayout.setRefreshing(false);
-                        feedListAdapter = new FeedListAdapter(getActivity(), feedArrayList);
+                        feedListAdapter = new FeedListAdapter(getActivity(), feedArrayList,this);
                         listView.setAdapter(feedListAdapter);
                     }
                     return;
@@ -565,10 +569,77 @@ public class FeedListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 Intent attachmentIntent = new Intent(activity.getApplicationContext(), WallPostActivity.class);
                 activity.startActivity(attachmentIntent);
                 activity.overridePendingTransition(0, 0);
-
                 break;
         }
     }
 
+    public void onOptionClicked(Feed_ feed_, int position) {
+      //  Toast.makeText(activity, "on option clicked "+feed_.getName(), Toast.LENGTH_SHORT).show();
+        FragmentWallClickAction addPhotoBottomDialogFragment =
+                FragmentWallClickAction.newInstance(FeedListFragment.this);
+        Bundle bundle=new Bundle();
+        bundle.putParcelable("Feed",feed_);
+        bundle.putString("Position",""+position);
+        addPhotoBottomDialogFragment.setArguments(bundle);
+        addPhotoBottomDialogFragment.show(getActivity().getSupportFragmentManager(),
+                "FragmentWallClickAction");
+    }
 
+    @Override
+    public void onEditClicked(Feed_ feed_, Activity activity, String position) {
+        AppLog.i(TAG, "Edit clicked ->"+feed_.getName());
+        Intent intent=new Intent();
+        intent.setClass(activity.getApplicationContext(),EditWallPost.class);
+        intent.putExtra("feedId",""+feed_.getWall_id());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDeleteClicked(Feed_ feed_, FragmentActivity activity, String position) {
+        deleteWallPost2(feed_,activity,position);
+    }
+
+    @Override
+    public void onCancelClicked() {
+
+    }
+    /* created by rahul maske on 19-07-2021
+     *@params
+     * wall_shared_id = wall post id
+     * user_id = logged in user id
+     * */
+    private void deleteWallPost2(Feed_ feed_, FragmentActivity activity, String position) {
+        this.activity=activity;
+        //DatabaseRetrieve_ databaseRetrieve_ = new DatabaseRetrieve_(activity.getApplicationContext());
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put(General.ACTION, Actions_.DELETE_FEED);
+        requestMap.put(General.WALL_SHARED_ID, ""+feed_.getWall_id() );
+        requestMap.put(General.USER_ID, "" + Preferences.get(General.USER_ID));
+        //requestMap.put(General.LAST_DATE, databaseRetrieve_.retrieveUpdateLog(General.FEED));
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.DELETE_WALL_URL;
+        RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, activity, activity);
+        if (requestBody != null) {
+            try {
+                String response = NetworkCall_.post(url, requestBody, TAG, activity);
+                if (response != null) {
+                    JSONObject jsonObject=new JSONObject(response);
+                    AppLog.i(TAG, "json object "+jsonObject);
+                    JSONArray jsonArray=jsonObject.getJSONArray("delete_wall");
+//                    JSONArray jsonArray=new JSONArray(jsonObject.getJSONArray("delete_wall"));
+                    AppLog.i(TAG, "json array length"+jsonArray.length());
+                    for (int i=0; i<jsonArray.length(); i++) {
+                        JSONObject responseObject = jsonArray.getJSONObject(i);
+                        String msg = responseObject.getString("msg");
+                        Toast.makeText(activity, ""+msg, Toast.LENGTH_SHORT).show();
+                        feedListAdapter.removeItem(position);
+                    }
+                    //getFeed();
+                } else {
+                    showError(true, 12);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
