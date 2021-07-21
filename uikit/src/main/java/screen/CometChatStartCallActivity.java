@@ -121,9 +121,10 @@ public class CometChatStartCallActivity extends AppCompatActivity {
         String DomainURL = domainUrlPref.getString(General.DOMAIN, null);
         SharedPreferences preferensesCalling = getApplicationContext().getSharedPreferences("callingPreferences", MODE_PRIVATE);
         String group_id=preferensesCalling.getString("group_id","");
+        String team_id=preferensesCalling.getString("team_id","");
 
         Log.i(TAG, "Calling test tag logOutEnrtyCometchat: type"+preferensesCalling.getString("type","")+" chat_type "+ preferensesCalling.getString("chat_type","")
-        +" Group_id "+group_id +" UserId "+UserId);
+        +" Group_id "+group_id +" UserId "+UserId +" teamId "+team_id);
         String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, "cometchat_outlog");
@@ -132,6 +133,7 @@ public class CometChatStartCallActivity extends AppCompatActivity {
         requestMap.put(General.CHAT_TYPE, preferensesCalling.getString("chat_type",""));
         requestMap.put(General.GROUP_ID,  group_id);
         requestMap.put(General.USER_ID, UserId);
+        requestMap.put(General.TEAM_ID, team_id);
 
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getApplicationContext());
         // Log.e(TAG, "saveChatLogToTheServer: request body " + requestBody);

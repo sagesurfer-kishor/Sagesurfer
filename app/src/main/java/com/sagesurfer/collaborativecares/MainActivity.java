@@ -22,15 +22,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -70,7 +66,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -89,6 +84,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.koushikdutta.async.http.body.JSONObjectBody;
 import com.modules.Dialog.DailogHelper;
 import com.modules.assessment.FormShowActivity;
 import com.modules.beahivoural_survey.fragment.BeahivouralSurveyFragment;
@@ -97,10 +93,7 @@ import com.modules.calendar.CustomCalendar;
 import com.modules.calendar.CustomCalendarAdapter;
 import com.modules.calendar.EventDetailsActivity;
 import com.modules.caseload.CaseloadFragment;
-import com.modules.caseload.PeerAddNoteActivity;
 import com.modules.caseload.PeerNoteDetailsActivity;
-import com.modules.caseload.ProgressAddNoteActivity;
-import com.modules.cometchat_7_30.AdapterMembersList;
 import com.modules.contacts.EmergencyContactDialogFragment;
 import com.modules.contacts.ParentEmergencyDialogFragment;
 import com.modules.covid_19.adapter.CovidExpandableListAdapter;
@@ -135,7 +128,6 @@ import com.modules.team.TeamPeerStaffListActivity;
 import com.modules.team.TeamPeerSupervisorListActivity;
 import com.sagesurfer.adapters.DrawerListAdapter;
 import com.sagesurfer.adapters.DrawerMenuAdapter;
-import com.sagesurfer.adapters.JoinChatExpandableListAdapter;
 import com.sagesurfer.animation.ActivityTransition;
 import com.sagesurfer.constant.Actions_;
 import com.sagesurfer.constant.Broadcast;
@@ -204,7 +196,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.RequestBody;
-import utils.Utils;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -237,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Circle circle;
     private ExpandableListView expandableDrawerListView;
     private Toolbar toolbar;
-    Spinner groupStatus;
+    Spinner sp_language;
     ImageView navigationHeaderSettingIcon;
     private PerformLogoutTask performLogoutTask;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -575,7 +566,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Thread myJoinThread = new Thread(joinTeams);
             myJoinThread.start();
         }
-       // registerPushNotificationToken();
+        // registerPushNotificationToken();
     }
 
     private void registerPushNotificationToken() {
@@ -597,6 +588,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             cometChatLogin();
         }
     }
+
     private void cometChatLogin() {
         AppLog.i(TAG, " UserId " + Preferences.get(General.USER_COMETCHAT_ID));
 
@@ -705,22 +697,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         dialog.setCancelable(false);
                         dialog.setContentView(R.layout.language_change);
 
-                        groupStatus = dialog.findViewById(R.id.languageList);
+                        sp_language = dialog.findViewById(R.id.sp_language);
                         ImageView cancelLanguage = dialog.findViewById(R.id.cancelLanguage);
                         ImageView btnsubmitLang = dialog.findViewById(R.id.btnsubmitLang);
 
                         // get all languages form db
                         getLanguage("language_list");
-                        currentLang = sp.getString("full_name", currentLang);
+                        currentLang = sp.getString("currentLang", currentLang);
                         Log.e(TAG, "onMenuItemClick: current language " + currentLang);
                         reasonAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.drop_down_selected_text_item_layout, lanList);
                         reasonAdapter.setDropDownViewResource(R.layout.drop_down_text_item_layout);
-                        groupStatus.setAdapter(reasonAdapter);
+                        sp_language.setAdapter(reasonAdapter);
 
                         int index = lanList.indexOf(currentLang);
-                        groupStatus.setSelection(index);
+                        sp_language.setSelection(index);
 
-                        groupStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        sp_language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 selectedReason = languageList.get(position).getId();
                             }
@@ -1069,6 +1061,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+    /*this function is used for changing current language of cometchat
+     *commented and updated by rahul maske on 21-07-2021
+     * */
     private void getUpdateLanguage(String action, String language, String UserId) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, action);
@@ -1076,19 +1071,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         requestMap.put(General.USER_ID, UserId);
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_COMET_CHAT_TEAMS;
-
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, this);
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this);
-
+                JSONObject object = new JSONObject(response);
+                JSONArray jsonArray = object.getJSONArray("update_language");
+                AppLog.i(TAG, "getUpdateLanguage response "+response);
                 if (response != null) {
-                    AppLog.i(TAG, "getUpdateLanguage success response" + response);
-                    getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
-                    Toast.makeText(MainActivity.this, "Language changed successfully", Toast.LENGTH_SHORT).show();
-//                    CometChatMessageScreen messageScreen = new CometChatMessageScreen();
-//                  messageScreen.fetchMessage();
-
+                    if (jsonArray.getJSONObject(0).has("status")) {
+                        if (jsonArray.getJSONObject(0).getString("status").equalsIgnoreCase("1")) {
+                            Toast.makeText(MainActivity.this, "Language changed successfully", Toast.LENGTH_SHORT).show();
+                            getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
+                        } else {
+                            Toast.makeText(MainActivity.this, "Language changed successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
 
             } catch (Exception e) {
@@ -2077,13 +2075,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     //For cometchat push notification onclick events
     public void handleIntent(Intent mainIntent) {
         AppLog.i(TAG, "handleIntent started...");
-        if (mainIntent.getExtras() != null){
-            AppLog.i(TAG,"handleIntent started receiver "+mainIntent.getStringExtra("receiver"));
-            AppLog.i(TAG,"handleIntent started team_logs_id "+mainIntent.getStringExtra("team_logs_id"));
-            AppLog.i(TAG,"handleIntent started receiver "+mainIntent.getStringExtra("receiver"));
-            AppLog.i(TAG,"handleIntent started sender "+mainIntent.getStringExtra("sender"));
-            AppLog.i(TAG,"handleIntent started receiverType "+mainIntent.getStringExtra("receiverType"));
-            AppLog.i(TAG,"handleIntent started username "+mainIntent.getStringExtra("title"));
+        if (mainIntent.getExtras() != null) {
+            AppLog.i(TAG, "handleIntent started receiver " + mainIntent.getStringExtra("receiver"));
+            AppLog.i(TAG, "handleIntent started team_logs_id " + mainIntent.getStringExtra("team_logs_id"));
+            AppLog.i(TAG, "handleIntent started receiver " + mainIntent.getStringExtra("receiver"));
+            AppLog.i(TAG, "handleIntent started sender " + mainIntent.getStringExtra("sender"));
+            AppLog.i(TAG, "handleIntent started receiverType " + mainIntent.getStringExtra("receiverType"));
+            AppLog.i(TAG, "handleIntent started username " + mainIntent.getStringExtra("title"));
         }
 
         if (mainIntent.getExtras() != null) {
@@ -2119,9 +2117,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     @Override
                     public void onClick(View view) {
                         AppLog.i(TAG, "handleIntent btn clicked");
-                        if (mainIntent.hasExtra("receiver")){
-                        moveToTheActivity(mainIntent);
-                        }else{
+                        if (mainIntent.hasExtra("receiver")) {
+                            moveToTheActivity(mainIntent);
+                        } else {
 
                             nonCometchatPushRedirection(mainIntent);
                         }
@@ -2133,10 +2131,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 dialog.setCanceledOnTouchOutside(true);
             } else
                 AppLog.i(TAG, "handleIntent direct message");
-            if (mainIntent.hasExtra("receiver")){
+            if (mainIntent.hasExtra("receiver")) {
                 AppLog.i(TAG, "handleIntent direct message has receiver");
                 moveToTheActivity(mainIntent);
-            }else{
+            } else {
                 AppLog.i(TAG, "handleIntent direct message non cometchat message");
                 nonCometchatPushRedirection(mainIntent);
             }
@@ -2200,15 +2198,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (mainIntent.getStringExtra("category").equalsIgnoreCase("call")) {
                         /*Here we are getting intent  for call redirection*/
                         AppLog.i(TAG, "handleIntent: call block");
-                        AppLog.i(TAG, "handleIntent: call block categoty "+mainIntent.getStringExtra("category"));
-                        AppLog.i(TAG, "handleIntent: call block lastActiveAt"+mainIntent.getStringExtra("lastActiveAt"));
-                        AppLog.i(TAG, "handleIntent: call block uid"+mainIntent.getStringExtra("uid"));
-                        AppLog.i(TAG, "handleIntent: call block name"+mainIntent.getStringExtra("name"));
-                        AppLog.i(TAG, "handleIntent: call block role"+mainIntent.getStringExtra("role"));
-                        AppLog.i(TAG, "handleIntent: call block name"+mainIntent.getStringExtra("name"));
-                        AppLog.i(TAG, "handleIntent: call block avatar"+mainIntent.getStringExtra("avatar"));
-                        AppLog.i(TAG, "handleIntent: call block status"+mainIntent.getStringExtra("status"));
-                        AppLog.i(TAG, "handleIntent: call block sessionid"+mainIntent.getStringExtra("sessionid"));
+                        AppLog.i(TAG, "handleIntent: call block categoty " + mainIntent.getStringExtra("category"));
+                        AppLog.i(TAG, "handleIntent: call block lastActiveAt" + mainIntent.getStringExtra("lastActiveAt"));
+                        AppLog.i(TAG, "handleIntent: call block uid" + mainIntent.getStringExtra("uid"));
+                        AppLog.i(TAG, "handleIntent: call block name" + mainIntent.getStringExtra("name"));
+                        AppLog.i(TAG, "handleIntent: call block role" + mainIntent.getStringExtra("role"));
+                        AppLog.i(TAG, "handleIntent: call block name" + mainIntent.getStringExtra("name"));
+                        AppLog.i(TAG, "handleIntent: call block avatar" + mainIntent.getStringExtra("avatar"));
+                        AppLog.i(TAG, "handleIntent: call block status" + mainIntent.getStringExtra("status"));
+                        AppLog.i(TAG, "handleIntent: call block sessionid" + mainIntent.getStringExtra("sessionid"));
 
 
                         Bundle bundle = new Bundle();
@@ -2281,7 +2279,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override*/
 
     public void nonCometchatPushRedirection(Intent intent) {
-       // super.onNewIntent(intent);
+        // super.onNewIntent(intent);
         if (intent.hasExtra(General.TYPE)) {
             AppLog.i(TAG, "nonCometchatPushRedirection has type");
             String type = intent.getStringExtra(General.TYPE);

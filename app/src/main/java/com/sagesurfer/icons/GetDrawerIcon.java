@@ -86,7 +86,7 @@ public class   GetDrawerIcon {
                 return R.drawable.leave_manage;
             case 71:
                 if (Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage026") || Preferences.get(General.DOMAIN_CODE).equalsIgnoreCase("sage027")){
-                    return R.drawable.ic_mhaw_home_selfcare;
+                    return R.drawable.self_care;
                 }else {
                     return R.drawable.self_care;
                 }

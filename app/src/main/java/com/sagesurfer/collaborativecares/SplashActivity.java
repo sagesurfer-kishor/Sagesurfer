@@ -125,6 +125,8 @@ public class SplashActivity extends AppCompatActivity {
                     || domainCode.equalsIgnoreCase("sage026")
                     || domainCode.equalsIgnoreCase("sage027")
                     || domainCode.equalsIgnoreCase("sage047")
+                    || domainCode.equalsIgnoreCase("sage015")
+                    || domainCode.equalsIgnoreCase("sage049")
                     || domainCode.equalsIgnoreCase("sage036")) {
                 Preferences.save(General.IS_COMETCHAT_LOGIN_SUCCESS, true);
                 moveToDashboard();

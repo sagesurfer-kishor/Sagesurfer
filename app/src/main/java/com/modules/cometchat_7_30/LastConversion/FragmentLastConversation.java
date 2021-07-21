@@ -328,13 +328,13 @@ public class FragmentLastConversation extends Fragment {
         conversationsRequest.fetchNext(new CometChat.CallbackListener<List<Conversation>>() {
             @Override
             public void onSuccess(List<Conversation> conversations) {
+                conversationList.clear();
                 for (Conversation conversation : conversations) {
                     AppLog.i(TAG, "onSuccess: conversation " + conversation);
                     if (conversation.getConversationType().equals("user")) {
                         conversationList.add(conversation);
                     } else if (conversation.getConversationType().equals("group")) {
                         conversationList.add(conversation);
-
                     }
                 }
 

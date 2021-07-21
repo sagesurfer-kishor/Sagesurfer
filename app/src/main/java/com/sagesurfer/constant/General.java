@@ -835,7 +835,6 @@ public class General {
     public static final String U_MEMBER_ID = "u_member_id";
     public static final String FROM ="from";
 
-
     public static boolean isCurruntUserHasPermissionToOnlyViewCantPerformAnyAction() {
 
         boolean hasPermissionOnlyView = false;

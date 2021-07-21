@@ -561,6 +561,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 editorCallingPref.putString("comet_chat_type", "" + comet_chat_type);
                 editorCallingPref.putString("chat_type", "" + ChatType);
                 editorCallingPref.putString("group_id", "" + Group_id);
+                editorCallingPref.putString("team_id", "" + team_Ids);
                 editorCallingPref.apply();
                 AppLog.i(TAG, "Calling test tag  checkOnGoingCall: type " + callingPreferences.getString("type", "")
                         + " comet_chat_type " + callingPreferences.getString("comet_chat_type", "")
@@ -580,6 +581,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 ChatType = "Video";
+
                 SharedPreferences callingPreferences = getActivity().getSharedPreferences("callingPreferences", MODE_PRIVATE);
                 SharedPreferences.Editor editorCallingPref = callingPreferences.edit();
                 editorCallingPref.putBoolean("callStarted", true);
@@ -587,7 +589,9 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 editorCallingPref.putString("comet_chat_type", "" + comet_chat_type);
                 editorCallingPref.putString("chat_type", "" + ChatType);
                 editorCallingPref.putString("group_id", "" + Group_id);
+                editorCallingPref.putString("team_id", "" + team_Ids);
                 editorCallingPref.apply();
+
                 AppLog.i(TAG, "Calling test tag  checkOnGoingCall: type " + callingPreferences.getString("type", "")
                         + " comet_chat_type " + callingPreferences.getString("comet_chat_type", "")
                         + " ChatType " + callingPreferences.getString("chat_type", "")
@@ -6291,7 +6295,8 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         if (!getArguments().getString(StringContract.IntentStrings.TYPE).equals(CometChatConstants.RECEIVER_TYPE_GROUP)) {
             Group_id = "";
         }
-
+        AppLog.i(TAG, "logOutEnrtyCometchat: team_Ids "+team_Ids +" comet_chat_type "+comet_chat_type);
+        AppLog.i(TAG, "logOutEnrtyCometchat: Group_id "+Group_id +" UserId "+UserId +" ChatType "+ChatType)  ;
         String url = Urls_.MOBILE_COMET_CHAT_TEAMS;
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put(General.ACTION, "cometchat_outlog");
@@ -6300,6 +6305,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         requestMap.put(General.CHAT_TYPE, ChatType);
         requestMap.put(General.GROUP_ID, Group_id);
         requestMap.put(General.USER_ID, UserId);
+        requestMap.put(General.TEAM_ID, team_Ids);
 
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
         // Log.e(TAG, "saveChatLogToTheServer: request body " + requestBody);
