@@ -939,13 +939,13 @@ public class MoodActivityAddActivity extends BaseActivity implements View.OnClic
         activityID = moodActivity;
 
         if (activityID == null || activityID.length() == 0) {
-            showAlert("Please Select Activity");
+            showAlertDialog(getString(R.string.app_name), "Please Select Activity", 100);
             return false;
         }
 
         if (textViewLocation == null || textViewLocation.getText().toString().trim().length() <= 0
                 || textViewLocation.getText().toString().trim().equalsIgnoreCase(getResources().getString(R.string.select_location))) {
-            showAlert(getResources().getString(R.string.select_location));
+            showAlertDialog(getString(R.string.app_name), getResources().getString(R.string.select_location), 100);
             return false;
         }
 
@@ -954,11 +954,10 @@ public class MoodActivityAddActivity extends BaseActivity implements View.OnClic
 
         } else {
             if (editTextNote == null || editTextNote.getText().toString().trim().length() <= 0) {
-                showAlert("Please provide comment");
+                showAlertDialog(getString(R.string.app_name), "Please provide comment", 100);
                 return false;
             }
         }
-
 
 
         return true;
@@ -1176,5 +1175,10 @@ public class MoodActivityAddActivity extends BaseActivity implements View.OnClic
         } else {
             editTextOthetActivity.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onButtonEvent(int code) {
+
     }
 }
