@@ -29,6 +29,9 @@ public class Notification {
     @SerializedName(General.MEMBER_USER_ID)
     private String member_user_id;
 
+    @SerializedName(General.GROUP_OWNER_ID_N)
+    private String group_owner_id;
+
     @SerializedName(General.SUBTYPE)
     private String sub_type;
 
@@ -119,6 +122,14 @@ public class Notification {
 
     @SerializedName("description1")
     private String description1;
+
+    public String getGroup_owner_id() {
+        return group_owner_id;
+    }
+
+    public void setGroup_owner_id(String group_owner_id) {
+        this.group_owner_id = group_owner_id;
+    }
 
     @SerializedName(General.DESCRIPTION)
     private String description;

@@ -95,12 +95,14 @@ public class NetworkCall_ {
 
         map.put(General.IMEI, DeviceInfo.getDeviceId(_context));
         refreshToken = new RefreshToken(_context);
+
         Request request = new Request.Builder()
                 .url(url)
                 .post(makeBody(map))
                 .tag(tag)
                 .build();
         String body = bodyToString(request);
+
         Logger.debug(tag, url + "?" + body, _context);
         String token = getToken(_context);
         if (token != null) {

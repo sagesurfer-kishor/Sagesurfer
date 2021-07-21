@@ -129,6 +129,7 @@ public class General {
     public static final String FULL_NAME = "full_name";
     public static final String TYPE = "type";
     public static final String MEMBER_USER_ID = "member_user_id";
+    public static final String GROUP_OWNER_ID_N = "group_owner_id";
     public static final String CONTACTED_LAST_TYPE = "contacted_last_type";
     public static final String LAST_TEAM_INTERACTION_TYPE = "last_team_interaction_type";
     public static final String LAST_TEAM_INTERACTION = "last_team_interaction";

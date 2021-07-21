@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
         Preferences.initialize(this);
 
 
-        if (BuildConfig.DEBUG) {
+     /*   if (BuildConfig.DEBUG) {
             new Handler().postDelayed(() -> {
 
                 Intent intent = new Intent(getApplicationContext(), AddAppointmentActivity.class);
@@ -59,7 +59,7 @@ public class SplashActivity extends AppCompatActivity {
                 finishAffinity();
 
             }, 1200);
-        } else {
+        } else {*/
             new Handler().postDelayed(() -> {
                 if (Preferences.contains(General.IS_LOGIN) &&
                         Preferences.get(General.IS_LOGIN).equalsIgnoreCase("1")) {
@@ -71,7 +71,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }, 1200);
         }
-    }
+  /*  }*/
 
     private void initializeCometChat() {
         AppSettings appSettings = new AppSettings.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(AppConfig.AppDetails.REGION).build();
@@ -128,6 +128,7 @@ public class SplashActivity extends AppCompatActivity {
                     || domainCode.equalsIgnoreCase("sage006")
                     || domainCode.equalsIgnoreCase("sage026")
                     || domainCode.equalsIgnoreCase("sage027")
+                    || domainCode.equalsIgnoreCase("sage015")
                     || domainCode.equalsIgnoreCase("sage049")
                     || domainCode.equalsIgnoreCase("sage047")
                     || domainCode.equalsIgnoreCase("sage036")) {

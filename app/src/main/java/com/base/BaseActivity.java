@@ -142,6 +142,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Showing Alert Dialog
         alertDialog2.show();
     }
-
-
 }

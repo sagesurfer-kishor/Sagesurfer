@@ -1409,8 +1409,8 @@ public class NotificationsFragment extends Fragment {
                 ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
                 ft.replace(R.id.app_bar_main_container, fragment, TAG);
                 ft.commit();
-            } else if (NotificationTypeDetector.getType(notificationList.get(position).getType()) == 70) { //caseload condition newly aadded by kishor k 06/08/2020
-
+            } else
+                if (NotificationTypeDetector.getType(notificationList.get(position).getType()) == 70) { //caseload condition newly aadded by kishor k 06/08/2020
                 final Dialog dialog = new Dialog(getActivity());
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(false);
@@ -1425,11 +1425,15 @@ public class NotificationsFragment extends Fragment {
                 Log.i(TAG, "onItemClick: title 2 "+notificationList.get(position).getTitle1());
                 Log.i(TAG, "onItemClick: title  "+notificationList.get(position).getTitle());
                 Log.i(TAG, "onItemClick: title  "+notificationList.get(position).getGroup_type());
+                    Log.i(TAG, "onItemClick: check user id "+Preferences.get(General.USER_ID) +" owner id"+notificationList.get(position).getGroup_owner_id());
                 if (notificationList.get(position).getIs_member().equals("1")) {
                     linearLayout.setVisibility(View.GONE);
                 }else if(notificationList.get(position).getGroup_type().equals("private")){
                     linearLayout.setVisibility(View.GONE);
-                } else {
+
+                } else if (notificationList.get(position).getGroup_owner_id().equalsIgnoreCase(Preferences.get(General.USER_ID))){
+                    linearLayout.setVisibility(View.GONE);
+                }else{
                     linearLayout.setVisibility(View.VISIBLE);
                 }
 
