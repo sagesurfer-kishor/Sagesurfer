@@ -4,8 +4,12 @@ import com.api.ApiClient;
 import com.api.ApiService;
 import com.base.BaseActivity;
 import com.google.gson.JsonElement;
-import com.sagesurfer.collaborativecares.MainActivity;
 import com.sagesurfer.collaborativecares.R;
+import com.sagesurfer.constant.General;
+import com.sagesurfer.network.NetworkCall_;
+import com.sagesurfer.network.Urls_;
+import com.storage.preferences.Preferences;
+
 import android.os.Bundle;
 import java.util.HashMap;
 
@@ -15,7 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddAppointmentActivity extends BaseActivity {
-    private static final String TAG = "AddAppointmentActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,30 +37,26 @@ public class AddAppointmentActivity extends BaseActivity {
 
     private void getAppointmentList() {
 
-        mApiService = ApiClient.getClient(getApplicationContext(), "https://mhaw.sagesurfer.com/phase3/")
+        mApiService = ApiClient.getClient(getApplicationContext(), Preferences.get(General.DOMAIN) + "/")
                 .create(ApiService.class);
 
         showDialog();
 
-
-
         HashMap<String, String> parameter = new HashMap<>();
+
         parameter.put("search", "");
-        /*parameter.put("t", "6362337564a881096228");*/
-        parameter.put("user_id", "464");
         parameter.put("fetch_date", "2020-11-28");
         parameter.put("domain_code", "sage027");
         parameter.put("action", "get_appointment");
 
-        RequestBody requestBody = screen.messagelist.NetworkCall_.make(parameter, "https://mhaw.sagesurfer.com/phase3/mobile_mhaw_appointment.php", TAG, AddAppointmentActivity.this,this);
-       /* parameter.put("k", "ajhoITA5dlJiSA");*/
-        /*parameter.put("tz", getTimeZone());
-        parameter.put("imei", getIMEI());
-        parameter.put("modelno", getModel());
-        parameter.put("debug", "1");*/
+
+        String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_MHAW_APPOINTMENT;
+
+        RequestBody body= NetworkCall_.make(parameter,url,TAG,AddAppointmentActivity.this);
 
 
-        Call<JsonElement> call = mApiService.mobile_mhaw_appointment(requestBody);
+        Call<JsonElement> call = mApiService.mobile_mhaw_appointment(body);
+
 
         call.enqueue(new Callback<JsonElement>() {
             @Override

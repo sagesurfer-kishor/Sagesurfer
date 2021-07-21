@@ -118,10 +118,13 @@ public class NetworkCall_ {
         String deviceMAC = DeviceInfo.getDeviceMAC(activity);
         String deviceIDMEI = DeviceInfo.getImei(activity);
         String deviceId = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);*/
+
         map.put(General.IMEI, DeviceInfo.getDeviceId(activity));
         map.put(General.VERSION, DeviceInfo.getVersion());
         map.put(General.MODELNO, DeviceInfo.getDeviceName());
+
         refreshToken = new RefreshToken(_context);
+
         Request request = new Request.Builder()
                 .url(url)
                 .post(makeBody(map))

@@ -122,7 +122,9 @@ public class AdminActivityFragment extends Fragment implements View.OnClickListe
         requestMap.put(General.USER_ID, "" + user_id);
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_SUPERVISOR_OPERATIONS;
+
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, activity, activity);
+
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, activity, activity);

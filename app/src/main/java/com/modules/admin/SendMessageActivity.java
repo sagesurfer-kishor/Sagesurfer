@@ -146,7 +146,9 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
         requestMap.put(General.MSG, message);
 
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_SUPERVISOR_OPERATIONS;
+
         RequestBody requestBody = NetworkCall_.make(requestMap, url, TAG, getApplicationContext(), this);
+
         if (requestBody != null) {
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, getApplicationContext(), this);

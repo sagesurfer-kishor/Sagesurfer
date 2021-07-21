@@ -23,15 +23,28 @@ import java.util.TimeZone;
 import com.api.ApiService;
 import com.modules.appointment.activity.AddAppointmentActivity;
 import com.sagesurfer.collaborativecares.R;
+import com.sagesurfer.constant.General;
+import com.sagesurfer.constant.Oauth;
+import com.sagesurfer.library.DeviceInfo;
+import com.sagesurfer.models.Token_;
+import com.sagesurfer.oauth.RefreshToken;
+import com.storage.preferences.OauthPreferences;
+import com.storage.preferences.Preferences;
 
 import am.appwise.components.ni.NoInternetDialog;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    public static String TAG=BaseActivity.class.getSimpleName();
+
     private ProgressDialog pDialog;
 
     public ApiService mApiService;
+
+    private static RefreshToken refreshToken;
 
     private boolean arePermissionsGranted(String[] permissions) {
         for (String permission : permissions) {
@@ -41,6 +54,39 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return true;
     }
+    // make call to fetch oauth token
+    public String getToken(Context _context) {
+
+        showDialog();
+
+        String access_token = null;
+        Token_ token;
+        OauthPreferences.initialize(_context);
+        String i = OauthPreferences.get(Oauth.EXPIRES_AT);
+        try {
+            if (System.currentTimeMillis() >= Long.parseLong(OauthPreferences.get(Oauth.EXPIRES_AT))) {
+                token = refreshToken.getRefreshToken(Preferences.get(Oauth.CLIENT_ID),
+                        Preferences.get(Oauth.CLIENT_SECRET),
+                        Preferences.get(General.DOMAIN).replaceAll(General.INSATNCE_NAME, ""),
+                        _context);
+
+                if (token.getStatus() == 1) {
+                    access_token = token.getAccessToken();
+                } else if (token.getStatus() == 12) {
+                    getToken(_context);
+                }
+            } else {
+                access_token = OauthPreferences.get(Oauth.ACCESS_TOKEN);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        hideDialog();
+        return access_token;
+    }
+
 
     public String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -68,16 +114,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public String getModel() {
-        return Build.MODEL;
+        return DeviceInfo.getDeviceName();
     }
 
     public String getIMEI() {
-        String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        return m_androidId;
+        return DeviceInfo.getImei(BaseActivity.this);
     }
 
     public String getTimeZone() {
-        return TimeZone.getDefault().getID();
+        return DeviceInfo.getTimeZone();
     }
 
 
