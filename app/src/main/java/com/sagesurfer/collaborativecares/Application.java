@@ -55,8 +55,10 @@ public class Application extends MultiDexApplication {
         super.onCreate();
         observer = new AppObserver(this);
 
-        crashlytics = FirebaseCrashlytics.getInstance();
-        crashlytics.log("Start logging!");
+        if (!BuildConfig.DEBUG) {
+            crashlytics = FirebaseCrashlytics.getInstance();
+            crashlytics.log("Start logging!");
+        }
 
         FirebaseMessaging.getInstance().subscribeToTopic("global");
 
