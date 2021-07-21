@@ -1088,7 +1088,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

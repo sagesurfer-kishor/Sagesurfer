@@ -67,6 +67,7 @@ public class General {
     public static final String ROLE_ID = "role_id";
     public static final String GROUP_ID = "group_id";
     public static final String GROUP_NAME = "group_name";
+    public static final String GROUP_OWNER_ID_N = "group_owner_id";
     public static final String USERTIMEZONE = "userTimezone";
     public static final String ERROR = "error";
     public static final String TEAM = "team";

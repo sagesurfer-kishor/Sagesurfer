@@ -1429,7 +1429,9 @@ public class NotificationsFragment extends Fragment {
                     linearLayout.setVisibility(View.GONE);
                 }else if(notificationList.get(position).getGroup_type().equals("private")){
                     linearLayout.setVisibility(View.GONE);
-                } else {
+                }  else if (notificationList.get(position).getGroup_owner_id().equalsIgnoreCase(Preferences.get(General.USER_ID))){
+                    linearLayout.setVisibility(View.GONE);
+                }else {
                     linearLayout.setVisibility(View.VISIBLE);
                 }
 
@@ -1443,8 +1445,6 @@ public class NotificationsFragment extends Fragment {
                 } else {
                     gType.setText("");
                 }
-
-
                 TextView txtGName = dialog.findViewById(R.id.txt_request_type);
                 if (notificationList.get(position).getGroup_name() != null) {
                     txtGName.setText(notificationList.get(position).getGroup_name());

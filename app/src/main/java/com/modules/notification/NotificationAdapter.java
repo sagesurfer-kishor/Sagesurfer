@@ -659,7 +659,7 @@ class NotificationAdapter extends ArrayAdapter<Notification> {
                 break;
 
             case 57://platform_youth_message
-                message = notification.getTitle1();
+                message = notification.getTitle_1_other();
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.descriptionText.setText(notification.getDescription1());
                 holder.typeText.setVisibility(View.GONE);
@@ -707,7 +707,7 @@ class NotificationAdapter extends ArrayAdapter<Notification> {
                 break;
 
             case 63://peer_supervisor_notification
-                message = notification.getTitle1();
+                message = notification.getTitle_1_other();
                 holder.titleText.setText(Html.fromHtml(message));
                 holder.descriptionText.setText("Team: " + notification.getDescription1());
                 holder.typeText.setVisibility(View.GONE);

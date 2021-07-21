@@ -47,6 +47,9 @@ public class Notification {
     @SerializedName("profile")
     private String profile;
 
+    @SerializedName(General.GROUP_OWNER_ID_N)
+    private String group_owner_id;
+
     @SerializedName(General.GROUP_NAME)
     private String group_name;
 
@@ -128,6 +131,14 @@ public class Notification {
 
     @SerializedName(General.REF_ID)
     private long ref_id;
+
+    public String getGroup_owner_id() {
+        return group_owner_id;
+    }
+
+    public void setGroup_owner_id(String group_owner_id) {
+        this.group_owner_id = group_owner_id;
+    }
 
     @SerializedName(General.NAME)
     private String name;
