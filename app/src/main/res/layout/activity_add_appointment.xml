@@ -20,11 +20,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:padding="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -67,7 +63,7 @@
                 style="@style/CustomFontStyleSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/white_rounded_rectangle"
+                android:background="@drawable/white_rounded_rectangle_gray_border"
                 android:drawablePadding="10dp"
                 android:gravity="start|center_vertical"
                 android:hint="Heading goes here"
@@ -92,7 +88,7 @@
                 style="@style/CustomFontStyleSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:background="@drawable/white_rounded_rectangle"
+                android:background="@drawable/white_rounded_rectangle_gray_border"
                 android:gravity="start"
                 android:layout_marginTop="5dp"
                 android:hint="Heading goes here"
