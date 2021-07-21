@@ -18,7 +18,7 @@ public class ApiClient {
 
     private static Retrofit retrofit = null;
 
-    public static Retrofit getClient(Context context) {
+    public static Retrofit getClient(Context context,String url) {
 
 
         if (retrofit == null) {
@@ -38,7 +38,7 @@ public class ApiClient {
 
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://circulation.shiivagrow.com")
+                    .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(httpClient)

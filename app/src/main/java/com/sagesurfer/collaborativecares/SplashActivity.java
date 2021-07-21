@@ -56,6 +56,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), AddAppointmentActivity.class);
                 startActivity(intent);
+                finishAffinity();
 
             }, 1200);
         } else {

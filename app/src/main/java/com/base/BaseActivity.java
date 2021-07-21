@@ -16,12 +16,16 @@ import androidx.core.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import com.api.ApiService;
 import com.sagesurfer.collaborativecares.R;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
+
+    public ApiService mApiService;
 
     private boolean arePermissionsGranted(String[] permissions) {
         for (String permission : permissions) {
