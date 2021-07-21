@@ -17,7 +17,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
@@ -32,8 +31,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemechat"
         tools:replace="android:allowBackup,icon,theme,label,name"
-        tools:targetApi="q">
-        <activity android:name="com.modules.wall.update.EditWallPost"></activity>
+        tools:targetApi="m">
+
+        <activity android:name="com.modules.wall.update.EditWallPost"/>
         <activity android:name=".DemoKotlin" /> <!-- android:hardwareAccelerated="false" -->
         <activity
             android:name="com.modules.support.NewFaqActivity"
