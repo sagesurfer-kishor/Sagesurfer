@@ -46,12 +46,9 @@ public class AddAppointmentActivity extends BaseActivity {
 
         parameter.put("search", "");
         parameter.put("fetch_date", "2020-11-28");
-        parameter.put("domain_code", "sage027");
         parameter.put("action", "get_appointment");
 
-
         String url = Preferences.get(General.DOMAIN) + "/" + Urls_.MOBILE_MHAW_APPOINTMENT;
-
         RequestBody body= NetworkCall_.make(parameter,url,TAG,AddAppointmentActivity.this);
 
 
