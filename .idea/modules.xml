@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/New.iml" filepath="$PROJECT_DIR$/.idea/modules/New.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/New.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/New.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/circlemenu/New.circlemenu.iml" filepath="$PROJECT_DIR$/.idea/modules/circlemenu/New.circlemenu.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/emoticonkeyboard/New.emoticonkeyboard.iml" filepath="$PROJECT_DIR$/.idea/modules/emoticonkeyboard/New.emoticonkeyboard.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/uikit/New.uikit.iml" filepath="$PROJECT_DIR$/.idea/modules/uikit/New.uikit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Sagesurfers.iml" filepath="$PROJECT_DIR$/.idea/modules/Sagesurfers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Sagesurfers.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Sagesurfers.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/circlemenu/Sagesurfers.circlemenu.iml" filepath="$PROJECT_DIR$/.idea/modules/circlemenu/Sagesurfers.circlemenu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/emoticonkeyboard/Sagesurfers.emoticonkeyboard.iml" filepath="$PROJECT_DIR$/.idea/modules/emoticonkeyboard/Sagesurfers.emoticonkeyboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/uikit/Sagesurfers.uikit.iml" filepath="$PROJECT_DIR$/.idea/modules/uikit/Sagesurfers.uikit.iml" />
     </modules>
   </component>
 </project>
