@@ -9,7 +9,6 @@ android {
     productFlavors {
         collaborativecares {
             dimension "clients"
-            //applicationIdSuffix ".collaborativecares"
             applicationId "com.sagesurfer.collaborativecares"
             minSdkVersion 21
             targetSdkVersion 29
@@ -20,7 +19,6 @@ android {
             renderscriptSupportModeEnabled true
             manifestPlaceholders = [file_provider: "com.sagesurfer.collaborativecares"]
             ndk {
-                //abiFilters 'arm64-v8a', 'x86_64', 'armeabi-v7a', 'armeabi'
                 abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
             }
             resValue "string", "app_name", "SageSurfer"
@@ -42,7 +40,6 @@ android {
             renderscriptSupportModeEnabled true
             resValue "string", "app_name", "SymTrak"
             ndk {
-                //abiFilters 'arm64-v8a', 'x86_64', 'armeabi-v7a', 'armeabi'
                 abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
             }
 
@@ -75,12 +72,7 @@ android {
         multiDexEnabled true
         manifestPlaceholders = [file_provider: "com.sagesurfer.collaborativecares"]
         renderscriptSupportModeEnabled true
-       /* ndk {
-            abiFilters 'arm64-v8a', 'x86_64', 'armeabi-v7a', 'armeabi'
-            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
-        }*/
         ndk {
-            //abiFilters "armeabi-v7a", "x86", "arm64-v8a"
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
