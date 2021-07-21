@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,9 +18,13 @@ import androidx.core.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import com.api.ApiService;
+import com.modules.appointment.activity.AddAppointmentActivity;
 import com.sagesurfer.collaborativecares.R;
+
+import am.appwise.components.ni.NoInternetDialog;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -54,9 +60,24 @@ public abstract class BaseActivity extends AppCompatActivity {
             return true;
         } else {
             Log.v("", "Internet Connection Not Available");
+            NoInternetDialog noInternetDialog = new NoInternetDialog.Builder(BaseActivity.this).build();
+            noInternetDialog.showDialog();
             //Toast.makeText(context, context.getResources().getString(R.string.network_connectivity_not_available), Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    public String getModel() {
+        return Build.MODEL;
+    }
+
+    public String getIMEI() {
+        String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        return m_androidId;
+    }
+
+    public String getTimeZone() {
+        return TimeZone.getDefault().getID();
     }
 
 

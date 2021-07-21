@@ -3,19 +3,10 @@ package com.modules.appointment.activity;
 import com.api.ApiClient;
 import com.api.ApiService;
 import com.base.BaseActivity;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.sagesurfer.collaborativecares.R;
-
 import android.os.Bundle;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import am.appwise.components.ni.NoInternetDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,50 +21,42 @@ public class AddAppointmentActivity extends BaseActivity {
     }
 
     void initwidget() {
-
-
         setTitle("Add Appointment");
 
         if (isInternetAvailable(this)) {
             getAppointmentList();
-        } else {
-            NoInternetDialog noInternetDialog = new NoInternetDialog.Builder(AddAppointmentActivity.this).build();
-            noInternetDialog.showDialog();
         }
     }
 
     private void getAppointmentList() {
 
-        mApiService = ApiClient.getClient(getApplicationContext(), "https://mhaw.sagesurfer.com/")
+        mApiService = ApiClient.getClient(getApplicationContext(), "https://mhaw.sagesurfer.com/phase3/")
                 .create(ApiService.class);
 
         showDialog();
 
         HashMap<String, Object> parameter = new HashMap<>();
 
-
         parameter.put("search", "");
-        parameter.put("t", "");
+        parameter.put("t", "6362337564a881096228");
         parameter.put("user_id", "464");
         parameter.put("fetch_date", "2020-11-28");
-        parameter.put("tz", "Asia/Kolkata");
         parameter.put("domain_code", "sage027");
         parameter.put("action", "get_appointment");
-        parameter.put("imei", "1234");
-        parameter.put("modelno", "Samsung");
         parameter.put("k", "ajhoITA5dlJiSA");
+        parameter.put("tz", getTimeZone());
+        parameter.put("imei", getIMEI());
+        parameter.put("modelno", getModel());
         parameter.put("debug", "1");
 
 
-        Call<JsonElement> call = mApiService.addAppointment(parameter);
+        Call<JsonElement> call = mApiService.mobile_mhaw_appointment(parameter);
 
 
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 hideDialog();
-
-
             }
 
             @Override

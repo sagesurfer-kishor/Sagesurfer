@@ -15,12 +15,11 @@ import retrofit2.http.POST;
 
 public interface ApiService {
 
-
     @POST("/api/login")
     Call<String> getServerLogin(@Body String body);
 
-    @POST("/phase3/mobile_mhaw_appointment.php")
-    Call<JsonElement> addAppointment(@Body HashMap<String, Object> body);
+    @POST("mobile_mhaw_appointment.php")
+    Call<JsonElement> mobile_mhaw_appointment(@Body HashMap<String, Object> body);
 
 
 }
