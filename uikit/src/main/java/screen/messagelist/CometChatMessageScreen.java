@@ -561,6 +561,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 editorCallingPref.putString("comet_chat_type", "" + comet_chat_type);
                 editorCallingPref.putString("chat_type", "" + ChatType);
                 editorCallingPref.putString("group_id", "" + Group_id);
+                editorCallingPref.putString("team_id", "" + team_Ids);
                 editorCallingPref.apply();
                 AppLog.i(TAG, "Calling test tag  checkOnGoingCall: type " + callingPreferences.getString("type", "")
                         + " comet_chat_type " + callingPreferences.getString("comet_chat_type", "")
@@ -587,6 +588,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
                 editorCallingPref.putString("comet_chat_type", "" + comet_chat_type);
                 editorCallingPref.putString("chat_type", "" + ChatType);
                 editorCallingPref.putString("group_id", "" + Group_id);
+                editorCallingPref.putString("team_id", "" + team_Ids);
                 editorCallingPref.apply();
                 AppLog.i(TAG, "Calling test tag  checkOnGoingCall: type " + callingPreferences.getString("type", "")
                         + " comet_chat_type " + callingPreferences.getString("comet_chat_type", "")
@@ -6300,7 +6302,7 @@ public class CometChatMessageScreen extends Fragment implements View.OnClickList
         requestMap.put(General.CHAT_TYPE, ChatType);
         requestMap.put(General.GROUP_ID, Group_id);
         requestMap.put(General.USER_ID, UserId);
-
+        requestMap.put(General.TEAM_ID, team_Ids);
         RequestBody requestBody = NetworkCall_.make(requestMap, DomainURL + url, TAG, getActivity());
         // Log.e(TAG, "saveChatLogToTheServer: request body " + requestBody);
         AppLog.i(TAG, "logOutEnrtyCometchat: Domain " + DomainURL + url);

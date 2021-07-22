@@ -711,7 +711,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                         // get all languages form db
                         getLanguage("language_list");
-                        currentLang = sp.getString("full_name", currentLang);
+                        currentLang = sp.getString("currentLang", currentLang);
                         Log.e(TAG, "onMenuItemClick: current language " + currentLang);
                         reasonAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.drop_down_selected_text_item_layout, lanList);
                         reasonAdapter.setDropDownViewResource(R.layout.drop_down_text_item_layout);
@@ -1082,13 +1082,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             try {
                 String response = NetworkCall_.post(url, requestBody, TAG, this);
 
+                JSONObject object = new JSONObject(response);
+                JSONArray jsonArray = object.getJSONArray("update_language");
+                AppLog.i(TAG, "getUpdateLanguage response "+response);
                 if (response != null) {
-                    AppLog.i(TAG, "getUpdateLanguage success response" + response);
-                    getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
-                    Toast.makeText(MainActivity.this, "Language changed successfully", Toast.LENGTH_SHORT).show();
-//                    CometChatMessageScreen messageScreen = new CometChatMessageScreen();
-//                  messageScreen.fetchMessage();
-
+                    if (jsonArray.getJSONObject(0).has("status")) {
+                        if (jsonArray.getJSONObject(0).getString("status").equalsIgnoreCase("1")) {
+                            Toast.makeText(MainActivity.this, "Language changed successfully", Toast.LENGTH_SHORT).show();
+                            getCurrentLanguage("current_language", Preferences.get(General.USER_ID));
+                        } else {
+                            Toast.makeText(MainActivity.this, "Language changed successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
 
             } catch (Exception e) {
